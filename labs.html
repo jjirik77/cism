@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hands-On Labs | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<style>
+  .lab-intro { background: var(--blue-pale); border: 1px solid var(--blue-pale-border); border-radius: 8px; padding: 1.1rem 1.3rem; margin-bottom: 1.6rem; }
+  .lab-intro p { font-family: Arial, sans-serif; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+  .lab-intro b { color: var(--text-primary); }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.6rem; }
+  .filter-bar button { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 0.4rem 0.9rem; cursor: pointer; transition: all 0.15s; }
+  .filter-bar button:hover { border-color: var(--gold); }
+  .filter-bar button.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  .lab { background: var(--card-bg); border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: 6px; padding: 1.4rem 1.5rem; margin-bottom: 1.4rem; }
+  .lab-head { display: flex; gap: 1rem; align-items: baseline; margin-bottom: 0.9rem; }
+  .lab-num { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); flex-shrink: 0; padding-top: 0.15rem; }
+  .lab-title { font-family: Georgia, serif; font-size: 1.18rem; color: var(--text-primary); margin: 0 0 0.5rem; line-height: 1.25; }
+  .lab-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.16rem 0.55rem; border-radius: 3px; }
+  .tag-dom { background: var(--navy); color: #fff; }
+  .tag-diff { background: var(--blue-pale); color: var(--text-secondary); border: 1px solid var(--blue-pale-border); }
+  .tag-time { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+
+  .lab-sec { margin: 0.7rem 0; }
+  .lab-sec-label { display: inline-block; font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.15rem; }
+  .lab-sec p, .lab-sec li { font-family: Arial, sans-serif; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0.2rem 0; }
+  .lab-sec b { color: var(--text-primary); }
+
+  .lab-debrief { margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 0.7rem; }
+  .lab-debrief summary { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .lab-debrief summary::-webkit-details-marker { display: none; }
+  .lab-debrief summary::before { content: "\25B8"; transition: transform 0.15s; display: inline-block; }
+  .lab-debrief[open] summary::before { transform: rotate(90deg); }
+  .debrief-body { margin-top: 0.7rem; background: var(--blue-pale); border-left: 4px solid var(--gold); border-radius: 0 6px 6px 0; padding: 0.9rem 1.1rem; }
+  .debrief-body p, .debrief-body li { font-family: Arial, sans-serif; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.62; margin: 0.35rem 0; }
+  .debrief-body b { color: var(--text-primary); }
+  .debrief-body ol { margin: 0.4rem 0 0.4rem 1.1rem; padding: 0; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#resources">Resources</a> &nbsp;&rsaquo;&nbsp; <span>Hands-On Labs</span></p>
+    <span class="lesson-badge-lg">Hands-On Practice</span>
+    <h1>Hands-On <span>Labs</span></h1>
+    <p class="lesson-lede">Ten scenario-based exercises that put the manager mindset to work &mdash; read the situation, make the management decision, produce the deliverable, then reveal the manager&rsquo;s debrief to check your reasoning. Weighted to the exam blueprint and tagged by domain for targeted practice or classroom assignment.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <p class="eyebrow">Practice</p>
+    <h2 class="h2">Work the labs</h2>
+    <div class="rule"></div>
+
+    <div class="lab-intro">
+      <p><b>How to use:</b> Each lab is self-contained &mdash; a realistic scenario, a defined management decision, and a deliverable to produce. Attempt it first, then open <b>&ldquo;Reveal the manager&rsquo;s debrief&rdquo;</b> for the model answer and the exam-relevant reasoning. Faculty can assign a lab as graded work or self-study. Filter by domain below.</p>
+    </div>
+
+    <div class="filter-bar" role="group" aria-label="Filter labs by domain">
+      <button class="on" onclick="filterLabs('all',this)">All 10</button>
+      <button onclick="filterLabs('D1',this)">D1 &middot; Governance</button>
+      <button onclick="filterLabs('D2',this)">D2 &middot; Risk</button>
+      <button onclick="filterLabs('D3',this)">D3 &middot; Program</button>
+      <button onclick="filterLabs('D4',this)">D4 &middot; Incident</button>
+    </div>
+
+    <!-- LAB 1 -->
+    <article class="lab" data-domain="D1">
+      <div class="lab-head"><span class="lab-num">Lab 1</span><div>
+        <h3 class="lab-title">Repositioning Security as a Business Enabler</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D1 &middot; Governance</span><span class="tag tag-diff">Foundational</span><span class="tag tag-time">&#9201; ~25 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>A new CISO inherits a security function that operates as a technical gatekeeper: it blocks projects, has no board visibility, and its &ldquo;strategy&rdquo; is a list of tools. The business sees security as a cost center that slows delivery.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>As the security manager, outline how to reposition the program to be business-aligned and properly governed.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>A short plan: the governance changes, how the strategy derives from business objectives, and two or three metrics that demonstrate value.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p>Security exists to <b>enable the business</b>. Derive the strategy from business objectives, not tools: understand objectives &rarr; gap analysis &rarr; a risk-based roadmap. Establish governance: an IT/security steering committee, a CISO reporting line with enough independence to report risk candidly, and a <b>risk appetite set by the business</b>.</p>
+        <p>Demonstrate value with <b>outcome metrics</b> &mdash; risk reduced, KRIs trending, alignment to objectives &mdash; not activity counts like &ldquo;emails blocked.&rdquo; The manager <b>aligns, advises, and oversees</b>; the business owns and accepts risk.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 2 -->
+    <article class="lab" data-domain="D1">
+      <div class="lab-head"><span class="lab-num">Lab 2</span><div>
+        <h3 class="lab-title">Choosing Board-Level Governance Metrics</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D1 &middot; Governance</span><span class="tag tag-diff">Intermediate</span><span class="tag tag-time">&#9201; ~20 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>The board wants a one-page security dashboard. The team proposes: (a) number of emails blocked; (b) % of staff who completed awareness training; (c) number of overdue high-risk findings trending upward; (d) mean time to deploy critical patches; (e) reduction in phishing susceptibility linked to breach likelihood.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Classify each as a KGI, KPI, or KRI, and pick the two most useful for the board.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>The classifications plus your top two with rationale.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p>KGI = whether a goal was achieved; KPI = process performance; KRI = a forward-looking signal that risk is rising. (a) an activity metric (weak); (b) KPI; (c) <b>KRI</b> &mdash; overdue high-risk findings trending up; (d) KPI; (e) the strongest board metric &mdash; it ties a control to <b>business risk</b> (breach likelihood).</p>
+        <p>Best for the board: <b>(e)</b> and <b>(c)</b>. Leadership needs risk and value in business terms, not raw activity counts like emails blocked or firewall rules configured.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 3 -->
+    <article class="lab" data-domain="D2">
+      <div class="lab-head"><span class="lab-num">Lab 3</span><div>
+        <h3 class="lab-title">Quantitative Risk Analysis (SLE / ARO / ALE)</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D2 &middot; Risk Management</span><span class="tag tag-diff">Intermediate</span><span class="tag tag-time">&#9201; ~25 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>A customer database is valued at <b>$2,000,000</b>. A ransomware event would impair an estimated <b>40%</b> of its value (exposure factor 0.4) and is expected roughly <b>once every four years</b>. A proposed control costs <b>$90,000/year</b> and would halve the event frequency.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Compute SLE, ARO, and ALE before and after the control, and make a treat-or-accept recommendation.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>The numbers plus your recommendation with justification.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p><b>SLE</b> = AV &times; EF = $2,000,000 &times; 0.4 = <b>$800,000</b>. <b>ARO</b> = 1/4 = <b>0.25</b>. <b>ALE</b> = SLE &times; ARO = <b>$200,000/yr</b>. With the control, ARO = 0.125 &rarr; ALE = <b>$100,000/yr</b>.</p>
+        <p>The control reduces ALE by ~$100,000/yr for $90,000/yr &mdash; net positive, and a control shouldn&rsquo;t cost more than the risk it reduces, so it is justifiable. Recommend implementing and monitoring; the <b>business risk owner</b> makes the final treat/accept decision.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 4 -->
+    <article class="lab" data-domain="D2">
+      <div class="lab-head"><span class="lab-num">Lab 4</span><div>
+        <h3 class="lab-title">Risk Treatment &amp; Formal Acceptance</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D2 &middot; Risk Management</span><span class="tag tag-diff">Intermediate</span><span class="tag tag-time">&#9201; ~20 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>After mitigation, a residual risk on a legacy system still <b>exceeds the organization&rsquo;s stated risk appetite</b>. Separately, a business unit wants a temporary exception to a security policy to hit a launch deadline.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Decide the correct course for both the residual risk and the exception request &mdash; and who must sign off.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>Your recommended actions and the required approver for each.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p><b>Residual risk above appetite:</b> recommend further treatment and escalate to the <b>business risk owner</b> for the decision. The manager does not accept risk on the organization&rsquo;s behalf, delete it from the register, or re-classify the asset to make the number look better.</p>
+        <p><b>Policy exception:</b> document the residual risk and obtain a <b>formal, time-bound acceptance</b> from the risk owner &mdash; never an informal &ldquo;yes,&rdquo; and never delete the requirement. Acceptance is legitimate only when it is within appetite (or explicitly escalated), documented, and made by the right authority.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 5 -->
+    <article class="lab" data-domain="D3">
+      <div class="lab-head"><span class="lab-num">Lab 5</span><div>
+        <h3 class="lab-title">Risk-Based Control Selection</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D3 &middot; Security Program</span><span class="tag tag-diff">Intermediate</span><span class="tag tag-time">&#9201; ~25 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>Leadership asks you to &ldquo;add the latest AI-powered security tool everyone&rsquo;s buying.&rdquo; Budget is tight. Meanwhile, MFA cannot be deployed on a critical legacy system.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Describe how you decide whether to buy the tool, and what to do about the legacy system.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>A decision approach plus the legacy-system recommendation.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p>Control selection is <b>risk-based</b>: start from the control objective (the risk to reduce), then choose a proportionate control &mdash; don&rsquo;t buy novelty or copy a competitor. If an existing layer already meets the objective, the spend is hard to justify (cost shouldn&rsquo;t exceed the risk reduced).</p>
+        <p>For the legacy system where MFA isn&rsquo;t feasible, apply a <b>compensating control</b> (enhanced monitoring, tighter network restrictions) that achieves comparable risk reduction, documented and approved. Reinforce with framework baselines and <b>defense in depth</b>.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 6 -->
+    <article class="lab" data-domain="D3">
+      <div class="lab-head"><span class="lab-num">Lab 6</span><div>
+        <h3 class="lab-title">Third-Party Risk &amp; Due Diligence</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D3 &middot; Security Program</span><span class="tag tag-diff">Intermediate</span><span class="tag tag-time">&#9201; ~30 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>A business unit wants to onboard a critical SaaS vendor next week. The vendor&rsquo;s <b>SOC 2 Type II</b> lists a CUEC (&ldquo;the customer reviews privileged access quarterly&rdquo;), carves out its subservice cloud provider, and the draft contract has <b>no right-to-audit clause</b>.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>State what must happen before the organization engages the vendor.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>A pre-engagement checklist.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <ol>
+          <li>Perform <b>security due diligence before engaging</b> &mdash; review the SOC 2 (design and operating effectiveness over the period) and note reliance limitations.</li>
+          <li>The <b>CUEC is your responsibility</b>: ensure the organization will actually perform the quarterly privileged-access review.</li>
+          <li>The <b>carved-out subservice provider</b> needs separate assurance.</li>
+          <li>Negotiate a <b>right-to-audit</b> clause (and continuity/RTO commitments) into the contract.</li>
+        </ol>
+        <p>Signing quickly to hit a deadline, or assuming a well-known vendor is secure, is unverified trust &mdash; and accountability for the data always stays with your organization.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 7 -->
+    <article class="lab" data-domain="D3">
+      <div class="lab-head"><span class="lab-num">Lab 7</span><div>
+        <h3 class="lab-title">Awareness-Program Effectiveness</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D3 &middot; Security Program</span><span class="tag tag-diff">Foundational</span><span class="tag tag-time">&#9201; ~20 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>Phishing-simulation click rates have risen for three straight quarters despite annual training. A director proposes disciplining repeat clickers; IT proposes blocking all external email.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Decide the best response and explain why the alternatives are wrong.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>Your recommendation with reasoning.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p>A rising click rate is a measured decline in <b>program effectiveness</b> &mdash; review and strengthen the awareness program&rsquo;s content, frequency, and reinforcement (role-based, more frequent, positively reinforced).</p>
+        <p>Disciplining employees is punitive and ignores effectiveness; blocking all external email is impractical and doesn&rsquo;t address the human layer; discontinuing simulations removes the measurement, not the problem. The goal is a <b>security culture</b>, driven from the top.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 8 -->
+    <article class="lab" data-domain="D4">
+      <div class="lab-head"><span class="lab-num">Lab 8</span><div>
+        <h3 class="lab-title">Directing Incident Response</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D4 &middot; Incident Management</span><span class="tag tag-diff">Intermediate</span><span class="tag tag-time">&#9201; ~30 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>A malware outbreak is spreading. Under pressure, responders want to power off and re-image the compromised server immediately. The CEO is asking <em>you</em> for a decision.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Describe how you, as the security manager, direct the response &mdash; and the correct technical sequence.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>Your coordination actions plus the lifecycle sequence.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p>The manager <b>coordinates and directs</b> the response while specialists execute &mdash; you don&rsquo;t perform containment personally, and you don&rsquo;t wait for it to resolve itself. Direct the team to <b>contain first</b> (isolate affected systems), <b>preserve volatile evidence</b> before powering anything off (memory and network state, chain of custody), then <b>eradicate</b>, then <b>recover</b>.</p>
+        <p>Powering off destroys forensic data and may breach legal-hold duties. Coordinate executive and stakeholder communication, and ensure the <b>regulatory-notification branch</b> is evaluated. Severity is a business-impact judgment, which is why the manager owns the criteria.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 9 -->
+    <article class="lab" data-domain="D4">
+      <div class="lab-head"><span class="lab-num">Lab 9</span><div>
+        <h3 class="lab-title">BIA &rarr; Recovery-Objective Gap</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D4 &middot; Incident Management</span><span class="tag tag-diff">Advanced</span><span class="tag tag-time">&#9201; ~30 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>The BIA sets the order system at <b>RTO = 4 hours</b>, <b>RPO = 1 hour</b>. The current DR is a warm site fed by nightly backups (recovers in 10&ndash;12 hours; data up to ~24h old). Finance proposes &ldquo;just change the RTO to 12 hours so we pass.&rdquo;</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Respond to the capability gap and to the &ldquo;change the RTO&rdquo; proposal.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>The gaps plus your recommendation and how you handle the proposal.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p><b>RTO gap</b> (10&ndash;12h vs. 4h) and <b>RPO gap</b> (~24h vs. 1h) are real capability shortfalls. The <b>BIA sets the objectives</b> from business impact; the DRP must be built and funded to meet them &mdash; you don&rsquo;t raise the BIA&rsquo;s RTO to match what the DRP can already do (that inverts the relationship and manufactures a &ldquo;pass&rdquo;).</p>
+        <p>Recommend a higher-tier strategy (a hot site / near-continuous replication) for this critical process, or a documented, senior-level business decision to accept a lower objective with the residual risk owned. And remember: <b>RTO must be shorter than the MTD</b>.</p>
+      </div></details>
+    </article>
+
+    <!-- LAB 10 -->
+    <article class="lab" data-domain="D4">
+      <div class="lab-head"><span class="lab-num">Lab 10</span><div>
+        <h3 class="lab-title">Coordinating a Breach Notification</h3>
+        <div class="lab-tags"><span class="tag tag-dom">D4 &middot; Incident Management</span><span class="tag tag-diff">Intermediate</span><span class="tag tag-time">&#9201; ~25 min</span></div>
+      </div></div>
+      <div class="lab-sec"><span class="lab-sec-label">Scenario</span><p>You confirm attackers exfiltrated a database holding EU residents&rsquo; personal data <em>and</em> cardholder data. Legal is on holiday, and a manager suggests waiting until the forensic investigation is complete before telling anyone.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Your decision</span><p>Determine the notification obligations and your coordination steps.</p></div>
+      <div class="lab-sec"><span class="lab-sec-label">Deliverable</span><p>The timeline/obligations and who you engage.</p></div>
+      <details class="lab-debrief"><summary>Reveal the manager&rsquo;s debrief</summary><div class="debrief-body">
+        <p>Under the <b>GDPR</b>, notify the supervisory authority without undue delay and, where feasible, within <b>72 hours of the organization becoming aware</b> &mdash; the clock starts at organizational awareness, not when Legal or the DPO returns, and you cannot wait for the investigation to finish. The cardholder data separately triggers <b>PCI DSS</b> and payment-brand reporting.</p>
+        <p>Coordinate: engage legal / DPO / communications per the plan, define who declares a breach and who notifies each party, and disclose through proper channels within the required timeframe. Concealing a reportable breach to protect the organization&rsquo;s image is not acceptable.</p>
+      </div></details>
+    </article>
+
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. Lab scenarios are illustrative and should be reviewed for accuracy before instructional use.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+<script>
+  function filterLabs(d, btn){
+    document.querySelectorAll('.filter-bar button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    document.querySelectorAll('.lab').forEach(l=>{
+      l.style.display = (d==='all' || l.dataset.domain===d) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

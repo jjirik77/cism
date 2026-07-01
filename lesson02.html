@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 — Domain 2: Information Security Risk Management (Part A) | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#domains">Domains</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#lessons">Lessons</a> &nbsp;&rsaquo;&nbsp; <span>Lesson 2</span></p>
+    <span class="lesson-badge-lg">Day 2 &mdash; Morning &middot; Domain 2 (20%)</span>
+    <h1>Risk Management <span>&mdash; Part A</span></h1>
+    <p class="lesson-lede">Risk is a business decision, not an IT decision. Part A builds the foundation: the risk management lifecycle, risk appetite and ownership, and how information assets are identified, classified, and valued &mdash; the inputs every risk decision depends on.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">Session: <strong>Morning, Day 2</strong></span>
+      <span class="meta-chip">Duration: <strong>~3 hrs</strong></span>
+      <span class="meta-chip">Exam Weight: <strong>20% (Domain 2)</strong></span>
+      <span class="meta-chip">Knowledge Check: <strong>7 Questions</strong></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <p class="eyebrow">Overview</p>
+    <h2 class="h2">Risk is owned by the business, informed by the assets</h2>
+    <div class="rule"></div>
+    <p class="lead">Domain 2 is where the manager&rsquo;s judgment shows. The CISM treats risk as a continuous, business-owned discipline: the security manager identifies, analyzes, and recommends, but the <strong>business owns and accepts the risk</strong>. Part A lays the groundwork &mdash; what risk is and how the lifecycle works, how risk appetite and ownership are set and integrated with enterprise risk management, and how the organization identifies, classifies, and values its information assets. You cannot assess risk to an asset you have not identified, or protect it correctly without knowing what it is worth.</p>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2 class="h2">By the end of this lesson you will be able to&hellip;</h2>
+    <div class="rule"></div>
+    <ul class="objectives">
+      <li><span><strong>Describe</strong> information risk and the continuous risk management lifecycle. <em class="bloom-tag">Bloom: Understand</em></span></li>
+      <li><span><strong>Differentiate</strong> inherent and residual risk, and risk appetite, tolerance, and capacity. <em class="bloom-tag">Bloom: Analyze</em></span></li>
+      <li><span><strong>Distinguish</strong> risk owners from control owners and locate risk within enterprise risk management. <em class="bloom-tag">Bloom: Analyze</em></span></li>
+      <li><span><strong>Identify</strong> information assets and assign ownership (owner vs. custodian). <em class="bloom-tag">Bloom: Remember</em></span></li>
+      <li><span><strong>Classify and value</strong> information assets to drive protection and prioritize risk treatment.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Key Terms</p>
+    <h2 class="h2">Risk &amp; asset vocabulary</h2>
+    <div class="rule"></div>
+    <p class="flip-hint-top">&#128072; Tap a card to flip it. These terms anchor every risk scenario on the exam.</p>
+    <div class="vocab-grid">
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Information risk</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The potential for loss or harm when a threat exploits a vulnerability affecting the confidentiality, integrity, or availability of an information asset; commonly expressed as <strong>probability &times; impact</strong>.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk management lifecycle</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A continuous cycle &mdash; identify, assess/analyze, treat, and monitor/report &mdash; not a one-time project. Risk is re-evaluated as the business and threat landscape change.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Inherent vs. residual risk</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def"><strong>Inherent</strong> risk exists before controls; <strong>residual</strong> risk remains after controls are applied. Residual risk is what the business decides to accept, mitigate further, transfer, or avoid.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Appetite / tolerance / capacity</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def"><strong>Appetite</strong> = risk the business will accept pursuing objectives; <strong>tolerance</strong> = acceptable variation around an objective; <strong>capacity</strong> = the maximum risk it could absorb before failing.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk register</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A living record of identified risks with their owners, likelihood, impact, treatment, and status; the aggregated view across the enterprise is the <em>risk profile</em>.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk owner vs. control owner</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The <strong>risk owner</strong> (a business leader) is accountable for the risk and its acceptance; the <strong>control owner</strong> operates a specific control. They are often different people.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Enterprise risk management (ERM)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The enterprise-wide approach that integrates information risk with all other business risks so leadership sees one consolidated picture; information security risk is a subset of ERM.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Information asset</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Anything of value that holds, processes, or transmits information &mdash; data, systems, applications, and the people and processes around them. You cannot protect what you have not identified.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Data owner vs. custodian</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The <strong>data owner</strong> (business) classifies data and approves access; the <strong>custodian</strong> (often IT) implements and maintains the protection the owner requires.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Data classification</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Assigning information a sensitivity level (e.g., public, internal, confidential, restricted) based on the impact of its loss, so handling and protection requirements follow automatically.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Asset valuation</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Determining an asset&rsquo;s worth &mdash; <strong>quantitative</strong> (monetary: replacement cost, revenue impact) or <strong>qualitative</strong> (high/medium/low business impact) &mdash; to prioritize protection and inform risk analysis.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk culture</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The shared attitudes and behaviors toward risk across the organization; a healthy risk culture, set by tone at the top, makes risk-aware decisions routine.</div></div>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Lesson Content</p>
+    <h2 class="h2">Study the material</h2>
+    <div class="rule"></div>
+    <div class="lesson-content">
+      <nav class="toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <ul>
+          <li><a href="#s1">1. Risk Management Foundations</a></li>
+          <li><a href="#s2">2. Risk in the Enterprise</a></li>
+          <li><a href="#s3">3. Identifying & Owning Assets</a></li>
+          <li><a href="#s4">4. Data Classification</a></li>
+          <li><a href="#s5">5. Asset Valuation</a></li>
+        </ul>
+      </nav>
+      <div class="content-main">
+
+        <article class="content-section" id="s1">
+          <div class="cs-head"><span class="cs-num">1</span><h3>Risk Management Foundations</h3></div>
+          <p>Information risk is the chance that a threat exploits a vulnerability and harms an information asset &mdash; conceptually <strong>probability &times; impact</strong>. Managing it is a continuous lifecycle, not a project: <strong>identify &rarr; assess/analyze &rarr; treat &rarr; monitor &amp; report</strong>, then repeat as conditions change.</p>
+          <ul class="detail">
+            <li><strong>Inherent risk</strong> is the exposure before controls; <strong>residual risk</strong> is what remains after them.</li>
+            <li>The business defines <strong>appetite</strong> (risk it will accept), <strong>tolerance</strong> (acceptable variation), and <strong>capacity</strong> (maximum it could absorb).</li>
+            <li>Risk is a <strong>business decision</strong>: security manages the process and advises; the business sets appetite and accepts residual risk.</li>
+            <li>A healthy <strong>risk culture</strong>, driven from the top, makes risk-aware decisions the norm rather than the exception.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Watch the verbs in risk questions: the security manager <em>identifies, analyzes, recommends, and reports</em> risk &mdash; the business <em>owns and accepts</em> it. An answer where security unilaterally accepts risk is almost always wrong.</div>
+        </article>
+
+        <article class="content-section" id="s2">
+          <div class="cs-head"><span class="cs-num">2</span><h3>Integrating Risk With the Enterprise</h3></div>
+          <p>Information security risk does not stand alone &mdash; it is one input into <strong>enterprise risk management (ERM)</strong>, which gives leadership a single, consolidated view of all business risk. Aligning to ERM keeps security risk in business language and on the board&rsquo;s agenda.</p>
+          <ul class="detail">
+            <li>The <strong>risk register</strong> records each risk with its owner, likelihood, impact, treatment, and status; the aggregate is the <strong>risk profile</strong>. <span class="xref">(continues in <a href="lesson03.html">Lesson&nbsp;3</a> &mdash; analyzing &amp; treating risk)</span></li>
+            <li>The <strong>risk owner</strong> is the business leader accountable for the risk; the <strong>control owner</strong> runs a specific mitigating control.</li>
+            <li>Risk reporting rolls up to leadership in terms of business impact &mdash; not raw vulnerability counts.</li>
+            <li>Integrating with ERM avoids security risk being managed in a silo and lets the board weigh it against other enterprise risks.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A vulnerability scan returns 4,000 findings. The manager does not hand the board 4,000 numbers &mdash; they translate them into a handful of business risks with owners and impact, and record them in the risk register. Governance wants decisions, not data dumps.</p></div>
+        </article>
+
+        <article class="content-section" id="s3">
+          <div class="cs-head"><span class="cs-num">3</span><h3>Identifying &amp; Owning Information Assets</h3></div>
+          <p>Risk is always risk <em>to an asset</em>. Before anything can be assessed or protected, the organization must know what information assets it has and who owns them. An incomplete asset inventory is the root cause of blind-spot risk.</p>
+          <ul class="detail">
+            <li><strong>Information assets</strong> include data, applications, systems, and supporting people and processes &mdash; not just servers.</li>
+            <li>The <strong>data owner</strong> is a business role: they classify the data and authorize who may access it.</li>
+            <li>The <strong>custodian</strong> (often IT) implements and maintains the protection according to the owner&rsquo;s classification.</li>
+            <li>A maintained <strong>asset inventory</strong> is the foundation of classification, valuation, and risk assessment.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Ownership questions are a favorite: the <strong>business data owner</strong> classifies data and approves access; IT, as custodian, only implements. An answer that puts IT or the security team in the classification/approval role is wrong.</div>
+          <div class="resource-link">
+            <span class="rl-icon" aria-hidden="true">&#128218;</span>
+            <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Risk Management</strong> and <strong>Data Roles</strong> &mdash; interactive modules on the risk-management process and on data ownership, custodianship, and the roles that govern information assets.</span></div>
+            <div class="rl-actions">
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/risk_management/risk_management.html" target="_blank" rel="noopener noreferrer">Risk Management <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/DataRoles/dataroles.html" target="_blank" rel="noopener noreferrer">Data Roles <span class="ext">&#8599;</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="content-section" id="s4">
+          <div class="cs-head"><span class="cs-num">4</span><h3>Data Classification</h3></div>
+          <p>Classification assigns each information asset a sensitivity level based on the <strong>impact of its loss</strong>. Once classified, handling, storage, access, and protection requirements follow automatically &mdash; classification is what makes consistent protection scalable.</p>
+          <ul class="detail">
+            <li>Typical schemes use tiers such as <em>public, internal, confidential, restricted</em> &mdash; simpler is better; too many tiers fail in practice.</li>
+            <li>Classification is driven by impact to <strong>confidentiality, integrity, and availability</strong>, judged in business terms.</li>
+            <li>Each level maps to defined handling rules (encryption, access, retention, disposal).</li>
+            <li><strong>Over-classification</strong> wastes resources and breeds workarounds; <strong>under-classification</strong> leaves data exposed &mdash; both are governance failures.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A team marks everything &lsquo;confidential&rsquo; to be safe. The result is alert fatigue, costly controls on trivial data, and staff ignoring the labels. The manager fixes the <em>classification scheme and training</em> &mdash; not by adding more technical controls.</p></div>
+        </article>
+
+        <article class="content-section" id="s5">
+          <div class="cs-head"><span class="cs-num">5</span><h3>Valuing Information Assets</h3></div>
+          <p>Valuation tells the organization how much protection an asset justifies and feeds directly into risk analysis and prioritization. The CISM cares less about a precise dollar figure than about valuing assets <em>consistently</em> in business terms.</p>
+          <ul class="detail">
+            <li><strong>Quantitative</strong> valuation expresses worth in money &mdash; replacement cost, lost revenue, regulatory fines, recovery cost.</li>
+            <li><strong>Qualitative</strong> valuation rates business impact as high/medium/low when hard numbers are impractical.</li>
+            <li>Value should reflect <strong>business impact</strong> (including reputation and legal exposure), not just the technical cost of the asset.</li>
+            <li>Asset value and classification together drive how much to invest in protecting each asset &mdash; the most valuable, most sensitive assets get the most rigor.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>The point of valuation is prioritization: spend protection budget where the business impact is greatest. If a question pits an expensive control on a low-value asset against a proportionate control on a high-value one, choose proportionality.</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="knowledge-check">
+    <p class="eyebrow">Scored Knowledge Check</p>
+    <h2 class="h2">Test your risk foundations</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:1.5rem">Seven questions on risk and assets. Answer as the manager who advises the business and lets the business own the risk.</p>
+    <div class="quiz-card">
+      <form id="quiz">
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q1.</span>In CISM terms, information risk is BEST expressed as a function of:</p>
+          <fieldset class="options">
+            <legend>Question 1 options</legend>
+            <label class="opt"><input type="radio" name="q1" value="A"><span><span class="opt-letter">A.</span> Threat and vulnerability counts</span></label>
+            <label class="opt"><input type="radio" name="q1" value="B"><span><span class="opt-letter">B.</span> Asset cost and control cost</span></label>
+            <label class="opt"><input type="radio" name="q1" value="C"><span><span class="opt-letter">C.</span> Probability and impact</span></label>
+            <label class="opt"><input type="radio" name="q1" value="D"><span><span class="opt-letter">D.</span> Compliance gaps and findings</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Risk is conceptually probability (likelihood the threat exploits the vulnerability) times impact (business harm if it does). Counts and costs are inputs, not the definition. <b>Why the others fall short:</b> <b>A</b> threat and vulnerability counts are inputs, not the definition; <b>B</b> asset and control cost don&rsquo;t define risk; <b>D</b> compliance gaps are inputs, not risk itself.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q2.</span>Who is responsible for classifying an information asset and approving who may access it?</p>
+          <fieldset class="options">
+            <legend>Question 2 options</legend>
+            <label class="opt"><input type="radio" name="q2" value="A"><span><span class="opt-letter">A.</span> The IT custodian</span></label>
+            <label class="opt"><input type="radio" name="q2" value="B"><span><span class="opt-letter">B.</span> The information security manager</span></label>
+            <label class="opt"><input type="radio" name="q2" value="C"><span><span class="opt-letter">C.</span> The internal auditor</span></label>
+            <label class="opt"><input type="radio" name="q2" value="D"><span><span class="opt-letter">D.</span> The business data owner</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Classification and access approval are business decisions made by the data owner. IT (the custodian) implements protection; security advises; audit evaluates. <b>Why the others fall short:</b> <b>A</b> the custodian implements protection but doesn&rsquo;t classify; <b>B</b> the security manager advises; <b>C</b> the auditor provides assurance, not classification.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q3.</span>After controls are applied, some risk remains. Who is responsible for accepting that residual risk?</p>
+          <fieldset class="options">
+            <legend>Question 3 options</legend>
+            <label class="opt"><input type="radio" name="q3" value="A"><span><span class="opt-letter">A.</span> The security manager</span></label>
+            <label class="opt"><input type="radio" name="q3" value="B"><span><span class="opt-letter">B.</span> The business risk owner / senior management</span></label>
+            <label class="opt"><input type="radio" name="q3" value="C"><span><span class="opt-letter">C.</span> The control owner</span></label>
+            <label class="opt"><input type="radio" name="q3" value="D"><span><span class="opt-letter">D.</span> The IT department</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Residual risk acceptance is a business decision owned by the risk owner / senior management. The security manager recommends; the business accepts. <b>Why the others fall short:</b> <b>A</b> the security manager advises, not accepts; <b>C</b> a control owner operates a control but doesn&rsquo;t accept business risk; <b>D</b> IT implements controls.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q4.</span>What is the PRIMARY purpose of integrating information security risk into enterprise risk management (ERM)?</p>
+          <fieldset class="options">
+            <legend>Question 4 options</legend>
+            <label class="opt"><input type="radio" name="q4" value="A"><span><span class="opt-letter">A.</span> To give leadership a single, consolidated view of risk in business terms</span></label>
+            <label class="opt"><input type="radio" name="q4" value="B"><span><span class="opt-letter">B.</span> To reduce the number of controls required</span></label>
+            <label class="opt"><input type="radio" name="q4" value="C"><span><span class="opt-letter">C.</span> To transfer security risk to the insurer</span></label>
+            <label class="opt"><input type="radio" name="q4" value="D"><span><span class="opt-letter">D.</span> To eliminate the need for a risk register</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> ERM integration lets leadership weigh information risk alongside all other enterprise risks in one consolidated, business-language view &mdash; rather than managing security risk in a silo. <b>Why the others fall short:</b> <b>B</b> ERM doesn&rsquo;t reduce the number of controls; <b>C</b> it doesn&rsquo;t transfer risk to an insurer; <b>D</b> it doesn&rsquo;t remove the need for a risk register.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q5.</span>Data classification levels should be determined PRIMARILY by:</p>
+          <fieldset class="options">
+            <legend>Question 5 options</legend>
+            <label class="opt"><input type="radio" name="q5" value="A"><span><span class="opt-letter">A.</span> The storage cost of the data</span></label>
+            <label class="opt"><input type="radio" name="q5" value="B"><span><span class="opt-letter">B.</span> The impact to the business if the data&rsquo;s confidentiality, integrity, or availability is lost</span></label>
+            <label class="opt"><input type="radio" name="q5" value="C"><span><span class="opt-letter">C.</span> The department that created the data</span></label>
+            <label class="opt"><input type="radio" name="q5" value="D"><span><span class="opt-letter">D.</span> The age of the data</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Classification is driven by the business impact of loss across confidentiality, integrity, and availability; handling and protection requirements then follow from the assigned level. <b>Why the others fall short:</b> <b>A</b> storage cost isn&rsquo;t the basis; <b>C</b> the creating department doesn&rsquo;t set the level; <b>D</b> data age isn&rsquo;t the driver &mdash; business impact is.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q6.</span>An organization needs to express the worth of a customer database including likely fines and lost revenue from a breach. This is an example of:</p>
+          <fieldset class="options">
+            <legend>Question 6 options</legend>
+            <label class="opt"><input type="radio" name="q6" value="A"><span><span class="opt-letter">A.</span> Quantitative valuation</span></label>
+            <label class="opt"><input type="radio" name="q6" value="B"><span><span class="opt-letter">B.</span> Qualitative valuation</span></label>
+            <label class="opt"><input type="radio" name="q6" value="C"><span><span class="opt-letter">C.</span> Inherent risk</span></label>
+            <label class="opt"><input type="radio" name="q6" value="D"><span><span class="opt-letter">D.</span> Risk tolerance</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Expressing value in monetary terms &mdash; fines, lost revenue, recovery cost &mdash; is quantitative valuation. Qualitative valuation would rate impact as high/medium/low instead. <b>Why the others fall short:</b> <b>B</b> qualitative valuation uses relative high/medium/low, not dollar figures; <b>C</b> inherent risk isn&rsquo;t a valuation method; <b>D</b> risk tolerance is a different concept.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q7.</span>Which of the following is the BEST first step before assessing risk to the organization&rsquo;s information?</p>
+          <fieldset class="options">
+            <legend>Question 7 options</legend>
+            <label class="opt"><input type="radio" name="q7" value="A"><span><span class="opt-letter">A.</span> Purchase a risk assessment tool</span></label>
+            <label class="opt"><input type="radio" name="q7" value="B"><span><span class="opt-letter">B.</span> Select a control framework</span></label>
+            <label class="opt"><input type="radio" name="q7" value="C"><span><span class="opt-letter">C.</span> Identify and inventory the information assets and their owners</span></label>
+            <label class="opt"><input type="radio" name="q7" value="D"><span><span class="opt-letter">D.</span> Buy cyber-insurance</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> You cannot assess risk to assets you have not identified. A current asset inventory with assigned ownership is the foundation for classification, valuation, and risk assessment. <b>Why the others fall short:</b> <b>A</b> buying a tool is premature; <b>B</b> framework selection comes later; <b>D</b> insurance is a treatment, not a first step &mdash; you must know the assets first.</div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" onclick="gradeQuiz()">Submit Answers</button>
+          <button type="button" class="btn secondary" onclick="resetQuiz()">Reset</button>
+          <span class="score" id="score" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Lesson navigation">
+  <div class="pager-inner">
+    <a href="lesson01.html" class="prev"><span class="pager-dir">&#8592; Previous</span><span class="pager-name">Lesson 1 &mdash; Information Security Governance</span></a>
+    <a href="lesson03.html" class="next"><span class="pager-dir">Next &#8594;</span><span class="pager-name">Lesson 3 &mdash; Risk Management (Part B)</span></a>
+  </div>
+</nav>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 — Domain 2: Information Security Risk Management (Part B) | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#domains">Domains</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#lessons">Lessons</a> &nbsp;&rsaquo;&nbsp; <span>Lesson 3</span></p>
+    <span class="lesson-badge-lg">Day 2 &mdash; Afternoon &middot; Domain 2 (20%)</span>
+    <h1>Risk Management <span>&mdash; Part B</span></h1>
+    <p class="lesson-lede">Part B works the risk lifecycle in practice: identifying risk, analyzing it qualitatively and quantitatively, choosing a treatment, and monitoring and reporting it &mdash; always recommending to the business, never deciding for it.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">Session: <strong>Afternoon, Day 2</strong></span>
+      <span class="meta-chip">Duration: <strong>~3 hrs</strong></span>
+      <span class="meta-chip">Exam Weight: <strong>20% (Domain 2)</strong></span>
+      <span class="meta-chip">Knowledge Check: <strong>8 Questions</strong></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <p class="eyebrow">Overview</p>
+    <h2 class="h2">Identify, analyze, treat, monitor &mdash; and report</h2>
+    <div class="rule"></div>
+    <p class="lead">With the foundation set in Part A, Part B runs the lifecycle. The security manager <strong>identifies</strong> threats and vulnerabilities, <strong>analyzes</strong> the resulting risk (qualitatively, quantitatively, or both), and <strong>recommends a treatment</strong> &mdash; mitigate, transfer, avoid, or accept. The business chooses and accepts; the manager then <strong>monitors</strong> the residual risk with key risk indicators and <strong>reports</strong> it to leadership in business terms. The exam rewards the candidate who keeps treatment decisions with the business and frames everything around impact, not technology.</p>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2 class="h2">By the end of this lesson you will be able to&hellip;</h2>
+    <div class="rule"></div>
+    <ul class="objectives">
+      <li><span><strong>Identify</strong> threats, threat sources, and vulnerabilities that create information risk. <em class="bloom-tag">Bloom: Remember</em></span></li>
+      <li><span><strong>Apply</strong> qualitative and quantitative risk analysis, including SLE, ARO, and ALE. <em class="bloom-tag">Bloom: Apply</em></span></li>
+      <li><span><strong>Select</strong> an appropriate risk treatment &mdash; mitigate, transfer, avoid, or accept &mdash; on a cost-benefit basis. <em class="bloom-tag">Bloom: Evaluate</em></span></li>
+      <li><span><strong>Explain</strong> formal risk acceptance and the handling of residual risk and exceptions. <em class="bloom-tag">Bloom: Understand</em></span></li>
+      <li><span><strong>Monitor and report</strong> risk using KRIs and a maintained risk register.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Key Terms</p>
+    <h2 class="h2">Risk lifecycle vocabulary</h2>
+    <div class="rule"></div>
+    <p class="flip-hint-top">&#128072; Tap a card to flip it. Know the analysis formulas and treatment options cold.</p>
+    <div class="vocab-grid">
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk identification</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Discovering the threats, threat sources, and vulnerabilities that could harm information assets &mdash; the first active step of the lifecycle. Sources include threat intel, assessments, audits, and incidents.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Threat vs. vulnerability</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A <strong>threat</strong> is a potential cause of harm (an actor or event); a <strong>vulnerability</strong> is a weakness it can exploit. Risk arises only where a threat meets a vulnerability affecting a valued asset.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Qualitative analysis</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Rating likelihood and impact in relative terms (high/medium/low), often on a heat map or risk matrix; fast and intuitive but subjective. Used when reliable numbers are scarce.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Quantitative analysis</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Expressing risk in monetary terms using data and formulas (SLE, ARO, ALE); objective and comparable, but data-hungry and time-consuming.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">SLE</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Single Loss Expectancy &mdash; the money lost from one occurrence: <strong>SLE = Asset Value &times; Exposure Factor</strong> (the % of the asset lost in the event).</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">ARO</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Annualized Rate of Occurrence &mdash; how many times per year the event is expected to happen (e.g., 0.5 = once every two years).</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">ALE</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Annual Loss Expectancy &mdash; the expected yearly loss: <strong>ALE = SLE &times; ARO</strong>. It lets you compare a risk against the annual cost of a control.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk heat map</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A matrix plotting likelihood against impact to rank and visualize risks for leadership; the core output of qualitative analysis.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk treatment options</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The four choices for any risk: <strong>mitigate</strong> (reduce), <strong>transfer</strong> (share), <strong>avoid</strong> (eliminate), or <strong>accept</strong> (retain). The business selects based on cost vs. benefit and appetite.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk transfer</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Shifting the financial impact of a risk to a third party &mdash; e.g., cyber-insurance or outsourcing. It transfers cost, not accountability; the organization still owns the outcome.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk acceptance</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A formal, documented decision by the risk owner to retain a risk that sits within appetite &mdash; with sign-off, a review date, and recording in the register. Never an informal or silent choice.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">KRI</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Key Risk Indicator &mdash; a forward-looking metric that warns when risk is rising (e.g., overdue critical patches, rising failed logins), so leadership can act before an incident.</div></div>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Lesson Content</p>
+    <h2 class="h2">Study the material</h2>
+    <div class="rule"></div>
+    <div class="lesson-content">
+      <nav class="toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <ul>
+          <li><a href="#s1">1. Risk Identification</a></li>
+          <li><a href="#s2">2. Risk Analysis</a></li>
+          <li><a href="#s3">3. Risk Treatment</a></li>
+          <li><a href="#s4">4. Acceptance & Residual Risk</a></li>
+          <li><a href="#s5">5. Monitoring & Reporting</a></li>
+        </ul>
+      </nav>
+      <div class="content-main">
+
+        <article class="content-section" id="s1">
+          <div class="cs-head"><span class="cs-num">1</span><h3>Identifying Risk</h3></div>
+          <p>Identification finds the threats and vulnerabilities that could harm assets. Risk exists only where a <strong>threat</strong> can exploit a <strong>vulnerability</strong> affecting a <strong>valued asset</strong> &mdash; all three must be present. Drawing on multiple sources avoids blind spots.</p>
+          <ul class="detail">
+            <li><strong>Threat sources:</strong> external attackers, insiders, third parties, and environmental/accidental events.</li>
+            <li><strong>Inputs:</strong> threat intelligence, vulnerability assessments, audit findings, past incidents, and business change (new systems, M&amp;A, suppliers).</li>
+            <li><strong>Threat modeling</strong> structures the search by walking through how an asset could be attacked.</li>
+            <li>Identification is continuous &mdash; new assets, technologies, and threats appear constantly.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>A vulnerability with no credible threat, or a threat with no exploitable vulnerability, is not (yet) a meaningful risk. Don&rsquo;t let a long scan report drive priorities &mdash; risk requires threat, vulnerability, <em>and</em> a valued asset together.</div>
+        </article>
+
+        <article class="content-section" id="s2">
+          <div class="cs-head"><span class="cs-num">2</span><h3>Analyzing Risk: Qualitative vs. Quantitative</h3></div>
+          <p>Analysis turns identified risks into something the business can prioritize. <strong>Qualitative</strong> analysis rates likelihood and impact on a relative scale (a heat map); <strong>quantitative</strong> analysis puts a monetary figure on the risk. Mature programs use both &mdash; qualitative to triage, quantitative to justify spend on the biggest risks.</p>
+          <figure class="diagram">
+            <svg viewBox="0 0 520 462" role="img" aria-label="A five by five risk heat map. The horizontal axis is likelihood from rare to almost certain; the vertical axis is impact from insignificant to severe. Cells are shaded from green (low) through yellow and orange to red (extreme) by the product of likelihood and impact. An example risk with likely likelihood and major impact is plotted in the red extreme zone.">
+              <text x="22" y="192" text-anchor="middle" transform="rotate(-90 22 192)" class="dg-text-muted" font-size="12" font-weight="700" letter-spacing="1">IMPACT &#8594;</text>
+              <rect x="112" y="30" width="69" height="61" rx="4" class="hz-med"/><text x="146" y="64" text-anchor="middle" font-size="12" fill="#14311f">5</text><rect x="184" y="30" width="69" height="61" rx="4" class="hz-high"/><text x="218" y="64" text-anchor="middle" font-size="12" fill="#ffffff">10</text><rect x="256" y="30" width="69" height="61" rx="4" class="hz-ext"/><text x="290" y="64" text-anchor="middle" font-size="12" fill="#ffffff">15</text><rect x="328" y="30" width="69" height="61" rx="4" class="hz-ext"/><text x="362" y="64" text-anchor="middle" font-size="12" fill="#ffffff">20</text><rect x="400" y="30" width="69" height="61" rx="4" class="hz-ext"/><text x="434" y="64" text-anchor="middle" font-size="12" fill="#ffffff">25</text><rect x="112" y="94" width="69" height="61" rx="4" class="hz-low"/><text x="146" y="128" text-anchor="middle" font-size="12" fill="#14311f">4</text><rect x="184" y="94" width="69" height="61" rx="4" class="hz-med"/><text x="218" y="128" text-anchor="middle" font-size="12" fill="#14311f">8</text><rect x="256" y="94" width="69" height="61" rx="4" class="hz-high"/><text x="290" y="128" text-anchor="middle" font-size="12" fill="#ffffff">12</text><rect x="328" y="94" width="69" height="61" rx="4" class="hz-ext"/><text x="362" y="128" text-anchor="middle" font-size="12" fill="#ffffff">16</text><rect x="400" y="94" width="69" height="61" rx="4" class="hz-ext"/><text x="434" y="128" text-anchor="middle" font-size="12" fill="#ffffff">20</text><rect x="112" y="158" width="69" height="61" rx="4" class="hz-low"/><text x="146" y="192" text-anchor="middle" font-size="12" fill="#14311f">3</text><rect x="184" y="158" width="69" height="61" rx="4" class="hz-med"/><text x="218" y="192" text-anchor="middle" font-size="12" fill="#14311f">6</text><rect x="256" y="158" width="69" height="61" rx="4" class="hz-med"/><text x="290" y="192" text-anchor="middle" font-size="12" fill="#14311f">9</text><rect x="328" y="158" width="69" height="61" rx="4" class="hz-high"/><text x="362" y="192" text-anchor="middle" font-size="12" fill="#ffffff">12</text><rect x="400" y="158" width="69" height="61" rx="4" class="hz-ext"/><text x="434" y="192" text-anchor="middle" font-size="12" fill="#ffffff">15</text><rect x="112" y="222" width="69" height="61" rx="4" class="hz-low"/><text x="146" y="256" text-anchor="middle" font-size="12" fill="#14311f">2</text><rect x="184" y="222" width="69" height="61" rx="4" class="hz-low"/><text x="218" y="256" text-anchor="middle" font-size="12" fill="#14311f">4</text><rect x="256" y="222" width="69" height="61" rx="4" class="hz-med"/><text x="290" y="256" text-anchor="middle" font-size="12" fill="#14311f">6</text><rect x="328" y="222" width="69" height="61" rx="4" class="hz-med"/><text x="362" y="256" text-anchor="middle" font-size="12" fill="#14311f">8</text><rect x="400" y="222" width="69" height="61" rx="4" class="hz-high"/><text x="434" y="256" text-anchor="middle" font-size="12" fill="#ffffff">10</text><rect x="112" y="286" width="69" height="61" rx="4" class="hz-low"/><text x="146" y="320" text-anchor="middle" font-size="12" fill="#14311f">1</text><rect x="184" y="286" width="69" height="61" rx="4" class="hz-low"/><text x="218" y="320" text-anchor="middle" font-size="12" fill="#14311f">2</text><rect x="256" y="286" width="69" height="61" rx="4" class="hz-low"/><text x="290" y="320" text-anchor="middle" font-size="12" fill="#14311f">3</text><rect x="328" y="286" width="69" height="61" rx="4" class="hz-low"/><text x="362" y="320" text-anchor="middle" font-size="12" fill="#14311f">4</text><rect x="400" y="286" width="69" height="61" rx="4" class="hz-med"/><text x="434" y="320" text-anchor="middle" font-size="12" fill="#14311f">5</text>
+              <text x="104" y="67" text-anchor="end" class="dg-text" font-size="11">Severe</text><text x="104" y="131" text-anchor="end" class="dg-text" font-size="11">Major</text><text x="104" y="195" text-anchor="end" class="dg-text" font-size="11">Moderate</text><text x="104" y="259" text-anchor="end" class="dg-text" font-size="11">Minor</text><text x="104" y="323" text-anchor="end" class="dg-text" font-size="11">Insignificant</text>
+              <text x="146" y="366" text-anchor="middle" class="dg-text" font-size="11">Rare</text><text x="218" y="366" text-anchor="middle" class="dg-text" font-size="11">Unlikely</text><text x="290" y="366" text-anchor="middle" class="dg-text" font-size="11">Possible</text><text x="362" y="366" text-anchor="middle" class="dg-text" font-size="11">Likely</text><text x="434" y="366" text-anchor="middle" class="dg-text" font-size="11">Almost</text><text x="434" y="380" text-anchor="middle" class="dg-text" font-size="11">Certain</text>
+              <text x="292" y="404" text-anchor="middle" class="dg-text-muted" font-size="12" font-weight="700" letter-spacing="1">LIKELIHOOD &#8594;</text>
+              <circle cx="362" cy="124" r="13" class="dg-marker"/>
+              <text x="362" y="128" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">!</text>
+              <rect x="46" y="428" width="15" height="15" rx="3" class="hz-low"/><text x="67" y="440" class="dg-text" font-size="11">Low</text><rect x="164" y="428" width="15" height="15" rx="3" class="hz-med"/><text x="185" y="440" class="dg-text" font-size="11">Medium</text><rect x="282" y="428" width="15" height="15" rx="3" class="hz-high"/><text x="303" y="440" class="dg-text" font-size="11">High</text><rect x="400" y="428" width="15" height="15" rx="3" class="hz-ext"/><text x="421" y="440" class="dg-text" font-size="11">Extreme</text>
+            </svg>
+            <figcaption>A qualitative risk is rated by <strong>likelihood &times; impact</strong>, and where it lands sets the priority. The plotted example &mdash; a <em>likely</em> event with <em>major</em> impact &mdash; sits in the <strong>extreme</strong> zone: it demands treatment, not acceptance.</figcaption>
+          </figure>
+          <h4>The quantitative formulas</h4>
+          <ul class="detail">
+            <li><strong>SLE = Asset Value &times; Exposure Factor</strong> &mdash; loss from a single event.</li>
+            <li><strong>ALE = SLE &times; ARO</strong> &mdash; expected loss per year.</li>
+            <li>A control is worth buying when its annual cost is less than the <strong>reduction in ALE</strong> it delivers (a positive return on security investment).</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A server is valued at $200,000; a fire would destroy 50% of it (EF&nbsp;=&nbsp;0.5), so SLE&nbsp;=&nbsp;$100,000. If a fire is expected once in 10 years (ARO&nbsp;=&nbsp;0.1), ALE&nbsp;=&nbsp;$10,000/year. A suppression upgrade costing $3,000/year that largely removes the risk is clearly justified.</p></div>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>When the scenario lacks reliable numbers, <strong>qualitative</strong> analysis is the right call; when leadership needs to compare risk against control cost in dollars, <strong>quantitative</strong> is the better tool. Match the method to what the question provides.</div>
+          <div class="resource-link">
+            <span class="rl-icon" aria-hidden="true">&#128218;</span>
+            <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Risk Analysis</strong> and <strong>Threat Actors</strong> &mdash; interactive modules on analyzing risk and on the threat sources that drive it.</span></div>
+            <div class="rl-actions">
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/risk_analysis/risk_analysis.html" target="_blank" rel="noopener noreferrer">Risk Analysis <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/ThreatActors/ThreatActors.html" target="_blank" rel="noopener noreferrer">Threat Actors <span class="ext">&#8599;</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="content-section" id="s3">
+          <div class="cs-head"><span class="cs-num">3</span><h3>Treating Risk</h3></div>
+          <p>Every analyzed risk gets a treatment decision. There are exactly four options, and the business selects among them on a <strong>cost-benefit</strong> basis bounded by risk appetite. The security manager recommends; the risk owner decides.</p>
+          <div class="table-wrap" style="margin:1.1rem 0">
+            <table class="data"><thead><tr><th>Option</th><th>What it means</th><th>Example</th></tr></thead><tbody>
+          <tr><td><strong>Mitigate / Reduce</strong></td><td>Apply controls to lower likelihood or impact</td><td>MFA, patching, segmentation, monitoring</td></tr>
+          <tr><td><strong>Transfer / Share</strong></td><td>Shift the financial impact to a third party</td><td>Cyber-insurance; outsourcing with strong SLAs</td></tr>
+          <tr><td><strong>Avoid</strong></td><td>Eliminate the risk by not doing the activity</td><td>Discontinue a risky feature, market, or technology</td></tr>
+          <tr><td><strong>Accept</strong></td><td>Knowingly retain a risk within appetite</td><td>Formal, documented sign-off by the risk owner</td></tr>
+            </tbody></table>
+          </div>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Insurance and outsourcing are forms of risk <strong>transfer</strong> &mdash; but they move financial impact, not accountability. The organization still owns the risk and the regulatory and reputational consequences.</div>
+        </article>
+
+        <article class="content-section" id="s4">
+          <div class="cs-head"><span class="cs-num">4</span><h3>Acceptance &amp; Residual Risk</h3></div>
+          <p>After treatment, some risk always remains &mdash; the <strong>residual risk</strong>. The business compares it to appetite and either accepts it or invests further. Acceptance must be deliberate and documented, never the default that happens because no one decided.</p>
+          <ul class="detail">
+            <li><strong>Formal acceptance:</strong> the risk owner signs off, with rationale, a review date, and an entry in the register.</li>
+            <li>Residual risk above appetite must be reduced further, transferred, or avoided &mdash; not quietly accepted by the security team.</li>
+            <li><strong>Exceptions</strong> (temporary deviations from policy) are risk acceptances with an expiry and an owner &mdash; track them, don&rsquo;t let them become permanent.</li>
+            <li>Security <strong>recommends</strong>; the business <strong>accepts</strong> &mdash; the most-tested boundary in this domain.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A project wants to skip a required control to hit a deadline. The manager does not simply refuse or silently allow it &mdash; they document the residual risk and route it to the business risk owner for a formal, time-bound acceptance decision.</p></div>
+        </article>
+
+        <article class="content-section" id="s5">
+          <div class="cs-head"><span class="cs-num">5</span><h3>Monitoring &amp; Reporting Risk</h3></div>
+          <p>Risk is not &lsquo;done&rsquo; once treated. Conditions change, so the manager monitors residual risk and reports it to leadership in business terms, keeping the risk register current as the single source of truth.</p>
+          <ul class="detail">
+            <li><strong>KRIs</strong> give early warning that risk is rising, so leadership can act before an incident.</li>
+            <li>The <strong>risk register</strong> is maintained continuously &mdash; new risks added, treatments and owners updated, accepted risks reviewed at their due dates.</li>
+            <li><strong>Reporting</strong> translates technical exposure into business impact and trends the board can act on &mdash; not raw vulnerability counts.</li>
+            <li>Monitoring closes the loop, feeding changes back into identification and analysis &mdash; the lifecycle is continuous.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>If a question asks how to keep leadership informed of changing risk, the answer involves <strong>KRIs and a current risk register reported in business terms</strong> &mdash; not a one-time assessment or a list of unpatched systems.</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="knowledge-check">
+    <p class="eyebrow">Scored Knowledge Check</p>
+    <h2 class="h2">Test your risk lifecycle judgment</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:1.5rem">Eight questions across identification, analysis, treatment, and reporting. Recommend as the manager; let the business decide.</p>
+    <div class="quiz-card">
+      <form id="quiz">
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q1.</span>Annual Loss Expectancy (ALE) is calculated as:</p>
+          <fieldset class="options">
+            <legend>Question 1 options</legend>
+            <label class="opt"><input type="radio" name="q1" value="A"><span><span class="opt-letter">A.</span> Single Loss Expectancy &times; Annualized Rate of Occurrence</span></label>
+            <label class="opt"><input type="radio" name="q1" value="B"><span><span class="opt-letter">B.</span> Asset Value &times; Exposure Factor</span></label>
+            <label class="opt"><input type="radio" name="q1" value="C"><span><span class="opt-letter">C.</span> Exposure Factor &times; Annualized Rate of Occurrence</span></label>
+            <label class="opt"><input type="radio" name="q1" value="D"><span><span class="opt-letter">D.</span> Asset Value &times; Annualized Rate of Occurrence</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> ALE = SLE &times; ARO. (SLE itself = Asset Value &times; Exposure Factor.) ALE expresses the expected yearly loss so it can be compared with the annual cost of a control. <b>Why the others fall short:</b> <b>B</b> Asset Value &times; Exposure Factor is SLE; <b>C</b> and <b>D</b> aren&rsquo;t the ALE formula &mdash; ALE is SLE &times; ARO.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q2.</span>An organization purchases cyber-insurance to cover potential breach costs. Which risk treatment is this?</p>
+          <fieldset class="options">
+            <legend>Question 2 options</legend>
+            <label class="opt"><input type="radio" name="q2" value="A"><span><span class="opt-letter">A.</span> Risk avoidance</span></label>
+            <label class="opt"><input type="radio" name="q2" value="B"><span><span class="opt-letter">B.</span> Risk transfer</span></label>
+            <label class="opt"><input type="radio" name="q2" value="C"><span><span class="opt-letter">C.</span> Risk mitigation</span></label>
+            <label class="opt"><input type="radio" name="q2" value="D"><span><span class="opt-letter">D.</span> Risk acceptance</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Buying insurance shifts the financial impact to a third party &mdash; risk transfer. It does not eliminate the activity (avoid), reduce likelihood (mitigate), or retain the risk (accept). <b>Why the others fall short:</b> <b>A</b> avoidance would end the activity; <b>C</b> mitigation would add controls; <b>D</b> acceptance would retain the risk &mdash; insurance shifts financial impact to a third party.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q3.</span>Reliable historical loss data is not available for a newly identified risk. Which analysis approach is MOST appropriate?</p>
+          <fieldset class="options">
+            <legend>Question 3 options</legend>
+            <label class="opt"><input type="radio" name="q3" value="A"><span><span class="opt-letter">A.</span> Quantitative analysis using estimated ALE</span></label>
+            <label class="opt"><input type="radio" name="q3" value="B"><span><span class="opt-letter">B.</span> Defer the risk until data exists</span></label>
+            <label class="opt"><input type="radio" name="q3" value="C"><span><span class="opt-letter">C.</span> Accept the risk by default</span></label>
+            <label class="opt"><input type="radio" name="q3" value="D"><span><span class="opt-letter">D.</span> Qualitative analysis using a likelihood/impact rating</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Without dependable numbers, qualitative analysis (relative likelihood and impact, e.g., a heat map) is appropriate. Forcing quantitative figures on guesses produces false precision. <b>Why the others fall short:</b> <b>A</b> quantitative analysis needs the data that&rsquo;s missing; <b>B</b> deferring leaves the risk unmanaged; <b>C</b> accepting by default skips analysis entirely.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q4.</span>Residual risk after treatment is found to exceed the organization&rsquo;s risk appetite. What should the security manager do?</p>
+          <fieldset class="options">
+            <legend>Question 4 options</legend>
+            <label class="opt"><input type="radio" name="q4" value="A"><span><span class="opt-letter">A.</span> Accept the risk on behalf of the organization</span></label>
+            <label class="opt"><input type="radio" name="q4" value="B"><span><span class="opt-letter">B.</span> Remove the risk from the register</span></label>
+            <label class="opt"><input type="radio" name="q4" value="C"><span><span class="opt-letter">C.</span> Recommend further treatment and escalate to the business risk owner for a decision</span></label>
+            <label class="opt"><input type="radio" name="q4" value="D"><span><span class="opt-letter">D.</span> Re-classify the asset to lower its value</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Risk above appetite is not the security manager&rsquo;s to accept. The manager recommends additional mitigation/transfer/avoidance and escalates the decision to the business risk owner. <b>Why the others fall short:</b> <b>A</b> the manager doesn&rsquo;t accept risk on the organization&rsquo;s behalf; <b>B</b> deleting it from the register hides the risk; <b>D</b> re-classifying to lower the value games the assessment.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q5.</span>Which of the following is NOT one of the four recognized risk treatment options?</p>
+          <fieldset class="options">
+            <legend>Question 5 options</legend>
+            <label class="opt"><input type="radio" name="q5" value="A"><span><span class="opt-letter">A.</span> Mitigate</span></label>
+            <label class="opt"><input type="radio" name="q5" value="B"><span><span class="opt-letter">B.</span> Investigate</span></label>
+            <label class="opt"><input type="radio" name="q5" value="C"><span><span class="opt-letter">C.</span> Transfer</span></label>
+            <label class="opt"><input type="radio" name="q5" value="D"><span><span class="opt-letter">D.</span> Avoid</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> The four treatment options are mitigate, transfer, avoid, and accept. &lsquo;Investigate&rsquo; is part of analysis, not a treatment decision. <b>Why the others fall short:</b> <b>A</b> mitigate, <b>C</b> transfer, and <b>D</b> avoid are three of the four options (with accept) &mdash; &lsquo;investigate&rsquo; is not a treatment.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q6.</span>What is the PRIMARY purpose of a key risk indicator (KRI)?</p>
+          <fieldset class="options">
+            <legend>Question 6 options</legend>
+            <label class="opt"><input type="radio" name="q6" value="A"><span><span class="opt-letter">A.</span> To prove a control passed its last test</span></label>
+            <label class="opt"><input type="radio" name="q6" value="B"><span><span class="opt-letter">B.</span> To calculate single loss expectancy</span></label>
+            <label class="opt"><input type="radio" name="q6" value="C"><span><span class="opt-letter">C.</span> To provide early warning that a risk is increasing</span></label>
+            <label class="opt"><input type="radio" name="q6" value="D"><span><span class="opt-letter">D.</span> To classify an information asset</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> A KRI is forward-looking: it signals that risk is rising so leadership can act before an incident. It is distinct from a KPI, which measures current process performance. <b>Why the others fall short:</b> <b>A</b> confirming a control passed is a performance/assurance function; <b>B</b> SLE is a valuation calculation; <b>D</b> classifying an asset is unrelated to a KRI.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q7.</span>A business unit wants a temporary exception to a security policy to meet a deadline. The BEST course of action is to:</p>
+          <fieldset class="options">
+            <legend>Question 7 options</legend>
+            <label class="opt"><input type="radio" name="q7" value="A"><span><span class="opt-letter">A.</span> Document the residual risk and obtain a formal, time-bound acceptance from the risk owner</span></label>
+            <label class="opt"><input type="radio" name="q7" value="B"><span><span class="opt-letter">B.</span> Refuse the exception outright</span></label>
+            <label class="opt"><input type="radio" name="q7" value="C"><span><span class="opt-letter">C.</span> Allow it informally to support the business</span></label>
+            <label class="opt"><input type="radio" name="q7" value="D"><span><span class="opt-letter">D.</span> Delete the policy requirement</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> An exception is a risk acceptance: document the residual risk and route it to the business risk owner for a formal decision with an expiry date &mdash; neither a flat refusal nor a silent allowance. <b>Why the others fall short:</b> <b>B</b> a flat refusal ignores a legitimate business need; <b>C</b> allowing it informally is undocumented risk acceptance; <b>D</b> deleting the requirement removes the control entirely.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q8.</span>Single Loss Expectancy (SLE) is calculated as:</p>
+          <fieldset class="options">
+            <legend>Question 8 options</legend>
+            <label class="opt"><input type="radio" name="q8" value="A"><span><span class="opt-letter">A.</span> SLE &times; ARO</span></label>
+            <label class="opt"><input type="radio" name="q8" value="B"><span><span class="opt-letter">B.</span> Asset Value &times; ARO</span></label>
+            <label class="opt"><input type="radio" name="q8" value="C"><span><span class="opt-letter">C.</span> Exposure Factor &times; ALE</span></label>
+            <label class="opt"><input type="radio" name="q8" value="D"><span><span class="opt-letter">D.</span> Asset Value &times; Exposure Factor</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> SLE = Asset Value &times; Exposure Factor, where the exposure factor is the percentage of the asset&rsquo;s value lost in a single event. <b>Why the others fall short:</b> <b>A</b> SLE &times; ARO gives ALE; <b>B</b> and <b>C</b> aren&rsquo;t valid formulas &mdash; SLE is Asset Value &times; Exposure Factor.</div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" onclick="gradeQuiz()">Submit Answers</button>
+          <button type="button" class="btn secondary" onclick="resetQuiz()">Reset</button>
+          <span class="score" id="score" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Lesson navigation">
+  <div class="pager-inner">
+    <a href="lesson02.html" class="prev"><span class="pager-dir">&#8592; Previous</span><span class="pager-name">Lesson 2 &mdash; Risk Management (Part A)</span></a>
+    <a href="lesson04.html" class="next"><span class="pager-dir">Next &#8594;</span><span class="pager-name">Lesson 4 &mdash; Security Program (Part A)</span></a>
+  </div>
+</nav>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+</body>
+</html>

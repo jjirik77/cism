@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boot Camp Activity Prompt Generator | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<style>
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+  .builder { display: grid; gap: 1.25rem; }
+  .field { display: grid; gap: 0.4rem; }
+  .field label { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-primary); }
+  .field .hint { font-family: Arial, sans-serif; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+  .field select, .field input[type=text] {
+    width: 100%; font-family: Arial, sans-serif; font-size: 0.92rem; color: var(--text-primary);
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.6rem 0.7rem;
+    transition: border-color 0.15s;
+  }
+  .field select:focus, .field input[type=text]:focus { outline: none; border-color: var(--gold); }
+  .field-check { display: flex; align-items: flex-start; gap: 0.6rem; background: var(--blue-pale); border: 1px solid var(--blue-pale-border); border-radius: 6px; padding: 0.8rem 1rem; }
+  .field-check input { margin-top: 0.2rem; accent-color: var(--gold); flex-shrink: 0; }
+  .field-check span { font-family: Arial, sans-serif; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; }
+  .field-check b { color: var(--text-primary); }
+
+  .preview-wrap { position: sticky; top: 78px; display: grid; gap: 0.9rem; }
+  .preview-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .preview-head .ph-title { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-primary); }
+  #promptOut {
+    width: 100%; min-height: 460px; resize: vertical; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.8rem; line-height: 1.55; color: var(--text-primary); background: var(--blue-pale);
+    border: 1px solid var(--blue-pale-border); border-radius: 6px; padding: 1rem 1.1rem;
+  }
+  .copy-note { font-family: Arial, sans-serif; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; background: var(--card-bg); border: 1px solid var(--border); border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; padding: 0.85rem 1.05rem; }
+  .copy-note b { color: var(--text-primary); }
+  #copyMsg { font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--correct); }
+  @media (max-width: 880px) {
+    .tool-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+    .preview-wrap { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#resources">Resources</a> &nbsp;&rsaquo;&nbsp; <span>Activity Generator</span></p>
+    <span class="lesson-badge-lg">Content Development Tool</span>
+    <h1>Boot Camp Activity <span>Prompt Generator</span></h1>
+    <p class="lesson-lede">Pick a domain, an interaction mechanic, and the options you want &mdash; and watch the prompt build in real time. Copy it into your AI platform to generate a self-contained, interactive HTML5 activity in the same family as the workshop lessons.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <p class="eyebrow">Build Your Prompt</p>
+    <h2 class="h2">Configure the activity</h2>
+    <div class="rule"></div>
+
+    <div class="tool-grid">
+
+      <!-- BUILDER -->
+      <form class="builder" id="builder" oninput="buildPrompt()" onchange="buildPrompt()" onsubmit="return false">
+
+        <div class="field">
+          <label for="domain">CISM Domain</label>
+          <select id="domain">
+            <option value="Orientation &mdash; Exam strategy, the management mindset, ISACA ethics, and exam logistics">Orientation &amp; Exam Prep</option>
+            <option value="Domain 1 &mdash; Information Security Governance (governance outcomes, security strategy, frameworks COBIT/ISO 27001/NIST CSF, board and steering-committee oversight, roles, policies, metrics)" selected>Domain 1 &mdash; Information Security Governance</option>
+            <option value="Domain 2 &mdash; Information Security Risk Management (risk lifecycle, appetite and tolerance, asset classification and valuation, qualitative and quantitative assessment, treatment, monitoring and reporting)">Domain 2 &mdash; Information Security Risk Management</option>
+            <option value="Domain 3 &mdash; Information Security Program (program charter and architecture, controls selection and implementation, awareness and training, third-party risk, security operations, metrics, continuous improvement)">Domain 3 &mdash; Information Security Program</option>
+            <option value="Domain 4 &mdash; Incident Management &amp; Resilience (incident program and classification, response lifecycle, communication and notification, business continuity, disaster recovery, plan testing, recovery objectives)">Domain 4 &mdash; Incident Management</option>
+            <option value="Mixed &mdash; cross-domain scenarios spanning all four CISM domains">Mixed / Cross-Domain</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="topic">Topic Focus <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></label>
+          <input type="text" id="topic" placeholder="e.g., security strategy, risk appetite, control selection, BIA / RTO / RPO, incident response">
+          <span class="hint">Leave blank to let the AI choose representative topics within the domain.</span>
+        </div>
+
+        <div class="field">
+          <label for="mechanic">Activity Type / Mechanic</label>
+          <select id="mechanic">
+            <option value="flashcards">Flashcard deck (term &harr; definition)</option>
+            <option value="quiz" selected>Timed scored quiz (best-answer)</option>
+            <option value="scenario">Branching management scenario</option>
+            <option value="matching">Drag-and-drop matching</option>
+            <option value="sorting">Sort into categories</option>
+            <option value="sequencing">Sequence the steps</option>
+            <option value="hotspot">Labeling / hotspot</option>
+            <option value="case">Guided case study</option>
+            <option value="jeopardy">Quiz board (Jeopardy-style)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="level">Level</label>
+          <select id="level">
+            <option value="Foundational &mdash; introduce and reinforce core terminology and concepts">Foundational</option>
+            <option value="Practitioner &mdash; apply concepts to realistic situations" selected>Practitioner</option>
+            <option value="Exam-ready &mdash; CAT-style difficulty with subtle distractors and best-answer judgment">Exam-ready</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="count">Number of Items</label>
+          <select id="count">
+            <option>5</option><option selected>8</option><option>10</option><option>12</option><option>15</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="feedback">Feedback Style</label>
+          <select id="feedback">
+            <option value="Immediate, per-item feedback with a concise rationale revealed after each response (explain why the correct answer is right and why tempting distractors fail)" selected>Immediate per-item, with rationale</option>
+            <option value="A final score at the end, then a full review mode that walks through every item with its rationale">End-of-activity score + full review</option>
+          </select>
+        </div>
+
+        <label class="field-check">
+          <input type="checkbox" id="matchStyle" checked>
+          <span><b>Match the workshop look.</b> Embed the ISACA blue/red theme and typography so the generated activity visually matches the lessons.</span>
+        </label>
+      </form>
+
+      <!-- PREVIEW -->
+      <div class="preview-wrap">
+        <div class="preview-head">
+          <span class="ph-title">&#128221; Generated prompt</span>
+          <div style="display:flex;gap:0.6rem;align-items:center">
+            <span id="copyMsg" role="status" aria-live="polite"></span>
+            <button type="button" class="btn secondary" onclick="resetForm()">Reset</button>
+            <button type="button" class="btn" onclick="copyPrompt()">&#128203; Copy</button>
+          </div>
+        </div>
+        <textarea id="promptOut" readonly aria-label="Generated prompt"></textarea>
+        <div class="copy-note"><b>How to use:</b> Copy this prompt and paste it into Claude (or another capable AI). It will return a complete, single-file HTML activity &mdash; save it as <code>activity.html</code> and open it in a browser. No setup, no libraries, works offline.</div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. Activities generated with this tool should be reviewed for accuracy before instructional use.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+<script>
+  const MECHANICS = {
+    flashcards: {name:"Flashcard deck", desc:"A deck of flip cards. The front shows a term, concept, or short prompt; the back reveals the definition or answer. The learner clicks (or presses Enter/Space) to flip, and can navigate forward/back through the deck with a visible progress indicator (e.g., 'Card 3 of 8')."},
+    quiz: {name:"Timed scored quiz", desc:"Best-answer multiple-choice items (four options, one best answer) with an optional countdown timer. The learner selects an answer for each; the activity scores the result out of the total."},
+    scenario: {name:"Branching management scenario", desc:"Present a realistic management situation in stages. At each decision point, the learner chooses the security manager's best next action from several options; reveal the consequence of their choice and guide them toward the correct path, reinforcing the business-aligned, risk-based manager perspective."},
+    matching: {name:"Drag-and-drop matching", desc:"Two columns. The learner drags items from column A onto their correct partner in column B (for example, control type to example, or term to definition). Validate matches, lock correct ones, and allow retry of incorrect ones."},
+    sorting: {name:"Sort into categories", desc:"Present labeled category buckets and a set of items. The learner drags each item into the correct category (for example, sorting controls into preventive / detective / corrective). Score the placements and explain any misses."},
+    sequencing: {name:"Sequence the steps", desc:"Present a set of steps in scrambled order. The learner drags them into the correct sequence (for example, the incident-response lifecycle or the security program lifecycle). Validate the ordering and explain the correct sequence."},
+    hotspot: {name:"Labeling / hotspot", desc:"Present a simple diagram or layout built in HTML/SVG/CSS. The learner clicks the correct region, or drags labels onto the correct spots, to identify components. Provide feedback on each placement."},
+    case: {name:"Guided case study", desc:"A multi-part enterprise security-management case. Present background on an organization, then ask a sequence of staged questions that build on each other, ending with a short debrief that ties the findings together across the relevant domain(s)."},
+    jeopardy: {name:"Quiz board (Jeopardy-style)", desc:"A grid of categories across the top and point values down each column. The learner clicks a tile to reveal a clue/question, answers it, and earns the points; track a running total and mark used tiles."}
+  };
+
+  function val(id){ return document.getElementById(id).value; }
+
+  function buildPrompt(){
+    const domain = val('domain');
+    const topicRaw = document.getElementById('topic').value.trim();
+    const topic = topicRaw ? topicRaw : "representative, high-frequency topics within the domain (you choose)";
+    const m = MECHANICS[val('mechanic')];
+    const level = val('level');
+    const count = val('count');
+    const feedback = val('feedback');
+    const matchStyle = document.getElementById('matchStyle').checked;
+
+    let p = "";
+    p += "You are an expert instructional designer and front-end developer creating an interactive learning activity for a CISM (Certified Information Security Manager) exam-preparation workshop.\n\n";
+    p += "## GOAL\n";
+    p += "Produce a single, fully self-contained HTML5 file: all CSS and JavaScript inline, no external libraries, no frameworks, no network calls. It must run by simply opening the file in a browser, and work offline.\n\n";
+    p += "## ACTIVITY\n";
+    p += "- Mechanic: " + m.name + ". " + m.desc + "\n";
+    p += "- CISM domain: " + domain + "\n";
+    p += "- Topic focus: " + topic + "\n";
+    p += "- Level: " + level + "\n";
+    p += "- Number of items: " + count + "\n";
+    p += "- Feedback: " + feedback + "\n\n";
+    p += "## CONTENT REQUIREMENTS\n";
+    p += "- Ground every item in the CISM \"management mindset\": business-aligned, risk-based, governance-focused judgment — focus on what an security manager should DO, evaluate, or conclude, not on what a technician builds or operates.\n";
+    p += "- Be accurate to the current ISACA CISM Job Practice and the exam's best-answer, scenario-based style. Where two options look correct, the better answer should reflect the business-aligned security manager's perspective.\n";
+    p += "- Provide concise, instructive rationale for each item: explain why the correct response is right and, where useful, why a tempting distractor is wrong.\n";
+    p += "- Keep wording clear and professional; avoid trick wording that doesn't reflect real exam reasoning.\n\n";
+    p += "## INTERACTION & ACCESSIBILITY\n";
+    p += "- Implement the mechanic above with clean, intuitive interactions and a clear progress or scoring indicator.\n";
+    p += "- " + feedback + ".\n";
+    p += "- Include a reset/retry control and a clear completion state.\n";
+    p += "- Make it keyboard-operable and screen-reader friendly (proper labels, roles, and an aria-live region for results), and fully responsive on mobile.\n\n";
+    if (matchStyle){
+      p += "## VISUAL STYLE (match the workshop)\n";
+      p += "- Use the CISM workshop palette: deep teal-slate #0f3b4c for the header/accents and teal #14b8a6 as the primary accent with amber #f59e0b highlights, on a light background (#f0f5f6) with white cards and pale teal panels (#ecf6f6).\n";
+      p += "- Typography: Georgia serif for headings, Arial/Helvetica sans-serif for body and UI. Cards have a 3px red top accent and subtle hover lift; buttons are red or navy with uppercase labels.\n";
+      p += "- Light, readable, and professional. Include a simple light/dark theme toggle if practical.\n\n";
+    } else {
+      p += "## VISUAL STYLE\n";
+      p += "- Clean, modern, accessible, and professional. Use a restrained palette with strong contrast and clear visual hierarchy.\n\n";
+    }
+    p += "## DELIVERABLE\n";
+    p += "Return ONLY the complete HTML file in a single code block, ready to save as a .html file and open. Do not include explanation outside the code block.";
+
+    document.getElementById('promptOut').value = p;
+  }
+
+  function copyPrompt(){
+    const ta = document.getElementById('promptOut');
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    const done = (ok) => {
+      const msg = document.getElementById('copyMsg');
+      msg.textContent = ok ? "✓ Copied!" : "Press Ctrl/Cmd+C to copy";
+      setTimeout(()=>{ msg.textContent=""; }, 2500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(()=>done(true)).catch(()=>done(false));
+    } else {
+      try { document.execCommand('copy'); done(true); } catch(e){ done(false); }
+    }
+  }
+
+  function resetForm(){
+    document.getElementById('builder').reset();
+    buildPrompt();
+    document.getElementById('copyMsg').textContent = "";
+  }
+
+  buildPrompt();
+</script>
+</body>
+</html>

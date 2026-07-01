@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 — Domain 4: Incident Management (Part A) | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#domains">Domains</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#lessons">Lessons</a> &nbsp;&rsaquo;&nbsp; <span>Lesson 6</span></p>
+    <span class="lesson-badge-lg">Day 4 &mdash; Morning &middot; Domain 4 (30%)</span>
+    <h1>Incident Management <span>&mdash; Part A</span></h1>
+    <p class="lesson-lede">When prevention fails, management response defines the outcome. Part A covers the incident management program, how incidents are classified and prioritized, and the response lifecycle &mdash; with the manager directing, not performing.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">Session: <strong>Morning, Day 4</strong></span>
+      <span class="meta-chip">Duration: <strong>~3 hrs</strong></span>
+      <span class="meta-chip">Exam Weight: <strong>30% (Domain 4)</strong></span>
+      <span class="meta-chip">Knowledge Check: <strong>8 Questions</strong></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <p class="eyebrow">Overview</p>
+    <h2 class="h2">Prepare, detect, classify, respond &mdash; under management</h2>
+    <div class="rule"></div>
+    <p class="lead">Domain 4 is the second-largest at 30%, and it is intensely management-focused: the exam tests the security manager&rsquo;s <em>oversight</em> of incident response, not the technical steps a responder performs. Part A builds the incident management program and its plan, defines how events are detected, classified, and prioritized, and works the response lifecycle from preparation through recovery. The recurring lesson: <strong>contain before you eradicate</strong>, preserve evidence, communicate to the right parties, and keep the manager directing the response while specialists execute.</p>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2 class="h2">By the end of this lesson you will be able to&hellip;</h2>
+    <div class="rule"></div>
+    <ul class="objectives">
+      <li><span><strong>Distinguish</strong> events from incidents and establish an incident management program and plan. <em class="bloom-tag">Bloom: Analyze</em></span></li>
+      <li><span><strong>Classify and prioritize</strong> incidents by severity and business impact.</span></li>
+      <li><span><strong>Walk</strong> the incident response lifecycle and the manager&rsquo;s role at each phase. <em class="bloom-tag">Bloom: Understand</em></span></li>
+      <li><span><strong>Apply</strong> containment, eradication, and recovery in the correct order, preserving evidence. <em class="bloom-tag">Bloom: Apply</em></span></li>
+      <li><span><strong>Coordinate</strong> communication, notification, and post-incident review. <em class="bloom-tag">Bloom: Apply</em></span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Key Terms</p>
+    <h2 class="h2">Incident management vocabulary</h2>
+    <div class="rule"></div>
+    <p class="flip-hint-top">&#128072; Tap a card to flip it. Know the lifecycle order and the manager&rsquo;s role cold.</p>
+    <div class="vocab-grid">
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Event vs. incident</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">An <strong>event</strong> is any observable occurrence; an <strong>incident</strong> is an event (or series) that actually harms, or threatens to harm, security &mdash; only incidents trigger the response process.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Incident management program</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The governance, plans, roles, and resources that prepare the organization to detect, respond to, and learn from incidents &mdash; built before an incident, not during one.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Incident response plan</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The documented, tested playbook defining roles, procedures, severity levels, communication, and escalation &mdash; the operational core of the program.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">CSIRT / IRT</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The Computer Security Incident Response Team &mdash; the cross-functional group (security, IT, legal, comms, business) that executes the response under the manager&rsquo;s coordination.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Incident classification</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Categorizing an incident by type and assigning a severity based on business impact and urgency, so response effort matches the stakes.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Triage</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The rapid initial assessment that validates, classifies, and prioritizes a reported incident and routes it to the right responders.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Containment</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Limiting the spread and impact of an incident &mdash; isolating affected systems &mdash; <strong>before</strong> eradicating the cause, so the threat doesn&rsquo;t propagate during cleanup.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Eradication</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Removing the cause and artifacts of the incident (malware, accounts, footholds) after containment, so it cannot simply recur.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Recovery</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Restoring affected systems and services to normal, validated operation and confirming the threat is gone before returning to production.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Chain of custody</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Documented handling of evidence &mdash; who collected it, when, and how &mdash; preserving its integrity and admissibility; volatile data is captured first (order of volatility).</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Escalation & notification</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Routing an incident to the right authority and informing required parties &mdash; management, regulators, customers &mdash; within legal timelines; critical incidents escalate immediately.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Post-incident review</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The structured &lsquo;lessons learned&rsquo; after recovery that identifies root cause and improvements &mdash; the step that turns an incident into a stronger program.</div></div>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Lesson Content</p>
+    <h2 class="h2">Study the material</h2>
+    <div class="rule"></div>
+    <div class="lesson-content">
+      <nav class="toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <ul>
+          <li><a href="#s1">1. Events, Incidents & the Program</a></li>
+          <li><a href="#s2">2. Classification & Priority</a></li>
+          <li><a href="#s3">3. The Response Lifecycle</a></li>
+          <li><a href="#s4">4. Contain, Eradicate, Recover</a></li>
+          <li><a href="#s5">5. Communication & Review</a></li>
+        </ul>
+      </nav>
+      <div class="content-main">
+
+        <article class="content-section" id="s1">
+          <div class="cs-head"><span class="cs-num">1</span><h3>Events, Incidents &amp; the Program</h3></div>
+          <p>Not every event is an incident. An <strong>event</strong> is any observable occurrence; an <strong>incident</strong> is one that harms or threatens security and triggers the response process. The capability to respond is built <em>before</em> anything happens, in the incident management program and its plan.</p>
+          <ul class="detail">
+            <li>The <strong>program</strong> provides governance, roles, plans, tooling, and training &mdash; readiness, not improvisation.</li>
+            <li>The <strong>incident response plan</strong> defines severity levels, roles, procedures, communication, and escalation, and is <strong>tested</strong> regularly.</li>
+            <li>The <strong>CSIRT/IRT</strong> is cross-functional: security, IT, legal, communications, HR, and business stakeholders.</li>
+            <li>The security manager <strong>coordinates and directs</strong> &mdash; specialists perform the technical work.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>The CISM lens on incidents is management oversight: the best answer is usually about coordination, decision-making, communication, and following the plan &mdash; not the specific technical command a responder would run.</div>
+        </article>
+
+        <article class="content-section" id="s2">
+          <div class="cs-head"><span class="cs-num">2</span><h3>Classification &amp; Prioritization</h3></div>
+          <p>When an incident is reported, <strong>triage</strong> validates and classifies it, and severity is assigned by <strong>business impact</strong> and urgency so the response is proportionate. Detection comes from many sources &mdash; monitoring, users, third parties &mdash; and a clear escalation path ensures the right people engage fast.</p>
+          <ul class="detail">
+            <li><strong>Severity</strong> reflects impact to the business (data, operations, reputation, legal), not just technical noise.</li>
+            <li><strong>Detection sources:</strong> SIEM/monitoring, user reports, threat intel, and external notification (e.g., a regulator or partner).</li>
+            <li><strong>Escalation</strong> criteria are predefined &mdash; critical incidents (fraud, major breach, regulatory exposure) escalate immediately.</li>
+            <li>Prioritization ensures scarce response resources go to the highest-impact incidents first.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A single failed login is an event; thousands of failed logins followed by a success from a new country, against a finance system, is a high-severity incident. Severity is a business-impact judgment, which is why the manager owns the classification criteria.</p></div>
+          <div class="resource-link">
+            <span class="rl-icon" aria-hidden="true">&#128218;</span>
+            <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Attacks (Malware, APT, Zero-Day)</strong>, <strong>Ransomware</strong>, and <strong>Phishing</strong> &mdash; interactive modules on the threats behind the incidents you classify and respond to.</span></div>
+            <div class="rl-actions">
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/attacks/attacks.html" target="_blank" rel="noopener noreferrer">Attacks <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/ransomware/RansomwareAttack.html" target="_blank" rel="noopener noreferrer">Ransomware <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/phishing/phishing.html" target="_blank" rel="noopener noreferrer">Phishing <span class="ext">&#8599;</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="content-section" id="s3">
+          <div class="cs-head"><span class="cs-num">3</span><h3>The Incident Response Lifecycle</h3></div>
+          <p>Incident response follows a defined lifecycle. Using the widely taught NIST model: <strong>Preparation &rarr; Detection &amp; Analysis &rarr; Containment, Eradication &amp; Recovery &rarr; Post-Incident Activity</strong>. The order matters, and the manager oversees the transitions and decisions.</p>
+          <ul class="detail">
+            <li><strong>Preparation:</strong> plans, tools, training, and relationships established in advance &mdash; the most important phase.</li>
+            <li><strong>Detection &amp; analysis:</strong> validate, scope, and classify; determine what is actually happening.</li>
+            <li><strong>Containment &rarr; eradication &rarr; recovery:</strong> stop the spread first, then remove the cause, then restore.</li>
+            <li><strong>Post-incident activity:</strong> lessons learned and improvements close the loop.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Order is heavily tested: <strong>contain before you eradicate</strong>. Eradicating (or rebuilding) before containment lets the threat spread or tips off an attacker &mdash; and may destroy evidence you need.</div>
+        </article>
+
+        <article class="content-section" id="s4">
+          <div class="cs-head"><span class="cs-num">4</span><h3>Containment, Eradication &amp; Recovery</h3></div>
+          <p>These three steps are where damage is limited and normal service is restored &mdash; in order, and with evidence preserved for investigation, regulators, or law enforcement.</p>
+          <ul class="detail">
+            <li><strong>Containment:</strong> isolate affected systems (short-term to stop the bleeding, long-term to allow controlled cleanup) before eradicating.</li>
+            <li><strong>Evidence first:</strong> preserve volatile data and maintain chain of custody before wiping or rebuilding &mdash; powering off a system can destroy memory evidence.</li>
+            <li><strong>Eradication:</strong> remove malware, close the entry point, and revoke compromised credentials so the incident cannot recur.</li>
+            <li><strong>Recovery:</strong> restore from known-good backups, validate, monitor closely, and only then return to production.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Responders want to immediately re-image an infected server. The manager pauses for evidence preservation and containment first &mdash; otherwise the organization loses forensic data, may breach legal-hold duties, and may not even know how the attacker got in.</p></div>
+        </article>
+
+        <article class="content-section" id="s5">
+          <div class="cs-head"><span class="cs-num">5</span><h3>Communication, Notification &amp; Review</h3></div>
+          <p>How an incident is communicated often matters as much as how it is technically handled. The manager coordinates stakeholder and regulatory communication and ensures the organization learns from every incident.</p>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>When an incident is <em>also</em> a reportable breach, the plan must branch into the <strong>regulatory-notification</strong> path &mdash; the link between incident management and governance/privacy obligations (e.g., the GDPR&rsquo;s 72-hour clock, which starts at <em>organizational</em> awareness). The manager pre-defines who declares a breach and who notifies each regulator, so the deadline is never missed while the technical response runs.</p></div>
+          <ul class="detail">
+            <li><strong>Notification:</strong> meet legal/regulatory timelines (e.g., GDPR&rsquo;s 72-hour rule) and contractual obligations to customers and partners.</li>
+            <li><strong>Stakeholder communication</strong> is controlled and consistent &mdash; legal and communications are part of the IRT for a reason.</li>
+            <li><strong>Escalate critical incidents immediately</strong> to senior management; don&rsquo;t wait for the final report.</li>
+            <li><strong>Post-incident review</strong> finds root cause and feeds improvements back into controls, the plan, and training.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>On notification, the safe CISM instinct is to inform the appropriate internal and external parties through the proper channels within required timeframes &mdash; never to conceal, downplay, or delay disclosure of a reportable incident.</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="knowledge-check">
+    <p class="eyebrow">Scored Knowledge Check</p>
+    <h2 class="h2">Test your incident-management judgment</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:1.5rem">Eight questions on managing incidents. Direct the response and follow the plan &mdash; don&rsquo;t reach for the keyboard.</p>
+    <div class="quiz-card">
+      <form id="quiz">
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q1.</span>During a malware incident, the response team prepares to eradicate the malware from infected hosts. What should happen FIRST?</p>
+          <fieldset class="options">
+            <legend>Question 1 options</legend>
+            <label class="opt"><input type="radio" name="q1" value="A"><span><span class="opt-letter">A.</span> Eradicate immediately to remove the threat fastest</span></label>
+            <label class="opt"><input type="radio" name="q1" value="B"><span><span class="opt-letter">B.</span> Contain the incident by isolating affected systems</span></label>
+            <label class="opt"><input type="radio" name="q1" value="C"><span><span class="opt-letter">C.</span> Restore the systems from backup</span></label>
+            <label class="opt"><input type="radio" name="q1" value="D"><span><span class="opt-letter">D.</span> Notify customers</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Containment precedes eradication: isolating affected systems stops the malware from spreading (and preserves evidence) before the cause is removed. Eradicating first risks propagation and lost forensics. <b>Why the others fall short:</b> <b>A</b> eradicating first risks spreading the malware; <b>C</b> restoring before containment can reintroduce the threat; <b>D</b> customer notification isn&rsquo;t the first response step.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q2.</span>In CISM terms, the security manager&rsquo;s role during incident response is BEST described as:</p>
+          <fieldset class="options">
+            <legend>Question 2 options</legend>
+            <label class="opt"><input type="radio" name="q2" value="A"><span><span class="opt-letter">A.</span> Performing the technical containment and eradication personally</span></label>
+            <label class="opt"><input type="radio" name="q2" value="B"><span><span class="opt-letter">B.</span> Waiting for the incident to resolve itself</span></label>
+            <label class="opt"><input type="radio" name="q2" value="C"><span><span class="opt-letter">C.</span> Handling all external communications alone</span></label>
+            <label class="opt"><input type="radio" name="q2" value="D"><span><span class="opt-letter">D.</span> Coordinating and directing the response while specialists execute</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> The CISM operates as a manager: coordinating the IRT, making decisions, and overseeing the response. The hands-on technical work is performed by specialists under that direction. <b>Why the others fall short:</b> <b>A</b> performing containment personally is the technician role; <b>B</b> waiting for it to resolve is negligence; <b>C</b> handling all communications alone misstates the coordinating role.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q3.</span>Which phase of the incident response lifecycle is the MOST important for limiting damage when an incident occurs?</p>
+          <fieldset class="options">
+            <legend>Question 3 options</legend>
+            <label class="opt"><input type="radio" name="q3" value="A"><span><span class="opt-letter">A.</span> Eradication</span></label>
+            <label class="opt"><input type="radio" name="q3" value="B"><span><span class="opt-letter">B.</span> Recovery</span></label>
+            <label class="opt"><input type="radio" name="q3" value="C"><span><span class="opt-letter">C.</span> Preparation</span></label>
+            <label class="opt"><input type="radio" name="q3" value="D"><span><span class="opt-letter">D.</span> Notification</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Preparation &mdash; plans, tooling, training, and relationships built in advance &mdash; determines how well every later phase goes. An unprepared organization improvises and amplifies the damage. <b>Why the others fall short:</b> <b>A</b> eradication and <b>B</b> recovery occur after damage is done; <b>D</b> notification doesn&rsquo;t limit damage &mdash; preparation determines how well every later phase goes.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q4.</span>Responders want to power off and re-image a compromised server immediately. From a management perspective, the concern is that this may:</p>
+          <fieldset class="options">
+            <legend>Question 4 options</legend>
+            <label class="opt"><input type="radio" name="q4" value="A"><span><span class="opt-letter">A.</span> Destroy volatile evidence and break chain of custody before the cause is understood</span></label>
+            <label class="opt"><input type="radio" name="q4" value="B"><span><span class="opt-letter">B.</span> Improve recovery time</span></label>
+            <label class="opt"><input type="radio" name="q4" value="C"><span><span class="opt-letter">C.</span> Reduce the severity of the incident</span></label>
+            <label class="opt"><input type="radio" name="q4" value="D"><span><span class="opt-letter">D.</span> Satisfy regulators</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Powering off destroys memory-resident (volatile) evidence and can break legal-hold/chain-of-custody obligations. Evidence preservation and containment should precede eradication and rebuild. <b>Why the others fall short:</b> <b>B</b> it doesn&rsquo;t meaningfully improve recovery; <b>C</b> it doesn&rsquo;t reduce severity; <b>D</b> it doesn&rsquo;t satisfy regulators &mdash; it destroys volatile evidence.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q5.</span>How should incident severity be determined?</p>
+          <fieldset class="options">
+            <legend>Question 5 options</legend>
+            <label class="opt"><input type="radio" name="q5" value="A"><span><span class="opt-letter">A.</span> By the business impact and urgency of the incident</span></label>
+            <label class="opt"><input type="radio" name="q5" value="B"><span><span class="opt-letter">B.</span> By the number of alerts the SIEM generated</span></label>
+            <label class="opt"><input type="radio" name="q5" value="C"><span><span class="opt-letter">C.</span> By how technically interesting the attack is</span></label>
+            <label class="opt"><input type="radio" name="q5" value="D"><span><span class="opt-letter">D.</span> By the time of day it was detected</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Severity reflects business impact &mdash; to data, operations, reputation, and legal exposure &mdash; and urgency, so the response is proportionate. Alert volume and technical novelty are not the measure. <b>Why the others fall short:</b> <b>B</b> alert count is noise, not severity; <b>C</b> how &lsquo;interesting&rsquo; the attack is doesn&rsquo;t matter; <b>D</b> time of day isn&rsquo;t a severity criterion &mdash; business impact and urgency are.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q6.</span>A confirmed data breach triggers a regulatory notification requirement. The security manager should:</p>
+          <fieldset class="options">
+            <legend>Question 6 options</legend>
+            <label class="opt"><input type="radio" name="q6" value="A"><span><span class="opt-letter">A.</span> Delay disclosure until the investigation is fully complete</span></label>
+            <label class="opt"><input type="radio" name="q6" value="B"><span><span class="opt-letter">B.</span> Disclose only if customers ask</span></label>
+            <label class="opt"><input type="radio" name="q6" value="C"><span><span class="opt-letter">C.</span> Inform the appropriate parties through proper channels within the required timeframe</span></label>
+            <label class="opt"><input type="radio" name="q6" value="D"><span><span class="opt-letter">D.</span> Leave notification to the IT team&rsquo;s discretion</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Reportable incidents must be disclosed to the appropriate internal and external parties through proper channels within legal timeframes (e.g., GDPR&rsquo;s 72 hours). Concealing or indefinitely delaying disclosure is never the CISM answer. <b>Why the others fall short:</b> <b>A</b> delaying past the deadline breaches the requirement; <b>B</b> &lsquo;only if asked&rsquo; ignores mandatory reporting; <b>D</b> leaving it to IT&rsquo;s discretion abdicates the obligation.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q7.</span>The PRIMARY value of a post-incident review (lessons learned) is to:</p>
+          <fieldset class="options">
+            <legend>Question 7 options</legend>
+            <label class="opt"><input type="radio" name="q7" value="A"><span><span class="opt-letter">A.</span> Assign blame for the incident</span></label>
+            <label class="opt"><input type="radio" name="q7" value="B"><span><span class="opt-letter">B.</span> Satisfy auditors with paperwork</span></label>
+            <label class="opt"><input type="radio" name="q7" value="C"><span><span class="opt-letter">C.</span> Close the incident ticket faster</span></label>
+            <label class="opt"><input type="radio" name="q7" value="D"><span><span class="opt-letter">D.</span> Identify root cause and improvements that strengthen the program</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Post-incident review turns an incident into improvement &mdash; identifying root cause and feeding fixes back into controls, the plan, and training. It is about learning, not blame or box-ticking. <b>Why the others fall short:</b> <b>A</b> assigning blame isn&rsquo;t the purpose; <b>B</b> satisfying auditors is incidental; <b>C</b> closing the ticket faster isn&rsquo;t the goal &mdash; root cause and improvement are.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q8.</span>Which BEST distinguishes an event from an incident?</p>
+          <fieldset class="options">
+            <legend>Question 8 options</legend>
+            <label class="opt"><input type="radio" name="q8" value="A"><span><span class="opt-letter">A.</span> Events are technical; incidents are managerial</span></label>
+            <label class="opt"><input type="radio" name="q8" value="B"><span><span class="opt-letter">B.</span> An event is any observable occurrence, while an incident actually harms or threatens security</span></label>
+            <label class="opt"><input type="radio" name="q8" value="C"><span><span class="opt-letter">C.</span> Events are external; incidents are internal</span></label>
+            <label class="opt"><input type="radio" name="q8" value="D"><span><span class="opt-letter">D.</span> They are the same thing</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> An event is any observable occurrence; an incident is an event (or series) that harms or threatens security and therefore triggers the response process. Distinguishing them prevents both over- and under-reaction. <b>Why the others fall short:</b> <b>A</b> the distinction isn&rsquo;t technical-vs-managerial; <b>C</b> nor external-vs-internal; <b>D</b> they aren&rsquo;t the same &mdash; an incident actually harms or threatens security.</div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" onclick="gradeQuiz()">Submit Answers</button>
+          <button type="button" class="btn secondary" onclick="resetQuiz()">Reset</button>
+          <span class="score" id="score" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Lesson navigation">
+  <div class="pager-inner">
+    <a href="lesson05.html" class="prev"><span class="pager-dir">&#8592; Previous</span><span class="pager-name">Lesson 5 &mdash; Security Program (Part B)</span></a>
+    <a href="lesson07.html" class="next"><span class="pager-dir">Next &#8594;</span><span class="pager-name">Lesson 7 &mdash; Continuity & Recovery (Part B)</span></a>
+  </div>
+</nav>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+</body>
+</html>

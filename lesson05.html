@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 — Domain 3: Information Security Program (Part B) | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#domains">Domains</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#lessons">Lessons</a> &nbsp;&rsaquo;&nbsp; <span>Lesson 5</span></p>
+    <span class="lesson-badge-lg">Day 3 &mdash; Afternoon &middot; Domain 3 (33%)</span>
+    <h1>Security Program <span>&mdash; Part B</span></h1>
+    <p class="lesson-lede">A program lives in its operation. Part B runs it day to day: building a security culture, managing third-party and supply-chain risk, operating security, measuring value, and improving continuously.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">Session: <strong>Afternoon, Day 3</strong></span>
+      <span class="meta-chip">Duration: <strong>~3 hrs</strong></span>
+      <span class="meta-chip">Exam Weight: <strong>33% (Domain 3)</strong></span>
+      <span class="meta-chip">Knowledge Check: <strong>8 Questions</strong></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <p class="eyebrow">Overview</p>
+    <h2 class="h2">Operate the program, measure it, improve it</h2>
+    <div class="rule"></div>
+    <p class="lead">Part A established the program; Part B keeps it alive and effective. The security manager shapes the <strong>human layer</strong> through awareness and culture, governs the growing <strong>third-party and supply-chain</strong> attack surface, oversees <strong>security operations</strong>, proves value with <strong>metrics</strong>, and drives <strong>continuous improvement</strong>. The exam rewards the manager who treats people and suppliers as first-class risks and who measures the program in business terms rather than tool output.</p>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2 class="h2">By the end of this lesson you will be able to&hellip;</h2>
+    <div class="rule"></div>
+    <ul class="objectives">
+      <li><span><strong>Design</strong> awareness, training, and culture programs that change behavior. <em class="bloom-tag">Bloom: Create</em></span></li>
+      <li><span><strong>Govern</strong> third-party and supply-chain risk through due diligence, contracts, and ongoing oversight. <em class="bloom-tag">Bloom: Apply</em></span></li>
+      <li><span><strong>Oversee</strong> security operations &mdash; monitoring, vulnerability and configuration management, and IAM. <em class="bloom-tag">Bloom: Evaluate</em></span></li>
+      <li><span><strong>Define</strong> program metrics that communicate value and effectiveness to leadership. <em class="bloom-tag">Bloom: Remember</em></span></li>
+      <li><span><strong>Drive</strong> continuous improvement and integrate security into the delivery lifecycle. <em class="bloom-tag">Bloom: Apply</em></span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Key Terms</p>
+    <h2 class="h2">Program operations vocabulary</h2>
+    <div class="rule"></div>
+    <p class="flip-hint-top">&#128072; Tap a card to flip it. People, suppliers, operations, metrics &mdash; the working program.</p>
+    <div class="vocab-grid">
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Awareness vs. training vs. education</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def"><strong>Awareness</strong> changes attention/behavior (the &lsquo;what&rsquo;); <strong>training</strong> builds job skills (the &lsquo;how&rsquo;); <strong>education</strong> develops deeper understanding (the &lsquo;why&rsquo;). Programs need all three, role-appropriate.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Security culture</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The shared values and habits that make secure behavior normal; built over time, driven by tone at the top, and the most durable control over the human layer.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Phishing simulation</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A controlled test that measures and improves susceptibility to social engineering; a rising click rate over time signals the awareness program is not working.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Third-party risk management</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Governing the risk introduced by vendors, suppliers, and partners across the relationship lifecycle &mdash; selection, contracting, monitoring, and offboarding.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Due diligence</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Assessing a third party&rsquo;s security posture <em>before</em> engaging them (questionnaires, SOC reports, audits) &mdash; and reassessing periodically, not just at onboarding.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Right-to-audit</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A contract clause letting the organization assess a provider&rsquo;s controls directly or via independent reports; a core lever of third-party oversight.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Cloud shared responsibility</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The model that splits security duties between provider and customer; the split shifts across IaaS/PaaS/SaaS, but accountability for <em>data</em> always stays with the customer.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Fourth-party risk</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Risk from your vendors&rsquo; own subcontractors &mdash; concentration and supply-chain exposure you must understand even though you don&rsquo;t contract with them directly.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Security operations (SOC)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The ongoing run-the-program functions &mdash; monitoring/SIEM, threat detection, vulnerability and patch management, configuration/change control, and IAM operations.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Vulnerability management</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The continuous cycle of discovering, prioritizing (by risk, not just CVSS), remediating, and verifying weaknesses across the environment.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Program metrics</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Indicators that show whether the program is effective and delivering value &mdash; reported to leadership in business terms, mapped to objectives and risk.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Continuous improvement</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Systematically raising program effectiveness over time &mdash; Plan-Do-Check-Act, lessons learned, and maturity growth rather than one-and-done projects.</div></div>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Lesson Content</p>
+    <h2 class="h2">Study the material</h2>
+    <div class="rule"></div>
+    <div class="lesson-content">
+      <nav class="toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <ul>
+          <li><a href="#s1">1. Security Culture</a></li>
+          <li><a href="#s2">2. Third-Party Risk</a></li>
+          <li><a href="#s3">3. Security Operations</a></li>
+          <li><a href="#s4">4. Metrics & Reporting</a></li>
+          <li><a href="#s5">5. Continuous Improvement</a></li>
+        </ul>
+      </nav>
+      <div class="content-main">
+
+        <article class="content-section" id="s1">
+          <div class="cs-head"><span class="cs-num">1</span><h3>Awareness, Training &amp; Culture</h3></div>
+          <p>People are both the largest attack surface and the strongest control. The manager&rsquo;s job is to move the organization from <em>awareness</em> (attention) to <em>behavior</em> to <em>culture</em>, with role-appropriate content and reinforcement &mdash; not a once-a-year slide deck.</p>
+          <ul class="detail">
+            <li><strong>Awareness</strong> shifts behavior; <strong>training</strong> builds skills; <strong>education</strong> builds understanding &mdash; deliver all three by role.</li>
+            <li><strong>Role-based</strong> content: developers, executives, finance, and admins each face different risks and need tailored training.</li>
+            <li><strong>Phishing simulations</strong> measure and reinforce &mdash; track trends, not just a single score.</li>
+            <li>Culture is the goal: secure behavior becomes the default, sustained by tone at the top.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>If a phishing click-rate keeps rising despite annual training, the issue is program <em>effectiveness</em> &mdash; revise content, frequency, and reinforcement. Punishing employees or blocking all email is not the CISM answer.</div>
+          <div class="resource-link">
+            <span class="rl-icon" aria-hidden="true">&#128218;</span>
+            <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Social Engineering</strong> and <strong>Social Engineering Tactics</strong> &mdash; interactive modules on the human-layer attacks your awareness program must defend against.</span></div>
+            <div class="rl-actions">
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/social_engineering/social_engineering.html" target="_blank" rel="noopener noreferrer">Social Engineering <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/SocialEngineeringTactics/SocialEngineeringTactics.html" target="_blank" rel="noopener noreferrer">SE Tactics <span class="ext">&#8599;</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="content-section" id="s2">
+          <div class="cs-head"><span class="cs-num">2</span><h3>Third-Party &amp; Supply-Chain Risk</h3></div>
+          <p>Outsourcing and cloud move work outside the organization &mdash; but never the accountability. Third-party risk is governed across the whole relationship lifecycle, and the data owner remains responsible no matter who processes the data.</p>
+          <ul class="detail">
+            <li><strong>Due diligence</strong> before engagement (questionnaires, SOC 2 Type II, audits) and <strong>periodic re-assessment</strong> after.</li>
+            <li><strong>Contracts</strong> carry the controls: right-to-audit, SLAs, breach-notification timelines, data handling, and return/destruction on exit.</li>
+            <li><strong>Cloud shared responsibility:</strong> the provider secures the platform per the service model; the customer always owns its data and access.</li>
+            <li><strong>Fourth-party</strong> and concentration risk: understand your vendors&rsquo; critical subcontractors and single points of failure.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>&lsquo;We moved it to the cloud, so the provider is responsible&rsquo; is a trap. Under shared responsibility the customer still owns data classification, access, and configuration &mdash; most cloud breaches stem from customer-side misconfiguration, not the provider.</p></div>
+        </article>
+
+        <article class="content-section" id="s3">
+          <div class="cs-head"><span class="cs-num">3</span><h3>Security Operations</h3></div>
+          <p>Operations is where the program runs continuously. The manager oversees these functions and ensures they are measured and improving &mdash; without doing the hands-on work personally.</p>
+          <ul class="detail">
+            <li><strong>Monitoring/SIEM</strong> and threat detection give visibility; coverage and tuning matter more than tool count.</li>
+            <li><strong>Vulnerability management</strong> prioritizes by business risk (asset value + exploitability), not raw severity scores alone.</li>
+            <li><strong>Configuration and change management</strong> keep systems to baselines and prevent unauthorized drift.</li>
+            <li><strong>IAM operations</strong> &mdash; provisioning, periodic access reviews, and timely deprovisioning &mdash; enforce least privilege over time.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Vulnerability questions reward <strong>risk-based prioritization</strong>: a medium-severity flaw on a critical, internet-facing system may outrank a &lsquo;critical&rsquo; CVSS score on an isolated test box. Context, not the number alone, sets priority.</div>
+          <div class="resource-link">
+            <span class="rl-icon" aria-hidden="true">&#128218;</span>
+            <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Penetration Testing</strong> and <strong>Configuration Management</strong> &mdash; interactive modules on testing the program and on the configuration and change discipline that keeps it to baseline.</span></div>
+            <div class="rl-actions">
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/pen_testing/pen_testing.html" target="_blank" rel="noopener noreferrer">Pen Testing <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/ConfigMgmt/ConfigMgmt.html" target="_blank" rel="noopener noreferrer">Config Management <span class="ext">&#8599;</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="content-section" id="s4">
+          <div class="cs-head"><span class="cs-num">4</span><h3>Program Metrics &amp; Reporting</h3></div>
+          <p>A program that cannot show its value loses funding. Metrics prove effectiveness, justify investment, and guide decisions &mdash; but only if they map to objectives and are reported in language the business understands.</p>
+          <ul class="detail">
+            <li>Tie metrics to <strong>control objectives and risk</strong> (KGI/KPI/KRI), not to raw activity counts.</li>
+            <li>Report <strong>trends and business impact</strong> to leadership &mdash; reducing risk and enabling the business &mdash; not tool dashboards.</li>
+            <li>Use a <strong>balanced</strong> view (value, risk, compliance, operational performance), avoiding vanity metrics.</li>
+            <li>Maturity assessments track whether processes are improving over time.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Reporting &lsquo;we blocked 4 million emails&rsquo; tells the board nothing. &lsquo;Phishing susceptibility fell from 18% to 6%, cutting our most likely breach path&rsquo; ties the program to risk and value &mdash; that is a CISM-grade metric.</p></div>
+        </article>
+
+        <article class="content-section" id="s5">
+          <div class="cs-head"><span class="cs-num">5</span><h3>Continuous Improvement</h3></div>
+          <p>The program is never finished. Threats, technology, and the business change, so the manager institutionalizes improvement rather than treating security as a set of one-time projects.</p>
+          <ul class="detail">
+            <li><strong>Plan-Do-Check-Act:</strong> the ISO&nbsp;27001 cycle &mdash; implement, measure, and refine continually.</li>
+            <li><strong>Lessons learned</strong> from incidents, audits, and tests feed back into controls and strategy.</li>
+            <li><strong>Integrate security into delivery</strong> (secure SDLC / DevSecOps) so controls are built in, not bolted on.</li>
+            <li>Re-baseline against the strategy and gap analysis as objectives and risk evolve.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>When asked how to keep a program effective over time, the answer is a continuous-improvement cycle (PDCA) fed by metrics and lessons learned &mdash; not a bigger one-time project or a new tool purchase.</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="knowledge-check">
+    <p class="eyebrow">Scored Knowledge Check</p>
+    <h2 class="h2">Test your program-operations judgment</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:1.5rem">Eight questions on people, suppliers, operations, and metrics. Manage and measure; don&rsquo;t configure.</p>
+    <div class="quiz-card">
+      <form id="quiz">
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q1.</span>An organization&rsquo;s phishing-simulation click rate has risen over three consecutive quarters despite annual training. The BEST response is to:</p>
+          <fieldset class="options">
+            <legend>Question 1 options</legend>
+            <label class="opt"><input type="radio" name="q1" value="A"><span><span class="opt-letter">A.</span> Discipline employees who click</span></label>
+            <label class="opt"><input type="radio" name="q1" value="B"><span><span class="opt-letter">B.</span> Block all inbound external email</span></label>
+            <label class="opt"><input type="radio" name="q1" value="C"><span><span class="opt-letter">C.</span> Review and strengthen the awareness program&rsquo;s content, frequency, and reinforcement</span></label>
+            <label class="opt"><input type="radio" name="q1" value="D"><span><span class="opt-letter">D.</span> Discontinue phishing simulations</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> A rising click rate is a sign the awareness program is not changing behavior. The manager improves the program (content, cadence, reinforcement) rather than punishing users or blocking email outright. <b>Why the others fall short:</b> <b>A</b> disciplining clickers is punitive and ignores program effectiveness; <b>B</b> blocking all external email is impractical; <b>D</b> discontinuing simulations removes the measurement, not the problem.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q2.</span>After migrating data to a SaaS provider, who remains accountable for classifying and protecting that data?</p>
+          <fieldset class="options">
+            <legend>Question 2 options</legend>
+            <label class="opt"><input type="radio" name="q2" value="A"><span><span class="opt-letter">A.</span> The SaaS provider</span></label>
+            <label class="opt"><input type="radio" name="q2" value="B"><span><span class="opt-letter">B.</span> The cloud broker</span></label>
+            <label class="opt"><input type="radio" name="q2" value="C"><span><span class="opt-letter">C.</span> Whichever party the contract is silent on</span></label>
+            <label class="opt"><input type="radio" name="q2" value="D"><span><span class="opt-letter">D.</span> The customer organization (data owner)</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Under the shared-responsibility model, accountability for data classification, access, and configuration always stays with the customer/data owner, regardless of the service model. <b>Why the others fall short:</b> <b>A</b> the provider handles infrastructure, not accountability for the data; <b>B</b> a broker doesn&rsquo;t assume data accountability; <b>C</b> accountability doesn&rsquo;t hinge on contract silence &mdash; it stays with the data owner.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q3.</span>What should a security manager do BEFORE engaging a new critical vendor?</p>
+          <fieldset class="options">
+            <legend>Question 3 options</legend>
+            <label class="opt"><input type="radio" name="q3" value="A"><span><span class="opt-letter">A.</span> Sign the contract quickly to start work</span></label>
+            <label class="opt"><input type="radio" name="q3" value="B"><span><span class="opt-letter">B.</span> Perform security due diligence (questionnaire, SOC 2 report, or audit)</span></label>
+            <label class="opt"><input type="radio" name="q3" value="C"><span><span class="opt-letter">C.</span> Wait for the first incident to assess them</span></label>
+            <label class="opt"><input type="radio" name="q3" value="D"><span><span class="opt-letter">D.</span> Assume the vendor is secure if they are well known</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Due diligence before engagement assesses the vendor&rsquo;s security posture so risk can be understood and addressed in the contract. Reputation is not a substitute for assessment. <b>Why the others fall short:</b> <b>A</b> signing quickly skips assessment; <b>C</b> waiting for an incident is reactive; <b>D</b> assuming a well-known vendor is secure is unverified trust.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q4.</span>Two vulnerabilities are open: a &lsquo;critical&rsquo; CVSS flaw on an isolated lab server, and a &lsquo;medium&rsquo; flaw on an internet-facing system holding customer data. Which should be prioritized?</p>
+          <fieldset class="options">
+            <legend>Question 4 options</legend>
+            <label class="opt"><input type="radio" name="q4" value="A"><span><span class="opt-letter">A.</span> The medium flaw on the internet-facing customer system, based on business risk</span></label>
+            <label class="opt"><input type="radio" name="q4" value="B"><span><span class="opt-letter">B.</span> The critical-CVSS flaw, because severity scores decide priority</span></label>
+            <label class="opt"><input type="radio" name="q4" value="C"><span><span class="opt-letter">C.</span> Neither until the next quarterly cycle</span></label>
+            <label class="opt"><input type="radio" name="q4" value="D"><span><span class="opt-letter">D.</span> Both equally, ignoring context</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Vulnerability prioritization is risk-based: exposure and asset value can make a medium-severity, internet-facing flaw far more urgent than a high score on an isolated system. Context outranks the raw number. <b>Why the others fall short:</b> <b>B</b> the CVSS score alone ignores exposure and asset value; <b>C</b> deferring both ignores real exposure; <b>D</b> treating them equally ignores context &mdash; business risk sets priority.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q5.</span>Which metric is MOST useful for reporting program value to the board?</p>
+          <fieldset class="options">
+            <legend>Question 5 options</legend>
+            <label class="opt"><input type="radio" name="q5" value="A"><span><span class="opt-letter">A.</span> The number of emails blocked last month</span></label>
+            <label class="opt"><input type="radio" name="q5" value="B"><span><span class="opt-letter">B.</span> The count of firewall rules configured</span></label>
+            <label class="opt"><input type="radio" name="q5" value="C"><span><span class="opt-letter">C.</span> The number of alerts generated by the SIEM</span></label>
+            <label class="opt"><input type="radio" name="q5" value="D"><span><span class="opt-letter">D.</span> The reduction in phishing susceptibility and its effect on breach likelihood</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Board-level metrics tie the program to business risk and value &mdash; e.g., reduced susceptibility lowering the most likely breach path. Raw activity counts (emails blocked, alerts, rules) are not decision-useful. <b>Why the others fall short:</b> <b>A</b> emails blocked, <b>B</b> firewall-rule counts, and <b>C</b> SIEM alert volume are activity metrics &mdash; not the risk-reduction story the board needs.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q6.</span>The PRIMARY purpose of a right-to-audit clause in a vendor contract is to:</p>
+          <fieldset class="options">
+            <legend>Question 6 options</legend>
+            <label class="opt"><input type="radio" name="q6" value="A"><span><span class="opt-letter">A.</span> Lower the contract price</span></label>
+            <label class="opt"><input type="radio" name="q6" value="B"><span><span class="opt-letter">B.</span> Transfer all liability to the vendor</span></label>
+            <label class="opt"><input type="radio" name="q6" value="C"><span><span class="opt-letter">C.</span> Allow the organization to verify the vendor&rsquo;s controls directly or via reports</span></label>
+            <label class="opt"><input type="radio" name="q6" value="D"><span><span class="opt-letter">D.</span> Guarantee the vendor&rsquo;s uptime</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> A right-to-audit clause preserves the organization&rsquo;s ability to assess whether the vendor&rsquo;s controls are adequate &mdash; a core mechanism of ongoing third-party oversight. <b>Why the others fall short:</b> <b>A</b> it&rsquo;s not about price; <b>B</b> it doesn&rsquo;t transfer liability; <b>D</b> it doesn&rsquo;t guarantee uptime &mdash; it preserves the ability to verify controls.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q7.</span>Which BEST describes how a mature program sustains effectiveness over time?</p>
+          <fieldset class="options">
+            <legend>Question 7 options</legend>
+            <label class="opt"><input type="radio" name="q7" value="A"><span><span class="opt-letter">A.</span> A large annual project to re-do everything</span></label>
+            <label class="opt"><input type="radio" name="q7" value="B"><span><span class="opt-letter">B.</span> A continuous-improvement cycle (PDCA) fed by metrics and lessons learned</span></label>
+            <label class="opt"><input type="radio" name="q7" value="C"><span><span class="opt-letter">C.</span> Purchasing the newest security tools each year</span></label>
+            <label class="opt"><input type="radio" name="q7" value="D"><span><span class="opt-letter">D.</span> Outsourcing the entire program</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Continuous improvement &mdash; Plan-Do-Check-Act informed by metrics and lessons learned &mdash; keeps the program effective as conditions change, rather than episodic projects or tool buying. <b>Why the others fall short:</b> <b>A</b> a single annual project isn&rsquo;t sustained improvement; <b>C</b> buying new tools yearly isn&rsquo;t a process; <b>D</b> outsourcing everything abdicates ownership.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q8.</span>Integrating security controls into the software development lifecycle (DevSecOps) PRIMARILY benefits the program by:</p>
+          <fieldset class="options">
+            <legend>Question 8 options</legend>
+            <label class="opt"><input type="radio" name="q8" value="A"><span><span class="opt-letter">A.</span> Building controls in early rather than bolting them on later, reducing cost and risk</span></label>
+            <label class="opt"><input type="radio" name="q8" value="B"><span><span class="opt-letter">B.</span> Eliminating the need for a security team</span></label>
+            <label class="opt"><input type="radio" name="q8" value="C"><span><span class="opt-letter">C.</span> Removing the need for testing</span></label>
+            <label class="opt"><input type="radio" name="q8" value="D"><span><span class="opt-letter">D.</span> Shifting all security accountability to developers</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Embedding security across the delivery lifecycle catches issues earlier, where they are cheaper to fix, and produces inherently more secure systems &mdash; controls are built in, not retrofitted. <b>Why the others fall short:</b> <b>B</b> DevSecOps doesn&rsquo;t eliminate the security team; <b>C</b> it doesn&rsquo;t remove testing; <b>D</b> it doesn&rsquo;t shift all accountability to developers &mdash; it builds controls in early.</div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" onclick="gradeQuiz()">Submit Answers</button>
+          <button type="button" class="btn secondary" onclick="resetQuiz()">Reset</button>
+          <span class="score" id="score" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Lesson navigation">
+  <div class="pager-inner">
+    <a href="lesson04.html" class="prev"><span class="pager-dir">&#8592; Previous</span><span class="pager-name">Lesson 4 &mdash; Security Program (Part A)</span></a>
+    <a href="lesson06.html" class="next"><span class="pager-dir">Next &#8594;</span><span class="pager-name">Lesson 6 &mdash; Incident Management (Part A)</span></a>
+  </div>
+</nav>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+</body>
+</html>

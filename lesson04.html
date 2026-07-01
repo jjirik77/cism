@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 — Domain 3: Information Security Program (Part A) | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#domains">Domains</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#lessons">Lessons</a> &nbsp;&rsaquo;&nbsp; <span>Lesson 4</span></p>
+    <span class="lesson-badge-lg">Day 3 &mdash; Morning &middot; Domain 3 (33%)</span>
+    <h1>Security Program <span>&mdash; Part A</span></h1>
+    <p class="lesson-lede">The program is where strategy becomes capability. Part A &mdash; the highest-weight domain &mdash; builds the foundation: the program charter and architecture, and the controls framework that turns risk decisions into working safeguards.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">Session: <strong>Morning, Day 3</strong></span>
+      <span class="meta-chip">Duration: <strong>~3 hrs</strong></span>
+      <span class="meta-chip">Exam Weight: <strong>33% (Domain 3)</strong></span>
+      <span class="meta-chip">Knowledge Check: <strong>8 Questions</strong></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <p class="eyebrow">Overview</p>
+    <h2 class="h2">From strategy to a working program of controls</h2>
+    <div class="rule"></div>
+    <p class="lead">Domain 3 is the largest on the exam at 33% &mdash; the security manager&rsquo;s core job. A program is not a pile of tools; it is a chartered, resourced, and architected capability that executes the strategy. Part A covers how the program is established &mdash; its charter, scope, architecture, and resources &mdash; and the language of <strong>controls</strong>: their objectives, types, and categories, how to select them on a risk basis, and the foundational principles (least privilege, separation of duties, defense in depth) that make a control set coherent rather than a collection of point fixes.</p>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2 class="h2">By the end of this lesson you will be able to&hellip;</h2>
+    <div class="rule"></div>
+    <ul class="objectives">
+      <li><span><strong>Establish</strong> a security program with a charter, scope, objectives, and a mandate aligned to strategy. <em class="bloom-tag">Bloom: Create</em></span></li>
+      <li><span><strong>Plan</strong> program architecture and resources &mdash; people, budget, tools, and roles. <em class="bloom-tag">Bloom: Create</em></span></li>
+      <li><span><strong>Classify</strong> controls by objective, type (preventive/detective/corrective), and category (administrative/technical/physical). <em class="bloom-tag">Bloom: Apply</em></span></li>
+      <li><span><strong>Select</strong> controls on a risk basis using frameworks, baselines, and defense in depth. <em class="bloom-tag">Bloom: Evaluate</em></span></li>
+      <li><span><strong>Apply</strong> least privilege, separation of duties, and need-to-know across the control set. <em class="bloom-tag">Bloom: Apply</em></span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Key Terms</p>
+    <h2 class="h2">Program &amp; controls vocabulary</h2>
+    <div class="rule"></div>
+    <p class="flip-hint-top">&#128072; Tap a card to flip it. Domain 3 is a third of the exam &mdash; own this language.</p>
+    <div class="vocab-grid">
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Information security program</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The coordinated set of activities, resources, controls, and people that executes the security strategy and manages risk to acceptable levels &mdash; the manager&rsquo;s operating capability.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Program charter</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The document that authorizes the program &mdash; defining its mandate, scope, objectives, authority, and reporting lines, approved by senior management. It is the program&rsquo;s license to operate.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Program architecture</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The structured design of how the program&rsquo;s people, processes, and technology fit together to deliver the strategy &mdash; sequenced into a roadmap of prioritized initiatives.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Control objective</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The risk-reducing outcome a control is meant to achieve (the WHY). Controls are selected to meet objectives, which trace back to risks and strategy &mdash; not chosen for their own sake.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Control types</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">By function: <strong>preventive</strong> (stop it), <strong>detective</strong> (notice it), <strong>corrective</strong> (fix it), <strong>deterrent</strong> (discourage it), and <strong>compensating</strong> (an alternative when the primary control isn&rsquo;t feasible).</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Control categories</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">By nature: <strong>administrative</strong> (policies, training, procedures), <strong>technical/logical</strong> (access control, encryption, monitoring), and <strong>physical</strong> (locks, guards, environmental).</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Defense in depth</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Layering multiple, independent controls so the failure of one does not expose the asset &mdash; people, process, and technology reinforcing each other.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Compensating control</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">An alternative safeguard used when the ideal control is impractical, that achieves a comparable risk-reduction outcome &mdash; documented and approved, not an excuse to skip control.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Security baseline</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A defined minimum set of controls/configurations every system of a given type must meet &mdash; the floor that makes protection consistent and auditable.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Least privilege</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Granting each user or process only the minimum access needed to do its job &mdash; limiting the damage from error, misuse, or compromise.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Separation of duties</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Splitting a sensitive task across two or more people so no single individual can complete it alone &mdash; preventing fraud and unilateral error.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk-based control selection</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Choosing controls according to the risks they reduce and the value they protect, guided by frameworks and cost-benefit &mdash; not by trend, vendor, or habit.</div></div>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Lesson Content</p>
+    <h2 class="h2">Study the material</h2>
+    <div class="rule"></div>
+    <div class="lesson-content">
+      <nav class="toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <ul>
+          <li><a href="#s1">1. The Program & Its Charter</a></li>
+          <li><a href="#s2">2. Architecture & Resources</a></li>
+          <li><a href="#s3">3. Control Fundamentals</a></li>
+          <li><a href="#s4">4. Selecting Controls</a></li>
+          <li><a href="#s5">5. Foundational Principles</a></li>
+        </ul>
+      </nav>
+      <div class="content-main">
+
+        <article class="content-section" id="s1">
+          <div class="cs-head"><span class="cs-num">1</span><h3>The Security Program &amp; Its Charter</h3></div>
+          <p>A security program is the chartered, resourced capability that <em>executes</em> the strategy and keeps risk within appetite. It begins with a <strong>charter</strong> &mdash; senior-management authorization that defines the program&rsquo;s mandate, scope, objectives, authority, and reporting lines. Without that mandate, the manager has responsibility but no authority.</p>
+          <ul class="detail">
+            <li>The charter answers: what is in scope, what the program must achieve, who it reports to, and what authority it carries.</li>
+            <li>Program objectives trace directly back to the security strategy and the business&rsquo;s risk appetite.</li>
+            <li>Senior-management sponsorship is essential &mdash; it confers authority and signals tone at the top.</li>
+            <li>The program integrates with the enterprise (IT, legal, HR, risk), not as a silo.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>When asked what to do <em>first</em> when establishing a security program, the answer is usually to obtain senior-management support and a charter/mandate &mdash; authority and alignment precede tools, controls, and hiring.</div>
+        </article>
+
+        <article class="content-section" id="s2">
+          <div class="cs-head"><span class="cs-num">2</span><h3>Program Architecture &amp; Resources</h3></div>
+          <p>Architecture is how the program&rsquo;s people, processes, and technology fit together to deliver the strategy, sequenced into a roadmap. Resourcing it &mdash; budget, staffing, and tooling &mdash; is a management discipline in its own right; an under-resourced program fails regardless of strategy.</p>
+          <ul class="detail">
+            <li><strong>Roadmap:</strong> prioritized initiatives with owners, milestones, and dependencies, derived from the gap analysis.</li>
+            <li><strong>Resources:</strong> justify budget in business terms, build the right skill mix, and decide build-vs-buy and in-house-vs-outsource.</li>
+            <li><strong>Roles &amp; responsibilities:</strong> define them clearly (often with a RACI) so accountability is unambiguous.</li>
+            <li><strong>Integration:</strong> embed security into enterprise processes (change, procurement, HR) rather than bolting it on.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A manager inherits a toolset bought piecemeal with no roadmap. The right move is to step back to the strategy and architecture &mdash; map tools to control objectives and gaps &mdash; rather than buying yet another product to plug a symptom.</p></div>
+        </article>
+
+        <article class="content-section" id="s3">
+          <div class="cs-head"><span class="cs-num">3</span><h3>Control Fundamentals</h3></div>
+          <p>Controls are the safeguards that meet objectives and reduce risk. The CISM expects fluency in classifying them &mdash; by <strong>function</strong> (what they do in time relative to an event) and by <strong>category</strong> (their nature).</p>
+          <div class="table-wrap" style="margin:1.1rem 0">
+            <table class="data"><thead><tr><th>Control type</th><th>Purpose</th><th>Example</th></tr></thead><tbody>
+          <tr><td><strong>Preventive</strong></td><td>Stop an incident before it happens</td><td>Access control, MFA, encryption, segregation</td></tr>
+          <tr><td><strong>Detective</strong></td><td>Identify that an incident is occurring/occurred</td><td>Logging, monitoring, IDS, reviews, audits</td></tr>
+          <tr><td><strong>Corrective</strong></td><td>Restore and remediate after an incident</td><td>Backups/restore, patching, incident response</td></tr>
+          <tr><td><strong>Deterrent</strong></td><td>Discourage an actor from attempting</td><td>Warning banners, visible cameras, policy</td></tr>
+          <tr><td><strong>Compensating</strong></td><td>Alternative when the primary control isn&rsquo;t feasible</td><td>Extra monitoring where MFA can&rsquo;t be deployed</td></tr>
+            </tbody></table>
+          </div>
+          <figure class="diagram">
+            <svg viewBox="0 0 760 198" role="img" aria-label="Control types arranged around a security event. Before the event: deterrent and preventive controls reduce likelihood. After the event: detective, corrective, and recovery controls reduce impact. Compensating controls substitute when a primary control is not feasible."><text x="176" y="22" text-anchor="middle" class="dg-text-muted" font-size="11.5" font-weight="700">BEFORE &#8212; reduce likelihood</text><text x="576" y="22" text-anchor="middle" class="dg-text-muted" font-size="11.5" font-weight="700">AFTER &#8212; reduce impact</text><line x1="380" y1="34" x2="380" y2="126" class="dg-incident" stroke-width="2" stroke-dasharray="4 3"/><text x="380" y="32" text-anchor="middle" class="dg-text-accent" font-size="10.5" font-weight="700">event</text><rect x="24" y="54" width="140" height="60" rx="8" class="dg-box"/><text x="94.0" y="81.0" text-anchor="middle" class="dg-inv" font-size="12.5" font-weight="700">Deterrent</text><text x="94.0" y="98.0" text-anchor="middle" class="dg-inv" font-size="10.5">warning banners</text><rect x="178" y="54" width="140" height="60" rx="8" class="dg-box"/><text x="248.0" y="81.0" text-anchor="middle" class="dg-inv" font-size="12.5" font-weight="700">Preventive</text><text x="248.0" y="98.0" text-anchor="middle" class="dg-inv" font-size="10.5">MFA, locks</text><rect x="400" y="54" width="112" height="60" rx="8" class="dg-box"/><text x="456.0" y="81.0" text-anchor="middle" class="dg-inv" font-size="12.5" font-weight="700">Detective</text><text x="456.0" y="98.0" text-anchor="middle" class="dg-inv" font-size="10.5">logs, IDS</text><rect x="522" y="54" width="112" height="60" rx="8" class="dg-box"/><text x="578.0" y="81.0" text-anchor="middle" class="dg-inv" font-size="12.5" font-weight="700">Corrective</text><text x="578.0" y="98.0" text-anchor="middle" class="dg-inv" font-size="10.5">patch, restore</text><rect x="644" y="54" width="112" height="60" rx="8" class="dg-box"/><text x="700.0" y="81.0" text-anchor="middle" class="dg-inv" font-size="12.5" font-weight="700">Recovery</text><text x="700.0" y="98.0" text-anchor="middle" class="dg-inv" font-size="10.5">backups, DRP</text><rect x="220" y="150" width="320" height="32" rx="6" class="dg-stroke-navylt" stroke-dasharray="5 3" stroke-width="1.5"/><text x="380" y="170" text-anchor="middle" class="dg-text" font-size="11">Compensating &#8212; stand-in for an infeasible primary control</text></svg>
+            <figcaption>Controls are classified by <em>when</em> they act on a threat: <strong>deterrent</strong> and <strong>preventive</strong> controls work before the event to lower likelihood; <strong>detective</strong>, <strong>corrective</strong>, and <strong>recovery</strong> controls work after it to limit impact. A <strong>compensating</strong> control stands in when the ideal control isn&rsquo;t feasible.</figcaption>
+          </figure>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Also know the three <strong>categories</strong>: administrative (policy/training), technical/logical (encryption/access), and physical (locks/guards). A complete program uses all three &mdash; technology alone is never sufficient.</div>
+          <div class="resource-link">
+            <span class="rl-icon" aria-hidden="true">&#128218;</span>
+            <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Cybersecurity Controls</strong>, <strong>Cryptography</strong>, and <strong>Access Control</strong> &mdash; interactive modules on control families, on encryption and PKI as protective controls, and on authentication and authorization.</span></div>
+            <div class="rl-actions">
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/controls/cybersecurity_controls.html" target="_blank" rel="noopener noreferrer">Controls <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/Cryptography/Crypto.html" target="_blank" rel="noopener noreferrer">Cryptography <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/access_control/access_control.html" target="_blank" rel="noopener noreferrer">Access Control <span class="ext">&#8599;</span></a>
+            </div>
+          </div>
+          <figure class="diagram">
+            <svg viewBox="0 0 780 206" role="img" aria-label="Asymmetric encryption. The sender encrypts plaintext with the recipient public key, producing ciphertext that travels safely; the recipient decrypts it with their matching private key. The private key never leaves the recipient."><rect x="16" y="66" width="104" height="72" rx="8" class="dg-box-soft"/><text x="68.0" y="107.0" text-anchor="middle" class="dg-text" font-size="12.5" font-weight="700">Sender</text><rect x="140" y="66" width="176" height="72" rx="8" class="dg-box-accent"/><text x="228.0" y="99.0" text-anchor="middle" class="dg-inv" font-size="12.5" font-weight="700">Encrypt with</text><text x="228.0" y="116.0" text-anchor="middle" class="dg-inv" font-size="10.5">Recipient&#8217;s PUBLIC key</text><rect x="336" y="66" width="104" height="72" rx="8" class="dg-box-soft"/><text x="388.0" y="107.0" text-anchor="middle" class="dg-text" font-size="12.5" font-weight="700">Ciphertext</text><rect x="380" y="80" width="16" height="12" rx="2" class="dg-box"/><path d="M382 80 v-4 a6 6 0 0 1 12 0 v4" class="dg-stroke-navylt" stroke-width="2"/><rect x="460" y="66" width="176" height="72" rx="8" class="dg-box"/><text x="548.0" y="99.0" text-anchor="middle" class="dg-inv" font-size="12.5" font-weight="700">Decrypt with</text><text x="548.0" y="116.0" text-anchor="middle" class="dg-inv" font-size="10.5">Recipient&#8217;s PRIVATE key</text><rect x="656" y="66" width="108" height="72" rx="8" class="dg-box-soft"/><text x="710.0" y="107.0" text-anchor="middle" class="dg-text" font-size="12.5" font-weight="700">Recipient</text><line x1="120" y1="102" x2="131" y2="102" class="dg-arrow-line" stroke-width="2"/><path d="M130 97 L140 102 L130 107 Z" class="dg-arrow"/><line x1="316" y1="102" x2="327" y2="102" class="dg-arrow-line" stroke-width="2"/><path d="M326 97 L336 102 L326 107 Z" class="dg-arrow"/><line x1="440" y1="102" x2="451" y2="102" class="dg-arrow-line" stroke-width="2"/><path d="M450 97 L460 102 L450 107 Z" class="dg-arrow"/><line x1="636" y1="102" x2="647" y2="102" class="dg-arrow-line" stroke-width="2"/><path d="M646 97 L656 102 L646 107 Z" class="dg-arrow"/></svg>
+            <figcaption>In <strong>asymmetric</strong> encryption the keys are a linked pair: anyone can encrypt with the recipient&rsquo;s <strong>public</strong> key, but only the matching <strong>private</strong> key &mdash; which never leaves the recipient &mdash; can decrypt. The exam&rsquo;s recurring finding isn&rsquo;t weak math, it&rsquo;s weak <em>key management</em>.</figcaption>
+          </figure>
+        </article>
+
+        <article class="content-section" id="s4">
+          <div class="cs-head"><span class="cs-num">4</span><h3>Selecting Controls</h3></div>
+          <p>Controls are chosen to meet objectives that trace to risk &mdash; never adopted because they are popular or because a vendor pitched them. Selection is <strong>risk-based</strong> and cost-effective, drawn from frameworks and applied in layers.</p>
+          <ul class="detail">
+            <li>Start from the <strong>control objective</strong> (the risk to reduce), then choose the control that meets it proportionately.</li>
+            <li>Use framework catalogues (ISO&nbsp;27002, NIST&nbsp;800-53) and <strong>baselines</strong> to ensure completeness and consistency.</li>
+            <li>Apply <strong>defense in depth</strong> &mdash; layered, independent controls so one failure isn&rsquo;t catastrophic.</li>
+            <li>Weigh cost against the risk reduced; a control should not cost more than the risk it mitigates.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Asked to &lsquo;add the latest AI security tool,&rsquo; the manager first asks which control objective and risk it serves. If an existing layer already meets that objective, the spend is hard to justify &mdash; risk, not novelty, drives selection.</p></div>
+        </article>
+
+        <article class="content-section" id="s5">
+          <div class="cs-head"><span class="cs-num">5</span><h3>Foundational Control Principles</h3></div>
+          <p>A handful of principles keep a control set coherent and are tested repeatedly. They are management principles as much as technical ones &mdash; the manager designs the program around them.</p>
+          <ul class="detail">
+            <li><strong>Least privilege:</strong> minimum access necessary, limiting blast radius from error or compromise.</li>
+            <li><strong>Separation of duties:</strong> no single person can complete a sensitive transaction alone, deterring fraud and unilateral error.</li>
+            <li><strong>Need-to-know:</strong> access to information is limited to those whose role requires it, independent of clearance level.</li>
+            <li><strong>Defense in depth:</strong> layered, independent controls across people, process, and technology. <span class="xref">(applied under fire in <a href="lesson06.html">Lesson&nbsp;6</a> &mdash; incident response)</span></li>
+          </ul>
+          <figure class="diagram">
+            <svg viewBox="0 0 620 352" role="img" aria-label="Defense in depth shown as nested layers: policies and awareness on the outside, then physical security, network and perimeter, host and endpoint, application, and data at the centre. An attacker must defeat every layer."><rect x="20" y="20" width="580" height="316" rx="10" class="dg-stroke-navylt" stroke-width="2"/><text x="310" y="37" text-anchor="middle" class="dg-text" font-size="11.5" font-weight="600">Policies, Standards &amp; Security Awareness</text><rect x="66" y="44" width="488" height="268" rx="10" class="dg-stroke-navylt" stroke-width="2"/><text x="310" y="61" text-anchor="middle" class="dg-text" font-size="11.5" font-weight="600">Physical Security</text><rect x="112" y="68" width="396" height="220" rx="10" class="dg-stroke-navylt" stroke-width="2"/><text x="310" y="85" text-anchor="middle" class="dg-text" font-size="11.5" font-weight="600">Network &amp; Perimeter</text><rect x="158" y="92" width="304" height="172" rx="10" class="dg-stroke-navylt" stroke-width="2"/><text x="310" y="109" text-anchor="middle" class="dg-text" font-size="11.5" font-weight="600">Host &amp; Endpoint</text><rect x="204" y="116" width="212" height="124" rx="10" class="dg-stroke-navylt" stroke-width="2"/><text x="310" y="133" text-anchor="middle" class="dg-text" font-size="11.5" font-weight="600">Application</text><rect x="250" y="150" width="120" height="58" rx="8" class="dg-box"/><text x="310" y="184" text-anchor="middle" class="dg-inv" font-size="14" font-weight="700">DATA</text></svg>
+            <figcaption><strong>Defense in depth</strong> layers independent controls around the asset &mdash; policy and people on the outside, then physical, network, host, and application controls around the <strong>data</strong> at the core. No single layer is trusted alone; an attacker must defeat every layer, so one failure never exposes the asset.</figcaption>
+          </figure>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Least privilege limits <em>how much</em> access; separation of duties splits <em>who</em> can do a task; need-to-know limits <em>which information</em> is visible. Don&rsquo;t conflate them &mdash; the exam tests the distinctions.</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="knowledge-check">
+    <p class="eyebrow">Scored Knowledge Check</p>
+    <h2 class="h2">Test your program judgment</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:1.5rem">Eight questions on building the program and selecting controls. Answer as the manager who runs the program, not the engineer who configures a box.</p>
+    <div class="quiz-card">
+      <form id="quiz">
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q1.</span>What is the PRIMARY purpose of an information security program charter?</p>
+          <fieldset class="options">
+            <legend>Question 1 options</legend>
+            <label class="opt"><input type="radio" name="q1" value="A"><span><span class="opt-letter">A.</span> To list every control the program will deploy</span></label>
+            <label class="opt"><input type="radio" name="q1" value="B"><span><span class="opt-letter">B.</span> To authorize the program and define its mandate, scope, authority, and reporting lines</span></label>
+            <label class="opt"><input type="radio" name="q1" value="C"><span><span class="opt-letter">C.</span> To document the results of the latest risk assessment</span></label>
+            <label class="opt"><input type="radio" name="q1" value="D"><span><span class="opt-letter">D.</span> To specify firewall and server configurations</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> The charter is senior management&rsquo;s authorization of the program &mdash; its mandate, scope, authority, and reporting lines. It gives the manager the authority to act; it is not a control list or a configuration document. <b>Why the others fall short:</b> <b>A</b> a charter doesn&rsquo;t list every control; <b>C</b> it isn&rsquo;t a risk-assessment record; <b>D</b> it doesn&rsquo;t specify device configurations.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q2.</span>A new manager is establishing a security program from scratch. Which should come FIRST?</p>
+          <fieldset class="options">
+            <legend>Question 2 options</legend>
+            <label class="opt"><input type="radio" name="q2" value="A"><span><span class="opt-letter">A.</span> Purchase a SIEM and endpoint protection</span></label>
+            <label class="opt"><input type="radio" name="q2" value="B"><span><span class="opt-letter">B.</span> Hire a penetration testing firm</span></label>
+            <label class="opt"><input type="radio" name="q2" value="C"><span><span class="opt-letter">C.</span> Obtain senior-management support and a program charter/mandate</span></label>
+            <label class="opt"><input type="radio" name="q2" value="D"><span><span class="opt-letter">D.</span> Deploy multi-factor authentication everywhere</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Authority and alignment come first: senior-management support and a charter give the program its mandate. Tools and projects follow from a chartered, strategy-aligned program. <b>Why the others fall short:</b> <b>A</b> buying tools before a mandate is premature; <b>B</b> hiring pen testers is premature; <b>D</b> deploying MFA is execution before the program is authorized.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q3.</span>Logging and intrusion-detection systems are examples of which control type?</p>
+          <fieldset class="options">
+            <legend>Question 3 options</legend>
+            <label class="opt"><input type="radio" name="q3" value="A"><span><span class="opt-letter">A.</span> Preventive</span></label>
+            <label class="opt"><input type="radio" name="q3" value="B"><span><span class="opt-letter">B.</span> Detective</span></label>
+            <label class="opt"><input type="radio" name="q3" value="C"><span><span class="opt-letter">C.</span> Corrective</span></label>
+            <label class="opt"><input type="radio" name="q3" value="D"><span><span class="opt-letter">D.</span> Deterrent</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Logging and IDS identify that something is happening or has happened &mdash; detective controls. Preventive controls stop the event; corrective controls restore after it. <b>Why the others fall short:</b> <b>A</b> preventive controls stop incidents beforehand; <b>C</b> corrective controls restore afterward; <b>D</b> deterrent controls discourage actors &mdash; logging/IDS <em>detect</em>.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q4.</span>Multi-factor authentication cannot be deployed on a legacy system. The team adds enhanced monitoring and tighter network restrictions instead. This is BEST described as a:</p>
+          <fieldset class="options">
+            <legend>Question 4 options</legend>
+            <label class="opt"><input type="radio" name="q4" value="A"><span><span class="opt-letter">A.</span> Compensating control</span></label>
+            <label class="opt"><input type="radio" name="q4" value="B"><span><span class="opt-letter">B.</span> Deterrent control</span></label>
+            <label class="opt"><input type="radio" name="q4" value="C"><span><span class="opt-letter">C.</span> Detective control</span></label>
+            <label class="opt"><input type="radio" name="q4" value="D"><span><span class="opt-letter">D.</span> Corrective control</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> A compensating control is an alternative safeguard used when the ideal control isn&rsquo;t feasible, achieving comparable risk reduction &mdash; here, monitoring and restrictions stand in for MFA. <b>Why the others fall short:</b> <b>B</b> a deterrent discourages rather than substitutes; <b>C</b> detective identifies but here the aim is to replace a preventive; <b>D</b> corrective restores after an event &mdash; this stands in for an infeasible primary control.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q5.</span>On what basis should a security manager PRIMARILY select controls?</p>
+          <fieldset class="options">
+            <legend>Question 5 options</legend>
+            <label class="opt"><input type="radio" name="q5" value="A"><span><span class="opt-letter">A.</span> The newest technology available</span></label>
+            <label class="opt"><input type="radio" name="q5" value="B"><span><span class="opt-letter">B.</span> Whatever the largest competitor uses</span></label>
+            <label class="opt"><input type="radio" name="q5" value="C"><span><span class="opt-letter">C.</span> The preferences of the IT vendor</span></label>
+            <label class="opt"><input type="radio" name="q5" value="D"><span><span class="opt-letter">D.</span> The risks to be reduced and the value of the assets protected</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Control selection is risk-based: choose controls that proportionately reduce identified risks to valued assets, guided by frameworks and cost-benefit &mdash; not by novelty, imitation, or vendor preference. <b>Why the others fall short:</b> <b>A</b> the newest technology isn&rsquo;t the basis; <b>B</b> copying a competitor isn&rsquo;t risk-based; <b>C</b> the vendor&rsquo;s preference isn&rsquo;t the driver &mdash; risk and asset value are.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q6.</span>A complete security program relies on administrative, technical, and physical controls because:</p>
+          <fieldset class="options">
+            <legend>Question 6 options</legend>
+            <label class="opt"><input type="radio" name="q6" value="A"><span><span class="opt-letter">A.</span> Technology alone cannot address people, process, and physical risks</span></label>
+            <label class="opt"><input type="radio" name="q6" value="B"><span><span class="opt-letter">B.</span> Regulations require exactly three categories</span></label>
+            <label class="opt"><input type="radio" name="q6" value="C"><span><span class="opt-letter">C.</span> Physical controls are cheaper than technical ones</span></label>
+            <label class="opt"><input type="radio" name="q6" value="D"><span><span class="opt-letter">D.</span> Administrative controls replace the need for technical ones</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Risk spans people, process, and physical environment, so an effective program layers all three control categories. Technology by itself leaves administrative and physical gaps. <b>Why the others fall short:</b> <b>B</b> regulations don&rsquo;t mandate &lsquo;exactly three&rsquo; categories; <b>C</b> cost isn&rsquo;t the reason; <b>D</b> administrative controls don&rsquo;t replace technical ones &mdash; each covers different risks.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q7.</span>Splitting the ability to initiate and to approve a payment between two different employees is an application of:</p>
+          <fieldset class="options">
+            <legend>Question 7 options</legend>
+            <label class="opt"><input type="radio" name="q7" value="A"><span><span class="opt-letter">A.</span> Least privilege</span></label>
+            <label class="opt"><input type="radio" name="q7" value="B"><span><span class="opt-letter">B.</span> Need-to-know</span></label>
+            <label class="opt"><input type="radio" name="q7" value="C"><span><span class="opt-letter">C.</span> Separation of duties</span></label>
+            <label class="opt"><input type="radio" name="q7" value="D"><span><span class="opt-letter">D.</span> Defense in depth</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Requiring two people to complete a sensitive transaction is separation of duties, which deters fraud and unilateral error. Least privilege limits access scope; need-to-know limits information visibility. <b>Why the others fall short:</b> <b>A</b> least privilege limits access scope; <b>B</b> need-to-know limits which information is visible; <b>D</b> defense in depth layers controls &mdash; splitting initiate/approve is separation of duties.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q8.</span>The PRINCIPLE that a user should be granted only the access required to perform their role is:</p>
+          <fieldset class="options">
+            <legend>Question 8 options</legend>
+            <label class="opt"><input type="radio" name="q8" value="A"><span><span class="opt-letter">A.</span> Separation of duties</span></label>
+            <label class="opt"><input type="radio" name="q8" value="B"><span><span class="opt-letter">B.</span> Defense in depth</span></label>
+            <label class="opt"><input type="radio" name="q8" value="C"><span><span class="opt-letter">C.</span> Need-to-know</span></label>
+            <label class="opt"><input type="radio" name="q8" value="D"><span><span class="opt-letter">D.</span> Least privilege</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Least privilege grants the minimum access necessary for the role, limiting the impact of error, misuse, or compromise. Need-to-know restricts which information is visible; separation of duties splits tasks across people. <b>Why the others fall short:</b> <b>A</b> separation of duties splits a task; <b>B</b> defense in depth layers controls; <b>C</b> need-to-know limits information &mdash; granting only required access is least privilege.</div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" onclick="gradeQuiz()">Submit Answers</button>
+          <button type="button" class="btn secondary" onclick="resetQuiz()">Reset</button>
+          <span class="score" id="score" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Lesson navigation">
+  <div class="pager-inner">
+    <a href="lesson03.html" class="prev"><span class="pager-dir">&#8592; Previous</span><span class="pager-name">Lesson 3 &mdash; Risk Management (Part B)</span></a>
+    <a href="lesson05.html" class="next"><span class="pager-dir">Next &#8594;</span><span class="pager-name">Lesson 5 &mdash; Security Program (Part B)</span></a>
+  </div>
+</nav>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+</body>
+</html>

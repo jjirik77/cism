@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Audio (Podcast) Prompt Generator | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<style>
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+  .builder { display: grid; gap: 1.25rem; }
+  .field { display: grid; gap: 0.4rem; }
+  .field label { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-primary); }
+  .field .hint { font-family: Arial, sans-serif; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+  .field select, .field input[type=text] {
+    width: 100%; font-family: Arial, sans-serif; font-size: 0.92rem; color: var(--text-primary);
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.6rem 0.7rem;
+    transition: border-color 0.15s;
+  }
+  .field select:focus, .field input[type=text]:focus { outline: none; border-color: var(--gold); }
+  .field-check { display: flex; align-items: flex-start; gap: 0.6rem; background: var(--blue-pale); border: 1px solid var(--blue-pale-border); border-radius: 6px; padding: 0.8rem 1rem; }
+  .field-check input { margin-top: 0.2rem; accent-color: var(--gold); flex-shrink: 0; }
+  .field-check span { font-family: Arial, sans-serif; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; }
+  .field-check b { color: var(--text-primary); }
+
+  .preview-wrap { position: sticky; top: 78px; display: grid; gap: 0.9rem; }
+  .preview-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .preview-head .ph-title { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-primary); }
+  #promptOut {
+    width: 100%; min-height: 460px; resize: vertical; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.8rem; line-height: 1.55; color: var(--text-primary); background: var(--blue-pale);
+    border: 1px solid var(--blue-pale-border); border-radius: 6px; padding: 1rem 1.1rem;
+  }
+  .copy-note { font-family: Arial, sans-serif; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; background: var(--card-bg); border: 1px solid var(--border); border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; padding: 0.85rem 1.05rem; }
+  .copy-note b { color: var(--text-primary); }
+  #copyMsg { font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--correct); }
+  @media (max-width: 880px) {
+    .tool-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+    .preview-wrap { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#resources">Resources</a> &nbsp;&rsaquo;&nbsp; <span>Study Audio Generator</span></p>
+    <span class="lesson-badge-lg">Study Resource</span>
+    <h1>Study Audio <span>Prompt Generator</span></h1>
+    <p class="lesson-lede">Build a prompt that writes a focused study-podcast script for any CISM domain or topic &mdash; perfect for the commute or the gym. Generate the script with your AI, then narrate it or run it through a text-to-speech engine for a ready-to-listen study episode.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <p class="eyebrow">Build Your Prompt</p>
+    <h2 class="h2">Configure the episode</h2>
+    <div class="rule"></div>
+
+    <div class="tool-grid">
+
+      <!-- BUILDER -->
+      <form class="builder" id="builder" oninput="buildPrompt()" onchange="buildPrompt()" onsubmit="return false">
+
+        <div class="field">
+          <label for="domain">CISM Domain</label>
+          <select id="domain">
+            <option value="Orientation &mdash; Exam strategy, the management mindset, ISACA ethics, and exam logistics">Orientation &amp; Exam Prep</option>
+            <option value="Domain 1 &mdash; Information Security Governance (governance outcomes, security strategy, frameworks COBIT/ISO 27001/NIST CSF, board and steering-committee oversight, roles, policies, metrics)" selected>Domain 1 &mdash; Information Security Governance</option>
+            <option value="Domain 2 &mdash; Information Security Risk Management (risk lifecycle, appetite and tolerance, asset classification and valuation, qualitative and quantitative assessment, treatment, monitoring and reporting)">Domain 2 &mdash; Information Security Risk Management</option>
+            <option value="Domain 3 &mdash; Information Security Program (program charter and architecture, controls selection and implementation, awareness and training, third-party risk, security operations, metrics, continuous improvement)">Domain 3 &mdash; Information Security Program</option>
+            <option value="Domain 4 &mdash; Incident Management &amp; Resilience (incident program and classification, response lifecycle, communication and notification, business continuity, disaster recovery, plan testing, recovery objectives)">Domain 4 &mdash; Incident Management</option>
+            <option value="Mixed &mdash; cross-domain review spanning all four CISM domains">Mixed / Cross-Domain</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="topic">Topic Focus <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></label>
+          <input type="text" id="topic" placeholder="e.g., governance metrics, risk treatment, security awareness, BIA / RTO / RPO, incident response">
+          <span class="hint">Leave blank to cover the domain broadly; narrow it for a deep-dive episode.</span>
+        </div>
+
+        <div class="field">
+          <label for="format">Format</label>
+          <select id="format">
+            <option value="twohost" selected>Two-host conversation (audio-overview style)</option>
+            <option value="narrator">Single-narrator study segment</option>
+            <option value="qa">Question-and-answer drill</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="length">Length</label>
+          <select id="length">
+            <option value="about 5 minutes (roughly 750 words)">~5 minutes</option>
+            <option value="about 10 minutes (roughly 1,500 words)" selected>~10 minutes</option>
+            <option value="about 15 minutes (roughly 2,250 words)">~15 minutes</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="level">Level</label>
+          <select id="level">
+            <option value="Foundational &mdash; introduce and reinforce core terminology and concepts">Foundational</option>
+            <option value="Practitioner &mdash; connect concepts to realistic management situations" selected>Practitioner</option>
+            <option value="Exam-ready &mdash; emphasize exam reasoning, best-answer judgment, and subtle distinctions">Exam-ready</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="emphasis">Emphasis</label>
+          <select id="emphasis">
+            <option value="a balanced overview: introduce the topic, explain the core ideas, then finish with the key exam insights" selected>Balanced overview</option>
+            <option value="core concepts and key terminology, explained with concrete, memorable examples">Core concepts &amp; terminology</option>
+            <option value="exam tips and common trap-answer patterns &mdash; what the exam tests and how to avoid predictable mistakes">Exam tips &amp; trap patterns</option>
+            <option value="short audit scenarios talked through out loud, modeling how a security manager reasons toward the best answer">Scenario walk-throughs</option>
+          </select>
+        </div>
+
+        <label class="field-check">
+          <input type="checkbox" id="ttsGuide" checked>
+          <span><b>Include narration / text-to-speech guidance.</b> Add speaker labels, acronym pronunciation notes, and pacing hints so the script is ready to drop into a TTS tool.</span>
+        </label>
+      </form>
+
+      <!-- PREVIEW -->
+      <div class="preview-wrap">
+        <div class="preview-head">
+          <span class="ph-title">&#127911; Generated prompt</span>
+          <div style="display:flex;gap:0.6rem;align-items:center">
+            <span id="copyMsg" role="status" aria-live="polite"></span>
+            <button type="button" class="btn secondary" onclick="resetForm()">Reset</button>
+            <button type="button" class="btn" onclick="copyPrompt()">&#128203; Copy</button>
+          </div>
+        </div>
+        <textarea id="promptOut" readonly aria-label="Generated prompt"></textarea>
+        <div class="copy-note"><b>How to use:</b> Copy this prompt into Claude (or another AI) to get a finished script. Then either read it aloud, or paste it into a text-to-speech tool (ElevenLabs, your OS read-aloud, NotebookLM, etc.) to produce the audio file. Review for accuracy before study use.</div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. Audio scripts generated with this tool should be reviewed for accuracy before instructional use.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+<script>
+  const FORMATS = {
+    twohost: {name:"Two-host conversation", desc:"A natural, engaging dialogue between two hosts. One is a curious learner who asks the questions a CISM candidate would ask; the other is a knowledgeable mentor who explains clearly and conversationally. Label every turn with a speaker (HOST A / HOST B). Keep it warm and dynamic with genuine back-and-forth — the feel of a study 'audio overview.'"},
+    narrator: {name:"Single-narrator study segment", desc:"A single, friendly expert voice guiding the listener through the material in a clear, well-structured, easy-to-follow way, as if teaching a focused mini-lesson."},
+    qa: {name:"Question-and-answer drill", desc:"A coaching drill: the narrator poses an exam-style question, leaves a brief beat for the listener to think ('...take a second...'), then explains the best answer and the security manager's reasoning behind it. Repeat across several items."}
+  };
+
+  function val(id){ return document.getElementById(id).value; }
+
+  function buildPrompt(){
+    const domain = val('domain');
+    const topicRaw = document.getElementById('topic').value.trim();
+    const topic = topicRaw ? topicRaw : "the most important, high-frequency topics within the domain (you choose)";
+    const fmt = FORMATS[val('format')];
+    const length = val('length');
+    const level = val('level');
+    const emphasis = val('emphasis');
+    const tts = document.getElementById('ttsGuide').checked;
+
+    let p = "";
+    p += "You are an expert CISM (Certified Information Security Manager) instructor and audio scriptwriter. Write a study-podcast SCRIPT designed for listening — a candidate will play it while commuting or exercising.\n\n";
+    p += "## GOAL\n";
+    p += "Produce a complete, ready-to-narrate script (plain text) for an audio study episode. It should be engaging enough to hold attention by ear alone and genuinely useful for exam preparation.\n\n";
+    p += "## EPISODE\n";
+    p += "- Format: " + fmt.name + ". " + fmt.desc + "\n";
+    p += "- CISM domain: " + domain + "\n";
+    p += "- Topic focus: " + topic + "\n";
+    p += "- Length: " + length + ", paced for natural spoken delivery.\n";
+    p += "- Level: " + level + "\n";
+    p += "- Emphasis: " + emphasis + "\n\n";
+    p += "## CONTENT REQUIREMENTS\n";
+    p += "- Ground everything in the CISM \"management mindset\": business-aligned, risk-based, governance-focused judgment — what an security manager should DO, evaluate, or conclude, not what a technician builds or operates.\n";
+    p += "- Be accurate to the current ISACA CISM Job Practice and the exam's best-answer, scenario-based style.\n";
+    p += "- Structure the episode so it is easy to follow by ear: a short hook to open, then the key ideas explained one at a time with concrete examples, then the exam insights / traps to remember, and a brief recap of the must-remember points at the end.\n";
+    p += "- Make it memorable: use plain language, analogies, and a few 'here's the thing the exam is really testing' moments.\n\n";
+    p += "## AUDIO STYLE (important — this is for listening, not reading)\n";
+    p += "- Write for the ear: conversational sentences, natural transitions, and signposting ('first... next... the key thing to remember...').\n";
+    p += "- The FIRST time you use an acronym, say the full term and then the acronym (for example, 'Recovery Time Objective — R-T-O').\n";
+    p += "- Do NOT reference anything visual (no 'as you can see', no on-screen text, no figures). Everything must make sense as audio only.\n";
+    if (tts){
+      p += "\n## NARRATION / TEXT-TO-SPEECH GUIDANCE\n";
+      p += "- Clearly label each speaker turn so the script can be voiced (and, for a two-host format, assigned to two TTS voices).\n";
+      p += "- Where an acronym or term could be mispronounced, add a light phonetic hint in parentheses the first time (e.g., 'COBIT (CO-bit)').\n";
+      p += "- Keep sentences a comfortable length for a calm, clear narration pace. You may add occasional short pause cues like '(pause)' where a beat helps comprehension.\n";
+    }
+    p += "\n## DELIVERABLE\n";
+    p += "Return the finished script as plain text, ready to paste into a text-to-speech tool. Begin with a one-line episode title and a single-sentence summary, then the script itself.";
+
+    document.getElementById('promptOut').value = p;
+  }
+
+  function copyPrompt(){
+    const ta = document.getElementById('promptOut');
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    const done = (ok) => {
+      const msg = document.getElementById('copyMsg');
+      msg.textContent = ok ? "✓ Copied!" : "Press Ctrl/Cmd+C to copy";
+      setTimeout(()=>{ msg.textContent=""; }, 2500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(()=>done(true)).catch(()=>done(false));
+    } else {
+      try { document.execCommand('copy'); done(true); } catch(e){ done(false); }
+    }
+  }
+
+  function resetForm(){
+    document.getElementById('builder').reset();
+    buildPrompt();
+    document.getElementById('copyMsg').textContent = "";
+  }
+
+  buildPrompt();
+</script>
+</body>
+</html>

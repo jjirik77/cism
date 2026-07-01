@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CISM Exam-Day One-Pager</title>
+<style>
+:root{--p:#0f3b4c;--a:#14b8a6;--ink:#0b2a2f;--panel:#e6faf6;}
+*{box-sizing:border-box;}
+body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);max-width:900px;margin:0 auto;padding:1.5rem;line-height:1.4;}
+h1{color:var(--p);font-size:1.5rem;margin:0 0 .2rem;}
+.sub{color:#667;font-size:.9rem;margin:0 0 1.1rem;}
+.mindset{background:var(--panel);border:1px solid var(--p);border-left:5px solid var(--a);border-radius:8px;padding:.8rem 1rem;margin:0 0 1.1rem;}
+.mindset h2,.traps h2{color:var(--p);font-size:1.05rem;margin:0 0 .5rem;text-transform:uppercase;letter-spacing:.04em;}
+.mindset ol{margin:.3rem 0 0;padding-left:1.2rem;} .mindset li{margin:.3rem 0;} .mindset b{color:var(--p);}
+table{width:100%;border-collapse:collapse;font-size:.86rem;}
+th{background:var(--p);color:#fff;text-align:left;padding:.4rem .6rem;}
+td{padding:.4rem .6rem;border-bottom:1px solid #ddd;vertical-align:top;}
+td.trap{width:42%;color:var(--a);font-weight:600;} td.todo b{color:var(--p);}
+.btn{display:inline-block;background:var(--p);color:#fff;padding:.5rem 1rem;border:none;border-radius:6px;font-size:.9rem;cursor:pointer;text-decoration:none;margin-bottom:1rem;}
+.foot{margin-top:1rem;font-size:.72rem;color:#889;font-style:italic;}
+@media print{.no-print{display:none!important;}body{padding:0;max-width:none;}th,.mindset{-webkit-print-color-adjust:exact;print-color-adjust:exact;}@page{margin:1cm;}}
+</style></head>
+<body>
+<button class="btn no-print" onclick="window.print()">&#128424;&#65039; Print / Save as PDF</button>
+<h1>CISM &mdash; Exam-Day One-Pager</h1>
+<p class="sub">The two highest-yield artifacts in the workshop: the manager&rsquo;s mindset and the trap-answer patterns. Print this and review it the morning of the exam.</p>
+<div class="mindset"><h2>The manager&rsquo;s mindset</h2><ol><li><b>Business first.</b> The answer protects business objectives and value, balanced against cost.</li><li><b>Risk-based.</b> Assess and prioritize by risk before acting.</li><li><b>Right owner.</b> The business owns and accepts risk; security advises and recommends.</li><li><b>Govern, don&rsquo;t do.</b> Direct, assign, escalate, and oversee rather than perform.</li></ol></div>
+<div class="traps"><h2>Trap-Answer Patterns &mdash; and What To Do</h2>
+<table><thead><tr><th>The trap (tempting but wrong)</th><th>What to do instead</th></tr></thead><tbody><tr><td class="trap">Jump in and fix the problem yourself, technically</td><td class="todo">Direct and coordinate. The manager oversees the response and assigns specialists &mdash; CISM tests management judgment, not hands-on remediation.</td></tr><tr><td class="trap">Choose the most technically secure option</td><td class="todo">Choose the business-aligned option. The best answer balances security with cost, risk, and business objectives &mdash; not maximum security regardless of impact.</td></tr><tr><td class="trap">Accept the risk because the control is too expensive</td><td class="todo">Cost is the business&rsquo;s call. The manager presents the risk and options; the business risk owner / senior management accepts or rejects residual risk.</td></tr><tr><td class="trap">Eradicate the malware immediately</td><td class="todo">Contain first. Isolate affected systems before eradicating, so the threat can&rsquo;t spread and forensic evidence is preserved.</td></tr><tr><td class="trap">Patch the critical vulnerability right now</td><td class="todo">Assess business risk and follow the change/incident process. The manager prioritizes by risk and coordinates &mdash; reflexive action is a technician&rsquo;s reflex.</td></tr><tr><td class="trap">Buy a new tool to close the gap</td><td class="todo">Start from the control objective and the risk. If an existing layer already meets it, new spend isn&rsquo;t justified &mdash; risk drives selection, not novelty.</td></tr><tr><td class="trap">Conceal or delay the breach to protect reputation</td><td class="todo">Disclose to the appropriate parties within required timeframes. Duty to stakeholders and the law outranks protecting the organization&rsquo;s image.</td></tr><tr><td class="trap">Let the IT or security team classify the data</td><td class="todo">The business data owner classifies data and approves access; IT (the custodian) only implements the protection.</td></tr><tr><td class="trap">Hand the board 4,000 vulnerability findings</td><td class="todo">Translate them into a few business risks with owners and impact. Governance wants decisions, not a raw data dump.</td></tr><tr><td class="trap">Build the strategy from the latest threats and technology</td><td class="todo">Build it from business objectives via gap analysis. Strategy flows from the business down &mdash; never from technology up.</td></tr></tbody></table></div>
+<p class="foot">CISM&#174; Independent study aid &mdash; not affiliated with or endorsed by ISACA. Verify the current exam content outline at isaca.org.</p>
+</body></html>

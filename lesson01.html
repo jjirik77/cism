@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 — Domain 1: Information Security Governance | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#domains">Domains</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#lessons">Lessons</a> &nbsp;&rsaquo;&nbsp; <span>Lesson 1</span></p>
+    <span class="lesson-badge-lg">Day 1 &mdash; Afternoon &middot; Domain 1 (17%)</span>
+    <h1>Information Security <span>Governance</span></h1>
+    <p class="lesson-lede">Governance answers WHAT we protect and WHY before any technical HOW. Domain 1 establishes how a security program is directed, aligned to the business, and held accountable &mdash; the management foundation every other domain builds on.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">Session: <strong>Afternoon, Day 1</strong></span>
+      <span class="meta-chip">Duration: <strong>~3 hrs</strong></span>
+      <span class="meta-chip">Exam Weight: <strong>17% (Domain 1)</strong></span>
+      <span class="meta-chip">Knowledge Check: <strong>8 Questions</strong></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <p class="eyebrow">Overview</p>
+    <h2 class="h2">Direct, align, and hold the program accountable</h2>
+    <div class="rule"></div>
+    <p class="lead">Governance is the system by which an organization <em>directs and controls</em> its information security activities. It is the smallest domain at 17%, but it sets the logic the exam rewards everywhere else: security exists to <strong>enable the business</strong>, risk is owned by the business, and the security manager&rsquo;s job is to align, advise, and oversee &mdash; not to chase technology. This lesson covers the five governance outcomes, the governance hierarchy and the CISO&rsquo;s place in it, how a security strategy is developed from business objectives, the frameworks that structure it (COBIT, ISO&nbsp;27001, NIST CSF), the compliance landscape, and the metrics that prove the program is working.</p>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2 class="h2">By the end of this lesson you will be able to&hellip;</h2>
+    <div class="rule"></div>
+    <ul class="objectives">
+      <li><span><strong>Explain</strong> information security governance and its five outcomes, and why accountability rests at the board/executive level. <em class="bloom-tag">Bloom: Understand</em></span></li>
+      <li><span><strong>Distinguish</strong> governance from management and locate the CISO, steering committee, and risk owners in the hierarchy. <em class="bloom-tag">Bloom: Analyze</em></span></li>
+      <li><span><strong>Develop</strong> a security strategy from business objectives using gap analysis, a roadmap, and risk appetite. <em class="bloom-tag">Bloom: Create</em></span></li>
+      <li><span><strong>Select</strong> and apply governance frameworks (COBIT&nbsp;2019, ISO/IEC&nbsp;27001, NIST CSF) appropriate to organizational context. <em class="bloom-tag">Bloom: Evaluate</em></span></li>
+      <li><span><strong>Design</strong> governance metrics (KGI/KPI/KRI) that communicate program value and risk to leadership. <em class="bloom-tag">Bloom: Create</em></span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Key Terms</p>
+    <h2 class="h2">Governance vocabulary</h2>
+    <div class="rule"></div>
+    <p class="flip-hint-top">&#128072; Tap a card to flip it. Own these governance terms &mdash; the exam phrases its scenarios in this language.</p>
+    <div class="vocab-grid">
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Information security governance</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">ISACA: the system by which an organization <em>directs and controls</em> its information security activities &mdash; setting direction, assigning accountability, and overseeing performance at the executive/board level.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Five governance outcomes</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">What good governance delivers: <strong>strategic alignment, risk management, value delivery, resource optimization,</strong> and <strong>performance measurement</strong>.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Governance vs. management</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Governance <em>directs and oversees</em> (the board/executive level decides WHAT and WHY); management <em>executes</em> the strategy (HOW). The CISM works across both, mostly the management layer.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">CISO</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Chief Information Security Officer &mdash; establishes and maintains the governance framework and security strategy; should report high enough to stay independent of the operations it oversees.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">IT steering committee</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A cross-functional body that prioritizes IT and security investments and aligns them with business priorities &mdash; it sets direction, not day-to-day operations.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Tone at the top</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The example set by executives and the board; a security-positive culture is driven from the top and is itself a governance control.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Risk appetite vs. tolerance</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def"><strong>Appetite</strong> = the amount of risk the organization will accept pursuing its objectives; <strong>tolerance</strong> = the acceptable variation around a specific objective. Both are set by the business, not by security.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Gap analysis</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Comparing the <em>current state</em> of the program to a <em>desired state</em> (a target framework or maturity level) to identify and prioritize the initiatives that close the gap &mdash; the foundation of strategy.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Security strategy</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The plan that turns business objectives into a prioritized roadmap; it flows Business Vision &rarr; Business Strategy &rarr; IT Strategy &rarr; IS Strategy &rarr; Policy &rarr; Standards &rarr; Procedures &rarr; Metrics.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">COBIT 2019</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">ISACA&rsquo;s framework for the governance and management of enterprise IT; it separates <strong>governance (EDM)</strong> from management and uses design factors to tailor the system to context.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">ISO/IEC 27001</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The certifiable standard for an Information Security Management System (ISMS), built on a Plan-Do-Check-Act (PDCA) continual-improvement cycle.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">NIST CSF</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The NIST Cybersecurity Framework &mdash; a voluntary, outcome-based framework organized around the functions <strong>Identify, Protect, Detect, Respond, Recover</strong> (plus <em>Govern</em> in the current version).</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">KGI / KPI / KRI</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def"><strong>KGI</strong> = goal indicator (did we achieve the objective?); <strong>KPI</strong> = performance indicator (how well is a process running?); <strong>KRI</strong> = risk indicator (early warning that risk is rising).</div></div>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Lesson Content</p>
+    <h2 class="h2">Study the material</h2>
+    <div class="rule"></div>
+    <div class="lesson-content">
+      <nav class="toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <ul>
+          <li><a href="#s1">1. Governance Foundations</a></li>
+          <li><a href="#s2">2. The Governance Hierarchy</a></li>
+          <li><a href="#s3">3. Security Strategy</a></li>
+          <li><a href="#s4">4. Governance Frameworks</a></li>
+          <li><a href="#s5">5. Legal & Compliance</a></li>
+          <li><a href="#s6">6. Governance Metrics</a></li>
+        </ul>
+      </nav>
+      <div class="content-main">
+
+        <article class="content-section" id="s1">
+          <div class="cs-head"><span class="cs-num">1</span><h3>Governance Foundations &amp; the Five Outcomes</h3></div>
+          <p>Information security governance is how an organization <strong>directs and controls</strong> its security activities. It is distinct from doing the work: governance decides direction, assigns accountability, and measures results. Accountability ultimately rests with the <strong>board and senior management</strong> &mdash; security is a governance responsibility, not merely an IT problem.</p>
+          <h4>The five outcomes of effective governance</h4>
+          <ul class="detail">
+            <li><strong>Strategic alignment</strong> &mdash; security initiatives support business goals.</li>
+            <li><strong>Risk management</strong> &mdash; risks are mitigated to levels the business accepts.</li>
+            <li><strong>Value delivery</strong> &mdash; security investments produce measurable value/ROI.</li>
+            <li><strong>Resource optimization</strong> &mdash; people, budget, and tools are used efficiently.</li>
+            <li><strong>Performance measurement</strong> &mdash; metrics prove the program is effective.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>If a question asks who is <em>ultimately accountable</em> for information security, the answer is the board / senior management &mdash; not the CISO, IT, or audit. Governance accountability cannot be delegated away.</div>
+        </article>
+
+        <article class="content-section" id="s2">
+          <div class="cs-head"><span class="cs-num">2</span><h3>The Governance Hierarchy &amp; Roles</h3></div>
+          <p>Governance is layered: <strong>corporate governance</strong> sets enterprise direction, <strong>IT governance</strong> aligns technology to it, and <strong>information security governance</strong> sits within both. The security manager must know where authority and accountability sit.</p>
+          <ul class="detail">
+            <li><strong>CISO:</strong> owns the governance framework and strategy; reports high enough (to a CRO, CEO, or board committee) to stay independent of day-to-day IT operations.</li>
+            <li><strong>IT steering committee:</strong> prioritizes investments and aligns them to business needs &mdash; direction, not operations.</li>
+            <li><strong>Risk owner:</strong> the business leader who accepts or rejects residual risk; security advises, the business decides.</li>
+            <li><strong>Organizational models:</strong> centralized (one authority), decentralized (business-unit autonomy), or federated (central policy + local execution) &mdash; chosen to fit the enterprise.</li>
+            <li><strong>Separation of duties</strong> in governance: the people who own risk, manage security, and audit it must be distinct.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A CISO who reports <em>into</em> the IT function they are meant to oversee has an independence problem: they may be pressured to under-report risk that reflects badly on IT. The governance fix is a reporting line outside IT, not a technical control.</p></div>
+        </article>
+
+        <article class="content-section" id="s3">
+          <div class="cs-head"><span class="cs-num">3</span><h3>Developing the Security Strategy</h3></div>
+          <p>Strategy is where governance becomes a plan. It always flows <em>from</em> the business: Business Vision &rarr; Business Strategy &rarr; IT Strategy &rarr; IS Strategy &rarr; Policy &rarr; Standards &rarr; Procedures &rarr; Metrics. A strategy that starts from technology rather than business objectives is mis-built.</p>
+          <ul class="detail">
+            <li><strong>Gap analysis</strong> compares current state to a desired state (target framework/maturity) and yields the prioritized initiatives.</li>
+            <li><strong>Roadmap:</strong> sequenced initiatives, milestones, owners, and budget &mdash; the multi-year path to the desired state.</li>
+            <li><strong>Risk appetite and tolerance</strong> are set by the business and bound every strategic choice.</li>
+            <li><strong>Influences:</strong> regulation, the threat landscape, technology change, M&amp;A, outsourcing, and geography all shape the strategy.</li>
+            <li><strong>Business case:</strong> security investments are justified in business terms (risk reduced, value delivered) to win executive buy-in.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>When a scenario asks what to do <em>before</em> building a strategy or roadmap, the answer is usually a gap analysis or understanding business objectives &mdash; strategy is derived from the business, never invented in the security team.</div>
+        </article>
+
+        <article class="content-section" id="s4">
+          <div class="cs-head"><span class="cs-num">4</span><h3>Frameworks &amp; How to Choose</h3></div>
+          <p>Frameworks give the program structure and a shared language. The CISM does not require memorizing every control &mdash; it tests knowing what each framework is <em>for</em> and choosing one that fits the organization&rsquo;s context, size, industry, and regulatory obligations.</p>
+          <div class="table-wrap" style="margin:1.1rem 0">
+            <table class="data"><thead><tr><th>Framework</th><th>What it is</th><th>Best used for</th></tr></thead><tbody>
+          <tr><td><strong>COBIT 2019</strong></td><td>ISACA governance &amp; management of enterprise IT; separates governance (EDM) from management</td><td>End-to-end governance and board alignment</td></tr>
+          <tr><td><strong>ISO/IEC 27001</strong></td><td>Certifiable ISMS built on Plan-Do-Check-Act</td><td>A certifiable, auditable management system</td></tr>
+          <tr><td><strong>ISO/IEC 27002</strong></td><td>Catalogue of security controls</td><td>Selecting and implementing specific controls</td></tr>
+          <tr><td><strong>NIST CSF</strong></td><td>Outcome-based functions: Identify, Protect, Detect, Respond, Recover (+ Govern)</td><td>Communicating risk posture to leadership</td></tr>
+          <tr><td><strong>NIST SP 800-53</strong></td><td>Detailed security &amp; privacy control catalogue</td><td>Deep control baselines; US federal context</td></tr>
+            </tbody></table>
+          </div>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Framework selection is context-driven: match the framework to the organization&rsquo;s size, industry, and regulatory environment. There is no single &lsquo;best&rsquo; framework &mdash; the right answer is the one that fits the scenario described.</div>
+          <div class="resource-link">
+            <span class="rl-icon" aria-hidden="true">&#128218;</span>
+            <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Policies, Standards, Procedures &amp; Guidelines</strong> and <strong>Cybersecurity Design Principles</strong> &mdash; interactive modules on the document hierarchy that operationalizes governance and the principles behind a secure architecture.</span></div>
+            <div class="rl-actions">
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/PSPG/PSPG.html" target="_blank" rel="noopener noreferrer">Policies &amp; Standards <span class="ext">&#8599;</span></a>
+              <a class="btn secondary" href="https://d2hie3dpn9wvbb.cloudfront.net/design/cybersecuritydesignprinciples.html" target="_blank" rel="noopener noreferrer">Design Principles <span class="ext">&#8599;</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="content-section" id="s5">
+          <div class="cs-head"><span class="cs-num">5</span><h3>Legal, Regulatory &amp; Compliance Drivers</h3></div>
+          <p>Compliance is a strategic input, not the goal itself &mdash; a program built only to pass an audit will miss real risk. Still, the security manager must map applicable obligations to controls and keep evidence.</p>
+          <ul class="detail">
+            <li><strong>GDPR:</strong> data-subject rights and a <strong>72-hour</strong> breach-notification window to the supervisory authority; may require a Data Protection Officer (DPO).</li>
+            <li><strong>HIPAA:</strong> the Security Rule&rsquo;s administrative, physical, and technical safeguards for protected health information.</li>
+            <li><strong>PCI DSS:</strong> contractual security requirements for handling payment-card data.</li>
+            <li><strong>SOX:</strong> controls over financial reporting, including IT general controls.</li>
+            <li><strong>Manager&rsquo;s job:</strong> maintain a compliance register, map each obligation to owners and controls, and treat compliance gaps as risks to be governed.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>When laws conflict across jurisdictions (e.g., data-localization vs. cross-border transfer), the security manager escalates to legal and senior management for a risk-based business decision &mdash; this is a governance call, not a technical one.</p></div>
+        </article>
+
+        <article class="content-section" id="s6">
+          <div class="cs-head"><span class="cs-num">6</span><h3>Metrics &amp; Performance Management</h3></div>
+          <p>Governance is only real if it is measured. Metrics prove value, surface rising risk, and give leadership the information to steer. The key is choosing indicators that map to business outcomes, not vanity numbers.</p>
+          <ul class="detail">
+            <li><strong>KGI</strong> &mdash; did we achieve the objective? (e.g., % of critical systems meeting policy).</li>
+            <li><strong>KPI</strong> &mdash; how well is a process performing? (e.g., mean time to patch, awareness-training completion).</li>
+            <li><strong>KRI</strong> &mdash; an early warning that risk is rising (e.g., overdue high-risk findings, failed-login spikes).</li>
+            <li><strong>Balanced scorecard:</strong> report across multiple perspectives, not cost alone, so the board sees value as well as spend.</li>
+            <li><strong>Maturity models</strong> (e.g., CMMI-style) track whether processes are improving over time.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Know the difference cold: a <strong>KPI</strong> measures how a process is performing now; a <strong>KRI</strong> is a forward-looking warning that risk is increasing. Mixing them up is a classic Domain 1 trap.</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="knowledge-check">
+    <p class="eyebrow">Scored Knowledge Check</p>
+    <h2 class="h2">Test your governance judgment</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:1.5rem">Eight questions on governance. Choose the best answer from the security manager&rsquo;s chair, then submit for your score and the rationale.</p>
+    <div class="quiz-card">
+      <form id="quiz">
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q1.</span>Who is ULTIMATELY accountable for information security governance in an organization?</p>
+          <fieldset class="options">
+            <legend>Question 1 options</legend>
+            <label class="opt"><input type="radio" name="q1" value="A"><span><span class="opt-letter">A.</span> The chief information security officer</span></label>
+            <label class="opt"><input type="radio" name="q1" value="B"><span><span class="opt-letter">B.</span> The IT steering committee</span></label>
+            <label class="opt"><input type="radio" name="q1" value="C"><span><span class="opt-letter">C.</span> The internal audit function</span></label>
+            <label class="opt"><input type="radio" name="q1" value="D"><span><span class="opt-letter">D.</span> The board of directors and senior management</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> Accountability for governance rests with the board and senior management and cannot be delegated. The CISO and committees execute and advise, but the board owns the outcome. <b>Why the others fall short:</b> <b>A</b> the CISO executes but isn&rsquo;t ultimately accountable; <b>B</b> the steering committee prioritizes and advises; <b>C</b> internal audit provides independent assurance, not accountability.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q2.</span>Which of the following is the FIRST step in developing an information security strategy?</p>
+          <fieldset class="options">
+            <legend>Question 2 options</legend>
+            <label class="opt"><input type="radio" name="q2" value="A"><span><span class="opt-letter">A.</span> Selecting a control framework</span></label>
+            <label class="opt"><input type="radio" name="q2" value="B"><span><span class="opt-letter">B.</span> Purchasing security tools</span></label>
+            <label class="opt"><input type="radio" name="q2" value="C"><span><span class="opt-letter">C.</span> Understanding business objectives and performing a gap analysis</span></label>
+            <label class="opt"><input type="radio" name="q2" value="D"><span><span class="opt-letter">D.</span> Writing security procedures</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Strategy is derived from the business. Understanding objectives and analyzing the gap between current and desired state comes before frameworks, tools, or procedures. <b>Why the others fall short:</b> <b>A</b> framework selection comes after understanding objectives; <b>B</b> buying tools before strategy is premature; <b>D</b> procedures are the last, most detailed layer, not the first step.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q3.</span>An organization wants to align security with the business and demonstrate that investments deliver measurable value. Which governance outcomes does this MOST directly reflect?</p>
+          <fieldset class="options">
+            <legend>Question 3 options</legend>
+            <label class="opt"><input type="radio" name="q3" value="A"><span><span class="opt-letter">A.</span> Risk management and resource optimization</span></label>
+            <label class="opt"><input type="radio" name="q3" value="B"><span><span class="opt-letter">B.</span> Strategic alignment and value delivery</span></label>
+            <label class="opt"><input type="radio" name="q3" value="C"><span><span class="opt-letter">C.</span> Performance measurement and risk management</span></label>
+            <label class="opt"><input type="radio" name="q3" value="D"><span><span class="opt-letter">D.</span> Value delivery and performance measurement</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Aligning security with business goals is strategic alignment; demonstrating measurable returns on investment is value delivery &mdash; two of the five governance outcomes. <b>Why the others fall short:</b> <b>A</b> risk management and resource optimization are different outcomes; <b>C</b> performance measurement and risk management don&rsquo;t capture alignment and value; <b>D</b> value delivery is right, but performance measurement isn&rsquo;t the alignment outcome.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q4.</span>How do risk appetite and risk tolerance differ?</p>
+          <fieldset class="options">
+            <legend>Question 4 options</legend>
+            <label class="opt"><input type="radio" name="q4" value="A"><span><span class="opt-letter">A.</span> Appetite is a technical limit; tolerance is a business limit</span></label>
+            <label class="opt"><input type="radio" name="q4" value="B"><span><span class="opt-letter">B.</span> Appetite is the amount of risk the organization will accept pursuing objectives; tolerance is the acceptable variation around a specific objective</span></label>
+            <label class="opt"><input type="radio" name="q4" value="C"><span><span class="opt-letter">C.</span> They are synonyms</span></label>
+            <label class="opt"><input type="radio" name="q4" value="D"><span><span class="opt-letter">D.</span> Tolerance is set by security; appetite is set by IT</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Risk appetite is the broad level of risk the business will accept; tolerance is the acceptable deviation around a particular objective. Both are business decisions, not security or IT decisions. <b>Why the others fall short:</b> <b>A</b> the distinction isn&rsquo;t technical-vs-business; <b>C</b> they are not synonyms; <b>D</b> neither is defined by whether security or IT sets it.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q5.</span>In COBIT 2019, which activities belong to GOVERNANCE rather than management?</p>
+          <fieldset class="options">
+            <legend>Question 5 options</legend>
+            <label class="opt"><input type="radio" name="q5" value="A"><span><span class="opt-letter">A.</span> Build, Acquire, and Implement</span></label>
+            <label class="opt"><input type="radio" name="q5" value="B"><span><span class="opt-letter">B.</span> Deliver, Service, and Support</span></label>
+            <label class="opt"><input type="radio" name="q5" value="C"><span><span class="opt-letter">C.</span> Align, Plan, and Organize</span></label>
+            <label class="opt"><input type="radio" name="q5" value="D"><span><span class="opt-letter">D.</span> Evaluate, Direct, and Monitor</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> COBIT separates governance &mdash; Evaluate, Direct, Monitor (EDM), performed by the governing body &mdash; from the management domains (APO, BAI, DSS, MEA). <b>Why the others fall short:</b> <b>A</b> Build/Acquire/Implement, <b>B</b> Deliver/Service/Support, and <b>C</b> Align/Plan/Organize are all COBIT <em>management</em> domains &mdash; only Evaluate, Direct &amp; Monitor is governance.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q6.</span>A CISO currently reports to the IT director. From a governance perspective, the PRIMARY concern is that:</p>
+          <fieldset class="options">
+            <legend>Question 6 options</legend>
+            <label class="opt"><input type="radio" name="q6" value="A"><span><span class="opt-letter">A.</span> The CISO may be pressured to under-report risks that reflect poorly on IT, impairing independence</span></label>
+            <label class="opt"><input type="radio" name="q6" value="B"><span><span class="opt-letter">B.</span> The CISO will lack technical knowledge</span></label>
+            <label class="opt"><input type="radio" name="q6" value="C"><span><span class="opt-letter">C.</span> The reporting line increases security costs</span></label>
+            <label class="opt"><input type="radio" name="q6" value="D"><span><span class="opt-letter">D.</span> The IT director cannot understand security</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Reporting into the function being overseen creates an independence problem: the CISO may be discouraged from surfacing risk that reflects badly on IT. Governance favors a reporting line outside IT. <b>Why the others fall short:</b> <b>B</b> technical knowledge isn&rsquo;t the reporting-line concern; <b>C</b> cost isn&rsquo;t the issue; <b>D</b> the point is independence, not the IT director&rsquo;s comprehension.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q7.</span>Which metric is a KEY RISK INDICATOR (KRI) rather than a key performance indicator?</p>
+          <fieldset class="options">
+            <legend>Question 7 options</legend>
+            <label class="opt"><input type="radio" name="q7" value="A"><span><span class="opt-letter">A.</span> The number of overdue high-risk audit findings trending upward</span></label>
+            <label class="opt"><input type="radio" name="q7" value="B"><span><span class="opt-letter">B.</span> Percentage of staff who completed security awareness training</span></label>
+            <label class="opt"><input type="radio" name="q7" value="C"><span><span class="opt-letter">C.</span> Mean time to deploy approved patches</span></label>
+            <label class="opt"><input type="radio" name="q7" value="D"><span><span class="opt-letter">D.</span> Help-desk first-call resolution rate</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> A KRI is a forward-looking warning that risk is rising &mdash; a growing backlog of overdue high-risk findings signals increasing exposure. The others measure how processes are performing (KPIs). <b>Why the others fall short:</b> <b>B</b> training completion, <b>C</b> patch-deployment time, and <b>D</b> help-desk resolution are performance (KPI) measures &mdash; not forward-looking indicators that risk is rising.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q8.</span>An organization operating in multiple countries faces conflicting data-protection laws. What should the security manager do?</p>
+          <fieldset class="options">
+            <legend>Question 8 options</legend>
+            <label class="opt"><input type="radio" name="q8" value="A"><span><span class="opt-letter">A.</span> Apply the strictest law everywhere without consultation</span></label>
+            <label class="opt"><input type="radio" name="q8" value="B"><span><span class="opt-letter">B.</span> Ignore the less strict jurisdiction</span></label>
+            <label class="opt"><input type="radio" name="q8" value="C"><span><span class="opt-letter">C.</span> Escalate to legal and senior management for a risk-based business decision</span></label>
+            <label class="opt"><input type="radio" name="q8" value="D"><span><span class="opt-letter">D.</span> Let each local IT team decide independently</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> Conflicting legal obligations are a governance matter: the security manager surfaces the risk and options to legal and senior management, who make the business decision. It is not a unilateral technical call. <b>Why the others fall short:</b> <b>A</b> applying the strictest law everywhere without consultation may needlessly harm the business; <b>B</b> ignoring a jurisdiction invites non-compliance; <b>D</b> letting local IT decide fragments governance.</div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" onclick="gradeQuiz()">Submit Answers</button>
+          <button type="button" class="btn secondary" onclick="resetQuiz()">Reset</button>
+          <span class="score" id="score" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Lesson navigation">
+  <div class="pager-inner">
+    <a href="lesson00.html" class="prev"><span class="pager-dir">&#8592; Previous</span><span class="pager-name">Lesson 0 &mdash; Orientation & Exam Strategy</span></a>
+    <a href="lesson02.html" class="next"><span class="pager-dir">Next &#8594;</span><span class="pager-name">Lesson 2 &mdash; Risk Management (Part A)</span></a>
+  </div>
+</nav>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 — Domain 4: Business Continuity & Recovery (Part B) | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#domains">Domains</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#lessons">Lessons</a> &nbsp;&rsaquo;&nbsp; <span>Lesson 7</span></p>
+    <span class="lesson-badge-lg">Day 4 &mdash; Afternoon &middot; Domain 4 (30%)</span>
+    <h1>Continuity &amp; Recovery <span>&mdash; Part B</span></h1>
+    <p class="lesson-lede">Resilience is the manager&rsquo;s job. Part B covers business continuity, disaster recovery, recovery objectives, and plan testing &mdash; ensuring the organization can absorb disruption and recover within the limits the business can tolerate.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">Session: <strong>Afternoon, Day 4</strong></span>
+      <span class="meta-chip">Duration: <strong>~3 hrs</strong></span>
+      <span class="meta-chip">Exam Weight: <strong>30% (Domain 4)</strong></span>
+      <span class="meta-chip">Knowledge Check: <strong>8 Questions</strong></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <p class="eyebrow">Overview</p>
+    <h2 class="h2">Plan to survive disruption and recover on time</h2>
+    <div class="rule"></div>
+    <p class="lead">Incidents end; disruption can be existential. Part B turns the manager toward resilience: the <strong>business impact analysis</strong> that defines what matters and how fast it must come back, the <strong>recovery objectives</strong> (RTO/RPO/MTD) that bound every strategy, the <strong>continuity and disaster-recovery</strong> options that meet them, and the <strong>testing</strong> that proves they actually work. The exam&rsquo;s recurring lessons: the BIA drives everything, an untested plan or backup is worthless, and continuity is owned by the business while disaster recovery is owned by IT.</p>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2 class="h2">By the end of this lesson you will be able to&hellip;</h2>
+    <div class="rule"></div>
+    <ul class="objectives">
+      <li><span><strong>Use</strong> the business impact analysis to identify critical processes and set recovery priorities. <em class="bloom-tag">Bloom: Apply</em></span></li>
+      <li><span><strong>Define</strong> RTO, RPO, and MTD and explain how they constrain recovery strategy. <em class="bloom-tag">Bloom: Remember</em></span></li>
+      <li><span><strong>Select</strong> continuity and disaster-recovery strategies, including alternate sites and backups. <em class="bloom-tag">Bloom: Evaluate</em></span></li>
+      <li><span><strong>Plan</strong> and run plan tests from checklist through full interruption, and maintain the plans. <em class="bloom-tag">Bloom: Create</em></span></li>
+      <li><span><strong>Differentiate</strong> business continuity from disaster recovery and locate crisis management. <em class="bloom-tag">Bloom: Analyze</em></span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Key Terms</p>
+    <h2 class="h2">Continuity &amp; recovery vocabulary</h2>
+    <div class="rule"></div>
+    <p class="flip-hint-top">&#128072; Tap a card to flip it. The BIA, the objectives, and the site options are exam staples.</p>
+    <div class="vocab-grid">
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Business continuity plan (BCP)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The plan that keeps the <em>whole organization</em> &mdash; people, processes, facilities, communications &mdash; functioning during and after disruption. Broader than IT; owned by the business.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Disaster recovery plan (DRP)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The IT-focused plan to restore systems, applications, and data after a disruptive event &mdash; the technical subset of the BCP, owned by IT.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Business impact analysis (BIA)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The analysis that identifies critical processes, the impact of their loss over time, and the resulting recovery objectives. The BIA <strong>drives</strong> the entire continuity program.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Recovery time objective (RTO)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The maximum acceptable time to restore a process or system after disruption &mdash; how long the business can be without it.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Recovery point objective (RPO)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The maximum acceptable data loss, measured in time &mdash; effectively how recent the last usable backup must be.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Maximum tolerable downtime (MTD)</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The longest a critical process can be unavailable before the organization suffers unacceptable or irreversible harm; RTO must be shorter than MTD.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Recovery sites</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Alternate processing locations: <strong>hot</strong> (ready, near-immediate), <strong>warm</strong> (partly equipped), and <strong>cold</strong> (space/power only, slowest) &mdash; faster recovery costs more.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Reciprocal agreement</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">A mutual-aid arrangement to host each other&rsquo;s operations after a disaster &mdash; low cost, but capacity and compatibility are not guaranteed.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Backup strategy</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">How data is copied and retained &mdash; full, incremental, or differential, often following a 3-2-1 rule; a backup is only valid once a <strong>restore</strong> has been tested.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">DR plan testing</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">Exercising the plan, from low-impact <strong>checklist/walkthrough</strong> reviews to <strong>simulation</strong>, <strong>parallel</strong>, and full-scale <strong>full-interruption</strong> tests &mdash; an untested plan is an assumption.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">Crisis management</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The senior-level coordination of an organization&rsquo;s overall response to a major disruptive event &mdash; decisions, communications, and stakeholders &mdash; above the technical recovery.</div></div>
+        </div>
+      </button>
+
+      <button type="button" class="flip-card vocab" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">BCP vs. DRP ownership</div><span class="flip-hint">&#8634; What it means</span></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The <strong>business continuity team</strong> owns the BCP (people, facilities, processes); <strong>IT</strong> owns the DRP (systems and data). A frequently tested distinction.</div></div>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">Lesson Content</p>
+    <h2 class="h2">Study the material</h2>
+    <div class="rule"></div>
+    <div class="lesson-content">
+      <nav class="toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <ul>
+          <li><a href="#s1">1. Continuity & the BIA</a></li>
+          <li><a href="#s2">2. Recovery Objectives</a></li>
+          <li><a href="#s3">3. Recovery Strategies</a></li>
+          <li><a href="#s4">4. Backups & Testing</a></li>
+          <li><a href="#s5">5. Crisis & Ownership</a></li>
+        </ul>
+      </nav>
+      <div class="content-main">
+
+        <article class="content-section" id="s1">
+          <div class="cs-head"><span class="cs-num">1</span><h3>Business Continuity &amp; the BIA</h3></div>
+          <p>Business continuity keeps the organization running through disruption. It begins with the <strong>business impact analysis</strong>, which identifies the organization&rsquo;s critical processes, quantifies the impact of losing them over time, and derives the recovery objectives. Every continuity and recovery decision traces back to the BIA &mdash; build it first.</p>
+          <ul class="detail">
+            <li>The <strong>BIA</strong> ranks processes by criticality and sets RTO/RPO from business needs, not IT preference.</li>
+            <li><strong>BCP</strong> is enterprise-wide: people, facilities, communications, suppliers, and processes &mdash; not just systems.</li>
+            <li>Continuity strategies (alternate workspace, manual workarounds, supplier alternatives) flow from the BIA&rsquo;s priorities.</li>
+            <li>Continuity is a <strong>business</strong> responsibility with executive sponsorship; security and IT enable it.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>When a question asks what should be done <em>first</em> when building continuity or DR &mdash; or what determines the RTO/RPO &mdash; the answer is the <strong>business impact analysis</strong>. Objectives come from the business, via the BIA.</div>
+        </article>
+
+        <article class="content-section" id="s2">
+          <div class="cs-head"><span class="cs-num">2</span><h3>Recovery Objectives: RTO, RPO &amp; MTD</h3></div>
+          <p>Recovery objectives are the numbers that bound every strategy. The <strong>RTO</strong> sets how fast a process must return; the <strong>RPO</strong> sets how much data loss is acceptable; the <strong>MTD</strong> is the outer limit beyond which harm becomes unacceptable.</p>
+          <ul class="detail">
+            <li><strong>RTO</strong> = maximum acceptable <em>downtime</em>; <strong>RPO</strong> = maximum acceptable <em>data loss</em> (in time).</li>
+            <li><strong>RTO must be shorter than MTD</strong> &mdash; recovery has to finish before the tolerable-downtime limit.</li>
+            <li>A tight RPO drives the backup/replication approach: a 1-hour RPO cannot be met by nightly backups.</li>
+            <li>Objectives must be realistic and funded &mdash; an RTO the recovery strategy can&rsquo;t actually achieve is a false assurance.</li>
+          </ul>
+          <figure class="diagram">
+            <svg viewBox="0 0 760 292" role="img" aria-label="A timeline of a disruption. To the left, the gap from the last good backup to the disruption is the RPO (maximum data loss). To the right, the gap from the disruption to systems restored is the RTO (recovery target). Above, the wider gap from the disruption to the point where impact becomes unacceptable is the MTPD, which the RTO must fit within.">
+              <text x="350" y="28" text-anchor="middle" class="dg-text-accent" font-size="14" font-weight="700">Disruption / outage</text>
+              <path d="M350 80 V72 H660 V80" class="dg-brk-mtd" stroke-width="2"/>
+              <text x="505" y="62" text-anchor="middle" class="dg-text-blue" font-size="12.5" font-weight="600">MTPD &#8212; maximum tolerable disruption</text>
+              <line x1="62" y1="156" x2="704" y2="156" class="dg-axis" stroke-width="2.5"/>
+              <path d="M704 150 L718 156 L704 162 Z" class="dg-dot"/>
+              <text x="712" y="146" text-anchor="end" class="dg-text-muted" font-size="11">time</text>
+              <line x1="350" y1="80" x2="350" y2="214" class="dg-incident" stroke-width="2" stroke-dasharray="4 3"/>
+              <circle cx="160" cy="156" r="6" class="dg-dot"/>
+              <circle cx="350" cy="156" r="8" class="dg-dot-accent"/>
+              <circle cx="530" cy="156" r="6" class="dg-dot"/>
+              <circle cx="660" cy="156" r="6" class="dg-dot"/>
+              <path d="M160 176 V184 H350 V176" class="dg-brk-rpo" stroke-width="2"/>
+              <text x="255" y="202" text-anchor="middle" class="dg-text-accent" font-size="13" font-weight="700">RPO</text>
+              <text x="255" y="217" text-anchor="middle" class="dg-text-muted" font-size="11">max data loss</text>
+              <path d="M350 176 V184 H530 V176" class="dg-brk-rto" stroke-width="2"/>
+              <text x="440" y="202" text-anchor="middle" class="dg-text-blue" font-size="13" font-weight="700">RTO</text>
+              <text x="440" y="217" text-anchor="middle" class="dg-text-muted" font-size="11">recovery target</text>
+              <text x="160" y="250" text-anchor="middle" class="dg-text" font-size="11.5">Last good backup</text>
+              <text x="530" y="250" text-anchor="middle" class="dg-text" font-size="11.5">Systems restored</text>
+              <text x="660" y="250" text-anchor="middle" class="dg-text" font-size="11.5">Impact</text>
+              <text x="660" y="264" text-anchor="middle" class="dg-text" font-size="11.5">unacceptable</text>
+            </svg>
+            <figcaption>Recovery objectives on one timeline: <strong>RPO</strong> is the acceptable <em>data-loss</em> window (it sets your backup frequency), <strong>RTO</strong> is the acceptable <em>downtime</em> to restore &mdash; and the RTO must fit inside the <strong>MTPD</strong>, the point where the impact becomes unacceptable.</figcaption>
+          </figure>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>The business sets a 1-hour RPO for the order system, but backups run nightly. That gap is the finding: a nightly backup permits up to ~24 hours of data loss. Meeting a 1-hour RPO requires near-continuous replication or hourly backups.</p></div>
+        </article>
+
+        <article class="content-section" id="s3">
+          <div class="cs-head"><span class="cs-num">3</span><h3>Recovery Strategies &amp; Sites</h3></div>
+          <p>Disaster recovery selects the strategy that meets the RTO/RPO at acceptable cost. Alternate-site choices trade speed for money &mdash; the right answer fits the recovery objectives and budget the BIA justifies, not the fastest option available.</p>
+          <div class="table-wrap" style="margin:1.1rem 0">
+            <table class="data"><thead><tr><th>Strategy</th><th>Recovery speed</th><th>Cost / trade-off</th></tr></thead><tbody>
+          <tr><td><strong>Hot site</strong></td><td>Near-immediate</td><td>Highest cost; fully equipped and current</td></tr>
+          <tr><td><strong>Warm site</strong></td><td>Hours to days</td><td>Moderate; partly equipped, needs data/config</td></tr>
+          <tr><td><strong>Cold site</strong></td><td>Days to weeks</td><td>Lowest cost; space and power only</td></tr>
+          <tr><td><strong>Mobile / cloud</strong></td><td>Variable</td><td>Flexible; cloud DR can be fast and scalable</td></tr>
+          <tr><td><strong>Reciprocal</strong></td><td>Variable</td><td>Cheap, but capacity/compatibility not guaranteed</td></tr>
+            </tbody></table>
+          </div>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>There is no universally &lsquo;best&rsquo; site &mdash; match the strategy to the RTO/RPO and budget in the scenario. A hot site for a process with a one-week RTO is over-spending; a cold site for a one-hour RTO will fail.</div>
+        </article>
+
+        <article class="content-section" id="s4">
+          <div class="cs-head"><span class="cs-num">4</span><h3>Backups &amp; Plan Testing</h3></div>
+          <p>Plans and backups are worthless until proven. The manager ensures backups are validated by restoration and that the plans are exercised regularly, with results documented and weaknesses fed back into the plan.</p>
+          <ul class="detail">
+            <li><strong>Backups</strong>: full / incremental / differential, often a 3-2-1 strategy; <strong>a backup is only effective once a restore has been tested</strong>.</li>
+            <li><strong>Test types, lowest to highest impact:</strong> checklist/desk review &rarr; structured walkthrough &rarr; simulation &rarr; parallel test &rarr; full-interruption test.</li>
+            <li>A <strong>parallel test</strong> validates recovery without disrupting production; a <strong>full-interruption test</strong> is the most thorough but the riskiest.</li>
+            <li><strong>An undocumented test equals no test</strong>; plans are living documents, updated after every test, incident, and significant change.</li>
+          </ul>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>&lsquo;Backups run nightly and complete successfully&rsquo; is not evidence of recoverability. Job success only proves the copy was made &mdash; the manager requires periodic, documented <em>restore</em> tests to confirm the data is actually usable.</p></div>
+        </article>
+
+        <article class="content-section" id="s5">
+          <div class="cs-head"><span class="cs-num">5</span><h3>Crisis Management &amp; the Manager&rsquo;s Role</h3></div>
+          <p>Above the technical recovery sits <strong>crisis management</strong> &mdash; senior leadership coordinating the organization&rsquo;s overall response, decisions, and communications. The security manager integrates incident, continuity, and recovery so they operate as one capability under crisis leadership.</p>
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p><strong>Supply-chain resilience</strong> belongs in continuity planning: map critical vendors and their <em>concentration</em> and <strong>fourth-party</strong> dependencies, require continuity and RTO commitments in contracts, and pre-arrange alternates for single points of failure. Crisis communications should pre-approve <strong>holding statements</strong>, a single spokesperson, and an update cadence so the response stays fast and consistent under pressure.</p></div>
+          <ul class="detail">
+            <li><strong>Crisis management</strong> handles strategic decisions and stakeholder/public communication; DR and BCP execute beneath it.</li>
+            <li><strong>Ownership:</strong> the business continuity team owns the BCP; IT owns the DRP &mdash; the security manager ensures they are aligned and tested together.</li>
+            <li>Continuity and recovery connect to incident management: a major incident can invoke the BCP/DRP.</li>
+            <li>The manager keeps plans current, funded, exercised, and aligned to the BIA as the business evolves.</li>
+          </ul>
+          <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Remember the split: <strong>BCP = business continuity team</strong> (people, facilities, processes); <strong>DRP = IT</strong> (systems, data). Crisis management sits above both, coordinating the enterprise response.</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="knowledge-check">
+    <p class="eyebrow">Scored Knowledge Check</p>
+    <h2 class="h2">Test your resilience judgment</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:1.5rem">Eight questions on continuity and recovery. Start from the BIA, respect the objectives, and prove the plan works.</p>
+    <div class="quiz-card">
+      <form id="quiz">
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q1.</span>What PRIMARILY determines a system&rsquo;s recovery time and recovery point objectives?</p>
+          <fieldset class="options">
+            <legend>Question 1 options</legend>
+            <label class="opt"><input type="radio" name="q1" value="A"><span><span class="opt-letter">A.</span> The IT team&rsquo;s preferred backup schedule</span></label>
+            <label class="opt"><input type="radio" name="q1" value="B"><span><span class="opt-letter">B.</span> The capabilities of the current DR vendor</span></label>
+            <label class="opt"><input type="radio" name="q1" value="C"><span><span class="opt-letter">C.</span> The business impact analysis</span></label>
+            <label class="opt"><input type="radio" name="q1" value="D"><span><span class="opt-letter">D.</span> The age of the system</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> RTO and RPO are derived from business needs through the BIA, which ranks critical processes and the impact of their loss. They are business-driven objectives, not IT or vendor conveniences. <b>Why the others fall short:</b> <b>A</b> the backup schedule is a means, not the driver; <b>B</b> the DR vendor&rsquo;s capability doesn&rsquo;t set business objectives; <b>D</b> system age is irrelevant &mdash; the BIA sets RTO/RPO.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q2.</span>The business requires a recovery point objective (RPO) of one hour, but backups run only nightly. This is a problem because:</p>
+          <fieldset class="options">
+            <legend>Question 2 options</legend>
+            <label class="opt"><input type="radio" name="q2" value="A"><span><span class="opt-letter">A.</span> Nightly backups are always unreliable</span></label>
+            <label class="opt"><input type="radio" name="q2" value="B"><span><span class="opt-letter">B.</span> RPO measures downtime, not data loss</span></label>
+            <label class="opt"><input type="radio" name="q2" value="C"><span><span class="opt-letter">C.</span> The backups are encrypted</span></label>
+            <label class="opt"><input type="radio" name="q2" value="D"><span><span class="opt-letter">D.</span> A nightly backup permits up to roughly 24 hours of data loss, far exceeding the 1-hour RPO</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> RPO is the maximum acceptable data loss in time. Nightly backups can lose nearly a day of data, which cannot satisfy a one-hour RPO &mdash; near-continuous replication or hourly backups are needed. <b>Why the others fall short:</b> <b>A</b> &lsquo;always unreliable&rsquo; overstates it; <b>B</b> RPO measures data loss, not downtime; <b>C</b> encryption is irrelevant to the RPO gap.</div>
+        </div>
+
+        <div class="q" data-answer="C">
+          <p class="q-stem"><span class="qn">Q3.</span>Which alternate site offers the FASTEST recovery, at the highest cost?</p>
+          <fieldset class="options">
+            <legend>Question 3 options</legend>
+            <label class="opt"><input type="radio" name="q3" value="A"><span><span class="opt-letter">A.</span> Cold site</span></label>
+            <label class="opt"><input type="radio" name="q3" value="B"><span><span class="opt-letter">B.</span> Warm site</span></label>
+            <label class="opt"><input type="radio" name="q3" value="C"><span><span class="opt-letter">C.</span> Hot site</span></label>
+            <label class="opt"><input type="radio" name="q3" value="D"><span><span class="opt-letter">D.</span> Reciprocal agreement</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: C.</b> A hot site is fully equipped and current, enabling near-immediate failover &mdash; the fastest and most expensive option. Cold sites are cheapest but slowest. <b>Why the others fall short:</b> <b>A</b> a cold site is slowest and cheapest; <b>B</b> a warm site is intermediate; <b>D</b> a reciprocal agreement offers no guaranteed capacity &mdash; a hot site is fastest.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q4.</span>When is a backup considered truly effective?</p>
+          <fieldset class="options">
+            <legend>Question 4 options</legend>
+            <label class="opt"><input type="radio" name="q4" value="A"><span><span class="opt-letter">A.</span> When a restoration from it has been successfully tested</span></label>
+            <label class="opt"><input type="radio" name="q4" value="B"><span><span class="opt-letter">B.</span> When the backup job completes without errors</span></label>
+            <label class="opt"><input type="radio" name="q4" value="C"><span><span class="opt-letter">C.</span> When the media is stored offsite</span></label>
+            <label class="opt"><input type="radio" name="q4" value="D"><span><span class="opt-letter">D.</span> When it is encrypted</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> Job success only proves a copy was made. Recoverability is confirmed only by a tested restore; without it, the backup is an untested assumption. <b>Why the others fall short:</b> <b>B</b> job completion proves a copy was made, not recoverability; <b>C</b> offsite storage doesn&rsquo;t prove a restore works; <b>D</b> encryption doesn&rsquo;t either &mdash; only a tested restore does.</div>
+        </div>
+
+        <div class="q" data-answer="A">
+          <p class="q-stem"><span class="qn">Q5.</span>Which disaster-recovery test validates recovery WITHOUT disrupting normal production operations?</p>
+          <fieldset class="options">
+            <legend>Question 5 options</legend>
+            <label class="opt"><input type="radio" name="q5" value="A"><span><span class="opt-letter">A.</span> Parallel test</span></label>
+            <label class="opt"><input type="radio" name="q5" value="B"><span><span class="opt-letter">B.</span> Full-interruption test</span></label>
+            <label class="opt"><input type="radio" name="q5" value="C"><span><span class="opt-letter">C.</span> Checklist review</span></label>
+            <label class="opt"><input type="radio" name="q5" value="D"><span><span class="opt-letter">D.</span> There is no such test</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: A.</b> A parallel test recovers systems at the alternate site while production keeps running, validating recovery without interrupting the business. A full-interruption test is the most thorough but disrupts production. <b>Why the others fall short:</b> <b>B</b> a full-interruption test takes production offline; <b>C</b> a checklist review doesn&rsquo;t validate recovery; <b>D</b> such a test does exist &mdash; the parallel test.</div>
+        </div>
+
+        <div class="q" data-answer="D">
+          <p class="q-stem"><span class="qn">Q6.</span>How do business continuity (BCP) and disaster recovery (DRP) plans relate?</p>
+          <fieldset class="options">
+            <legend>Question 6 options</legend>
+            <label class="opt"><input type="radio" name="q6" value="A"><span><span class="opt-letter">A.</span> They are the same plan</span></label>
+            <label class="opt"><input type="radio" name="q6" value="B"><span><span class="opt-letter">B.</span> The DRP is the broader plan; the BCP is the IT subset</span></label>
+            <label class="opt"><input type="radio" name="q6" value="C"><span><span class="opt-letter">C.</span> Both are owned solely by IT</span></label>
+            <label class="opt"><input type="radio" name="q6" value="D"><span><span class="opt-letter">D.</span> The BCP is enterprise-wide; the DRP is its IT-focused subset</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: D.</b> The BCP covers the whole organization (people, facilities, processes); the DRP is the IT-focused subset that restores systems and data. The business continuity team owns the BCP; IT owns the DRP. <b>Why the others fall short:</b> <b>A</b> they aren&rsquo;t the same plan; <b>B</b> reverses the relationship; <b>C</b> the BCP isn&rsquo;t IT-owned &mdash; the DRP is the IT subset of the enterprise BCP.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q7.</span>For a critical process, the relationship between RTO and MTD should be:</p>
+          <fieldset class="options">
+            <legend>Question 7 options</legend>
+            <label class="opt"><input type="radio" name="q7" value="A"><span><span class="opt-letter">A.</span> RTO greater than MTD</span></label>
+            <label class="opt"><input type="radio" name="q7" value="B"><span><span class="opt-letter">B.</span> RTO shorter than MTD</span></label>
+            <label class="opt"><input type="radio" name="q7" value="C"><span><span class="opt-letter">C.</span> RTO equal to MTD always</span></label>
+            <label class="opt"><input type="radio" name="q7" value="D"><span><span class="opt-letter">D.</span> RTO and MTD are unrelated</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Recovery must complete before harm becomes unacceptable, so the RTO must be shorter than the maximum tolerable downtime (MTD). An RTO longer than MTD guarantees unacceptable impact. <b>Why the others fall short:</b> <b>A</b> an RTO greater than MTD means recovery finishes too late; <b>C</b> equal leaves no margin; <b>D</b> they are related &mdash; recovery must complete before the tolerable limit.</div>
+        </div>
+
+        <div class="q" data-answer="B">
+          <p class="q-stem"><span class="qn">Q8.</span>During a major disruptive event, the senior-level coordination of the organization&rsquo;s overall response and external communications is the role of:</p>
+          <fieldset class="options">
+            <legend>Question 8 options</legend>
+            <label class="opt"><input type="radio" name="q8" value="A"><span><span class="opt-letter">A.</span> The disaster recovery team</span></label>
+            <label class="opt"><input type="radio" name="q8" value="B"><span><span class="opt-letter">B.</span> Crisis management</span></label>
+            <label class="opt"><input type="radio" name="q8" value="C"><span><span class="opt-letter">C.</span> The help desk</span></label>
+            <label class="opt"><input type="radio" name="q8" value="D"><span><span class="opt-letter">D.</span> The backup administrator</span></label>
+          </fieldset>
+          <div class="rationale"><b>Correct: B.</b> Crisis management is the senior-leadership function coordinating strategic decisions and stakeholder/public communication during a major event; DR and BCP execute the recovery beneath it. <b>Why the others fall short:</b> <b>A</b> the DR team handles technical recovery; <b>C</b> the help desk handles user support; <b>D</b> the backup admin handles backups &mdash; senior coordination is crisis management.</div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" onclick="gradeQuiz()">Submit Answers</button>
+          <button type="button" class="btn secondary" onclick="resetQuiz()">Reset</button>
+          <span class="score" id="score" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Lesson navigation">
+  <div class="pager-inner">
+    <a href="lesson06.html" class="prev"><span class="pager-dir">&#8592; Previous</span><span class="pager-name">Lesson 6 &mdash; Incident Management (Part A)</span></a>
+    <a href="lesson08.html" class="next"><span class="pager-dir">Next &#8594;</span><span class="pager-name">Lesson 8 &mdash; Capstone: Strategy & Scenarios</span></a>
+  </div>
+</nav>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+</body>
+</html>

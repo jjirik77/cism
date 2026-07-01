@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Prompt Generator | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<style>
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+  .builder { display: grid; gap: 1.1rem; }
+  .group-label { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; margin-top: 0.4rem; }
+  .field { display: grid; gap: 0.4rem; }
+  .field label { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-primary); }
+  .field .hint { font-family: Arial, sans-serif; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+  .field select, .field input[type=text], .field textarea {
+    width: 100%; font-family: Arial, sans-serif; font-size: 0.92rem; color: var(--text-primary);
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.6rem 0.7rem;
+    transition: border-color 0.15s;
+  }
+  .field textarea { min-height: 76px; resize: vertical; line-height: 1.5; }
+  .field select:focus, .field input[type=text]:focus, .field textarea:focus { outline: none; border-color: var(--gold); }
+  .chk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .chk { display: flex; align-items: center; gap: 0.5rem; font-family: Arial, sans-serif; font-size: 0.84rem; color: var(--text-secondary); background: var(--card-bg); border: 1px solid var(--border); border-radius: 5px; padding: 0.5rem 0.6rem; cursor: pointer; }
+  .chk input { accent-color: var(--gold); flex-shrink: 0; }
+
+  .preview-wrap { position: sticky; top: 78px; display: grid; gap: 0.9rem; }
+  .preview-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .preview-head .ph-title { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-primary); }
+  #promptOut {
+    width: 100%; min-height: 540px; resize: vertical; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.8rem; line-height: 1.55; color: var(--text-primary); background: var(--blue-pale);
+    border: 1px solid var(--blue-pale-border); border-radius: 6px; padding: 1rem 1.1rem;
+  }
+  .copy-note { font-family: Arial, sans-serif; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; background: var(--card-bg); border: 1px solid var(--border); border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; padding: 0.85rem 1.05rem; }
+  .copy-note b { color: var(--text-primary); }
+  #copyMsg { font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--correct); }
+  @media (max-width: 880px) {
+    .tool-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+    .preview-wrap { position: static; }
+    .chk-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-seal">CISM<br>PREP</div>
+    <span class="nav-title">5-Day Boot Camp</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lessons">Lessons</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#resources">Resources</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
+  </div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#resources">Resources</a> &nbsp;&rsaquo;&nbsp; <span>Content Generator</span></p>
+    <span class="lesson-badge-lg">Content Development Tool</span>
+    <h1>Content <span>Prompt Generator</span></h1>
+    <p class="lesson-lede">Build a structured prompt for any CISM instructional content &mdash; a reading, a flip-card deck, a scored quiz, a scenario, or a full HTML activity. Specify the topic, audience, objectives, and Bloom levels, and the prompt assembles in real time in the boot camp&rsquo;s manager voice.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <p class="eyebrow">Build Your Prompt</p>
+    <h2 class="h2">Configure the content</h2>
+    <div class="rule"></div>
+
+    <div class="tool-grid">
+
+      <form class="builder" id="builder" oninput="buildPrompt()" onchange="buildPrompt()" onsubmit="return false">
+
+        <div class="group-label">1 &middot; Topic &amp; Purpose</div>
+
+        <div class="field">
+          <label for="platform">AI Platform</label>
+          <select id="platform">
+            <option value="Claude" data-url="https://claude.ai" selected>Claude</option>
+            <option value="ChatGPT" data-url="https://chatgpt.com">ChatGPT</option>
+            <option value="Gemini" data-url="https://gemini.google.com">Google Gemini</option>
+            <option value="any capable AI assistant" data-url="https://claude.ai">Any capable AI</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="title">Content Title</label>
+          <input type="text" id="title" placeholder="e.g., Risk-Based Audit Planning &mdash; Reading &amp; Check">
+        </div>
+
+        <div class="field">
+          <label for="domain">CISM Domain</label>
+          <select id="domain" onchange="fillTopics()">
+            <option data-key="D0" value="Orientation &mdash; the management mindset, ISACA ethics, and exam strategy">Orientation &amp; Exam Prep</option>
+            <option data-key="D1" value="Domain 1 &mdash; Information Security Governance" selected>Domain 1 &mdash; Governance</option>
+            <option data-key="D2" value="Domain 2 &mdash; Information Security Risk Management">Domain 2 &mdash; Risk Management</option>
+            <option data-key="D3" value="Domain 3 &mdash; Information Security Program">Domain 3 &mdash; Security Program</option>
+            <option data-key="D4" value="Domain 4 &mdash; Incident Management">Domain 4 &mdash; Incident Management</option>
+            <option data-key="MIX" value="Mixed &mdash; a cross-domain scenario spanning multiple CISM domains">Mixed / Cross-Domain</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="topic">Topic Focus</label>
+          <select id="topic"></select>
+        </div>
+
+        <div class="field">
+          <label for="purpose">Purpose / Instructional Goal <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></label>
+          <input type="text" id="purpose" placeholder="e.g., prepare learners to prioritize an audit plan by residual risk">
+        </div>
+
+        <div class="group-label">2 &middot; Content Type</div>
+        <div class="chk-grid" id="ctypes">
+          <label class="chk"><input type="checkbox" value="an instructional narrative / reading" checked> Instructional narrative</label>
+          <label class="chk"><input type="checkbox" value="a flip-card deck (term &harr; definition)"> Flip-card deck</label>
+          <label class="chk"><input type="checkbox" value="a scored best-answer quiz with rationale" checked> Scored quiz</label>
+          <label class="chk"><input type="checkbox" value="a drag-and-drop matching or sorting activity"> Drag-and-drop / matching</label>
+          <label class="chk"><input type="checkbox" value="a branching decision scenario"> Branching scenario</label>
+          <label class="chk"><input type="checkbox" value="a self-contained HTML/JavaScript simulation"> HTML/JS simulation</label>
+          <label class="chk"><input type="checkbox" value="a team project brief"> Team project</label>
+          <label class="chk"><input type="checkbox" value="a written assignment with a prompt and rubric"> Written assignment</label>
+          <label class="chk"><input type="checkbox" value="discussion prompts"> Discussion prompts</label>
+        </div>
+
+        <div class="group-label">3 &middot; Audience &amp; Objectives</div>
+        <div class="field">
+          <label for="audience">Target Audience</label>
+          <select id="audience">
+            <option value="high-school CTE / early cybersecurity learners">High school CTE</option>
+            <option value="community or technical college students" selected>Community / technical college</option>
+            <option value="university students">University</option>
+            <option value="working professionals / corporate learners">Working professionals</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="objectives">Learning Objectives <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(one per line, optional)</span></label>
+          <textarea id="objectives" placeholder="Evaluate whether an audit plan is prioritized by residual risk&#10;Distinguish inherent, control, and residual risk"></textarea>
+          <span class="hint">Use Bloom action verbs (Explain, Apply, Analyze, Evaluate). Leave blank to let the AI draft them.</span>
+        </div>
+
+        <div class="group-label">4 &middot; Knowledge, Skills &amp; Tasks</div>
+        <div class="field">
+          <label for="knowledge">Knowledge to Cover <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></label>
+          <textarea id="knowledge" placeholder="Key CISM concepts, terms, and frameworks the content must include"></textarea>
+        </div>
+        <div class="field">
+          <label for="skills">Skills / Tasks to Practice <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></label>
+          <textarea id="skills" placeholder="Applied manager capabilities: e.g., rank an audit universe by risk; identify a SoD conflict"></textarea>
+        </div>
+
+        <div class="group-label">5 &middot; Rigor &amp; Output</div>
+        <div class="field">
+          <label>Bloom&rsquo;s Levels</label>
+          <div class="chk-grid" id="blooms">
+            <label class="chk"><input type="checkbox" value="Remember"> Remember</label>
+            <label class="chk"><input type="checkbox" value="Understand"> Understand</label>
+            <label class="chk"><input type="checkbox" value="Apply" checked> Apply</label>
+            <label class="chk"><input type="checkbox" value="Analyze" checked> Analyze</label>
+            <label class="chk"><input type="checkbox" value="Evaluate" checked> Evaluate</label>
+            <label class="chk"><input type="checkbox" value="Create"> Create</label>
+          </div>
+          <span class="hint">CISM exam items emphasize <b>Apply&ndash;Evaluate</b>.</span>
+        </div>
+        <div class="field">
+          <label for="format">Output Format</label>
+          <select id="format">
+            <option value="a single self-contained, interactive HTML file (all CSS/JS inline, no libraries, works offline)">Interactive HTML</option>
+            <option value="clean structured text / Markdown" selected>Structured text / Markdown</option>
+            <option value="JSON structured for LMS import">JSON / LMS data</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="extra">Additional Instructions <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></label>
+          <input type="text" id="extra" placeholder="e.g., 8 quiz items; include an In-Practice callout; match the boot camp theme">
+        </div>
+      </form>
+
+      <div class="preview-wrap">
+        <div class="preview-head">
+          <span class="ph-title">&#128221; Generated prompt</span>
+          <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+            <span id="copyMsg" role="status" aria-live="polite"></span>
+            <button type="button" class="btn secondary" onclick="resetForm()">Reset</button>
+            <button type="button" class="btn secondary" onclick="openPlatform()">&#8599; Open</button>
+            <button type="button" class="btn" onclick="copyPrompt()">&#128203; Copy</button>
+          </div>
+        </div>
+        <textarea id="promptOut" readonly aria-label="Generated prompt"></textarea>
+        <div class="copy-note"><b>How to use:</b> Copy this into your AI platform to draft the content, then <b>review for accuracy</b> against ISACA&rsquo;s Job Practice before classroom use. Don&rsquo;t paste student names or institutional data into AI tools.</div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. Content generated with this tool should be reviewed for accuracy before instructional use.</p>
+</footer>
+
+<script src="cism-lesson.js"></script>
+<script>
+  const TOPICS = {
+    D0: ["The manager mindset vs. the technician mindset","The ISACA Code of Professional Ethics","Exam strategy and question triage"],
+    D1: ["The five governance outcomes","Security strategy from business objectives","Governance frameworks (COBIT 2019, ISO 27001, NIST CSF 2.0)","The CISO role and reporting lines","Policies, standards, and procedures","Governance metrics (KGI / KPI / KRI)","Legal, regulatory, and compliance requirements"],
+    D2: ["The risk management lifecycle","Risk appetite, tolerance, and capacity","Asset identification, classification, and valuation","Qualitative vs. quantitative risk analysis (SLE / ARO / ALE)","Risk treatment options (mitigate / transfer / avoid / accept)","The risk register and risk ownership","Risk monitoring and key risk indicators"],
+    D3: ["The security program charter and architecture","Control types and categories","Selecting controls on a risk basis","Foundational principles (least privilege, separation of duties, defense in depth)","Security awareness and culture","Third-party and vendor risk management","Cryptography and access control as protective controls","Program metrics and continuous improvement"],
+    D4: ["The incident response program and plan","Incident classification and triage","The response lifecycle (contain before eradicate)","Evidence handling and chain of custody","Communication, notification, and regulatory reporting","Business impact analysis (BIA)","Recovery objectives (RTO / RPO / MTD)","Business continuity (BCP) and disaster recovery (DRP)","Recovery testing"],
+    MIX: ["A cross-domain scenario the manager must synthesize across governance, risk, program, and incident management"]
+  };
+
+  function val(id){ return document.getElementById(id).value; }
+  function collect(containerId){
+    return Array.from(document.querySelectorAll('#'+containerId+' input:checked')).map(c=>c.value);
+  }
+  function fillTopics(){
+    const key = document.getElementById('domain').selectedOptions[0].dataset.key;
+    const sel = document.getElementById('topic');
+    sel.innerHTML = '<option value="">Let the AI choose within this domain</option>' +
+      TOPICS[key].map(t => '<option>'+t+'</option>').join('');
+    buildPrompt();
+  }
+
+  function buildPrompt(){
+    const platform = val('platform');
+    const title = val('title').trim();
+    const domain = document.getElementById('domain').selectedOptions[0].value;
+    const topicRaw = val('topic');
+    const topic = topicRaw ? topicRaw : "a representative topic within the domain (you choose)";
+    const purpose = val('purpose').trim();
+    const ctypes = collect('ctypes');
+    const audience = val('audience');
+    const objectives = val('objectives').split('\n').map(s=>s.trim()).filter(Boolean);
+    const knowledge = val('knowledge').trim();
+    const skills = val('skills').trim();
+    const blooms = collect('blooms');
+    const format = val('format');
+    const extra = val('extra').trim();
+
+    let p = "";
+    p += "You are an expert instructional designer and CISM (Certified Information Security Manager) subject-matter expert, creating instructional content for a CISM exam-preparation boot camp.";
+    if (platform !== "any capable AI assistant") p += " Optimize the wording for " + platform + ".";
+    p += "\n\n";
+    p += "## CONTENT\n";
+    if (title) p += "- Title: " + title + "\n";
+    p += "- Domain: " + domain + "\n";
+    p += "- Topic: " + topic + "\n";
+    if (purpose) p += "- Purpose: " + purpose + "\n";
+    p += "- Produce: " + (ctypes.length ? ctypes.join("; ") : "an instructional narrative and a short scored check") + ".\n\n";
+    p += "## AUDIENCE & OBJECTIVES\n";
+    p += "- Audience: " + audience + ".\n";
+    if (objectives.length){ p += "- Learning objectives:\n"; objectives.forEach(o=> p += "   - " + o + "\n"); }
+    else { p += "- Draft 3–5 measurable learning objectives using Bloom action verbs.\n"; }
+    p += "\n";
+    if (knowledge || skills){
+      p += "## KNOWLEDGE, SKILLS & TASKS\n";
+      if (knowledge) p += "- Knowledge to cover: " + knowledge + "\n";
+      if (skills)    p += "- Skills / tasks to practice: " + skills + "\n";
+      p += "\n";
+    }
+    p += "## RIGOR & VOICE\n";
+    p += "- Target Bloom's level(s): " + (blooms.length ? blooms.join(", ") : "Apply, Analyze, Evaluate") + ".\n";
+    p += "- Ground everything in the CISM \"manager mindset\": business-aligned, risk-based, governance-focused — what the manager should DO, evaluate, or conclude, not what a technician builds.\n";
+    p += "- Be accurate to the current ISACA CISM Job Practice; use current frameworks (COBIT 2019, NIST CSF 2.0, ISO/IEC 27001:2022). For any assessment items, provide best-answer rationale, including why each distractor fails.\n\n";
+    p += "## OUTPUT\n";
+    p += "- Format: " + format + ".\n";
+    if (format.indexOf("HTML") !== -1) p += "- Deliver a single self-contained file with all CSS/JS inline, no external libraries; it must open in a browser and work offline.\n";
+    if (extra) p += "- Additional instructions: " + extra + "\n";
+    p += "- Note: review the generated content for accuracy against primary sources before classroom use.";
+
+    document.getElementById('promptOut').value = p;
+  }
+
+  function copyPrompt(){
+    const ta = document.getElementById('promptOut');
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    const done = (ok) => {
+      const msg = document.getElementById('copyMsg');
+      msg.textContent = ok ? "✓ Copied!" : "Press Ctrl/Cmd+C to copy";
+      setTimeout(()=>{ msg.textContent=""; }, 2500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(()=>done(true)).catch(()=>done(false));
+    } else {
+      try { document.execCommand('copy'); done(true); } catch(e){ done(false); }
+    }
+  }
+
+  function openPlatform(){
+    copyPrompt();
+    window.open(document.getElementById('platform').selectedOptions[0].dataset.url, '_blank', 'noopener');
+  }
+
+  function resetForm(){
+    document.getElementById('builder').reset();
+    fillTopics();
+    document.getElementById('copyMsg').textContent = "";
+  }
+
+  fillTopics();
+</script>
+</body>
+</html>
