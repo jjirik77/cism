@@ -174,7 +174,7 @@
       <div class="content-main">
 
         <article class="content-section" id="s1">
-          <div class="cs-head"><span class="cs-num">1</span><h3>Business Continuity &amp; the BIA</h3></div>
+          <div class="cs-head"><span class="cs-num">1</span><h3>Business Continuity &amp; the BIA</h3><span class="obj-tag">Objective 1 · the BIA</span></div>
           <p>Business continuity keeps the organization running through disruption. It begins with the <strong>business impact analysis</strong>, which identifies the organization&rsquo;s critical processes, quantifies the impact of losing them over time, and derives the recovery objectives. Every continuity and recovery decision traces back to the BIA &mdash; build it first.</p>
           <ul class="detail">
             <li>The <strong>BIA</strong> ranks processes by criticality and sets RTO/RPO from business needs, not IT preference.</li>
@@ -186,7 +186,7 @@
         </article>
 
         <article class="content-section" id="s2">
-          <div class="cs-head"><span class="cs-num">2</span><h3>Recovery Objectives: RTO, RPO &amp; MTD</h3></div>
+          <div class="cs-head"><span class="cs-num">2</span><h3>Recovery Objectives: RTO, RPO &amp; MTD</h3><span class="obj-tag">Objective 2 · RTO, RPO and MTD</span></div>
           <p>Recovery objectives are the numbers that bound every strategy. The <strong>RTO</strong> sets how fast a process must return; the <strong>RPO</strong> sets how much data loss is acceptable; the <strong>MTD</strong> is the outer limit beyond which harm becomes unacceptable.</p>
           <ul class="detail">
             <li><strong>RTO</strong> = maximum acceptable <em>downtime</em>; <strong>RPO</strong> = maximum acceptable <em>data loss</em> (in time).</li>
@@ -195,10 +195,10 @@
             <li>Objectives must be realistic and funded &mdash; an RTO the recovery strategy can&rsquo;t actually achieve is a false assurance.</li>
           </ul>
           <figure class="diagram">
-            <svg viewBox="0 0 760 292" role="img" aria-label="A timeline of a disruption. To the left, the gap from the last good backup to the disruption is the RPO (maximum data loss). To the right, the gap from the disruption to systems restored is the RTO (recovery target). Above, the wider gap from the disruption to the point where impact becomes unacceptable is the MTPD, which the RTO must fit within.">
+            <svg viewBox="0 0 760 292" role="img" aria-label="A timeline of a disruption. To the left, the gap from the last good backup to the disruption is the RPO (maximum data loss). To the right, the gap from the disruption to systems restored is the RTO (recovery target). Above, the wider gap from the disruption to the point where impact becomes unacceptable is the MTD (maximum tolerable downtime), which the RTO must fit within.">
               <text x="350" y="28" text-anchor="middle" class="dg-text-accent" font-size="14" font-weight="700">Disruption / outage</text>
               <path d="M350 80 V72 H660 V80" class="dg-brk-mtd" stroke-width="2"/>
-              <text x="505" y="62" text-anchor="middle" class="dg-text-blue" font-size="12.5" font-weight="600">MTPD &#8212; maximum tolerable disruption</text>
+              <text x="505" y="62" text-anchor="middle" class="dg-text-blue" font-size="12.5" font-weight="600">MTD &#8212; maximum tolerable downtime</text>
               <line x1="62" y1="156" x2="704" y2="156" class="dg-axis" stroke-width="2.5"/>
               <path d="M704 150 L718 156 L704 162 Z" class="dg-dot"/>
               <text x="712" y="146" text-anchor="end" class="dg-text-muted" font-size="11">time</text>
@@ -218,7 +218,7 @@
               <text x="660" y="250" text-anchor="middle" class="dg-text" font-size="11.5">Impact</text>
               <text x="660" y="264" text-anchor="middle" class="dg-text" font-size="11.5">unacceptable</text>
             </svg>
-            <figcaption>Recovery objectives on one timeline: <strong>RPO</strong> is the acceptable <em>data-loss</em> window (it sets your backup frequency), <strong>RTO</strong> is the acceptable <em>downtime</em> to restore &mdash; and the RTO must fit inside the <strong>MTPD</strong>, the point where the impact becomes unacceptable.</figcaption>
+            <figcaption>Recovery objectives on one timeline: <strong>RPO</strong> is the acceptable <em>data-loss</em> window (it sets your backup frequency), <strong>RTO</strong> is the acceptable <em>downtime</em> to restore &mdash; and the RTO must fit inside the <strong>MTD</strong> (maximum tolerable downtime &mdash; ISO&nbsp;22301 calls it the MTPD), the point where the impact becomes unacceptable.</figcaption>
           </figure>
           <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>The business sets a 1-hour RPO for the order system, but backups run nightly. That gap is the finding: a nightly backup permits up to ~24 hours of data loss. Meeting a 1-hour RPO requires near-continuous replication or hourly backups.</p></div>
 
@@ -533,7 +533,7 @@
         </article>
 
         <article class="content-section" id="s3">
-          <div class="cs-head"><span class="cs-num">3</span><h3>Recovery Strategies &amp; Sites</h3></div>
+          <div class="cs-head"><span class="cs-num">3</span><h3>Recovery Strategies &amp; Sites</h3><span class="obj-tag">Objective 3 · recovery strategies and sites</span></div>
           <p>Disaster recovery selects the strategy that meets the RTO/RPO at acceptable cost. Alternate-site choices trade speed for money &mdash; the right answer fits the recovery objectives and budget the BIA justifies, not the fastest option available.</p>
           <div class="table-wrap" style="margin:1.1rem 0">
             <table class="data"><thead><tr><th>Strategy</th><th>Recovery speed</th><th>Cost / trade-off</th></tr></thead><tbody>
@@ -548,7 +548,7 @@
         </article>
 
         <article class="content-section" id="s4">
-          <div class="cs-head"><span class="cs-num">4</span><h3>Backups &amp; Plan Testing</h3></div>
+          <div class="cs-head"><span class="cs-num">4</span><h3>Backups &amp; Plan Testing</h3><span class="obj-tag">Objective 4 · plan testing</span></div>
           <p>Plans and backups are worthless until proven. The manager ensures backups are validated by restoration and that the plans are exercised regularly, with results documented and weaknesses fed back into the plan.</p>
           <ul class="detail">
             <li><strong>Backups</strong>: full / incremental / differential, often a 3-2-1 strategy; <strong>a backup is only effective once a restore has been tested</strong>.</li>
@@ -560,7 +560,7 @@
         </article>
 
         <article class="content-section" id="s5">
-          <div class="cs-head"><span class="cs-num">5</span><h3>Crisis Management &amp; the Manager&rsquo;s Role</h3></div>
+          <div class="cs-head"><span class="cs-num">5</span><h3>Crisis Management &amp; the Manager&rsquo;s Role</h3><span class="obj-tag">Objective 5 · BC vs DR and crisis</span></div>
           <p>Above the technical recovery sits <strong>crisis management</strong> &mdash; senior leadership coordinating the organization&rsquo;s overall response, decisions, and communications. The security manager integrates incident, continuity, and recovery so they operate as one capability under crisis leadership.</p>
           <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p><strong>Supply-chain resilience</strong> belongs in continuity planning: map critical vendors and their <em>concentration</em> and <strong>fourth-party</strong> dependencies, require continuity and RTO commitments in contracts, and pre-arrange alternates for single points of failure. Crisis communications should pre-approve <strong>holding statements</strong>, a single spokesperson, and an update cadence so the response stays fast and consistent under pressure.</p></div>
           <ul class="detail">

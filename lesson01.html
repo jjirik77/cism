@@ -135,7 +135,7 @@
       <button type="button" class="flip-card vocab" aria-pressed="false">
         <div class="flip-inner">
           <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">COBIT 2019</div><span class="flip-hint">&#8634; What it means</span></div>
-          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">ISACA&rsquo;s framework for the governance and management of enterprise IT; it separates <strong>governance (EDM)</strong> from management and uses design factors to tailor the system to context.</div></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">ISACA&rsquo;s framework for the governance and management of enterprise IT; it separates <strong>governance (EDM: Evaluate, Direct, Monitor)</strong> from the four <strong>management</strong> domains (APO, BAI, DSS, MEA), and uses design factors to tailor the system to context.</div></div>
         </div>
       </button>
 
@@ -149,7 +149,7 @@
       <button type="button" class="flip-card vocab" aria-pressed="false">
         <div class="flip-inner">
           <div class="flip-face flip-front"><span class="vocab-label">Term</span><div class="vocab-term">NIST CSF</div><span class="flip-hint">&#8634; What it means</span></div>
-          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The NIST Cybersecurity Framework &mdash; a voluntary, outcome-based framework organized around the functions <strong>Identify, Protect, Detect, Respond, Recover</strong> (plus <em>Govern</em> in the current version).</div></div>
+          <div class="flip-face flip-back"><span class="vocab-label">What it means</span><div class="vocab-def">The NIST Cybersecurity Framework &mdash; a voluntary, outcome-based framework. In the current <strong>CSF 2.0</strong> it has six functions, led by the overarching <strong>Govern</strong>, then Identify, Protect, Detect, Respond, and Recover.</div></div>
         </div>
       </button>
 
@@ -182,7 +182,7 @@
       <div class="content-main">
 
         <article class="content-section" id="s1">
-          <div class="cs-head"><span class="cs-num">1</span><h3>Governance Foundations &amp; the Five Outcomes</h3></div>
+          <div class="cs-head"><span class="cs-num">1</span><h3>Governance Foundations &amp; the Five Outcomes</h3><span class="obj-tag">Objective 1 · governance foundations</span></div>
           <p>Information security governance is how an organization <strong>directs and controls</strong> its security activities. It is distinct from doing the work: governance decides direction, assigns accountability, and measures results. Accountability ultimately rests with the <strong>board and senior management</strong> &mdash; security is a governance responsibility, not merely an IT problem.</p>
           <h4>The five outcomes of effective governance</h4>
           <ul class="detail">
@@ -436,7 +436,7 @@
         </article>
 
         <article class="content-section" id="s2">
-          <div class="cs-head"><span class="cs-num">2</span><h3>The Governance Hierarchy &amp; Roles</h3></div>
+          <div class="cs-head"><span class="cs-num">2</span><h3>The Governance Hierarchy &amp; Roles</h3><span class="obj-tag">Objective 2 · hierarchy and roles</span></div>
           <p>Governance is layered: <strong>corporate governance</strong> sets enterprise direction, <strong>IT governance</strong> aligns technology to it, and <strong>information security governance</strong> sits within both. The security manager must know where authority and accountability sit.</p>
           <ul class="detail">
             <li><strong>CISO:</strong> owns the governance framework and strategy; reports high enough (to a CRO, CEO, or board committee) to stay independent of day-to-day IT operations.</li>
@@ -444,12 +444,13 @@
             <li><strong>Risk owner:</strong> the business leader who accepts or rejects residual risk; security advises, the business decides.</li>
             <li><strong>Organizational models:</strong> centralized (one authority), decentralized (business-unit autonomy), or federated (central policy + local execution) &mdash; chosen to fit the enterprise.</li>
             <li><strong>Separation of duties</strong> in governance: the people who own risk, manage security, and audit it must be distinct.</li>
+            <li><strong>Three lines model:</strong> the <strong>first line</strong> (operational management) owns and runs controls; the <strong>second line</strong> (risk &amp; compliance &mdash; where the security manager sits) sets policy and monitors; the <strong>third line</strong> (<strong>internal audit</strong>) gives the <strong>board / audit committee</strong> independent assurance. Security <em>manages</em> risk; it does not provide its own assurance.</li>
           </ul>
           <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A CISO who reports <em>into</em> the IT function they are meant to oversee has an independence problem: they may be pressured to under-report risk that reflects badly on IT. The governance fix is a reporting line outside IT, not a technical control.</p></div>
         </article>
 
         <article class="content-section" id="s3">
-          <div class="cs-head"><span class="cs-num">3</span><h3>Developing the Security Strategy</h3></div>
+          <div class="cs-head"><span class="cs-num">3</span><h3>Developing the Security Strategy</h3><span class="obj-tag">Objective 3 · security strategy</span></div>
           <p>Strategy is where governance becomes a plan. It always flows <em>from</em> the business: Business Vision &rarr; Business Strategy &rarr; IT Strategy &rarr; IS Strategy &rarr; Policy &rarr; Standards &rarr; Procedures &rarr; Metrics. A strategy that starts from technology rather than business objectives is mis-built.</p>
           <ul class="detail">
             <li><strong>Gap analysis</strong> compares current state to a desired state (target framework/maturity) and yields the prioritized initiatives.</li>
@@ -462,14 +463,14 @@
         </article>
 
         <article class="content-section" id="s4">
-          <div class="cs-head"><span class="cs-num">4</span><h3>Frameworks &amp; How to Choose</h3></div>
+          <div class="cs-head"><span class="cs-num">4</span><h3>Frameworks &amp; How to Choose</h3><span class="obj-tag">Objective 4 · governance frameworks</span></div>
           <p>Frameworks give the program structure and a shared language. The CISM does not require memorizing every control &mdash; it tests knowing what each framework is <em>for</em> and choosing one that fits the organization&rsquo;s context, size, industry, and regulatory obligations.</p>
           <div class="table-wrap" style="margin:1.1rem 0">
             <table class="data"><thead><tr><th>Framework</th><th>What it is</th><th>Best used for</th></tr></thead><tbody>
           <tr><td><strong>COBIT 2019</strong></td><td>ISACA governance &amp; management of enterprise IT; separates governance (EDM) from management</td><td>End-to-end governance and board alignment</td></tr>
           <tr><td><strong>ISO/IEC 27001</strong></td><td>Certifiable ISMS built on Plan-Do-Check-Act</td><td>A certifiable, auditable management system</td></tr>
           <tr><td><strong>ISO/IEC 27002</strong></td><td>Catalogue of security controls</td><td>Selecting and implementing specific controls</td></tr>
-          <tr><td><strong>NIST CSF</strong></td><td>Outcome-based functions: Identify, Protect, Detect, Respond, Recover (+ Govern)</td><td>Communicating risk posture to leadership</td></tr>
+          <tr><td><strong>NIST CSF 2.0</strong></td><td>Six functions led by the overarching <strong>Govern</strong>, then Identify, Protect, Detect, Respond, Recover</td><td>Communicating risk posture to leadership</td></tr>
           <tr><td><strong>NIST SP 800-53</strong></td><td>Detailed security &amp; privacy control catalogue</td><td>Deep control baselines; US federal context</td></tr>
             </tbody></table>
           </div>
@@ -489,6 +490,7 @@
           <p>Compliance is a strategic input, not the goal itself &mdash; a program built only to pass an audit will miss real risk. Still, the security manager must map applicable obligations to controls and keep evidence.</p>
           <ul class="detail">
             <li><strong>GDPR:</strong> data-subject rights and a <strong>72-hour</strong> breach-notification window to the supervisory authority; may require a Data Protection Officer (DPO).</li>
+            <li><strong>US state privacy laws (CCPA / CPRA):</strong> California&rsquo;s consumer-privacy regime &mdash; access, deletion, and opt-out-of-sale rights &mdash; the leading example of the growing patchwork of <strong>US state</strong> laws that reach organizations handling residents&rsquo; data even without a comprehensive federal law.</li>
             <li><strong>HIPAA:</strong> the Security Rule&rsquo;s administrative, physical, and technical safeguards for protected health information.</li>
             <li><strong>PCI DSS:</strong> contractual security requirements for handling payment-card data.</li>
             <li><strong>SOX:</strong> controls over financial reporting, including IT general controls.</li>
@@ -498,7 +500,7 @@
         </article>
 
         <article class="content-section" id="s6">
-          <div class="cs-head"><span class="cs-num">6</span><h3>Metrics &amp; Performance Management</h3></div>
+          <div class="cs-head"><span class="cs-num">6</span><h3>Metrics &amp; Performance Management</h3><span class="obj-tag">Objective 5 · governance metrics</span></div>
           <p>Governance is only real if it is measured. Metrics prove value, surface rising risk, and give leadership the information to steer. The key is choosing indicators that map to business outcomes, not vanity numbers.</p>
           <ul class="detail">
             <li><strong>KGI</strong> &mdash; did we achieve the objective? (e.g., % of critical systems meeting policy).</li>

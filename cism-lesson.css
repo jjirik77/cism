@@ -390,3 +390,6 @@
 .xref{font-size:.82rem;color:var(--text-muted);font-style:italic;}
 .xref a{color:var(--gold);font-weight:600;text-decoration:none;}
 .xref a:hover{text-decoration:underline;}
+
+.obj-tag{display:inline-block;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--blue-pale-border);border-radius:20px;padding:0.18rem 0.62rem;margin-left:0.7rem;vertical-align:middle;white-space:nowrap;}
+@media (max-width:640px){.obj-tag{display:none;}}
