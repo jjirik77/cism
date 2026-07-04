@@ -359,7 +359,7 @@
             function resize(){
               var w=cvs.parentElement.clientWidth||360, dpr=window.devicePixelRatio||1;
               var big=root.classList.contains('is-expanded');
-              var h=big?Math.max(400,Math.min(560,w*0.62)):Math.max(300,Math.min(380,w*0.7));
+              var h=big?Math.max(240,Math.min(w*0.55,window.innerHeight-cvs.getBoundingClientRect().top-90)):Math.max(300,Math.min(380,w*0.7));
               cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.height=h+'px';
               ctx.setTransform(dpr,0,0,dpr,0,0); cvs._w=w; cvs._h=h;
             }

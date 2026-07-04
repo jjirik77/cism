@@ -283,10 +283,22 @@
             .val-bar .bf{height:100%;border-radius:7px;transition:width .15s;}
             .val-bar .bp{font-size:0.62rem;color:var(--text-muted);width:64px;flex:none;text-align:right;}
             .val-bar.peak .bl{color:var(--gold);}
+            .val-topbar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-bottom:0.7rem;margin-bottom:0.95rem;border-bottom:1px solid var(--border);}
+            .val-topbar-eyebrow{font-family:Arial,sans-serif;font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+            .val-expand{font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold);border-radius:5px;padding:0.42rem 0.85rem;cursor:pointer;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:0.4rem;}
+            .val-expand:hover{background:var(--gold);color:#fff;}
+            .val-expand:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .val-backdrop{position:fixed;inset:0;background:rgba(6,25,31,0.6);z-index:9998;}
+            .val.is-expanded{position:fixed;inset:2.5vh 2.5vw;width:auto;max-width:none;z-index:9999;margin:0;overflow:auto;background:var(--body-bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+            .val.is-expanded .val-card{max-width:1180px;margin:0 auto;border:none;box-shadow:none;padding:0.25rem;}
           </style>
 
           <div class="val" id="val-root">
             <div class="val-card">
+              <div class="val-topbar">
+                <span class="val-topbar-eyebrow">Interactive &middot; adjust &amp; explore</span>
+                <button type="button" class="val-expand" id="val-expand" aria-expanded="false" title="Open a larger, full-screen view">&#10530; Expand</button>
+              </div>
               <div class="val-grid">
                 <div class="val-panel">
                   <h5>Rate the impact of a loss</h5>
@@ -398,6 +410,36 @@
             document.getElementById('val-reset').addEventListener('click',function(){
               state={c:3,i:2,a:3,reg:1}; document.getElementById('val_rep').value=400000; paint();
             });
+
+            // Expand-to-fullscreen (no canvas — just an overlay + focus trap)
+            var expBtn=document.getElementById('val-expand');
+            var backdrop=document.createElement('div'); backdrop.className='val-backdrop';
+            var lastFocused=null;
+            function focusables(){return Array.prototype.filter.call(
+              root.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])'),
+              function(x){return !x.disabled && x.offsetParent!==null;});}
+            function setExpanded(o){
+              root.classList.toggle('is-expanded',o);
+              if(o){document.body.appendChild(backdrop); lastFocused=document.activeElement;
+                root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-label','Expanded interactive');}
+              else {if(backdrop.parentNode)backdrop.parentNode.removeChild(backdrop);
+                root.removeAttribute('role'); root.removeAttribute('aria-modal'); root.removeAttribute('aria-label');}
+              document.body.style.overflow=o?'hidden':'';
+              expBtn.innerHTML=o?'&#10005; Close':'&#10530; Expand';
+              expBtn.setAttribute('aria-expanded',o?'true':'false');
+              if(o){root.scrollTop=0; expBtn.focus();} else if(lastFocused&&lastFocused.focus){lastFocused.focus();}
+            }
+            expBtn.addEventListener('click',function(){setExpanded(!root.classList.contains('is-expanded'));});
+            backdrop.addEventListener('click',function(){setExpanded(false);});
+            document.addEventListener('keydown',function(e){
+              if(!root.classList.contains('is-expanded')) return;
+              if(e.key==='Escape'){setExpanded(false); return;}
+              if(e.key==='Tab'){var f=focusables(); if(!f.length)return; var fi=f[0],la=f[f.length-1];
+                if(!root.contains(document.activeElement)){e.preventDefault(); fi.focus();}
+                else if(e.shiftKey&&document.activeElement===fi){e.preventDefault(); la.focus();}
+                else if(!e.shiftKey&&document.activeElement===la){e.preventDefault(); fi.focus();}}
+            });
+
             paint();
           })();
           </script>
