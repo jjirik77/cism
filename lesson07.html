@@ -221,6 +221,315 @@
             <figcaption>Recovery objectives on one timeline: <strong>RPO</strong> is the acceptable <em>data-loss</em> window (it sets your backup frequency), <strong>RTO</strong> is the acceptable <em>downtime</em> to restore &mdash; and the RTO must fit inside the <strong>MTPD</strong>, the point where the impact becomes unacceptable.</figcaption>
           </figure>
           <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>The business sets a 1-hour RPO for the order system, but backups run nightly. That gap is the finding: a nightly backup permits up to ~24 hours of data loss. Meeting a 1-hour RPO requires near-continuous replication or hourly backups.</p></div>
+
+          <!-- ══ INTERACTIVE: RTO / RPO / MTD recovery timeline ══ -->
+          <h4>Try it &mdash; does the recovery strategy meet the objectives?</h4>
+          <p>The BIA hands you the numbers: how much data loss (RPO) and downtime (RTO) the business can tolerate, with RTO fitting inside the MTD. Choose a backup schedule and a recovery site, and watch whether the strategy actually meets those targets &mdash; an objective the strategy can&rsquo;t achieve is a false assurance.</p>
+
+          <style>
+            .rto{font-family:Arial,Helvetica,sans-serif;margin:1rem 0 0.25rem;max-width:100%;}
+            .rto *{box-sizing:border-box;}
+            .rto-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:1.15rem;overflow:hidden;}
+            .rto-topbar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-bottom:0.7rem;margin-bottom:0.95rem;border-bottom:1px solid var(--border);}
+            .rto-topbar-eyebrow{font-family:Arial,sans-serif;font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+            .rto-expand{font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold);border-radius:5px;padding:0.42rem 0.85rem;cursor:pointer;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:0.4rem;}
+            .rto-expand:hover{background:var(--gold);color:#fff;}
+            .rto-expand:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .rto-grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;}
+            .rto-panel{flex:1 1 250px;min-width:0;}
+            .rto-out{flex:1.4 1 300px;min-width:0;}
+            .rto-panel h5,.rto-out h5{font-family:Arial,sans-serif;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 0.15rem;}
+            .rto-panel .plead{font-size:0.74rem;color:var(--text-muted);margin:0 0 0.8rem;}
+            .rto-gt{font-family:Arial,sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700;margin:0.85rem 0 0.55rem;padding-bottom:0.3rem;border-bottom:1px solid var(--border);}
+            .rto-field{margin-bottom:0.85rem;}
+            .rto-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.3rem;}
+            .rto-field label{font-size:0.82rem;font-weight:700;color:var(--text-primary);}
+            .rto-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.92rem;color:var(--gold);font-variant-numeric:tabular-nums;text-align:right;}
+            .rto-field .h{font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;line-height:1.4;}
+            .rto input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0;}
+            .rto input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
+            .rto input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
+            .rto input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .rto-reset{margin-top:0.4rem;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);border-radius:3px;padding:0.4rem 0.8rem;cursor:pointer;}
+            .rto-reset:hover{color:var(--gold);border-color:var(--gold);}
+            .rto-btns{display:flex;flex-wrap:wrap;gap:0.35rem;}
+            .rto-btn{font-family:Arial,sans-serif;font-size:0.72rem;font-weight:700;color:var(--text-secondary);background:var(--card-bg);border:1px solid var(--border);border-radius:4px;padding:0.36rem 0.62rem;cursor:pointer;line-height:1.2;transition:background .12s,border-color .12s,color .12s;}
+            .rto-btn:hover{border-color:var(--gold);color:var(--gold);}
+            .rto-btn.is-on{background:var(--gold);border-color:var(--gold);color:#fff;}
+            .rto-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .rto-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem;margin-bottom:0.85rem;}
+            .rto-tile{background:var(--section-alt);border:1px solid var(--border);border-radius:5px;padding:0.65rem 0.7rem;min-width:0;}
+            .rto-tile .k{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:700;}
+            .rto-tile .val{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:0.2rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+            .rto-tile .sub{font-size:0.6rem;color:var(--text-muted);margin-top:0.15rem;}
+            .rto-tile .val.pass{color:var(--correct);}.rto-tile .val.fail{color:var(--wrong);}
+            .rto-verdict{display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;padding:0.75rem 0.85rem;border-radius:5px;border:1px solid var(--border);background:var(--section-alt);margin-bottom:0.85rem;}
+            .rto-verdict.good{background:var(--correct-bg);border-color:var(--correct);}
+            .rto-verdict.warn{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .rto-verdict.crit{background:var(--wrong-bg);border-color:var(--wrong);}
+            .rto-pill{font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:20px;color:#fff;white-space:nowrap;}
+            .rto-pill.good{background:var(--correct);}.rto-pill.warn{background:var(--navy);}.rto-pill.crit{background:var(--wrong);}
+            .rto-head{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.15rem;font-weight:900;font-variant-numeric:tabular-nums;}
+            .rto-coach{font-size:0.8rem;color:var(--text-secondary);flex:1 1 190px;min-width:160px;line-height:1.5;}
+            .rto-chart{background:var(--card-bg);border:1px solid var(--border);border-radius:5px;padding:0.85rem;}
+            .rto-chart h6{font-family:Georgia,serif;font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 0.15rem;}
+            .rto-chart .cap{font-size:0.72rem;color:var(--text-muted);margin:0 0 0.55rem;line-height:1.45;}
+            .rto canvas{width:100%;height:auto;display:block;}
+            .rto-legend{display:flex;gap:0.85rem;flex-wrap:wrap;margin-top:0.55rem;font-size:0.68rem;color:var(--text-muted);}
+            .rto-legend span{display:inline-flex;align-items:center;gap:0.35rem;}
+            .rto-sw{width:14px;height:10px;border-radius:2px;display:inline-block;}
+            .rto-sw.dash{height:0;border-top:2px dashed var(--text-muted);width:16px;}
+            .rto-backdrop{position:fixed;inset:0;background:rgba(6,25,31,0.6);z-index:9998;}
+            .rto.is-expanded{position:fixed;inset:2.5vh 2.5vw;width:auto;max-width:none;z-index:9999;margin:0;overflow:auto;background:var(--body-bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+            .rto.is-expanded .rto-card{max-width:1180px;margin:0 auto;border:none;box-shadow:none;padding:0.25rem;}
+          </style>
+
+          <div class="rto" id="rto-root">
+            <div class="rto-card">
+              <div class="rto-topbar">
+                <span class="rto-topbar-eyebrow">Interactive &middot; adjust &amp; explore</span>
+                <button type="button" class="rto-expand" id="rto-expand" aria-expanded="false" title="Open a larger, full-screen view">&#10530; Expand</button>
+              </div>
+              <div class="rto-grid">
+                <div class="rto-panel">
+                  <h5>Set it up</h5>
+                  <p class="plead">The BIA sets the targets; the strategy has to meet them.</p>
+                  <div class="rto-gt">Objectives &mdash; from the BIA</div>
+                  <div class="rto-field">
+                    <div class="r"><label for="rto_orpo">RPO target (max data loss)</label><span class="v" id="rto_orpo-v">4 h</span></div>
+                    <input type="range" id="rto_orpo" min="0" max="48" step="1" value="4">
+                    <div class="h">How much data the business can afford to lose.</div>
+                  </div>
+                  <div class="rto-field">
+                    <div class="r"><label for="rto_orto">RTO target (max downtime)</label><span class="v" id="rto_orto-v">8 h</span></div>
+                    <input type="range" id="rto_orto" min="1" max="96" step="1" value="8">
+                    <div class="h">Downtime limit &mdash; must sit within the MTD.</div>
+                  </div>
+                  <div class="rto-field">
+                    <div class="r"><label for="rto_dcost">Downtime cost / hour</label><span class="v" id="rto_dcost-v">$50,000</span></div>
+                    <input type="range" id="rto_dcost" min="1000" max="500000" step="1000" value="50000">
+                    <div class="h">Business impact per hour of outage.</div>
+                  </div>
+                  <div class="rto-gt">Your recovery strategy</div>
+                  <div class="rto-field">
+                    <div class="r"><label>Backup schedule</label><span class="v" id="rto_bk-v">RPO 6 h</span></div>
+                    <div class="rto-btns" id="rto_bk-btns" role="group" aria-label="Backup schedule"></div>
+                    <div class="h">Sets your <strong>actual RPO</strong> &mdash; worst case is one full interval of data.</div>
+                  </div>
+                  <div class="rto-field">
+                    <div class="r"><label>Recovery site</label><span class="v" id="rto_site-v">RTO 2 h</span></div>
+                    <div class="rto-btns" id="rto_site-btns" role="group" aria-label="Recovery site"></div>
+                    <div class="h">Sets your <strong>actual RTO</strong> &mdash; colder sites cost less but recover slower.</div>
+                  </div>
+                  <button class="rto-reset" id="rto-reset" type="button">Reset scenario</button>
+                </div>
+                <div class="rto-out">
+                  <h5>The verdict</h5>
+                  <div class="rto-tiles">
+                    <div class="rto-tile"><div class="k">Actual RPO</div><div class="val" id="rto-arpo">&mdash;</div><div class="sub" id="rto-arpo-s">&nbsp;</div></div>
+                    <div class="rto-tile"><div class="k">Actual RTO</div><div class="val" id="rto-arto">&mdash;</div><div class="sub" id="rto-arto-s">&nbsp;</div></div>
+                    <div class="rto-tile"><div class="k">Est. outage cost</div><div class="val" id="rto-outage">&mdash;</div><div class="sub">at this RTO</div></div>
+                    <div class="rto-tile"><div class="k">Annual strategy cost</div><div class="val" id="rto-annual">&mdash;</div><div class="sub">site + backups</div></div>
+                  </div>
+                  <div class="rto-verdict" id="rto-verdict">
+                    <span class="rto-pill" id="rto-pill">&mdash;</span>
+                    <span class="rto-head" id="rto-headline">&mdash;</span>
+                    <span class="rto-coach" id="rto-coach">Adjust the strategy to test it against the BIA.</span>
+                  </div>
+                  <div class="rto-chart">
+                    <h6>One disruption on a timeline</h6>
+                    <p class="cap">Red = data lost since the last good backup (<strong>RPO</strong>); teal = downtime to restore (<strong>RTO</strong>). Dashed lines are the BIA targets &mdash; a window crossing its target is a finding.</p>
+                    <canvas id="rto-canvas" width="640" height="300" role="img" aria-label="Recovery timeline showing data-loss and downtime windows against business targets"></canvas>
+                    <div class="rto-legend">
+                      <span><i class="rto-sw" style="background:var(--wrong)"></i> Data loss (RPO)</span>
+                      <span><i class="rto-sw" style="background:var(--gold)"></i> Downtime (RTO)</span>
+                      <span><i class="rto-sw dash"></i> BIA target</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Missing a target is a finding &mdash; but comfortably <em>beating</em> both targets with an active-active site can be over-investment the BIA doesn&rsquo;t justify. Recovery capability should match documented business need, proven by <strong>test results</strong> &mdash; and remember RTO must fit inside the MTD, or recovery finishes too late to matter.</p></div>
+
+          <script>
+          (function(){
+            var root=document.getElementById('rto-root'); if(!root) return;
+            var RPO=[0.1,0.25,1,6,24,168], RPOL=['Continuous (CDP)','Every 15 min','Hourly','Every 6 hours','Daily','Weekly'];
+            var RTO=[72,12,2,0.25], RTOL=['Cold site','Warm site','Hot site','Active-active'];
+            var SITE_COST=[30000,120000,400000,900000], BK_COST=[320000,180000,90000,40000,15000,5000];
+            var sliders=['orpo','orto','dcost'], el={};
+            sliders.forEach(function(i){el[i]=document.getElementById('rto_'+i);});
+            var state={bk:3, site:2};
+            var defaults={orpo:4,orto:8,dcost:50000,bk:3,site:2};
+            function syncBtns(cid,key){
+              document.getElementById(cid).querySelectorAll('.rto-btn').forEach(function(x){
+                var on=+x.dataset.i===state[key];
+                x.classList.toggle('is-on',on); x.setAttribute('aria-pressed',on?'true':'false');
+              });
+            }
+            function buildBtns(cid,labels,key){
+              var c=document.getElementById(cid);
+              labels.forEach(function(lbl,i){
+                var b=document.createElement('button');
+                b.type='button'; b.className='rto-btn'; b.textContent=lbl; b.dataset.i=i;
+                b.addEventListener('click',function(){state[key]=i; syncBtns(cid,key); paint();});
+                c.appendChild(b);
+              });
+              syncBtns(cid,key);
+            }
+            var usd=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+            function money(n){return usd.format(Math.round(n));}
+            function fmtDur(h){
+              if(h<1) return Math.round(h*60)+' min';
+              if(h<48) return (Number.isInteger(h)?h:h.toFixed(1))+' h';
+              var d=h/24; return (Number.isInteger(d)?d:d.toFixed(1))+' days';
+            }
+            function read(){return {orpo:+el.orpo.value, orto:+el.orto.value, dcost:+el.dcost.value, bk:state.bk, site:state.site};}
+            function model(v){
+              var arpo=RPO[v.bk], arto=RTO[v.site];
+              return {arpo:arpo, arto:arto, rpoPass:arpo<=v.orpo, rtoPass:arto<=v.orto,
+                annual:SITE_COST[v.site]+BK_COST[v.bk], outage:arto*v.dcost};
+            }
+            function paint(){
+              var v=read(), m=model(v);
+              document.getElementById('rto_orpo-v').textContent=fmtDur(v.orpo);
+              document.getElementById('rto_orto-v').textContent=fmtDur(v.orto);
+              document.getElementById('rto_dcost-v').textContent=money(v.dcost);
+              document.getElementById('rto_bk-v').textContent='RPO '+fmtDur(RPO[v.bk]);
+              document.getElementById('rto_site-v').textContent='RTO '+fmtDur(RTO[v.site]);
+              var arpoEl=document.getElementById('rto-arpo'), artoEl=document.getElementById('rto-arto');
+              arpoEl.textContent=fmtDur(m.arpo); arpoEl.className='val '+(m.rpoPass?'pass':'fail');
+              artoEl.textContent=fmtDur(m.arto); artoEl.className='val '+(m.rtoPass?'pass':'fail');
+              document.getElementById('rto-arpo-s').textContent=(m.rpoPass?'✓ within ':'✗ exceeds ')+fmtDur(v.orpo)+' target';
+              document.getElementById('rto-arto-s').textContent=(m.rtoPass?'✓ within ':'✗ exceeds ')+fmtDur(v.orto)+' target';
+              document.getElementById('rto-outage').textContent=money(m.outage);
+              document.getElementById('rto-annual').textContent=money(m.annual);
+              var met=(m.rpoPass?1:0)+(m.rtoPass?1:0);
+              var box=document.getElementById('rto-verdict'), pill=document.getElementById('rto-pill'),
+                  head=document.getElementById('rto-headline'), coach=document.getElementById('rto-coach');
+              box.classList.remove('good','warn','crit'); pill.classList.remove('good','warn','crit');
+              head.textContent=met+' / 2 targets met';
+              var over=m.rpoPass&&m.rtoPass&&m.arpo<=v.orpo*0.3&&m.arto<=v.orto*0.3;
+              if(!m.rpoPass||!m.rtoPass){
+                pill.textContent='Gaps'; pill.classList.add('crit'); box.classList.add('crit');
+                if(!m.rpoPass&&!m.rtoPass) coach.textContent='Both targets missed. Back up more often to cut data loss below '+fmtDur(v.orpo)+', and move to a warmer/hotter site to restore within '+fmtDur(v.orto)+'.';
+                else if(!m.rpoPass) coach.textContent='Recovery time is fine, but "'+RPOL[v.bk]+'" backups risk up to '+fmtDur(m.arpo)+' of data loss — past the '+fmtDur(v.orpo)+' target. Back up more frequently.';
+                else coach.textContent='Data loss is within target, but a '+RTOL[v.site].toLowerCase()+' restores in '+fmtDur(m.arto)+' — beyond the '+fmtDur(v.orto)+' downtime limit. Move to a faster recovery site.';
+              } else if(over){
+                pill.textContent='Over-built'; pill.classList.add('warn'); box.classList.add('warn');
+                coach.textContent='You beat both targets with room to spare — at '+money(m.annual)+'/yr. Confirm the BIA truly requires this; otherwise it may be over-investment.';
+              } else {
+                pill.textContent='Meets the BIA'; pill.classList.add('good'); box.classList.add('good');
+                coach.textContent='Capability matches the BIA: '+fmtDur(m.arpo)+' data loss ≤ '+fmtDur(v.orpo)+' and '+fmtDur(m.arto)+' downtime ≤ '+fmtDur(v.orto)+' — without gold-plating. Now prove it with a test.';
+              }
+              draw(m,v);
+            }
+            var cvs=document.getElementById('rto-canvas'), ctx=cvs.getContext('2d');
+            function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+            function rgba(hex,a){hex=(hex||'').replace('#','');
+              if(hex.length===3)hex=hex.split('').map(function(c){return c+c;}).join('');
+              var n=parseInt(hex,16); if(isNaN(n))return 'rgba(120,130,145,'+a+')';
+              return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+            function resize(){
+              var w=cvs.parentElement.clientWidth||360, dpr=window.devicePixelRatio||1;
+              var big=root.classList.contains('is-expanded');
+              var h=big?Math.max(320,Math.min(520,w*0.44)):Math.max(230,Math.min(300,w*0.62));
+              cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.height=h+'px';
+              ctx.setTransform(dpr,0,0,dpr,0,0); cvs._w=w; cvs._h=h;
+            }
+            function draw(m,v){
+              if(!m){v=read(); m=model(v);}
+              var w=cvs._w||360, h=cvs._h||260; ctx.clearRect(0,0,w,h);
+              var x0=16, x1=w-16, yax=Math.round(h*0.54);
+              var xd=Math.round(x0+0.42*(x1-x0));
+              var tL=Math.max(m.arpo,v.orpo)*1.15+0.001, tR=Math.max(m.arto,v.orto)*1.12+0.001;
+              function T(t){return t<=0 ? xd+(t/tL)*(xd-x0) : xd+(t/tR)*(x1-xd);}
+              function clamp(x){return Math.max(x0+38,Math.min(x1-38,x));}
+              var cRed=css('--wrong'), cBlue=css('--gold'), cMut=css('--text-muted'),
+                  cInk=css('--text-primary'), cGood=css('--correct'), cBad=css('--wrong'), cCard=css('--card-bg');
+              var bandH=18;
+              ctx.strokeStyle=rgba(cMut,0.9); ctx.lineWidth=2;
+              ctx.beginPath(); ctx.moveTo(x0,yax); ctx.lineTo(x1,yax); ctx.stroke();
+              ctx.fillStyle=rgba(cMut,0.9); ctx.font='10px Arial,sans-serif'; ctx.textAlign='right'; ctx.textBaseline='bottom';
+              ctx.fillText('time →',x1,yax-3);
+              function band(xa,xb,color){
+                var l=Math.min(xa,xb), r=Math.max(xa,xb);
+                ctx.fillStyle=rgba(color,0.20); ctx.fillRect(l,yax-bandH/2,r-l,bandH);
+                ctx.strokeStyle=color; ctx.lineWidth=1.4; ctx.strokeRect(l,yax-bandH/2,Math.max(0.5,r-l),bandH);
+              }
+              band(T(-m.arpo),xd,cRed);
+              band(xd,T(m.arto),cBlue);
+              function target(t,color,label){
+                var x=T(t);
+                ctx.save(); ctx.setLineDash([4,3]); ctx.strokeStyle=rgba(color,0.95); ctx.lineWidth=1.4;
+                ctx.beginPath(); ctx.moveTo(x,yax-34); ctx.lineTo(x,yax+34); ctx.stroke(); ctx.restore();
+                ctx.fillStyle=rgba(color,0.95); ctx.font='9px Arial,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+                ctx.fillText(label,clamp(x),yax+48);
+              }
+              target(-v.orpo,cRed,'RPO target');
+              target(v.orto,cBlue,'RTO target');
+              function dur(xa,xb,txt,color,pass){
+                var xc=(xa+xb)/2;
+                ctx.font='bold 11px Arial,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+                ctx.fillStyle=color; ctx.fillText(txt,xc,yax-bandH/2-14);
+                ctx.fillStyle=pass?cGood:cBad; ctx.font='bold 10px Arial,sans-serif';
+                ctx.fillText(pass?'✓':'✗',xc,yax-bandH/2-3);
+              }
+              dur(T(-m.arpo),xd,fmtDur(m.arpo),cRed,m.rpoPass);
+              dur(xd,T(m.arto),fmtDur(m.arto),cBlue,m.rtoPass);
+              ctx.strokeStyle=cRed; ctx.lineWidth=2.5;
+              ctx.beginPath(); ctx.moveTo(xd,yax-42); ctx.lineTo(xd,yax+bandH/2); ctx.stroke();
+              ctx.fillStyle=cRed; ctx.font='bold 10.5px Arial,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+              ctx.fillText('⚡ DISRUPTION',xd,yax-45);
+              function dot(x){ctx.beginPath(); ctx.arc(x,yax,4.5,0,Math.PI*2); ctx.fillStyle=cInk; ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle=cCard; ctx.stroke();}
+              dot(T(-m.arpo)); dot(T(m.arto));
+              ctx.fillStyle=rgba(cMut,0.95); ctx.font='9.5px Arial,sans-serif'; ctx.textBaseline='top'; ctx.textAlign='center';
+              ctx.fillText('last good backup',clamp(T(-m.arpo)),yax+bandH/2+3);
+              ctx.fillText('systems restored',clamp(T(m.arto)),yax+bandH/2+3);
+            }
+            sliders.forEach(function(i){el[i].addEventListener('input',paint);});
+            buildBtns('rto_bk-btns',RPOL,'bk');
+            buildBtns('rto_site-btns',RTOL,'site');
+            document.getElementById('rto-reset').addEventListener('click',function(){
+              sliders.forEach(function(i){el[i].value=defaults[i];});
+              state.bk=defaults.bk; state.site=defaults.site;
+              syncBtns('rto_bk-btns','bk'); syncBtns('rto_site-btns','site'); paint();});
+            window.addEventListener('resize',function(){resize();draw();});
+            new MutationObserver(function(){draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+            var expBtn=document.getElementById('rto-expand');
+            var backdrop=document.createElement('div'); backdrop.className='rto-backdrop';
+            var lastFocused=null;
+            function focusables(){return Array.prototype.filter.call(
+              root.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])'),
+              function(x){return !x.disabled && x.offsetParent!==null;});}
+            function setExpanded(o){
+              root.classList.toggle('is-expanded',o);
+              if(o){document.body.appendChild(backdrop); lastFocused=document.activeElement;
+                root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-label','Expanded interactive');}
+              else {if(backdrop.parentNode)backdrop.parentNode.removeChild(backdrop);
+                root.removeAttribute('role'); root.removeAttribute('aria-modal'); root.removeAttribute('aria-label');}
+              document.body.style.overflow=o?'hidden':'';
+              expBtn.innerHTML=o?'&#10005; Close':'&#10530; Expand';
+              expBtn.setAttribute('aria-expanded',o?'true':'false');
+              resize(); draw();
+              if(o){root.scrollTop=0; expBtn.focus();} else if(lastFocused&&lastFocused.focus){lastFocused.focus();}
+            }
+            expBtn.addEventListener('click',function(){setExpanded(!root.classList.contains('is-expanded'));});
+            backdrop.addEventListener('click',function(){setExpanded(false);});
+            document.addEventListener('keydown',function(e){
+              if(!root.classList.contains('is-expanded')) return;
+              if(e.key==='Escape'){setExpanded(false); return;}
+              if(e.key==='Tab'){var f=focusables(); if(!f.length)return; var fi=f[0],la=f[f.length-1];
+                if(!root.contains(document.activeElement)){e.preventDefault(); fi.focus();}
+                else if(e.shiftKey&&document.activeElement===fi){e.preventDefault(); la.focus();}
+                else if(!e.shiftKey&&document.activeElement===la){e.preventDefault(); fi.focus();}}
+            });
+            resize(); paint();
+          })();
+          </script>
+          <!-- ══ END INTERACTIVE ══ -->
         </article>
 
         <article class="content-section" id="s3">

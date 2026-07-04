@@ -239,6 +239,274 @@
             <li>Weigh cost against the risk reduced; a control should not cost more than the risk it mitigates.</li>
           </ul>
           <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Asked to &lsquo;add the latest AI security tool,&rsquo; the manager first asks which control objective and risk it serves. If an existing layer already meets that objective, the spend is hard to justify &mdash; risk, not novelty, drives selection.</p></div>
+
+          <!-- ══ INTERACTIVE: Defense-in-depth breach probability ══ -->
+          <h4>Try it &mdash; why the control set is layers, not a pile of tools</h4>
+          <p>Defense in depth is math, not a slogan. Toggle each layer and watch the chance an attack gets all the way through &mdash; because each independent layer only has to be <em>passed</em>, the breach probability is the layers multiplied together. No single control is trusted alone, and raising the threat weakens every layer at once.</p>
+
+          <style>
+            .did{font-family:Arial,Helvetica,sans-serif;margin:1rem 0 0.25rem;max-width:100%;}
+            .did *{box-sizing:border-box;}
+            .did-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:1.15rem;}
+            .did-topbar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-bottom:0.7rem;margin-bottom:0.95rem;border-bottom:1px solid var(--border);}
+            .did-topbar-eyebrow{font-family:Arial,sans-serif;font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+            .did-expand{font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold);border-radius:5px;padding:0.42rem 0.85rem;cursor:pointer;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:0.4rem;}
+            .did-expand:hover{background:var(--gold);color:#fff;}
+            .did-expand:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .did-grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;}
+            .did-panel{flex:1 1 250px;min-width:0;}
+            .did-out{flex:1.4 1 300px;min-width:0;}
+            .did-panel h5,.did-out h5{font-family:Arial,sans-serif;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 0.15rem;}
+            .did-panel .plead{font-size:0.74rem;color:var(--text-muted);margin:0 0 0.85rem;}
+            .did-field{margin-bottom:0.95rem;}
+            .did-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.3rem;}
+            .did-field label{font-size:0.82rem;font-weight:700;color:var(--text-primary);}
+            .did-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.9rem;color:var(--gold);font-variant-numeric:tabular-nums;}
+            .did-field .h{font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;line-height:1.4;}
+            .did input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0;}
+            .did input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
+            .did input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
+            .did input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .did-gt{font-family:Arial,sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700;margin:0.5rem 0 0.6rem;padding-bottom:0.3rem;border-bottom:1px solid var(--border);}
+            .did-layer{display:flex;align-items:center;justify-content:space-between;gap:0.6rem;width:100%;text-align:left;padding:0.5rem 0.7rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);cursor:pointer;margin-bottom:0.45rem;font-family:Arial,sans-serif;transition:background .12s,border-color .12s;}
+            .did-layer:hover{border-color:var(--gold);}
+            .did-layer.on{background:var(--gold-pale);border-color:var(--gold);}
+            .did-layer:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .did-layer .lname{display:block;font-size:0.8rem;font-weight:700;color:var(--text-primary);}
+            .did-layer .lsub{display:block;font-size:0.64rem;color:var(--text-muted);margin-top:0.1rem;}
+            .did-layer .lstate{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-muted);white-space:nowrap;}
+            .did-layer.on .lstate{color:var(--gold);}
+            .did-reset{margin-top:0.35rem;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);border-radius:3px;padding:0.4rem 0.8rem;cursor:pointer;}
+            .did-reset:hover{color:var(--gold);border-color:var(--gold);}
+            .did-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem;margin-bottom:0.85rem;}
+            .did-tile{background:var(--section-alt);border:1px solid var(--border);border-radius:5px;padding:0.65rem 0.7rem;min-width:0;}
+            .did-tile.acc{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .did-tile .k{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:700;}
+            .did-tile .val{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:0.2rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+            .did-verdict{display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;padding:0.75rem 0.85rem;border-radius:5px;border:1px solid var(--border);background:var(--section-alt);margin-bottom:0.85rem;}
+            .did-verdict.good{background:var(--correct-bg);border-color:var(--correct);}
+            .did-verdict.warn{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .did-verdict.crit{background:var(--wrong-bg);border-color:var(--wrong);}
+            .did-pill{font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:20px;color:#fff;white-space:nowrap;}
+            .did-pill.good{background:var(--correct);}.did-pill.warn{background:var(--navy);}.did-pill.crit{background:var(--wrong);}
+            .did-head{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.15rem;font-weight:900;font-variant-numeric:tabular-nums;}
+            .did-coach{font-size:0.8rem;color:var(--text-secondary);flex:1 1 190px;min-width:160px;line-height:1.5;}
+            .did-chart{background:var(--card-bg);border:1px solid var(--border);border-radius:5px;padding:0.85rem;}
+            .did-chart h6{font-family:Georgia,serif;font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 0.15rem;}
+            .did-chart .cap{font-size:0.72rem;color:var(--text-muted);margin:0 0 0.55rem;line-height:1.45;}
+            .did canvas{width:100%;height:auto;display:block;}
+            .did-backdrop{position:fixed;inset:0;background:rgba(6,25,31,0.6);z-index:9998;}
+            .did.is-expanded{position:fixed;inset:2.5vh 2.5vw;width:auto;max-width:none;z-index:9999;margin:0;overflow:auto;background:var(--body-bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+            .did.is-expanded .did-card{max-width:1180px;margin:0 auto;border:none;box-shadow:none;padding:0.25rem;}
+          </style>
+
+          <div class="did" id="did-root">
+            <div class="did-card">
+              <div class="did-topbar">
+                <span class="did-topbar-eyebrow">Interactive &middot; adjust &amp; explore</span>
+                <button type="button" class="did-expand" id="did-expand" aria-expanded="false" title="Open a larger, full-screen view">&#10530; Expand</button>
+              </div>
+              <div class="did-grid">
+                <div class="did-panel">
+                  <h5>Your control set</h5>
+                  <p class="plead">Each layer blocks a share of attacks. Stack them.</p>
+                  <div class="did-field">
+                    <div class="r"><label for="did_threat">Threat sophistication</label><span class="v" id="did_threat-v">40% &middot; Moderate</span></div>
+                    <input type="range" id="did_threat" min="0" max="100" step="1" value="40">
+                    <div class="h">A stronger adversary slips past every layer more easily.</div>
+                  </div>
+                  <div class="did-gt">Control layers &mdash; click to toggle</div>
+                  <div id="did-layers"></div>
+                  <button type="button" class="did-reset" id="did-reset">Reset scenario</button>
+                </div>
+                <div class="did-out">
+                  <h5>The odds</h5>
+                  <div class="did-tiles">
+                    <div class="did-tile"><div class="k">Layers active</div><div class="val" id="did-count">&mdash;</div></div>
+                    <div class="did-tile"><div class="k">Best single layer</div><div class="val" id="did-best">&mdash;</div></div>
+                    <div class="did-tile"><div class="k">Attacks blocked</div><div class="val" id="did-blocked">&mdash;</div></div>
+                    <div class="did-tile acc"><div class="k">Breach probability</div><div class="val" id="did-breach">&mdash;</div></div>
+                  </div>
+                  <div class="did-verdict" id="did-verdict">
+                    <span class="did-pill" id="did-pill">&mdash;</span>
+                    <span class="did-head" id="did-head">&mdash;</span>
+                    <span class="did-coach" id="did-coach">Toggle layers to see the odds change.</span>
+                  </div>
+                  <div class="did-chart">
+                    <h6>How far an attack gets</h6>
+                    <p class="cap">Of 100 attacks, the red line is the share still alive after each layer &mdash; it drops as layers compound, and each new layer removes less than the last (diminishing returns).</p>
+                    <canvas id="did-canvas" width="640" height="330" role="img" aria-label="Chart of attacks getting through each defensive layer"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Two management lessons fall out of the math: <strong>no single control is trusted alone</strong> (which is why an auditor looks for at least two independent layers), and because prevention is never 100%, a mature program pairs preventive layers with <strong>detection and response</strong> so a failure is caught, not fatal.</p></div>
+
+          <script>
+          (function(){
+            var root=document.getElementById('did-root'); if(!root) return;
+            var layers=[
+              {name:'Perimeter / network',short:'Perimeter',base:0.60},
+              {name:'Identity & MFA',short:'MFA',base:0.80},
+              {name:'Endpoint protection (EDR)',short:'Endpoint',base:0.70},
+              {name:'Network segmentation',short:'Segmentation',base:0.65},
+              {name:'Patch & hardening',short:'Patching',base:0.72},
+              {name:'Monitoring & response',short:'Monitoring',base:0.55}
+            ];
+            var defOn=[1,1,1,0,0,0], defThreat=40;
+            var on=defOn.slice(), threat=defThreat;
+            function eff(base){return base*(1-0.7*threat/100);}
+            function threatWord(t){return t<=20?'Low':t<=45?'Moderate':t<=70?'High':'Advanced';}
+            function pct(x){return Math.round(x*100)+'%';}
+            function model(){
+              var count=0,breach=1,best=0;
+              layers.forEach(function(L,i){ if(on[i]){count++; var e=eff(L.base); breach*=(1-e); if(e>best)best=e;} });
+              return {count:count, breach:breach, blocked:1-breach, best:best};
+            }
+            var layerBtns=[];
+            function buildLayers(){
+              var c=document.getElementById('did-layers');
+              layers.forEach(function(L,i){
+                var b=document.createElement('button'); b.type='button'; b.className='did-layer'; b.dataset.i=i;
+                b.innerHTML='<span><span class="lname">'+L.name+'</span><span class="lsub">blocks '+pct(L.base)+' of attacks</span></span><span class="lstate"></span>';
+                b.addEventListener('click',function(){ on[i]=on[i]?0:1; paint(); });
+                layerBtns[i]=b; c.appendChild(b);
+              });
+            }
+            function paint(){
+              var m=model();
+              document.getElementById('did_threat-v').textContent=threat+'% · '+threatWord(threat);
+              layers.forEach(function(L,i){
+                var b=layerBtns[i], isOn=!!on[i];
+                b.className='did-layer'+(isOn?' on':''); b.setAttribute('aria-pressed',isOn?'true':'false');
+                b.querySelector('.lstate').textContent=isOn?('On · '+pct(eff(L.base))):'Off';
+              });
+              document.getElementById('did-count').textContent=m.count+' / '+layers.length;
+              document.getElementById('did-best').textContent=m.count?pct(m.best):'—';
+              document.getElementById('did-blocked').textContent=pct(m.blocked);
+              var br=document.getElementById('did-breach');
+              br.textContent=pct(m.breach);
+              br.style.color=m.breach<=0.05?'var(--correct)':m.breach<=0.20?'var(--text-primary)':'var(--wrong)';
+              var box=document.getElementById('did-verdict'), pill=document.getElementById('did-pill'),
+                  head=document.getElementById('did-head'), coach=document.getElementById('did-coach');
+              box.className='did-verdict'; pill.className='did-pill';
+              head.textContent=pct(m.breach)+' breach';
+              if(m.count===0){
+                pill.classList.add('crit'); box.classList.add('crit'); pill.textContent='No defense';
+                coach.textContent='With no controls, every attack succeeds. Turn on a layer to start cutting the odds.';
+              } else if(m.count===1){
+                pill.classList.add('crit'); box.classList.add('crit'); pill.textContent='Single layer';
+                coach.textContent='One control at '+pct(m.best)+' still lets '+pct(m.breach)+' through — no single layer is enough, which is the whole point of defense in depth.';
+              } else if(m.breach<=0.05){
+                pill.classList.add('good'); box.classList.add('good'); pill.textContent='Hardened';
+                coach.textContent=(threat>=71?'Even against an advanced threat, ':'')+'layered controls block '+pct(m.blocked)+'. Notice each added layer removes less absolute risk — diminishing returns.';
+              } else if(m.breach<=0.20){
+                pill.classList.add('warn'); box.classList.add('warn'); pill.textContent='Layered, residual risk';
+                coach.textContent='Layers compound to block '+pct(m.blocked)+', but '+pct(m.breach)+' still gets through'+(threat>=71?' against this advanced threat':'')+'. Add depth — especially detection & response.';
+              } else {
+                pill.classList.add('crit'); box.classList.add('crit'); pill.textContent='Exposed';
+                coach.textContent=(threat>=71?'This advanced threat slips past your layers — ':'')+pct(m.breach)+' of attacks still succeed. Stack more independent layers.';
+              }
+              draw();
+            }
+            var cvs=document.getElementById('did-canvas'), ctx=cvs.getContext('2d');
+            function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+            function rgba(hex,a){hex=(hex||'').replace('#','');
+              if(hex.length===3)hex=hex.split('').map(function(c){return c+c;}).join('');
+              var n=parseInt(hex,16); if(isNaN(n))return 'rgba(120,130,145,'+a+')';
+              return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+            function resize(){
+              var w=cvs.parentElement.clientWidth||360, dpr=window.devicePixelRatio||1;
+              var big=root.classList.contains('is-expanded');
+              var h=big?Math.max(360,Math.min(560,w*0.5)):Math.max(240,Math.min(330,w*0.62));
+              cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.height=h+'px';
+              ctx.setTransform(dpr,0,0,dpr,0,0); cvs._w=w; cvs._h=h;
+            }
+            function draw(){
+              var w=cvs._w||360, h=cvs._h||300; ctx.clearRect(0,0,w,h);
+              var padL=46,padR=16,padT=16,padB=52, x0=padL,x1=w-padR,y0=h-padB,y1=padT;
+              var cMut=css('--text-muted'), cBor=css('--border'), cRed=css('--wrong'), cInk=css('--text-primary'), cCard=css('--card-bg');
+              var en=[]; layers.forEach(function(L,i){if(on[i])en.push(i);});
+              var nn=en.length;
+              var p=[1]; en.forEach(function(i){p.push(p[p.length-1]*(1-eff(layers[i].base)));});
+              function X(idx){ return nn===0? (x0+x1)/2 : x0+(idx/nn)*(x1-x0); }
+              function Y(f){ return y0-f*(y0-y1); }
+              ctx.font='11px Arial,sans-serif'; ctx.textAlign='right'; ctx.textBaseline='middle';
+              [0,0.5,1].forEach(function(g){var py=Y(g);
+                ctx.strokeStyle=rgba(cBor,0.9); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0,py); ctx.lineTo(x1,py); ctx.stroke();
+                ctx.fillStyle=cMut; ctx.fillText(Math.round(g*100)+'%',x0-8,py);});
+              ctx.save(); ctx.translate(13,(y0+y1)/2); ctx.rotate(-Math.PI/2);
+              ctx.fillStyle=cMut; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font='11px Arial,sans-serif';
+              ctx.fillText('Attacks still active',0,0); ctx.restore();
+              if(nn===0){
+                ctx.strokeStyle=cRed; ctx.lineWidth=2.6; ctx.beginPath(); ctx.moveTo(x0,Y(1)); ctx.lineTo(x1,Y(1)); ctx.stroke();
+                ctx.fillStyle=cRed; ctx.font='bold 12px Arial,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+                ctx.fillText('No layers — 100% get through',(x0+x1)/2,Y(1)-6);
+                return;
+              }
+              ctx.beginPath(); ctx.moveTo(X(0),Y(p[0]));
+              for(var i=1;i<=nn;i++) ctx.lineTo(X(i),Y(p[i]));
+              ctx.lineTo(X(nn),y0); ctx.lineTo(X(0),y0); ctx.closePath();
+              ctx.fillStyle=rgba(cRed,0.12); ctx.fill();
+              ctx.strokeStyle=cRed; ctx.lineWidth=2.6; ctx.beginPath(); ctx.moveTo(X(0),Y(p[0]));
+              for(var j=1;j<=nn;j++) ctx.lineTo(X(j),Y(p[j])); ctx.stroke();
+              for(var k=0;k<=nn;k++){
+                ctx.beginPath(); ctx.arc(X(k),Y(p[k]),4,0,Math.PI*2); ctx.fillStyle=(k===nn?cRed:cInk); ctx.fill();
+                ctx.lineWidth=2; ctx.strokeStyle=cCard; ctx.stroke();
+                if(k>0){
+                  var lastPt=(k===nn);
+                  ctx.fillStyle=lastPt?cRed:cMut; ctx.textBaseline='bottom';
+                  ctx.font=(lastPt?'bold 11px':'10px')+' Arial,sans-serif';
+                  ctx.textAlign=lastPt?'right':'center';
+                  ctx.fillText(Math.round(p[k]*100)+'%',lastPt?x1:X(k),Y(p[k])-7);
+                }
+              }
+              ctx.fillStyle=cMut; ctx.textBaseline='top'; ctx.font='9.5px Arial,sans-serif';
+              ctx.textAlign='center'; ctx.fillText('Attempts',X(0),y0+8);
+              en.forEach(function(li,idx){
+                var last=(idx===nn-1);
+                ctx.textAlign=last?'right':'center';
+                ctx.fillText(layers[li].short,last?x1:X(idx+1),y0+8);
+              });
+            }
+            document.getElementById('did_threat').addEventListener('input',function(){ threat=+this.value; paint(); });
+            document.getElementById('did-reset').addEventListener('click',function(){ on=defOn.slice(); threat=defThreat; document.getElementById('did_threat').value=defThreat; paint(); });
+            window.addEventListener('resize',function(){resize();draw();});
+            new MutationObserver(function(){draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+            var expBtn=document.getElementById('did-expand');
+            var backdrop=document.createElement('div'); backdrop.className='did-backdrop';
+            var lastFocused=null;
+            function focusables(){return Array.prototype.filter.call(
+              root.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])'),
+              function(x){return !x.disabled && x.offsetParent!==null;});}
+            function setExpanded(o){
+              root.classList.toggle('is-expanded',o);
+              if(o){document.body.appendChild(backdrop); lastFocused=document.activeElement;
+                root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-label','Expanded interactive');}
+              else {if(backdrop.parentNode)backdrop.parentNode.removeChild(backdrop);
+                root.removeAttribute('role'); root.removeAttribute('aria-modal'); root.removeAttribute('aria-label');}
+              document.body.style.overflow=o?'hidden':'';
+              expBtn.innerHTML=o?'&#10005; Close':'&#10530; Expand';
+              expBtn.setAttribute('aria-expanded',o?'true':'false');
+              resize(); draw();
+              if(o){root.scrollTop=0; expBtn.focus();} else if(lastFocused&&lastFocused.focus){lastFocused.focus();}
+            }
+            expBtn.addEventListener('click',function(){setExpanded(!root.classList.contains('is-expanded'));});
+            backdrop.addEventListener('click',function(){setExpanded(false);});
+            document.addEventListener('keydown',function(e){
+              if(!root.classList.contains('is-expanded')) return;
+              if(e.key==='Escape'){setExpanded(false); return;}
+              if(e.key==='Tab'){var f=focusables(); if(!f.length)return; var fi=f[0],la=f[f.length-1];
+                if(!root.contains(document.activeElement)){e.preventDefault(); fi.focus();}
+                else if(e.shiftKey&&document.activeElement===fi){e.preventDefault(); la.focus();}
+                else if(!e.shiftKey&&document.activeElement===la){e.preventDefault(); fi.focus();}}
+            });
+            buildLayers(); resize(); paint();
+          })();
+          </script>
+          <!-- ══ END INTERACTIVE ══ -->
         </article>
 
         <article class="content-section" id="s5">

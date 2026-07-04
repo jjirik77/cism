@@ -183,6 +183,242 @@
             <li>Culture is the goal: secure behavior becomes the default, sustained by tone at the top.</li>
           </ul>
           <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>If a phishing click-rate keeps rising despite annual training, the issue is program <em>effectiveness</em> &mdash; revise content, frequency, and reinforcement. Punishing employees or blocking all email is not the CISM answer.</div>
+
+          <!-- ══ INTERACTIVE: Security-culture / phishing-risk curve ══ -->
+          <h4>Try it &mdash; what awareness buys you (and where it stops)</h4>
+          <p>Awareness is a control with a cost curve like any other. Fund training and the phishing click-rate falls &mdash; fast at first, then with diminishing returns toward a <strong>floor</strong> you can&rsquo;t train away. That floor is why culture and awareness are paired with technical controls, never relied on alone.</p>
+
+          <style>
+            .cult{font-family:Arial,Helvetica,sans-serif;margin:1rem 0 0.25rem;max-width:100%;}
+            .cult *{box-sizing:border-box;}
+            .cult-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:1.15rem;}
+            .cult-topbar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-bottom:0.7rem;margin-bottom:0.95rem;border-bottom:1px solid var(--border);}
+            .cult-topbar-eyebrow{font-family:Arial,sans-serif;font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+            .cult-expand{font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold);border-radius:5px;padding:0.42rem 0.85rem;cursor:pointer;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:0.4rem;}
+            .cult-expand:hover{background:var(--gold);color:#fff;}
+            .cult-expand:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .cult-grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;}
+            .cult-panel{flex:1 1 250px;min-width:0;}
+            .cult-out{flex:1.4 1 300px;min-width:0;}
+            .cult-panel h5,.cult-out h5{font-family:Arial,sans-serif;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 0.15rem;}
+            .cult-panel .plead{font-size:0.74rem;color:var(--text-muted);margin:0 0 0.85rem;}
+            .cult-field{margin-bottom:0.95rem;}
+            .cult-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.3rem;}
+            .cult-field label{font-size:0.82rem;font-weight:700;color:var(--text-primary);}
+            .cult-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.9rem;color:var(--gold);font-variant-numeric:tabular-nums;}
+            .cult-field .h{font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;line-height:1.4;}
+            .cult input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0;}
+            .cult input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
+            .cult input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
+            .cult input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .cult-reset{margin-top:0.35rem;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);border-radius:3px;padding:0.4rem 0.8rem;cursor:pointer;}
+            .cult-reset:hover{color:var(--gold);border-color:var(--gold);}
+            .cult-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem;margin-bottom:0.85rem;}
+            .cult-tile{background:var(--section-alt);border:1px solid var(--border);border-radius:5px;padding:0.65rem 0.7rem;min-width:0;}
+            .cult-tile.acc{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .cult-tile .k{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:700;}
+            .cult-tile .val{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:0.2rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+            .cult-verdict{display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;padding:0.75rem 0.85rem;border-radius:5px;border:1px solid var(--border);background:var(--section-alt);margin-bottom:0.85rem;}
+            .cult-verdict.good{background:var(--correct-bg);border-color:var(--correct);}
+            .cult-verdict.warn{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .cult-verdict.crit{background:var(--wrong-bg);border-color:var(--wrong);}
+            .cult-pill{font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:20px;color:#fff;white-space:nowrap;}
+            .cult-pill.good{background:var(--correct);}.cult-pill.warn{background:var(--navy);}.cult-pill.crit{background:var(--wrong);}
+            .cult-head{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.15rem;font-weight:900;font-variant-numeric:tabular-nums;}
+            .cult-coach{font-size:0.8rem;color:var(--text-secondary);flex:1 1 190px;min-width:160px;line-height:1.5;}
+            .cult-chart{background:var(--card-bg);border:1px solid var(--border);border-radius:5px;padding:0.85rem;}
+            .cult-chart h6{font-family:Georgia,serif;font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 0.15rem;}
+            .cult-chart .cap{font-size:0.72rem;color:var(--text-muted);margin:0 0 0.55rem;line-height:1.45;}
+            .cult canvas{width:100%;height:auto;display:block;}
+            .cult-legend{display:flex;gap:0.85rem;flex-wrap:wrap;margin-top:0.55rem;font-size:0.68rem;color:var(--text-muted);}
+            .cult-legend span{display:inline-flex;align-items:center;gap:0.35rem;}
+            .cult-sw{width:14px;height:3px;border-radius:2px;display:inline-block;}
+            .cult-sw.dot{width:9px;height:9px;border-radius:50%;}
+            .cult-sw.dash{height:0;border-top:2px dashed var(--text-muted);width:16px;}
+            .cult-backdrop{position:fixed;inset:0;background:rgba(6,25,31,0.6);z-index:9998;}
+            .cult.is-expanded{position:fixed;inset:2.5vh 2.5vw;width:auto;max-width:none;z-index:9999;margin:0;overflow:auto;background:var(--body-bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+            .cult.is-expanded .cult-card{max-width:1180px;margin:0 auto;border:none;box-shadow:none;padding:0.25rem;}
+          </style>
+
+          <div class="cult" id="cult-root">
+            <div class="cult-card">
+              <div class="cult-topbar">
+                <span class="cult-topbar-eyebrow">Interactive &middot; adjust &amp; explore</span>
+                <button type="button" class="cult-expand" id="cult-expand" aria-expanded="false" title="Open a larger, full-screen view">&#10530; Expand</button>
+              </div>
+              <div class="cult-grid">
+                <div class="cult-panel">
+                  <h5>Your awareness program</h5>
+                  <p class="plead">Untrained, ~30% of people click a phish.</p>
+                  <div class="cult-field">
+                    <div class="r"><label for="cult_b">Annual training budget</label><span class="v" id="cult_b-v">$60,000</span></div>
+                    <input type="range" id="cult_b" min="0" max="500000" step="5000" value="60000">
+                    <div class="h">Spend on content, simulations, and reinforcement.</div>
+                  </div>
+                  <div class="cult-field">
+                    <div class="r"><label for="cult_w">Workforce</label><span class="v" id="cult_w-v">1,000</span></div>
+                    <input type="range" id="cult_w" min="100" max="10000" step="100" value="1000">
+                    <div class="h">More people dilutes the same budget per head.</div>
+                  </div>
+                  <div class="cult-field">
+                    <div class="r"><label for="cult_a">Phishing attempts / person / yr</label><span class="v" id="cult_a-v">12</span></div>
+                    <input type="range" id="cult_a" min="2" max="60" step="1" value="12">
+                    <div class="h">How often each person is targeted.</div>
+                  </div>
+                  <button type="button" class="cult-reset" id="cult-reset">Reset scenario</button>
+                </div>
+                <div class="cult-out">
+                  <h5>The human risk</h5>
+                  <div class="cult-tiles">
+                    <div class="cult-tile acc"><div class="k">Phishing click rate</div><div class="val" id="cult-rate">&mdash;</div></div>
+                    <div class="cult-tile"><div class="k">Spend / employee</div><div class="val" id="cult-per">&mdash;</div></div>
+                    <div class="cult-tile"><div class="k">Risky clicks / year</div><div class="val" id="cult-clicks">&mdash;</div></div>
+                    <div class="cult-tile"><div class="k">Likely incidents / year</div><div class="val" id="cult-inc">&mdash;</div></div>
+                  </div>
+                  <div class="cult-verdict" id="cult-verdict">
+                    <span class="cult-pill" id="cult-pill">&mdash;</span>
+                    <span class="cult-head" id="cult-head">&mdash;</span>
+                    <span class="cult-coach" id="cult-coach">Fund the program and watch the click rate fall.</span>
+                  </div>
+                  <div class="cult-chart">
+                    <h6>Click rate vs. training spend</h6>
+                    <p class="cap">Click rate falls with spend per employee &mdash; steeply at first, then flattening toward a <span style="color:var(--text-muted)">floor</span> awareness can&rsquo;t remove. Your operating point (&#9679;) is at your current per-head spend.</p>
+                    <canvas id="cult-canvas" width="640" height="330" role="img" aria-label="Phishing click rate against training spend per employee"></canvas>
+                    <div class="cult-legend">
+                      <span><i class="cult-sw" style="background:var(--gold)"></i> Click rate</span>
+                      <span><i class="cult-sw dot" style="background:var(--correct)"></i> Your operating point</span>
+                      <span><i class="cult-sw dash"></i> Floor (can&rsquo;t train away)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>The curve makes the management case: awareness is the highest-ROI control at low spend, but it <em>asymptotes</em> &mdash; you can&rsquo;t train the last few percent of clicks away. A mature program spends to the knee of the curve and then relies on <strong>phishing-resistant MFA, email filtering, and fast response</strong> for the residual. And per the exam tip: a rising click-rate is a program-<em>effectiveness</em> problem, not a reason to punish users.</p></div>
+
+          <script>
+          (function(){
+            var root=document.getElementById('cult-root'); if(!root) return;
+            var BASE=0.30, FLOOR=0.04, KC=120, COMPROMISE=0.12;
+            var ids=['b','w','a'], el={};
+            ids.forEach(function(i){el[i]=document.getElementById('cult_'+i);});
+            var defs={b:60000,w:1000,a:12};
+            function read(){return {b:+el.b.value, w:+el.w.value, a:+el.a.value};}
+            function rateOf(perCap){return FLOOR+(BASE-FLOOR)*Math.exp(-perCap/KC);}
+            function model(v){
+              var perCap=v.b/v.w, rate=rateOf(perCap);
+              var attempts=v.w*v.a, clicks=attempts*rate, inc=clicks*COMPROMISE;
+              return {perCap:perCap, rate:rate, clicks:clicks, inc:inc, base:BASE, floor:FLOOR};
+            }
+            var usd=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+            function money(n){return usd.format(Math.round(n));}
+            function paint(){
+              var v=read(), m=model(v);
+              document.getElementById('cult_b-v').textContent=money(v.b);
+              document.getElementById('cult_w-v').textContent=v.w.toLocaleString();
+              document.getElementById('cult_a-v').textContent=v.a;
+              document.getElementById('cult-rate').textContent=(m.rate*100).toFixed(1)+'%';
+              document.getElementById('cult-per').textContent=money(m.perCap);
+              document.getElementById('cult-clicks').textContent=Math.round(m.clicks).toLocaleString();
+              document.getElementById('cult-inc').textContent=Math.round(m.inc).toLocaleString();
+              var box=document.getElementById('cult-verdict'), pill=document.getElementById('cult-pill'),
+                  head=document.getElementById('cult-head'), coach=document.getElementById('cult-coach');
+              box.className='cult-verdict'; pill.className='cult-pill';
+              head.textContent=(m.rate*100).toFixed(1)+'% click';
+              var nearFloor=m.rate<=FLOOR+0.02;
+              if(v.b<5000){
+                pill.classList.add('crit'); box.classList.add('crit'); pill.textContent='No program';
+                coach.textContent='Unfunded — about '+(m.rate*100).toFixed(0)+'% of people click, ~'+Math.round(m.clicks).toLocaleString()+' risky clicks a year. Awareness is the highest-ROI control you are not paying for.';
+              } else if(m.perCap>260 && nearFloor){
+                pill.classList.add('warn'); box.classList.add('warn'); pill.textContent='Diminishing returns';
+                coach.textContent='You are near the floor ('+(FLOOR*100).toFixed(0)+'%) at '+money(m.perCap)+'/employee — extra training budget buys little. Spend the residual on phishing-resistant MFA and filtering instead.';
+              } else {
+                pill.classList.add('good'); box.classList.add('good'); pill.textContent='Working';
+                coach.textContent='Training cut clicks to '+(m.rate*100).toFixed(1)+'%. Keep reinforcing — but remember the floor: pair awareness with technical controls, since you can’t train the last few percent away.';
+              }
+              draw(v,m);
+            }
+            var cvs=document.getElementById('cult-canvas'), ctx=cvs.getContext('2d');
+            function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+            function rgba(hex,a){hex=(hex||'').replace('#','');
+              if(hex.length===3)hex=hex.split('').map(function(c){return c+c;}).join('');
+              var n=parseInt(hex,16); if(isNaN(n))return 'rgba(120,130,145,'+a+')';
+              return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+            function resize(){
+              var w=cvs.parentElement.clientWidth||360, dpr=window.devicePixelRatio||1;
+              var big=root.classList.contains('is-expanded');
+              var h=big?Math.max(360,Math.min(560,w*0.5)):Math.max(240,Math.min(330,w*0.62));
+              cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.height=h+'px';
+              ctx.setTransform(dpr,0,0,dpr,0,0); cvs._w=w; cvs._h=h;
+            }
+            function draw(v,m){
+              if(!v){v=read(); m=model(v);}
+              var w=cvs._w||360, h=cvs._h||300; ctx.clearRect(0,0,w,h);
+              var padL=44,padR=14,padT=14,padB=40, x0=padL,x1=w-padR,y0=h-padB,y1=padT;
+              var cAcc=css('--gold'), cMut=css('--text-muted'), cBor=css('--border'), cGood=css('--correct'), cCard=css('--card-bg');
+              var XMAX=500; // $/employee
+              function X(s){return x0+(s/XMAX)*(x1-x0);}
+              function Y(r){return y0-(r/BASE)*(y0-y1);}   // rate 0..BASE
+              ctx.font='11px Arial,sans-serif'; ctx.textAlign='right'; ctx.textBaseline='middle';
+              for(var g=0;g<=3;g++){var rv=BASE*g/3, py=Y(rv);
+                ctx.strokeStyle=rgba(cBor,0.9); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0,py); ctx.lineTo(x1,py); ctx.stroke();
+                ctx.fillStyle=cMut; ctx.fillText(Math.round(rv*100)+'%',x0-7,py);}
+              ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillStyle=cMut; ctx.font='9.5px Arial,sans-serif';
+              for(var s=0;s<=XMAX;s+=125) ctx.fillText('$'+s,X(s),y0+7);
+              ctx.fillText('training spend per employee →',(x0+x1)/2,y0+22);
+              ctx.save(); ctx.translate(13,(y0+y1)/2); ctx.rotate(-Math.PI/2);
+              ctx.fillStyle=cMut; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font='11px Arial,sans-serif';
+              ctx.fillText('phishing click rate',0,0); ctx.restore();
+              // floor line
+              ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle=rgba(cMut,0.9); ctx.lineWidth=1.3;
+              ctx.beginPath(); ctx.moveTo(x0,Y(FLOOR)); ctx.lineTo(x1,Y(FLOOR)); ctx.stroke(); ctx.restore();
+              ctx.fillStyle=cMut; ctx.font='9px Arial,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='bottom'; ctx.fillText('floor',x0+3,Y(FLOOR)-2);
+              // curve
+              ctx.strokeStyle=cAcc; ctx.lineWidth=2.6; ctx.beginPath();
+              for(var sc=0;sc<=XMAX;sc+=5){var px=X(sc),py=Y(rateOf(sc)); if(sc===0)ctx.moveTo(px,py); else ctx.lineTo(px,py);}
+              ctx.stroke();
+              // operating point
+              var opx=X(Math.min(m.perCap,XMAX)), opy=Y(m.rate);
+              ctx.beginPath(); ctx.arc(opx,opy,6,0,Math.PI*2); ctx.fillStyle=cGood; ctx.fill();
+              ctx.lineWidth=2.5; ctx.strokeStyle=cCard; ctx.stroke();
+            }
+            ids.forEach(function(i){el[i].addEventListener('input',paint);});
+            document.getElementById('cult-reset').addEventListener('click',function(){ ids.forEach(function(i){el[i].value=defs[i];}); paint();});
+            window.addEventListener('resize',function(){resize();draw();});
+            new MutationObserver(function(){draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+            var expBtn=document.getElementById('cult-expand');
+            var backdrop=document.createElement('div'); backdrop.className='cult-backdrop';
+            var lastFocused=null;
+            function focusables(){return Array.prototype.filter.call(
+              root.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])'),
+              function(x){return !x.disabled && x.offsetParent!==null;});}
+            function setExpanded(o){
+              root.classList.toggle('is-expanded',o);
+              if(o){document.body.appendChild(backdrop); lastFocused=document.activeElement;
+                root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-label','Expanded interactive');}
+              else {if(backdrop.parentNode)backdrop.parentNode.removeChild(backdrop);
+                root.removeAttribute('role'); root.removeAttribute('aria-modal'); root.removeAttribute('aria-label');}
+              document.body.style.overflow=o?'hidden':'';
+              expBtn.innerHTML=o?'&#10005; Close':'&#10530; Expand';
+              expBtn.setAttribute('aria-expanded',o?'true':'false');
+              resize(); draw();
+              if(o){root.scrollTop=0; expBtn.focus();} else if(lastFocused&&lastFocused.focus){lastFocused.focus();}
+            }
+            expBtn.addEventListener('click',function(){setExpanded(!root.classList.contains('is-expanded'));});
+            backdrop.addEventListener('click',function(){setExpanded(false);});
+            document.addEventListener('keydown',function(e){
+              if(!root.classList.contains('is-expanded')) return;
+              if(e.key==='Escape'){setExpanded(false); return;}
+              if(e.key==='Tab'){var f=focusables(); if(!f.length)return; var fi=f[0],la=f[f.length-1];
+                if(!root.contains(document.activeElement)){e.preventDefault(); fi.focus();}
+                else if(e.shiftKey&&document.activeElement===fi){e.preventDefault(); la.focus();}
+                else if(!e.shiftKey&&document.activeElement===la){e.preventDefault(); fi.focus();}}
+            });
+            resize(); paint();
+          })();
+          </script>
+          <!-- ══ END INTERACTIVE ══ -->
           <div class="resource-link">
             <span class="rl-icon" aria-hidden="true">&#128218;</span>
             <div class="rl-body"><span class="rl-label">Explore further</span><span class="rl-text"><strong>Social Engineering</strong> and <strong>Social Engineering Tactics</strong> &mdash; interactive modules on the human-layer attacks your awareness program must defend against.</span></div>

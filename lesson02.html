@@ -239,6 +239,169 @@
             <li>Asset value and classification together drive how much to invest in protecting each asset &mdash; the most valuable, most sensitive assets get the most rigor.</li>
           </ul>
           <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>The point of valuation is prioritization: spend protection budget where the business impact is greatest. If a question pits an expensive control on a low-value asset against a proportionate control on a high-value one, choose proportionality.</div>
+
+          <!-- ══ INTERACTIVE: Information-asset valuation & classification ══ -->
+          <h4>Try it &mdash; value an asset and let it classify itself</h4>
+          <p>Rate the business impact of losing an asset&rsquo;s <strong>confidentiality, integrity, and availability</strong>, add its replacement cost and any regulatory exposure, and watch its <strong>classification</strong> and value fall out &mdash; because the classification follows the <em>highest</em> impact dimension, and protection should be proportionate to value.</p>
+
+          <style>
+            .val{font-family:Arial,Helvetica,sans-serif;margin:1rem 0 0.25rem;max-width:100%;}
+            .val *{box-sizing:border-box;}
+            .val-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:1.15rem;}
+            .val-grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;}
+            .val-panel{flex:1 1 260px;min-width:0;}
+            .val-out{flex:1.2 1 300px;min-width:0;}
+            .val-panel h5,.val-out h5{font-family:Arial,sans-serif;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 0.15rem;}
+            .val-panel .plead{font-size:0.74rem;color:var(--text-muted);margin:0 0 0.85rem;}
+            .val-field{margin-bottom:0.85rem;}
+            .val-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.35rem;}
+            .val-field label{font-size:0.82rem;font-weight:700;color:var(--text-primary);}
+            .val-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.9rem;color:var(--gold);font-variant-numeric:tabular-nums;}
+            .val-btns{display:flex;gap:0.3rem;flex-wrap:wrap;}
+            .val-btn{flex:1 1 0;min-width:52px;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;color:var(--text-secondary);background:var(--card-bg);border:1px solid var(--border);border-radius:4px;padding:0.34rem 0.3rem;cursor:pointer;line-height:1.15;text-align:center;transition:background .12s,border-color .12s,color .12s;}
+            .val-btn:hover{border-color:var(--gold);color:var(--gold);}
+            .val-btn.is-on{background:var(--gold);border-color:var(--gold);color:#fff;}
+            .val-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .val input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0.1rem 0 0;}
+            .val input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
+            .val input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
+            .val input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .val-reset{margin-top:0.5rem;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);border-radius:3px;padding:0.4rem 0.8rem;cursor:pointer;}
+            .val-reset:hover{color:var(--gold);border-color:var(--gold);}
+            .val-class{border-radius:6px;padding:0.9rem 1rem;margin-bottom:0.85rem;color:#fff;}
+            .val-class .cl-k{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.9;font-weight:700;}
+            .val-class .cl-v{font-family:Georgia,serif;font-size:1.5rem;font-weight:700;line-height:1.1;margin-top:0.1rem;}
+            .val-class .cl-d{font-size:0.76rem;margin-top:0.35rem;opacity:0.95;line-height:1.45;}
+            .val-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem;margin-bottom:0.85rem;}
+            .val-tile{background:var(--section-alt);border:1px solid var(--border);border-radius:5px;padding:0.65rem 0.7rem;min-width:0;}
+            .val-tile .k{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:700;}
+            .val-tile .val2{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:0.2rem;line-height:1.05;}
+            .val-bars{margin-top:0.2rem;}
+            .val-bar{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;}
+            .val-bar .bl{font-size:0.7rem;font-weight:700;color:var(--text-secondary);width:92px;flex:none;}
+            .val-bar .bt{flex:1;height:14px;background:var(--section-alt);border-radius:7px;overflow:hidden;}
+            .val-bar .bf{height:100%;border-radius:7px;transition:width .15s;}
+            .val-bar .bp{font-size:0.62rem;color:var(--text-muted);width:64px;flex:none;text-align:right;}
+            .val-bar.peak .bl{color:var(--gold);}
+          </style>
+
+          <div class="val" id="val-root">
+            <div class="val-card">
+              <div class="val-grid">
+                <div class="val-panel">
+                  <h5>Rate the impact of a loss</h5>
+                  <p class="plead">How bad is it if this asset&rsquo;s… is compromised?</p>
+                  <div class="val-field">
+                    <div class="r"><label>Confidentiality</label></div>
+                    <div class="val-btns" id="val-c" role="group" aria-label="Confidentiality impact"></div>
+                  </div>
+                  <div class="val-field">
+                    <div class="r"><label>Integrity</label></div>
+                    <div class="val-btns" id="val-i" role="group" aria-label="Integrity impact"></div>
+                  </div>
+                  <div class="val-field">
+                    <div class="r"><label>Availability</label></div>
+                    <div class="val-btns" id="val-a" role="group" aria-label="Availability impact"></div>
+                  </div>
+                  <div class="val-field">
+                    <div class="r"><label for="val_rep">Replacement / rebuild cost</label><span class="v" id="val_rep-v">$400,000</span></div>
+                    <input type="range" id="val_rep" min="10000" max="5000000" step="10000" value="400000">
+                  </div>
+                  <div class="val-field">
+                    <div class="r"><label>Regulated data?</label></div>
+                    <div class="val-btns" id="val-reg" role="group" aria-label="Regulatory exposure"></div>
+                  </div>
+                  <button type="button" class="val-reset" id="val-reset">Reset scenario</button>
+                </div>
+                <div class="val-out">
+                  <h5>The valuation</h5>
+                  <div class="val-class" id="val-class">
+                    <div class="cl-k">Data classification</div>
+                    <div class="cl-v" id="val-tier">&mdash;</div>
+                    <div class="cl-d" id="val-tierd">&mdash;</div>
+                  </div>
+                  <div class="val-tiles">
+                    <div class="val-tile"><div class="k">Set by</div><div class="val2" id="val-driver">&mdash;</div></div>
+                    <div class="val-tile"><div class="k">Sensitivity</div><div class="val2" id="val-sens">&mdash;</div></div>
+                    <div class="val-tile"><div class="k">Est. value at risk</div><div class="val2" id="val-var">&mdash;</div></div>
+                    <div class="val-tile"><div class="k">Protection level</div><div class="val2" id="val-prot">&mdash;</div></div>
+                  </div>
+                  <div class="val-bars" id="val-bars"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Two rules the exam rewards: classification tracks the <strong>highest</strong> of the three impact dimensions (a low-confidentiality but availability-critical system is still highly classified), and protection is <strong>proportionate</strong> &mdash; a Restricted asset earns strong controls, but a Public one does not justify the same spend. Ownership sits with the <strong>business data owner</strong>, who assigns the classification.</p></div>
+
+          <script>
+          (function(){
+            var root=document.getElementById('val-root'); if(!root) return;
+            var LEVELS=['Low','Moderate','High','Critical'];
+            var LVLCOLOR=['#1a7a4c','#f59e0b','#ea7317','#c0182b'];
+            var REGS=[['None',1.0],['PII',1.5],['PCI / PHI',2.5]];
+            var TIERS=[
+              {name:'Public', color:'#5c7d83', d:'No harm if disclosed — minimal controls.'},
+              {name:'Internal', color:'#1d5a6e', d:'For internal use — basic access control.'},
+              {name:'Confidential', color:'#c78a10', d:'Business-sensitive — need-to-know access, encryption in transit.'},
+              {name:'Restricted', color:'#b3202f', d:'Highest sensitivity — strict access, encryption, logging, monitoring.'}
+            ];
+            var PROT=['Baseline','Standard','Enhanced','Maximum'];
+            var state={c:3,i:2,a:3,reg:1};
+            function buildBtns(cid,labels,key){
+              var c=document.getElementById(cid);
+              labels.forEach(function(lbl,i){
+                var b=document.createElement('button'); b.type='button'; b.className='val-btn'; b.textContent=lbl; b.dataset.i=i;
+                b.addEventListener('click',function(){state[key]=i; paint();});
+                c.appendChild(b);
+              });
+            }
+            function syncBtns(cid,key){
+              document.getElementById(cid).querySelectorAll('.val-btn').forEach(function(x){
+                var on=+x.dataset.i===state[key]; x.classList.toggle('is-on',on); x.setAttribute('aria-pressed',on?'true':'false');
+              });
+            }
+            var usd=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+            function money(n){return usd.format(Math.round(n));}
+            function paint(){
+              var rep=+document.getElementById('val_rep').value;
+              var c=state.c, i=state.i, a=state.a; // 0..3
+              var vals=[c,i,a], peak=Math.max(c,i,a), sens=c+i+a; // 0..9
+              var regMult=REGS[state.reg][1];
+              var tier=TIERS[peak], prot=PROT[peak];
+              var varisk=rep*regMult*(0.6+0.2*(peak+1));
+              document.getElementById('val_rep-v').textContent=money(rep);
+              ['val-c','val-i','val-a'].forEach(function(cid,idx){ syncBtns(cid,['c','i','a'][idx]); });
+              syncBtns('val-reg','reg');
+              var cbox=document.getElementById('val-class');
+              cbox.style.background=tier.color;
+              document.getElementById('val-tier').textContent=tier.name;
+              document.getElementById('val-tierd').textContent=tier.d;
+              var names=['Confidentiality','Integrity','Availability'];
+              var drivers=[]; vals.forEach(function(x,k){ if(x===peak) drivers.push(names[k][0]); });
+              document.getElementById('val-driver').textContent=drivers.join('/')+' ('+LEVELS[peak]+')';
+              document.getElementById('val-sens').textContent=sens+' / 9';
+              document.getElementById('val-var').textContent=money(varisk);
+              document.getElementById('val-prot').textContent=prot;
+              // bars
+              var bars=document.getElementById('val-bars'); bars.innerHTML='';
+              [['Confidentiality',c],['Integrity',i],['Availability',a]].forEach(function(row){
+                var lv=row[1], isPeak=lv===peak;
+                var el=document.createElement('div'); el.className='val-bar'+(isPeak?' peak':'');
+                el.innerHTML='<span class="bl">'+row[0]+'</span><span class="bt"><span class="bf" style="width:'+((lv+1)/4*100)+'%;background:'+LVLCOLOR[lv]+'"></span></span><span class="bp">'+LEVELS[lv]+(isPeak?' ◄':'')+'</span>';
+                bars.appendChild(el);
+              });
+            }
+            buildBtns('val-c',LEVELS,'c'); buildBtns('val-i',LEVELS,'i'); buildBtns('val-a',LEVELS,'a');
+            buildBtns('val-reg',REGS.map(function(r){return r[0];}),'reg');
+            document.getElementById('val_rep').addEventListener('input',paint);
+            document.getElementById('val-reset').addEventListener('click',function(){
+              state={c:3,i:2,a:3,reg:1}; document.getElementById('val_rep').value=400000; paint();
+            });
+            paint();
+          })();
+          </script>
+          <!-- ══ END INTERACTIVE ══ -->
         </article>
 
       </div>

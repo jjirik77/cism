@@ -243,6 +243,281 @@
             <li>Security <strong>recommends</strong>; the business <strong>accepts</strong> &mdash; the most-tested boundary in this domain.</li>
           </ul>
           <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>A project wants to skip a required control to hit a deadline. The manager does not simply refuse or silently allow it &mdash; they document the residual risk and route it to the business risk owner for a formal, time-bound acceptance decision.</p></div>
+
+          <!-- ══ INTERACTIVE: Quantitative risk & treatment (total cost of risk) ══ -->
+          <h4>Try it &mdash; how much treatment is the right amount?</h4>
+          <p>Put the four treatment options on one graph. Price the risk (ALE), then mitigate it: residual risk falls but control cost rises, and the <strong>total cost of risk</strong> is lowest somewhere in between. Watch residual against the business&rsquo;s <strong>risk appetite</strong> &mdash; where it still sits too high, that&rsquo;s where transfer, avoid, or a formal acceptance decision come in.</p>
+
+          <style>
+            .risk{font-family:Arial,Helvetica,sans-serif;margin:1rem 0 0.25rem;max-width:100%;}
+            .risk *{box-sizing:border-box;}
+            .risk-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:1.15rem;}
+            .risk-topbar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-bottom:0.7rem;margin-bottom:0.95rem;border-bottom:1px solid var(--border);}
+            .risk-topbar-eyebrow{font-family:Arial,sans-serif;font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+            .risk-expand{font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold);border-radius:5px;padding:0.42rem 0.85rem;cursor:pointer;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:0.4rem;}
+            .risk-expand:hover{background:var(--gold);color:#fff;}
+            .risk-expand:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .risk-grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;}
+            .risk-panel{flex:1 1 250px;min-width:0;}
+            .risk-out{flex:1.4 1 300px;min-width:0;}
+            .risk-panel h5,.risk-out h5{font-family:Arial,sans-serif;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 0.15rem;}
+            .risk-panel .plead{font-size:0.74rem;color:var(--text-muted);margin:0 0 0.85rem;}
+            .risk-gt{font-family:Arial,sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700;margin:0.85rem 0 0.55rem;padding-bottom:0.3rem;border-bottom:1px solid var(--border);}
+            .risk-field{margin-bottom:0.85rem;}
+            .risk-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.3rem;}
+            .risk-field label{font-size:0.82rem;font-weight:700;color:var(--text-primary);}
+            .risk-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.9rem;color:var(--gold);font-variant-numeric:tabular-nums;}
+            .risk-field .h{font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;line-height:1.4;}
+            .risk input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0;}
+            .risk input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
+            .risk input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
+            .risk input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .risk-reset{margin-top:0.35rem;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);border-radius:3px;padding:0.4rem 0.8rem;cursor:pointer;}
+            .risk-reset:hover{color:var(--gold);border-color:var(--gold);}
+            .risk-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem;margin-bottom:0.85rem;}
+            .risk-tile{background:var(--section-alt);border:1px solid var(--border);border-radius:5px;padding:0.65rem 0.7rem;min-width:0;}
+            .risk-tile.acc{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .risk-tile .k{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:700;}
+            .risk-tile .val{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:0.2rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+            .risk-verdict{display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;padding:0.75rem 0.85rem;border-radius:5px;border:1px solid var(--border);background:var(--section-alt);margin-bottom:0.85rem;}
+            .risk-verdict.good{background:var(--correct-bg);border-color:var(--correct);}
+            .risk-verdict.warn{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .risk-verdict.crit{background:var(--wrong-bg);border-color:var(--wrong);}
+            .risk-pill{font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:20px;color:#fff;white-space:nowrap;}
+            .risk-pill.good{background:var(--correct);}.risk-pill.warn{background:var(--navy);}.risk-pill.crit{background:var(--wrong);}
+            .risk-head{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.15rem;font-weight:900;font-variant-numeric:tabular-nums;}
+            .risk-coach{font-size:0.8rem;color:var(--text-secondary);flex:1 1 190px;min-width:160px;line-height:1.5;}
+            .risk-chart{background:var(--card-bg);border:1px solid var(--border);border-radius:5px;padding:0.85rem;}
+            .risk-chart h6{font-family:Georgia,serif;font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 0.15rem;}
+            .risk-chart .cap{font-size:0.72rem;color:var(--text-muted);margin:0 0 0.55rem;line-height:1.45;}
+            .risk canvas{width:100%;height:auto;display:block;}
+            .risk-legend{display:flex;gap:0.85rem;flex-wrap:wrap;margin-top:0.55rem;font-size:0.68rem;color:var(--text-muted);}
+            .risk-legend span{display:inline-flex;align-items:center;gap:0.35rem;}
+            .risk-sw{width:14px;height:3px;border-radius:2px;display:inline-block;}
+            .risk-sw.dash{height:0;border-top:2px dashed var(--text-muted);width:16px;}
+            .risk-backdrop{position:fixed;inset:0;background:rgba(6,25,31,0.6);z-index:9998;}
+            .risk.is-expanded{position:fixed;inset:2.5vh 2.5vw;width:auto;max-width:none;z-index:9999;margin:0;overflow:auto;background:var(--body-bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+            .risk.is-expanded .risk-card{max-width:1180px;margin:0 auto;border:none;box-shadow:none;padding:0.25rem;}
+          </style>
+
+          <div class="risk" id="risk-root">
+            <div class="risk-card">
+              <div class="risk-topbar">
+                <span class="risk-topbar-eyebrow">Interactive &middot; adjust &amp; explore</span>
+                <button type="button" class="risk-expand" id="risk-expand" aria-expanded="false" title="Open a larger, full-screen view">&#10530; Expand</button>
+              </div>
+              <div class="risk-grid">
+                <div class="risk-panel">
+                  <h5>The risk decision</h5>
+                  <p class="plead">Price the risk, then decide how far to treat it.</p>
+                  <div class="risk-gt">The risk (annual loss exposure)</div>
+                  <div class="risk-field">
+                    <div class="r"><label for="risk_av">Asset value</label><span class="v" id="risk_av-v">$2,000,000</span></div>
+                    <input type="range" id="risk_av" min="50000" max="10000000" step="50000" value="2000000">
+                    <div class="h">Value at stake if the asset is compromised.</div>
+                  </div>
+                  <div class="risk-field">
+                    <div class="r"><label for="risk_ef">Exposure factor</label><span class="v" id="risk_ef-v">35%</span></div>
+                    <input type="range" id="risk_ef" min="1" max="100" step="1" value="35">
+                    <div class="h">Share of value lost per event. <strong>SLE = AV × EF</strong>.</div>
+                  </div>
+                  <div class="risk-field">
+                    <div class="r"><label for="risk_aro">Annual rate (ARO)</label><span class="v" id="risk_aro-v">0.40 / yr</span></div>
+                    <input type="range" id="risk_aro" min="0" max="500" step="1" value="40">
+                    <div class="h">Events per year. <strong>ALE = SLE × ARO</strong>.</div>
+                  </div>
+                  <div class="risk-gt">The decision</div>
+                  <div class="risk-field">
+                    <div class="r"><label for="risk_app">Risk appetite</label><span class="v" id="risk_app-v">$50,000</span></div>
+                    <input type="range" id="risk_app" min="0" max="500000" step="5000" value="50000">
+                    <div class="h">Annual loss the business is willing to carry.</div>
+                  </div>
+                  <div class="risk-field">
+                    <div class="r"><label for="risk_k">Mitigation (control effectiveness)</label><span class="v" id="risk_k-v">70%</span></div>
+                    <input type="range" id="risk_k" min="0" max="98" step="1" value="70">
+                    <div class="h">0% = accept · higher = mitigate more (costs more).</div>
+                  </div>
+                  <div class="risk-field">
+                    <div class="r"><label for="risk_c0">Control cost factor</label><span class="v" id="risk_c0-v">$15,000</span></div>
+                    <input type="range" id="risk_c0" min="2000" max="120000" step="1000" value="15000">
+                    <div class="h">How expensive this control is to run.</div>
+                  </div>
+                  <button type="button" class="risk-reset" id="risk-reset">Reset scenario</button>
+                </div>
+                <div class="risk-out">
+                  <h5>The economics</h5>
+                  <div class="risk-tiles">
+                    <div class="risk-tile"><div class="k">Inherent ALE</div><div class="val" id="risk-ale">&mdash;</div></div>
+                    <div class="risk-tile"><div class="k">Residual risk</div><div class="val" id="risk-res">&mdash;</div></div>
+                    <div class="risk-tile"><div class="k">Treatment cost</div><div class="val" id="risk-cost">&mdash;</div></div>
+                    <div class="risk-tile acc"><div class="k">Total cost of risk</div><div class="val" id="risk-total">&mdash;</div></div>
+                  </div>
+                  <div class="risk-verdict" id="risk-verdict">
+                    <span class="risk-pill" id="risk-pill">&mdash;</span>
+                    <span class="risk-head" id="risk-head">&mdash;</span>
+                    <span class="risk-coach" id="risk-coach">Adjust the treatment to balance risk and cost.</span>
+                  </div>
+                  <div class="risk-chart">
+                    <h6>Total cost of risk</h6>
+                    <p class="cap">As you mitigate more, <span style="color:var(--wrong)">residual risk</span> falls and <span style="color:var(--amber)">control cost</span> rises &mdash; <span style="color:var(--gold)">total cost of risk</span> bottoms out at the economic optimum. The dashed line is the business&rsquo;s risk appetite.</p>
+                    <canvas id="risk-canvas" width="640" height="330" role="img" aria-label="Residual risk, control cost, and total cost of risk against mitigation level"></canvas>
+                    <div class="risk-legend">
+                      <span><i class="risk-sw" style="background:var(--wrong)"></i> Residual risk</span>
+                      <span><i class="risk-sw" style="background:var(--amber)"></i> Control cost</span>
+                      <span><i class="risk-sw" style="background:var(--gold)"></i> Total cost of risk</span>
+                      <span><i class="risk-sw dash"></i> Risk appetite</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>This is a <em>recommendation</em>, not a decision. The security manager brings the business the numbers &mdash; residual risk, treatment cost, the total-cost-of-risk optimum &mdash; and the <strong>risk owner</strong> chooses to mitigate, transfer, avoid, or formally accept. Residual risk above appetite is never quietly accepted by the security team.</p></div>
+
+          <script>
+          (function(){
+            var root=document.getElementById('risk-root'); if(!root) return;
+            var ids=['av','ef','aro','app','k','c0'], el={};
+            ids.forEach(function(i){el[i]=document.getElementById('risk_'+i);});
+            var defs={av:2000000,ef:35,aro:40,app:50000,k:70,c0:15000};
+            var usd=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+            function money(n){return usd.format(Math.round(n));}
+            function read(){return {av:+el.av.value, ef:+el.ef.value/100, aro:+el.aro.value/100, app:+el.app.value, k:+el.k.value/100, c0:+el.c0.value};}
+            function costOf(k,c0){return k<=0?0:c0*(-Math.log(1-k));}
+            function model(v){
+              var ale=v.av*v.ef*v.aro;
+              var res=ale*(1-v.k), cost=costOf(v.k,v.c0), total=res+cost;
+              var kStar=ale>0?Math.max(0,Math.min(0.98,1-v.c0/ale)):0;
+              return {ale:ale, res:res, cost:cost, total:total, kStar:kStar};
+            }
+
+            function paint(){
+              var v=read(), m=model(v);
+              document.getElementById('risk_av-v').textContent=money(v.av);
+              document.getElementById('risk_ef-v').textContent=(v.ef*100).toFixed(0)+'%';
+              document.getElementById('risk_aro-v').textContent=v.aro.toFixed(2)+' / yr';
+              document.getElementById('risk_app-v').textContent=money(v.app);
+              document.getElementById('risk_k-v').textContent=(v.k*100).toFixed(0)+'%';
+              document.getElementById('risk_c0-v').textContent=money(v.c0);
+              document.getElementById('risk-ale').textContent=money(m.ale);
+              var resEl=document.getElementById('risk-res'); resEl.textContent=money(m.res);
+              resEl.style.color=m.res>v.app?'var(--wrong)':'var(--correct)';
+              document.getElementById('risk-cost').textContent=money(m.cost);
+              document.getElementById('risk-total').textContent=money(m.total);
+
+              var box=document.getElementById('risk-verdict'), pill=document.getElementById('risk-pill'),
+                  head=document.getElementById('risk-head'), coach=document.getElementById('risk-coach');
+              box.className='risk-verdict'; pill.className='risk-pill';
+              head.textContent='TCoR '+money(m.total);
+              var overOpt=v.k>m.kStar+0.06, totalOpt=(m.ale*(1-m.kStar))+costOf(m.kStar,v.c0);
+              if(m.res>v.app){
+                pill.classList.add('crit'); box.classList.add('crit'); pill.textContent='Above appetite';
+                coach.textContent='Residual '+money(m.res)+' still exceeds appetite '+money(v.app)+'. Mitigate further, transfer it (insurance), or avoid the activity — security recommends, the risk owner decides.';
+              } else if(overOpt && m.total>totalOpt*1.15){
+                pill.classList.add('warn'); box.classList.add('warn'); pill.textContent='Over-treating';
+                coach.textContent='Past the economic optimum: the last increments of control cost more than the risk they remove. Total cost of risk is lowest near '+Math.round(m.kStar*100)+'% mitigation.';
+              } else if(v.k<=0.001){
+                pill.classList.add('good'); box.classList.add('good'); pill.textContent='Accept';
+                coach.textContent='Accepting the full '+money(m.ale)+' — legitimate only if it is within appetite and the risk owner formally signs off with a review date.';
+              } else {
+                pill.classList.add('good'); box.classList.add('good'); pill.textContent='Within appetite';
+                coach.textContent='Residual is within appetite at a near-optimal total cost of risk. Document the acceptance with an owner and a review date.';
+              }
+              draw(v,m);
+            }
+
+            var cvs=document.getElementById('risk-canvas'), ctx=cvs.getContext('2d');
+            function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+            function rgba(hex,a){hex=(hex||'').replace('#','');
+              if(hex.length===3)hex=hex.split('').map(function(c){return c+c;}).join('');
+              var n=parseInt(hex,16); if(isNaN(n))return 'rgba(120,130,145,'+a+')';
+              return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+            function resize(){
+              var w=cvs.parentElement.clientWidth||360, dpr=window.devicePixelRatio||1;
+              var big=root.classList.contains('is-expanded');
+              var h=big?Math.max(360,Math.min(560,w*0.5)):Math.max(240,Math.min(330,w*0.62));
+              cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.height=h+'px';
+              ctx.setTransform(dpr,0,0,dpr,0,0); cvs._w=w; cvs._h=h;
+            }
+            function draw(v,m){
+              if(!v){v=read(); m=model(v);}
+              var w=cvs._w||360, h=cvs._h||300; ctx.clearRect(0,0,w,h);
+              var padL=54,padR=14,padT=14,padB=40, x0=padL,x1=w-padR,y0=h-padB,y1=padT;
+              var cRes=css('--wrong'), cCost=css('--amber'), cTot=css('--gold'), cMut=css('--text-muted'),
+                  cBor=css('--border'), cGood=css('--correct'), cCard=css('--card-bg');
+              var yMax=Math.max(m.ale, m.total)*1.06 || 1;
+              function X(k){return x0+k*(x1-x0);}          // k 0..1 (we sweep 0..0.98)
+              function Y(val){return y0-(val/yMax)*(y0-y1);}
+              function shortM(n){n=Math.round(n); if(n>=1e6)return '$'+(n/1e6).toFixed(1)+'M'; if(n>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+n;}
+              // y grid
+              ctx.font='11px Arial,sans-serif'; ctx.textAlign='right'; ctx.textBaseline='middle';
+              for(var g=0;g<=4;g++){var yv=yMax*g/4, py=Y(yv);
+                ctx.strokeStyle=rgba(cBor,0.9); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0,py); ctx.lineTo(x1,py); ctx.stroke();
+                ctx.fillStyle=cMut; ctx.fillText(shortM(yv),x0-7,py);}
+              // x labels
+              ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillStyle=cMut; ctx.font='9.5px Arial,sans-serif';
+              for(var xk=0;xk<=100;xk+=25) ctx.fillText(xk+'%',X(xk/100),y0+7);
+              ctx.fillText('mitigation (control effectiveness) →',(x0+x1)/2,y0+22);
+              // appetite line
+              ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle=rgba(cMut,0.95); ctx.lineWidth=1.4;
+              var ay=Y(v.app); ctx.beginPath(); ctx.moveTo(x0,ay); ctx.lineTo(x1,ay); ctx.stroke(); ctx.restore();
+              ctx.fillStyle=cMut; ctx.font='9px Arial,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='bottom'; ctx.fillText('appetite',x0+3,ay-2);
+              // curves
+              function curve(fn,color,wd){ ctx.strokeStyle=color; ctx.lineWidth=wd; ctx.beginPath();
+                for(var k=0;k<=0.98001;k+=0.01){var val=fn(k); var px=X(k),py=Y(val); if(k===0)ctx.moveTo(px,py); else ctx.lineTo(px,py);} ctx.stroke(); }
+              curve(function(k){return m.ale*(1-k);}, cRes, 2);
+              curve(function(k){return costOf(k,v.c0);}, cCost, 2);
+              curve(function(k){return m.ale*(1-k)+costOf(k,v.c0);}, cTot, 2.8);
+              // optimum marker (on total curve)
+              var ktot=m.ale*(1-m.kStar)+costOf(m.kStar,v.c0);
+              ctx.save(); ctx.setLineDash([3,3]); ctx.strokeStyle=rgba(cTot,0.7); ctx.lineWidth=1;
+              ctx.beginPath(); ctx.moveTo(X(m.kStar),Y(ktot)); ctx.lineTo(X(m.kStar),y0); ctx.stroke(); ctx.restore();
+              ctx.fillStyle=rgba(cTot,0.95); ctx.font='9px Arial,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top';
+              ctx.fillText('optimum',X(m.kStar),Y(ktot)-14<y1?y0-12:Y(ktot)+4);
+              // operating point on total curve
+              ctx.beginPath(); ctx.arc(X(v.k),Y(m.total),6,0,Math.PI*2); ctx.fillStyle=cGood; ctx.fill();
+              ctx.lineWidth=2.5; ctx.strokeStyle=cCard; ctx.stroke();
+            }
+
+            ids.forEach(function(i){el[i].addEventListener('input',paint);});
+            document.getElementById('risk-reset').addEventListener('click',function(){ ids.forEach(function(i){el[i].value=defs[i];}); paint();});
+            window.addEventListener('resize',function(){resize();draw();});
+            new MutationObserver(function(){draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+            var expBtn=document.getElementById('risk-expand');
+            var backdrop=document.createElement('div'); backdrop.className='risk-backdrop';
+            var lastFocused=null;
+            function focusables(){return Array.prototype.filter.call(
+              root.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])'),
+              function(x){return !x.disabled && x.offsetParent!==null;});}
+            function setExpanded(o){
+              root.classList.toggle('is-expanded',o);
+              if(o){document.body.appendChild(backdrop); lastFocused=document.activeElement;
+                root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-label','Expanded interactive');}
+              else {if(backdrop.parentNode)backdrop.parentNode.removeChild(backdrop);
+                root.removeAttribute('role'); root.removeAttribute('aria-modal'); root.removeAttribute('aria-label');}
+              document.body.style.overflow=o?'hidden':'';
+              expBtn.innerHTML=o?'&#10005; Close':'&#10530; Expand';
+              expBtn.setAttribute('aria-expanded',o?'true':'false');
+              resize(); draw();
+              if(o){root.scrollTop=0; expBtn.focus();} else if(lastFocused&&lastFocused.focus){lastFocused.focus();}
+            }
+            expBtn.addEventListener('click',function(){setExpanded(!root.classList.contains('is-expanded'));});
+            backdrop.addEventListener('click',function(){setExpanded(false);});
+            document.addEventListener('keydown',function(e){
+              if(!root.classList.contains('is-expanded')) return;
+              if(e.key==='Escape'){setExpanded(false); return;}
+              if(e.key==='Tab'){var f=focusables(); if(!f.length)return; var fi=f[0],la=f[f.length-1];
+                if(!root.contains(document.activeElement)){e.preventDefault(); fi.focus();}
+                else if(e.shiftKey&&document.activeElement===fi){e.preventDefault(); la.focus();}
+                else if(!e.shiftKey&&document.activeElement===la){e.preventDefault(); fi.focus();}}
+            });
+
+            resize(); paint();
+          })();
+          </script>
+          <!-- ══ END INTERACTIVE ══ -->
         </article>
 
         <article class="content-section" id="s5">

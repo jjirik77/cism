@@ -193,6 +193,246 @@
             <li><strong>Performance measurement</strong> &mdash; metrics prove the program is effective.</li>
           </ul>
           <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>If a question asks who is <em>ultimately accountable</em> for information security, the answer is the board / senior management &mdash; not the CISO, IT, or audit. Governance accountability cannot be delegated away.</div>
+
+          <!-- ══ INTERACTIVE: Governance maturity radar (five outcomes) ══ -->
+          <h4>Try it &mdash; map your governance against the five outcomes</h4>
+          <p>Effective governance delivers five outcomes. Rate your program&rsquo;s current maturity on each, set a target, and the gap becomes a roadmap &mdash; because a governance strategy is a plan to close the widest gaps first, measured against where the business needs to be.</p>
+
+          <style>
+            .gov{font-family:Arial,Helvetica,sans-serif;margin:1rem 0 0.25rem;max-width:100%;}
+            .gov *{box-sizing:border-box;}
+            .gov-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:1.15rem;}
+            .gov-topbar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-bottom:0.7rem;margin-bottom:0.95rem;border-bottom:1px solid var(--border);}
+            .gov-topbar-eyebrow{font-family:Arial,sans-serif;font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+            .gov-expand{font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold);border-radius:5px;padding:0.42rem 0.85rem;cursor:pointer;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:0.4rem;}
+            .gov-expand:hover{background:var(--gold);color:#fff;}
+            .gov-expand:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .gov-grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;}
+            .gov-panel{flex:1 1 250px;min-width:0;}
+            .gov-out{flex:1.3 1 300px;min-width:0;}
+            .gov-panel h5,.gov-out h5{font-family:Arial,sans-serif;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 0.15rem;}
+            .gov-panel .plead{font-size:0.74rem;color:var(--text-muted);margin:0 0 0.85rem;}
+            .gov-field{margin-bottom:0.7rem;}
+            .gov-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.25rem;}
+            .gov-field label{font-size:0.78rem;font-weight:700;color:var(--text-primary);}
+            .gov-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.88rem;color:var(--gold);font-variant-numeric:tabular-nums;}
+            .gov-field.tgt label{color:var(--amber);}.gov-field.tgt .v{color:var(--amber);}
+            .gov input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0;}
+            .gov input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
+            .gov input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
+            .gov input[type=range].tgtr::-webkit-slider-thumb{background:var(--amber);}
+            .gov input[type=range].tgtr::-moz-range-thumb{background:var(--amber);}
+            .gov input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .gov-reset{margin-top:0.5rem;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);border-radius:3px;padding:0.4rem 0.8rem;cursor:pointer;}
+            .gov-reset:hover{color:var(--gold);border-color:var(--gold);}
+            .gov-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem;margin-bottom:0.85rem;}
+            .gov-tile{background:var(--section-alt);border:1px solid var(--border);border-radius:5px;padding:0.65rem 0.7rem;min-width:0;}
+            .gov-tile.acc{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .gov-tile .k{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:700;}
+            .gov-tile .val{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:0.2rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+            .gov-verdict{display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;padding:0.75rem 0.85rem;border-radius:5px;border:1px solid var(--border);background:var(--section-alt);margin-bottom:0.85rem;}
+            .gov-verdict.good{background:var(--correct-bg);border-color:var(--correct);}
+            .gov-verdict.warn{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .gov-verdict.crit{background:var(--wrong-bg);border-color:var(--wrong);}
+            .gov-pill{font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:20px;color:#fff;white-space:nowrap;}
+            .gov-pill.good{background:var(--correct);}.gov-pill.warn{background:var(--navy);}.gov-pill.crit{background:var(--wrong);}
+            .gov-head{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.05rem;font-weight:900;}
+            .gov-coach{font-size:0.8rem;color:var(--text-secondary);flex:1 1 190px;min-width:160px;line-height:1.5;}
+            .gov-chart{background:var(--card-bg);border:1px solid var(--border);border-radius:5px;padding:0.85rem;}
+            .gov-chart h6{font-family:Georgia,serif;font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 0.15rem;}
+            .gov-chart .cap{font-size:0.72rem;color:var(--text-muted);margin:0 0 0.55rem;line-height:1.45;}
+            .gov canvas{width:100%;height:auto;display:block;}
+            .gov-legend{display:flex;gap:0.85rem;flex-wrap:wrap;margin-top:0.55rem;font-size:0.68rem;color:var(--text-muted);}
+            .gov-legend span{display:inline-flex;align-items:center;gap:0.35rem;}
+            .gov-sw{width:14px;height:10px;border-radius:2px;display:inline-block;}
+            .gov-sw.dash{height:0;border-top:2px dashed var(--amber);width:16px;}
+            .gov-backdrop{position:fixed;inset:0;background:rgba(6,25,31,0.6);z-index:9998;}
+            .gov.is-expanded{position:fixed;inset:2.5vh 2.5vw;width:auto;max-width:none;z-index:9999;margin:0;overflow:auto;background:var(--body-bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+            .gov.is-expanded .gov-card{max-width:1180px;margin:0 auto;border:none;box-shadow:none;padding:0.25rem;}
+          </style>
+
+          <div class="gov" id="gov-root">
+            <div class="gov-card">
+              <div class="gov-topbar">
+                <span class="gov-topbar-eyebrow">Interactive &middot; adjust &amp; explore</span>
+                <button type="button" class="gov-expand" id="gov-expand" aria-expanded="false" title="Open a larger, full-screen view">&#10530; Expand</button>
+              </div>
+              <div class="gov-grid">
+                <div class="gov-panel">
+                  <h5>Current maturity (1&ndash;5)</h5>
+                  <p class="plead">Rate each governance outcome as it stands today.</p>
+                  <div id="gov-sliders"></div>
+                  <div class="gov-field tgt">
+                    <div class="r"><label for="gov_tgt">Target maturity (all)</label><span class="v" id="gov_tgt-v">4</span></div>
+                    <input type="range" class="tgtr" id="gov_tgt" min="1" max="5" step="1" value="4">
+                  </div>
+                  <button type="button" class="gov-reset" id="gov-reset">Reset scenario</button>
+                </div>
+                <div class="gov-out">
+                  <h5>The gap</h5>
+                  <div class="gov-tiles">
+                    <div class="gov-tile"><div class="k">Avg maturity</div><div class="val" id="gov-avg">&mdash;</div></div>
+                    <div class="gov-tile"><div class="k">Total gap to target</div><div class="val" id="gov-gap">&mdash;</div></div>
+                    <div class="gov-tile acc"><div class="k">Weakest outcome</div><div class="val" id="gov-weak">&mdash;</div></div>
+                    <div class="gov-tile"><div class="k">Progress to target</div><div class="val" id="gov-prog">&mdash;</div></div>
+                  </div>
+                  <div class="gov-verdict" id="gov-verdict">
+                    <span class="gov-pill" id="gov-pill">&mdash;</span>
+                    <span class="gov-head" id="gov-head">&mdash;</span>
+                    <span class="gov-coach" id="gov-coach">Rate each outcome and set a target.</span>
+                  </div>
+                  <div class="gov-chart">
+                    <h6>The five governance outcomes</h6>
+                    <p class="cap">Your <span style="color:var(--gold)">current maturity</span> against the <span style="color:var(--amber)">target</span>. The distance from the teal shape out to the dashed ring is the roadmap.</p>
+                    <canvas id="gov-canvas" width="620" height="360" role="img" aria-label="Radar of governance maturity across the five outcomes"></canvas>
+                    <div class="gov-legend">
+                      <span><i class="gov-sw" style="background:var(--gold)"></i> Current maturity</span>
+                      <span><i class="gov-sw dash"></i> Target</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>Two management points: the outcomes reinforce each other &mdash; weak <strong>performance measurement</strong> undermines the rest, because you can&rsquo;t manage or report what you don&rsquo;t measure &mdash; and the roadmap is a business conversation. The security manager presents the gaps and a sequenced plan; the <strong>board</strong> sets the target and funds the closure.</p></div>
+
+          <script>
+          (function(){
+            var root=document.getElementById('gov-root'); if(!root) return;
+            var OUT=[
+              {name:'Strategic alignment', short:'Strategic\nalignment'},
+              {name:'Risk management', short:'Risk\nmanagement'},
+              {name:'Value delivery', short:'Value\ndelivery'},
+              {name:'Resource management', short:'Resource\nmanagement'},
+              {name:'Performance measurement', short:'Performance\nmeasurement'}
+            ];
+            var defCur=[3,2,3,2,2], defTgt=4;
+            var cur=defCur.slice(), tgt=defTgt;
+            var sl=[];
+            function buildSliders(){
+              var box=document.getElementById('gov-sliders');
+              OUT.forEach(function(o,i){
+                var f=document.createElement('div'); f.className='gov-field';
+                f.innerHTML='<div class="r"><label for="gov_o'+i+'">'+o.name+'</label><span class="v" id="gov_o'+i+'-v">'+cur[i]+'</span></div>'+
+                            '<input type="range" id="gov_o'+i+'" min="1" max="5" step="1" value="'+cur[i]+'">';
+                box.appendChild(f);
+                var inp=f.querySelector('input');
+                inp.addEventListener('input',function(){ cur[i]=+inp.value; paint(); });
+                sl[i]=inp;
+              });
+            }
+            function paint(){
+              var sum=cur.reduce(function(a,b){return a+b;},0);
+              var gaps=cur.map(function(c){return Math.max(0,tgt-c);});
+              var totGap=gaps.reduce(function(a,b){return a+b;},0);
+              var weakIdx=0; for(var i=1;i<5;i++){ if(cur[i]<cur[weakIdx]) weakIdx=i; }
+              var prog=Math.min(100,Math.round((sum/(tgt*5))*100));
+              OUT.forEach(function(o,i){ document.getElementById('gov_o'+i+'-v').textContent=cur[i]; });
+              document.getElementById('gov_tgt-v').textContent=tgt;
+              document.getElementById('gov-avg').textContent=(sum/5).toFixed(1)+' / 5';
+              document.getElementById('gov-gap').textContent=totGap+' level'+(totGap===1?'':'s');
+              document.getElementById('gov-weak').textContent=OUT[weakIdx].name;
+              document.getElementById('gov-prog').textContent=prog+'%';
+              var box=document.getElementById('gov-verdict'), pill=document.getElementById('gov-pill'),
+                  head=document.getElementById('gov-head'), coach=document.getElementById('gov-coach');
+              box.className='gov-verdict'; pill.className='gov-pill';
+              head.textContent=totGap===0?'At target':totGap+'-level gap';
+              if(totGap===0){
+                pill.classList.add('good'); box.classList.add('good'); pill.textContent='At target';
+                coach.textContent='Every outcome meets the target — now sustain it and keep measuring. Governance is never "done"; re-baseline as the business changes.';
+              } else if(totGap<=3){
+                pill.classList.add('warn'); box.classList.add('warn'); pill.textContent='Close the gaps';
+                coach.textContent='Widest gap is '+OUT[weakIdx].name.toLowerCase()+' ('+cur[weakIdx]+' vs '+tgt+'). Sequence the roadmap to the biggest gaps first, and present it to the board for funding.';
+              } else {
+                pill.classList.add('crit'); box.classList.add('crit'); pill.textContent='Immature';
+                coach.textContent='A '+totGap+'-level gap across the outcomes — start with '+OUT[weakIdx].name.toLowerCase()+', and shore up performance measurement early, since you can’t manage what you don’t measure.';
+              }
+              draw();
+            }
+            var cvs=document.getElementById('gov-canvas'), ctx=cvs.getContext('2d');
+            function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+            function rgba(hex,a){hex=(hex||'').replace('#','');
+              if(hex.length===3)hex=hex.split('').map(function(c){return c+c;}).join('');
+              var n=parseInt(hex,16); if(isNaN(n))return 'rgba(120,130,145,'+a+')';
+              return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+            function resize(){
+              var w=cvs.parentElement.clientWidth||360, dpr=window.devicePixelRatio||1;
+              var big=root.classList.contains('is-expanded');
+              var h=big?Math.max(400,Math.min(560,w*0.62)):Math.max(300,Math.min(380,w*0.7));
+              cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.height=h+'px';
+              ctx.setTransform(dpr,0,0,dpr,0,0); cvs._w=w; cvs._h=h;
+            }
+            function draw(){
+              var w=cvs._w||360, h=cvs._h||340; ctx.clearRect(0,0,w,h);
+              var cx=w/2, cy=h/2+6, R=Math.min(w,h)/2-46;
+              var cGold=css('--gold'), cAmber=css('--amber'), cMut=css('--text-muted'), cBor=css('--border'), cInk=css('--text-primary');
+              function pt(i,level){var ang=-Math.PI/2+i*2*Math.PI/5, r=R*level/5; return [cx+r*Math.cos(ang), cy+r*Math.sin(ang)];}
+              // rings
+              for(var ring=1;ring<=5;ring++){
+                ctx.strokeStyle=rgba(cBor,ring===5?1:0.7); ctx.lineWidth=1; ctx.beginPath();
+                for(var i=0;i<5;i++){var p=pt(i,ring); if(i===0)ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]);}
+                ctx.closePath(); ctx.stroke();
+              }
+              // axes + labels
+              ctx.fillStyle=cMut; ctx.font='9.5px Arial,sans-serif';
+              for(var a=0;a<5;a++){
+                var pe=pt(a,5); ctx.strokeStyle=rgba(cBor,0.7); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(pe[0],pe[1]); ctx.stroke();
+                var lp=pt(a,5.5), lines=OUT[a].short.split('\n');
+                ctx.textAlign=Math.abs(lp[0]-cx)<8?'center':(lp[0]<cx?'right':'left');
+                ctx.textBaseline=lp[1]<cy-4?'bottom':(lp[1]>cy+4?'top':'middle');
+                lines.forEach(function(ln,li){ ctx.fillText(ln, lp[0], lp[1]+(li-(lines.length-1)/2)*11); });
+              }
+              // target polygon (regular, dashed)
+              ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle=cAmber; ctx.lineWidth=1.8; ctx.beginPath();
+              for(var t=0;t<5;t++){var p=pt(t,tgt); if(t===0)ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]);}
+              ctx.closePath(); ctx.stroke(); ctx.restore();
+              // current polygon (filled)
+              ctx.fillStyle=rgba(cGold,0.22); ctx.strokeStyle=cGold; ctx.lineWidth=2.4; ctx.beginPath();
+              for(var c=0;c<5;c++){var p=pt(c,cur[c]); if(c===0)ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]);}
+              ctx.closePath(); ctx.fill(); ctx.stroke();
+              for(var d=0;d<5;d++){var p=pt(d,cur[d]); ctx.beginPath(); ctx.arc(p[0],p[1],3.5,0,Math.PI*2); ctx.fillStyle=cGold; ctx.fill();}
+            }
+            buildSliders();
+            document.getElementById('gov_tgt').addEventListener('input',function(){ tgt=+this.value; paint(); });
+            document.getElementById('gov-reset').addEventListener('click',function(){
+              cur=defCur.slice(); tgt=defTgt;
+              OUT.forEach(function(o,i){ sl[i].value=cur[i]; }); document.getElementById('gov_tgt').value=defTgt; paint();
+            });
+            window.addEventListener('resize',function(){resize();draw();});
+            new MutationObserver(function(){draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+            var expBtn=document.getElementById('gov-expand');
+            var backdrop=document.createElement('div'); backdrop.className='gov-backdrop';
+            var lastFocused=null;
+            function focusables(){return Array.prototype.filter.call(
+              root.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])'),
+              function(x){return !x.disabled && x.offsetParent!==null;});}
+            function setExpanded(o){
+              root.classList.toggle('is-expanded',o);
+              if(o){document.body.appendChild(backdrop); lastFocused=document.activeElement;
+                root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-label','Expanded interactive');}
+              else {if(backdrop.parentNode)backdrop.parentNode.removeChild(backdrop);
+                root.removeAttribute('role'); root.removeAttribute('aria-modal'); root.removeAttribute('aria-label');}
+              document.body.style.overflow=o?'hidden':'';
+              expBtn.innerHTML=o?'&#10005; Close':'&#10530; Expand';
+              expBtn.setAttribute('aria-expanded',o?'true':'false');
+              resize(); draw();
+              if(o){root.scrollTop=0; expBtn.focus();} else if(lastFocused&&lastFocused.focus){lastFocused.focus();}
+            }
+            expBtn.addEventListener('click',function(){setExpanded(!root.classList.contains('is-expanded'));});
+            backdrop.addEventListener('click',function(){setExpanded(false);});
+            document.addEventListener('keydown',function(e){
+              if(!root.classList.contains('is-expanded')) return;
+              if(e.key==='Escape'){setExpanded(false); return;}
+              if(e.key==='Tab'){var f=focusables(); if(!f.length)return; var fi=f[0],la=f[f.length-1];
+                if(!root.contains(document.activeElement)){e.preventDefault(); fi.focus();}
+                else if(e.shiftKey&&document.activeElement===fi){e.preventDefault(); la.focus();}
+                else if(!e.shiftKey&&document.activeElement===la){e.preventDefault(); fi.focus();}}
+            });
+            resize(); paint();
+          })();
+          </script>
+          <!-- ══ END INTERACTIVE ══ -->
         </article>
 
         <article class="content-section" id="s2">

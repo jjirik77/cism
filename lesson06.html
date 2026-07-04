@@ -216,6 +216,238 @@
             <li><strong>Post-incident activity:</strong> lessons learned and improvements close the loop.</li>
           </ul>
           <div class="tip"><span class="tip-label">&#128161; Exam Tip</span>Order is heavily tested: <strong>contain before you eradicate</strong>. Eradicating (or rebuilding) before containment lets the threat spread or tips off an attacker &mdash; and may destroy evidence you need.</div>
+
+          <!-- ══ INTERACTIVE: Breach cost vs. dwell time ══ -->
+          <h4>Try it &mdash; why speed is the whole game</h4>
+          <p>An incident&rsquo;s cost is driven by <strong>dwell time</strong> &mdash; how long the attacker operates before you detect and contain them. The longer they run, the more data leaves and the higher the bill, until they&rsquo;ve taken everything and the cost plateaus. Fast detection and containment is the single biggest lever a manager has.</p>
+
+          <style>
+            .dwell{font-family:Arial,Helvetica,sans-serif;margin:1rem 0 0.25rem;max-width:100%;}
+            .dwell *{box-sizing:border-box;}
+            .dwell-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:1.15rem;}
+            .dwell-topbar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding-bottom:0.7rem;margin-bottom:0.95rem;border-bottom:1px solid var(--border);}
+            .dwell-topbar-eyebrow{font-family:Arial,sans-serif;font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+            .dwell-expand{font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold);border-radius:5px;padding:0.42rem 0.85rem;cursor:pointer;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:0.4rem;}
+            .dwell-expand:hover{background:var(--gold);color:#fff;}
+            .dwell-expand:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .dwell-grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;}
+            .dwell-panel{flex:1 1 250px;min-width:0;}
+            .dwell-out{flex:1.4 1 300px;min-width:0;}
+            .dwell-panel h5,.dwell-out h5{font-family:Arial,sans-serif;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 0.15rem;}
+            .dwell-panel .plead{font-size:0.74rem;color:var(--text-muted);margin:0 0 0.85rem;}
+            .dwell-field{margin-bottom:0.95rem;}
+            .dwell-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.3rem;}
+            .dwell-field label{font-size:0.82rem;font-weight:700;color:var(--text-primary);}
+            .dwell-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.9rem;color:var(--gold);font-variant-numeric:tabular-nums;}
+            .dwell-field .h{font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;line-height:1.4;}
+            .dwell input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0;}
+            .dwell input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
+            .dwell input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
+            .dwell input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+            .dwell-reset{margin-top:0.35rem;font-family:Arial,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);border-radius:3px;padding:0.4rem 0.8rem;cursor:pointer;}
+            .dwell-reset:hover{color:var(--gold);border-color:var(--gold);}
+            .dwell-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.55rem;margin-bottom:0.85rem;}
+            .dwell-tile{background:var(--section-alt);border:1px solid var(--border);border-radius:5px;padding:0.65rem 0.7rem;min-width:0;}
+            .dwell-tile.acc{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .dwell-tile .k{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:700;}
+            .dwell-tile .val{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:0.2rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+            .dwell-verdict{display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;padding:0.75rem 0.85rem;border-radius:5px;border:1px solid var(--border);background:var(--section-alt);margin-bottom:0.85rem;}
+            .dwell-verdict.good{background:var(--correct-bg);border-color:var(--correct);}
+            .dwell-verdict.warn{background:var(--blue-pale);border-color:var(--blue-pale-border);}
+            .dwell-verdict.crit{background:var(--wrong-bg);border-color:var(--wrong);}
+            .dwell-pill{font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:20px;color:#fff;white-space:nowrap;}
+            .dwell-pill.good{background:var(--correct);}.dwell-pill.warn{background:var(--navy);}.dwell-pill.crit{background:var(--wrong);}
+            .dwell-head{font-family:'Arial Narrow',Arial,sans-serif;font-size:1.15rem;font-weight:900;font-variant-numeric:tabular-nums;}
+            .dwell-coach{font-size:0.8rem;color:var(--text-secondary);flex:1 1 190px;min-width:160px;line-height:1.5;}
+            .dwell-chart{background:var(--card-bg);border:1px solid var(--border);border-radius:5px;padding:0.85rem;}
+            .dwell-chart h6{font-family:Georgia,serif;font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 0.15rem;}
+            .dwell-chart .cap{font-size:0.72rem;color:var(--text-muted);margin:0 0 0.55rem;line-height:1.45;}
+            .dwell canvas{width:100%;height:auto;display:block;}
+            .dwell-legend{display:flex;gap:0.85rem;flex-wrap:wrap;margin-top:0.55rem;font-size:0.68rem;color:var(--text-muted);}
+            .dwell-legend span{display:inline-flex;align-items:center;gap:0.35rem;}
+            .dwell-sw{width:14px;height:3px;border-radius:2px;display:inline-block;}
+            .dwell-sw.dot{width:9px;height:9px;border-radius:50%;}
+            .dwell-backdrop{position:fixed;inset:0;background:rgba(6,25,31,0.6);z-index:9998;}
+            .dwell.is-expanded{position:fixed;inset:2.5vh 2.5vw;width:auto;max-width:none;z-index:9999;margin:0;overflow:auto;background:var(--body-bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+            .dwell.is-expanded .dwell-card{max-width:1180px;margin:0 auto;border:none;box-shadow:none;padding:0.25rem;}
+          </style>
+
+          <div class="dwell" id="dwell-root">
+            <div class="dwell-card">
+              <div class="dwell-topbar">
+                <span class="dwell-topbar-eyebrow">Interactive &middot; adjust &amp; explore</span>
+                <button type="button" class="dwell-expand" id="dwell-expand" aria-expanded="false" title="Open a larger, full-screen view">&#10530; Expand</button>
+              </div>
+              <div class="dwell-grid">
+                <div class="dwell-panel">
+                  <h5>The response</h5>
+                  <p class="plead">~50,000 records are exposed if the attacker runs long enough.</p>
+                  <div class="dwell-field">
+                    <div class="r"><label for="dwell_det">Time to detect</label><span class="v" id="dwell_det-v">48 h</span></div>
+                    <input type="range" id="dwell_det" min="1" max="336" step="1" value="48">
+                    <div class="h">From intrusion to the SOC realizing it (MTTD).</div>
+                  </div>
+                  <div class="dwell-field">
+                    <div class="r"><label for="dwell_con">Time to contain</label><span class="v" id="dwell_con-v">24 h</span></div>
+                    <input type="range" id="dwell_con" min="1" max="168" step="1" value="24">
+                    <div class="h">From detection to stopping the spread (MTTR).</div>
+                  </div>
+                  <div class="dwell-field">
+                    <div class="r"><label for="dwell_rate">Exfiltration rate</label><span class="v" id="dwell_rate-v">500 rec/h</span></div>
+                    <input type="range" id="dwell_rate" min="50" max="3000" step="50" value="500">
+                    <div class="h">How fast the attacker pulls data while active.</div>
+                  </div>
+                  <button type="button" class="dwell-reset" id="dwell-reset">Reset scenario</button>
+                </div>
+                <div class="dwell-out">
+                  <h5>The damage</h5>
+                  <div class="dwell-tiles">
+                    <div class="dwell-tile"><div class="k">Total dwell time</div><div class="val" id="dwell-total">&mdash;</div></div>
+                    <div class="dwell-tile"><div class="k">Records exposed</div><div class="val" id="dwell-rec">&mdash;</div></div>
+                    <div class="dwell-tile acc"><div class="k">Breach cost</div><div class="val" id="dwell-cost">&mdash;</div></div>
+                    <div class="dwell-tile"><div class="k">If caught in 2 hours</div><div class="val" id="dwell-fast">&mdash;</div></div>
+                  </div>
+                  <div class="dwell-verdict" id="dwell-verdict">
+                    <span class="dwell-pill" id="dwell-pill">&mdash;</span>
+                    <span class="dwell-head" id="dwell-head">&mdash;</span>
+                    <span class="dwell-coach" id="dwell-coach">Speed up detection and containment to cut the cost.</span>
+                  </div>
+                  <div class="dwell-chart">
+                    <h6>Breach cost vs. dwell time</h6>
+                    <p class="cap">Cost climbs as the attacker keeps exfiltrating &mdash; then flattens once they&rsquo;ve taken everything. Your operating point (&#9679;) is your current detect + contain time. Getting left on this curve is the whole job.</p>
+                    <canvas id="dwell-canvas" width="640" height="330" role="img" aria-label="Breach cost against total dwell time"></canvas>
+                    <div class="dwell-legend">
+                      <span><i class="dwell-sw" style="background:var(--gold)"></i> Breach cost</span>
+                      <span><i class="dwell-sw dot" style="background:var(--correct)"></i> Your operating point</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="in-practice"><span class="ip-label">&#128270; In practice</span><p>This is why <strong>preparation</strong> is the most important phase and why the manager invests in detection and a rehearsed response: the cost isn&rsquo;t set at the moment of the breach, it&rsquo;s set by how long the attacker <em>dwells</em>. And it&rsquo;s why the order is <strong>contain first</strong> &mdash; stopping the spread is what ends the climb up this curve.</p></div>
+
+          <script>
+          (function(){
+            var root=document.getElementById('dwell-root'); if(!root) return;
+            var MAXREC=50000, CPR=160, BASE=150000;
+            var ids=['det','con','rate'], el={};
+            ids.forEach(function(i){el[i]=document.getElementById('dwell_'+i);});
+            var defs={det:48,con:24,rate:500};
+            function read(){return {det:+el.det.value, con:+el.con.value, rate:+el.rate.value};}
+            function recordsAt(t,rate){return Math.min(MAXREC, rate*t);}
+            function costAt(t,rate){return BASE + recordsAt(t,rate)*CPR;}
+            function model(v){
+              var dwell=v.det+v.con, rec=recordsAt(dwell,v.rate), cost=costAt(dwell,v.rate);
+              return {dwell:dwell, rec:rec, cost:cost, fast:costAt(2,v.rate), full:rec>=MAXREC*0.98};
+            }
+            var usd=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+            function money(n){return usd.format(Math.round(n));}
+            function shortM(n){n=Math.round(n); if(n>=1e6)return '$'+(n/1e6).toFixed(1)+'M'; if(n>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+n;}
+            function fmtH(h){return h<24?h+' h':(h/24).toFixed(h%24===0?0:1)+' days';}
+            function paint(){
+              var v=read(), m=model(v);
+              document.getElementById('dwell_det-v').textContent=fmtH(v.det);
+              document.getElementById('dwell_con-v').textContent=fmtH(v.con);
+              document.getElementById('dwell_rate-v').textContent=v.rate.toLocaleString()+' rec/h';
+              document.getElementById('dwell-total').textContent=fmtH(m.dwell);
+              document.getElementById('dwell-rec').textContent=Math.round(m.rec).toLocaleString();
+              document.getElementById('dwell-cost').textContent=money(m.cost);
+              document.getElementById('dwell-fast').textContent=money(m.fast);
+              var box=document.getElementById('dwell-verdict'), pill=document.getElementById('dwell-pill'),
+                  head=document.getElementById('dwell-head'), coach=document.getElementById('dwell-coach');
+              box.className='dwell-verdict'; pill.className='dwell-pill';
+              head.textContent=money(m.cost);
+              if(m.full){
+                pill.classList.add('crit'); box.classList.add('crit'); pill.textContent='Full breach';
+                coach.textContent='Slow response let the attacker take everything — '+Math.round(m.rec).toLocaleString()+' records — so the cost has plateaued at the ceiling. Caught in 2 hours it would have been '+money(m.fast)+'. Detection speed is the lever.';
+              } else if(m.dwell<=12){
+                pill.classList.add('good'); box.classList.add('good'); pill.textContent='Contained fast';
+                coach.textContent='Fast detection and containment ('+fmtH(m.dwell)+' total) kept exposure to '+Math.round(m.rec).toLocaleString()+' records — a fraction of the ceiling. This is what preparation buys.';
+              } else {
+                pill.classList.add('warn'); box.classList.add('warn'); pill.textContent='Costly dwell';
+                coach.textContent=fmtH(m.dwell)+' of dwell exposed '+Math.round(m.rec).toLocaleString()+' records ('+money(m.cost)+'). Catching it in 2 hours would have cost '+money(m.fast)+' — cut detection and containment time.';
+              }
+              draw(v,m);
+            }
+            var cvs=document.getElementById('dwell-canvas'), ctx=cvs.getContext('2d');
+            function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+            function rgba(hex,a){hex=(hex||'').replace('#','');
+              if(hex.length===3)hex=hex.split('').map(function(c){return c+c;}).join('');
+              var n=parseInt(hex,16); if(isNaN(n))return 'rgba(120,130,145,'+a+')';
+              return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+            function resize(){
+              var w=cvs.parentElement.clientWidth||360, dpr=window.devicePixelRatio||1;
+              var big=root.classList.contains('is-expanded');
+              var h=big?Math.max(360,Math.min(560,w*0.5)):Math.max(240,Math.min(330,w*0.62));
+              cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.height=h+'px';
+              ctx.setTransform(dpr,0,0,dpr,0,0); cvs._w=w; cvs._h=h;
+            }
+            function draw(v,m){
+              if(!v){v=read(); m=model(v);}
+              var w=cvs._w||360, h=cvs._h||300; ctx.clearRect(0,0,w,h);
+              var padL=52,padR=14,padT=14,padB=40, x0=padL,x1=w-padR,y0=h-padB,y1=padT;
+              var cAcc=css('--gold'), cMut=css('--text-muted'), cBor=css('--border'), cGood=css('--correct'), cCard=css('--card-bg');
+              var tFull=MAXREC/v.rate;
+              var xmax=Math.max(m.dwell*1.35, tFull*1.25, 24);
+              var yMax=(BASE+MAXREC*CPR)*1.05;
+              function X(t){return x0+(t/xmax)*(x1-x0);}
+              function Y(c){return y0-(c/yMax)*(y0-y1);}
+              function shortH(t){return t<24?Math.round(t)+'h':Math.round(t/24)+'d';}
+              ctx.font='11px Arial,sans-serif'; ctx.textAlign='right'; ctx.textBaseline='middle';
+              for(var g=0;g<=4;g++){var cv=yMax*g/4, py=Y(cv);
+                ctx.strokeStyle=rgba(cBor,0.9); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0,py); ctx.lineTo(x1,py); ctx.stroke();
+                ctx.fillStyle=cMut; ctx.fillText(shortM(cv),x0-6,py);}
+              ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillStyle=cMut; ctx.font='9.5px Arial,sans-serif';
+              for(var j=0;j<=4;j++){var tv=xmax*j/4; ctx.fillText(shortH(tv),X(tv),y0+7);}
+              ctx.fillText('total dwell time (detect + contain) →',(x0+x1)/2,y0+22);
+              ctx.save(); ctx.translate(13,(y0+y1)/2); ctx.rotate(-Math.PI/2);
+              ctx.fillStyle=cMut; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font='11px Arial,sans-serif';
+              ctx.fillText('breach cost',0,0); ctx.restore();
+              ctx.strokeStyle=cAcc; ctx.lineWidth=2.6; ctx.beginPath();
+              for(var t=0;t<=xmax;t+=xmax/120){var px=X(t),py=Y(costAt(t,v.rate)); if(t===0)ctx.moveTo(px,py); else ctx.lineTo(px,py);}
+              ctx.stroke();
+              var opx=X(Math.min(m.dwell,xmax)), opy=Y(m.cost);
+              ctx.beginPath(); ctx.arc(opx,opy,6,0,Math.PI*2); ctx.fillStyle=cGood; ctx.fill();
+              ctx.lineWidth=2.5; ctx.strokeStyle=cCard; ctx.stroke();
+            }
+            ids.forEach(function(i){el[i].addEventListener('input',paint);});
+            document.getElementById('dwell-reset').addEventListener('click',function(){ ids.forEach(function(i){el[i].value=defs[i];}); paint();});
+            window.addEventListener('resize',function(){resize();draw();});
+            new MutationObserver(function(){draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+            var expBtn=document.getElementById('dwell-expand');
+            var backdrop=document.createElement('div'); backdrop.className='dwell-backdrop';
+            var lastFocused=null;
+            function focusables(){return Array.prototype.filter.call(
+              root.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])'),
+              function(x){return !x.disabled && x.offsetParent!==null;});}
+            function setExpanded(o){
+              root.classList.toggle('is-expanded',o);
+              if(o){document.body.appendChild(backdrop); lastFocused=document.activeElement;
+                root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-label','Expanded interactive');}
+              else {if(backdrop.parentNode)backdrop.parentNode.removeChild(backdrop);
+                root.removeAttribute('role'); root.removeAttribute('aria-modal'); root.removeAttribute('aria-label');}
+              document.body.style.overflow=o?'hidden':'';
+              expBtn.innerHTML=o?'&#10005; Close':'&#10530; Expand';
+              expBtn.setAttribute('aria-expanded',o?'true':'false');
+              resize(); draw();
+              if(o){root.scrollTop=0; expBtn.focus();} else if(lastFocused&&lastFocused.focus){lastFocused.focus();}
+            }
+            expBtn.addEventListener('click',function(){setExpanded(!root.classList.contains('is-expanded'));});
+            backdrop.addEventListener('click',function(){setExpanded(false);});
+            document.addEventListener('keydown',function(e){
+              if(!root.classList.contains('is-expanded')) return;
+              if(e.key==='Escape'){setExpanded(false); return;}
+              if(e.key==='Tab'){var f=focusables(); if(!f.length)return; var fi=f[0],la=f[f.length-1];
+                if(!root.contains(document.activeElement)){e.preventDefault(); fi.focus();}
+                else if(e.shiftKey&&document.activeElement===fi){e.preventDefault(); la.focus();}
+                else if(!e.shiftKey&&document.activeElement===la){e.preventDefault(); fi.focus();}}
+            });
+            resize(); paint();
+          })();
+          </script>
+          <!-- ══ END INTERACTIVE ══ -->
         </article>
 
         <article class="content-section" id="s4">
