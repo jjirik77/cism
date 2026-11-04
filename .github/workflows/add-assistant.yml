@@ -1,0 +1,71 @@
+# Adds the course assistant's chat button to every page in this site.
+# Runs whenever HTML files change, and can be run by hand from the Actions tab.
+name: Add course assistant to pages
+
+on:
+  push:
+    paths: ["**.html", "**.htm"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  add-assistant:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add the chat button line to pages that don't have it
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          ASSISTANT = "assistant.js"   # where assistant.js is, from the top of the repository
+          SKIP = []   # pages whose file name contains any of these are left alone
+          END = "</" + "script>"
+          changed = []
+          for p in sorted(pathlib.Path(".").rglob("*")):
+              if p.suffix.lower() not in (".html", ".htm") or not p.is_file():
+                  continue
+              if any(part.startswith(".") for part in p.parts):
+                  continue
+              if any(w.lower() in p.name.lower() for w in SKIP):
+                  continue
+              with open(p, encoding="utf-8", errors="surrogateescape", newline="") as f:
+                  s = f.read()
+              if "assistant.js" in s:
+                  continue
+              tag = '<script src="' + "../" * (len(p.parts) - 1) + ASSISTANT + '" defer>' + END
+              low = s.lower()
+              i = low.rfind("</body>")
+              if i >= 0:
+                  tail = low[i:]
+                  close = tail.find(END)
+                  if close >= 0 and "<script" not in tail[:close]:
+                      i = -1   # that </body> is inside a script's text
+              if i >= 0:
+                  s = s[:i] + tag + "\n" + s[i:]
+              else:
+                  j = low.rfind("</html>")
+                  if j >= 0 and END not in low[j:]:
+                      s = s[:j] + tag + "\n" + s[j:]
+                  else:
+                      s = s.rstrip("\n") + "\n" + tag + "\n"
+              with open(p, "w", encoding="utf-8", errors="surrogateescape", newline="") as f:
+                  f.write(s)
+              changed.append(str(p))
+          if changed:
+              print("Added the chat button line to:")
+              for c in changed:
+                  print("  " + c)
+          else:
+              print("Every page already has the chat button line.")
+          PY
+
+      - name: Save the changes
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Add course assistant to new pages"
+          git push
