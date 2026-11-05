@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B5 Phishing and Security Culture Analytics | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+.b5-filters { display: grid; gap: .7rem; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
+.b5-fg { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; margin: 0; padding: 0; border: 0; min-width: 0; }
+.b5-fg legend { float: left; font: 700 .7rem Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); width: 6.5rem; padding: .35rem 0 0; }
+.b5-fg button { border: 1px solid var(--border); background: var(--card-bg); color: var(--text-secondary); border-radius: 999px; padding: .3rem .7rem; font: 700 .74rem Arial, sans-serif; cursor: pointer; }
+.b5-fg button:hover { border-color: var(--gold); }
+.b5-fg button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.b5-fg button[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.b5-fg button.b5-all { background: transparent; border-style: dashed; color: var(--navy); }
+.b5-fg button.b5-all::before { content: none; }
+.b5-sel { font: .8rem/1.5 Arial, sans-serif; color: var(--text-secondary); margin: 0; }
+.b5-sel b { color: var(--text-primary); }
+.b5-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; padding: 1rem 1.2rem 0; }
+.b5-kpi { border: 1px solid var(--border); border-radius: 4px; padding: .7rem .85rem; background: #fff; }
+.b5-kpi .l { font: 700 .66rem Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+.b5-kpi .v { font: 900 1.6rem 'Arial Narrow', Arial, sans-serif; color: var(--text-primary); line-height: 1.2; }
+.b5-kpi .d { font: .76rem Arial, sans-serif; color: var(--text-secondary); }
+.b5-charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; padding: 1rem 1.2rem; }
+.b5-chart { border: 1px solid var(--border); border-radius: 4px; padding: .7rem .8rem .5rem; background: #fff; min-width: 0; }
+.b5-chart h4 { font: 700 .86rem Arial, sans-serif; color: var(--text-primary); margin: 0 0 .15rem; }
+.b5-chart p { font: .74rem/1.4 Arial, sans-serif; color: var(--text-muted); margin: 0 0 .3rem; }
+.b5-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.b5-legend { display: flex; flex-wrap: wrap; gap: .3rem .9rem; font: .74rem Arial, sans-serif; color: var(--text-secondary); margin-top: .3rem; }
+.b5-legend span::before { content: ''; display: inline-block; width: 16px; height: 0; border-top: 2px solid #1d5a6e; vertical-align: middle; margin-right: .35rem; }
+.b5-legend span.co::before { border-top: 2px dashed #7f979c; }
+.b5-brk { padding: 0 1.2rem 1rem; }
+.b5-brk-head { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; justify-content: space-between; margin-bottom: .5rem; }
+.b5-brk-head h4 { font: 700 .95rem Georgia, serif; color: var(--text-primary); margin: 0; }
+.b5-seg { display: inline-flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.b5-seg button { border: 0; border-right: 1px solid var(--border); background: var(--card-bg); padding: .35rem .75rem; font: 700 .72rem Arial, sans-serif; color: var(--text-secondary); cursor: pointer; }
+.b5-seg button:last-child { border-right: 0; }
+.b5-seg button[aria-pressed="true"] { background: var(--navy); color: #fff; }
+.b5-tip { position: fixed; pointer-events: none; background: var(--text-primary); color: #fff; font: .76rem/1.4 Arial, sans-serif; padding: .35rem .55rem; border-radius: 4px; z-index: 50; display: none; max-width: 240px; }
+.b5-table { padding: 0 1.2rem 1.2rem; }
+.b5-table summary { cursor: pointer; font: 700 .8rem Arial, sans-serif; color: var(--navy); }
+.b5-table td, .b5-table th { font-size: .8rem; }
+.b5-hit { fill: transparent; cursor: default; }
+@media (max-width: 900px) { .b5-charts { grid-template-columns: minmax(0, 1fr); } .b5-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .b5-fg legend { float: none; width: 100%; } }
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== Simulation data (seeded, deterministic) =====================
+   Kittredge Logistics, 1,190 employees, one phishing simulation per employee per month,
+   October 2025 to September 2026 (four quarters). Lure type is assigned at random each month.
+   Planted pattern: from January 2026 Operations moved to shared mobile handhelds, so Operations
+   click rates rise (sharply for QR-code lures) and its report rate falls, while every other
+   department clicks a little less and reports much more. AI-written lures have the highest
+   click rate overall, but it is not rising much. Keys are computed from the events below. */
+(function () {
+  var seed = 20260106;
+  function rnd() { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+  var depts = [
+    { id: 'OPS', name: 'Operations', n: 340, f: 1.0 }, { id: 'CS', name: 'Customer Service', n: 220, f: 1.1 },
+    { id: 'SAL', name: 'Sales', n: 170, f: 1.3 }, { id: 'ENG', name: 'Engineering', n: 150, f: 0.8 },
+    { id: 'FIN', name: 'Finance', n: 120, f: 0.9 }, { id: 'IT', name: 'Information Technology', n: 80, f: 0.6 },
+    { id: 'HR', name: 'Human Resources', n: 60, f: 1.0 }, { id: 'PRC', name: 'Procurement', n: 50, f: 1.0 }
+  ];
+  var roles = [{ id: 'STAFF', name: 'Staff', f: 1.0 }, { id: 'MGR', name: 'Manager', f: 0.9 }, { id: 'EXEC', name: 'Executive', f: 1.1 }];
+  var lures = [
+    { id: 'CRED', name: 'Credential login page', p: 0.10, ex: 'Your mailbox is almost full. Sign in to keep receiving mail.' },
+    { id: 'INV', name: 'Invoice or payment', p: 0.09, ex: 'Overdue invoice attached from a carrier, with a payment link.' },
+    { id: 'PKG', name: 'Package delivery', p: 0.11, ex: 'Delivery exception: confirm the address to release the shipment.' },
+    { id: 'QR', name: 'QR code', p: 0.08, ex: 'New shift-swap or parking portal: scan the QR code with your phone to register.' },
+    { id: 'AI', name: 'AI-written spear phish', p: 0.17, ex: 'A message written for the recipient’s role and recent work, with a document link.' },
+    { id: 'HRB', name: 'HR or benefits update', p: 0.12, ex: 'Open enrollment change: review your updated benefits summary.' }
+  ];
+  var quarters = ['Q4 2025', 'Q1 2026', 'Q2 2026', 'Q3 2026'];
+  var trendOther = [1, 0.88, 0.78, 0.70], opsOther = [1, 1.3, 1.6, 1.9], opsQR = [1, 3.5, 5.5, 7];
+  var repOther = [0.22, 0.30, 0.39, 0.47], repOps = [0.15, 0.08, 0.07, 0.07];
+
+  var emps = [];
+  depts.forEach(function (d, di) {
+    for (var i = 0; i < d.n; i++) {
+      var r = rnd(), ro = r < 0.03 ? 2 : (r < 0.15 ? 1 : 0);
+      emps.push({ d: di, r: ro, s: 0.5 + rnd() });
+    }
+  });
+  // Shuffle employee order so department blocks do not line up with IDs.
+  for (var i = emps.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)), t = emps[i]; emps[i] = emps[j]; emps[j] = t; }
+  emps.forEach(function (e, k) { e.id = 'E' + (10001 + k); });
+
+  var ev = []; // [emp index, quarter, lure index, clicked, reported]
+  for (var m = 0; m < 12; m++) {
+    var q = Math.floor(m / 3);
+    emps.forEach(function (e, k) {
+      var li = Math.floor(rnd() * lures.length), L = lures[li], ops = depts[e.d].id === 'OPS';
+      var mult = ops ? (L.id === 'QR' ? opsQR[q] : opsOther[q]) : trendOther[q];
+      var pc = Math.min(0.95, L.p * depts[e.d].f * roles[e.r].f * e.s * mult);
+      var c = rnd() < pc ? 1 : 0;
+      var pr = (ops ? repOps[q] : repOther[q]) + (e.r === 1 ? 0.05 : 0);
+      if (c) pr *= 0.5;
+      var rp = rnd() < pr ? 1 : 0;
+      ev.push([k, q, li, c, rp]);
+    });
+  }
+
+  // ---------- Aggregation used by the dashboard and the key ----------
+  function stats(F) { // F: {d:{idx:true}, r:{...}, l:{...}} ; missing group = all
+    var out = quarters.map(function () { return { n: 0, c: 0, rp: 0, rep: 0 }; }), per = quarters.map(function () { return {}; });
+    for (var i = 0; i < ev.length; i++) {
+      var x = ev[i], e = emps[x[0]];
+      if (F.d && !F.d[e.d]) continue; if (F.r && !F.r[e.r]) continue; if (F.l && !F.l[x[2]]) continue;
+      var o = out[x[1]]; o.n++; o.c += x[3]; o.rp += x[4];
+      if (x[3]) per[x[1]][x[0]] = (per[x[1]][x[0]] || 0) + 1;
+    }
+    out.forEach(function (o, qi) {
+      o.click = o.n ? 100 * o.c / o.n : 0; o.report = o.n ? 100 * o.rp / o.n : 0;
+      o.rep = Object.keys(per[qi]).filter(function (k) { return per[qi][k] >= 2; }).length;
+    });
+    return out;
+  }
+  function one(key, idx) { var F = {}; F[key] = {}; F[key][idx] = true; return F; }
+  function r1(x) { return Math.round(x * 10) / 10; }
+  var deptRise = depts.map(function (d, i) { var s = stats(one('d', i)); return { id: d.id, rise: s[3].click - s[0].click }; });
+  var lureRise = lures.map(function (l, i) { var s = stats(one('l', i)); return { id: l.id, rise: s[3].click - s[0].click }; });
+  var notOps = { d: {} }; depts.forEach(function (d, i) { if (d.id !== 'OPS') notOps.d[i] = true; });
+  var lureOpts = ['AI', 'INV', 'QR', 'CRED'];
+  var topLure = lureRise.slice().sort(function (a, b) { return b.rise - a.rise; })[0].id;
+
+  window.B5DATA = {
+    depts: depts, roles: roles, lures: lures, quarters: quarters, emps: emps, ev: ev, stats: stats, lureOpts: lureOpts,
+    answers: {
+      drivers: deptRise.filter(function (x) { return x.rise > 3; }).map(function (x) { return x.id; }),
+      lure: lureOpts.indexOf(topLure),
+      report: r1(stats(notOps)[3].report),
+      repeatOps: stats(one('d', 0))[3].rep
+    }
+  };
+})();
+</script>
+
+<script>
+window.LAB = {
+  id: 'B5',
+  title: 'Phishing and Security Culture Analytics',
+  accent: 'Security Culture',
+  domain: 'Domain 3 (33%)',
+  time: '45 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson05.html#s1',
+  lessonLabel: 'Lesson 5, Awareness, Training & Culture',
+  lede: 'Click rates have risen for three straight quarters despite training. Find out who and what is driving the trend, respond to a proposal to discipline repeat clickers, and measure the behavior the program actually wants.',
+  workbenchTitle: 'Culture dashboard',
+  ticket: {
+    number: 'SAP-2026-0088',
+    priority: 'Normal priority',
+    from: 'Tomás Elizondo, Chief Information Officer',
+    to: 'Information Security Manager and awareness program owner (you)',
+    subject: 'Phishing results are getting worse. What are we changing?',
+    due: 'Program change proposal for the November leadership meeting',
+    body: '<p>Kittredge Logistics has run monthly phishing simulations for all <b>1,190 employees</b> since October 2025, and everyone completed the refreshed annual training. Even so, the company click rate has gone up every quarter. The executive team has noticed.</p>' +
+      '<p>Garrett Vossberg, Director of Operations, has sent a proposal: any employee who clicks two simulations in a quarter receives a written warning, and a third click in a year triggers a termination review. He wants it company-wide from January. IT has separately suggested blocking all external links in email.</p>' +
+      '<p>Before we decide anything, I want to know what the data says. Which departments, roles, and lure types are driving the increase? Is anything getting better? Then give me a program change proposal I can take to leadership, with two behavior measures we can track. Keep it fair to employees and grounded in the numbers.</p>'
+  },
+  howTo: 'The <b>Culture dashboard</b> in step 2 holds every simulation result for four quarters. Use the filter chips to select departments, roles, and lure types; the KPI tiles and charts recompute live. The breakdown chart compares the first and last quarter by department, lure type, or role. The <b>Program context</b> tab has the timeline and training records, and the <b>Lure catalog</b> describes each lure. Every checklist item has a hint. After your first check you can reveal the manager’s debrief, but a revealed item earns no points. Team mode: one person filters by department, another by lure type, then compare.',
+  workIntro: 'Filter the dashboard to find the pattern, then record your conclusions in the checklist below. The data is fixed; only your view of it changes.',
+  checklist: [
+    { id: 'drivers', type: 'set', points: 15, short: 'Driver departments', title: 'Departments driving the rise',
+      task: 'Use the dashboard to compare each department’s click rate in Q4 2025 with Q3 2026 (all roles, all lure types). Enter the code of every department whose click rate rose by <b>more than 3 percentage points</b>.',
+      label: 'Department codes', placeholder: 'e.g., FIN, HR',
+      answer: function () { return B5DATA.answers.drivers; },
+      hint: 'Set the breakdown chart to <b>Department</b> with every role and lure selected. It shows the change in click rate from the first to the last quarter. A department with a high click rate is not necessarily a department whose rate is rising.',
+      debrief: '<p>Only Operations rose by more than 3 points; its click rate climbed steeply each quarter from January 2026. Every other department fell slightly, which is what the training was meant to do. Sales has a high click rate all year, but it is flat to falling. The company-wide rise comes from one department of 340 people, not from a general failure of the program.</p><p>A manager reads a rising average as a question, not a verdict. Segmenting the data by department shows where the change began and points the response at a specific population and a specific moment, January 2026, rather than at the whole workforce.</p>',
+      reviewNote: 'Segment a company-wide trend before acting on it; separate level from change.' },
+    { id: 'lure', type: 'choice', points: 10, short: 'Driver lure type', title: 'Lure type driving the rise',
+      task: 'Set the breakdown chart to <b>Lure type</b>. Which lure type’s click rate rose the most from Q4 2025 to Q3 2026?',
+      options: ['AI-written spear phish', 'Invoice or payment', 'QR code', 'Credential login page'],
+      answer: function () { return B5DATA.answers.lure; },
+      hint: 'Compare change, not level. Then select only Operations, and then every department except Operations, to see where that change happens.',
+      debrief: '<p>QR-code lures rose by far the most, and almost all of the rise is in Operations. Outside Operations, QR clicks fell like every other lure. AI-written spear phishing has the highest click rate across the year, which makes it a tempting answer, but its rate is fairly steady; it is a standing risk, not the cause of the trend.</p><p>The QR pattern matters because a QR code moves the click from a managed desktop to a phone, out of reach of link scanning and, at Kittredge, out of reach of the report button. That points to a working-conditions problem, not a knowledge problem, and it shapes the response.</p>',
+      reviewNote: 'Identify the lure whose rate changed, then locate where the change occurs.' },
+    { id: 'report', type: 'number', points: 10, short: 'Report rate outside Ops', title: 'Report rate outside Operations',
+      task: 'Select every department <b>except Operations</b>, with all roles and all lure types. What was the <b>report rate</b> in Q3 2026, as a percentage of simulations delivered? Round to one decimal place.',
+      answer: function () { return B5DATA.answers.report; }, tol: 0.15, unit: 'percent',
+      hint: 'Use the department chips: press <b>All</b>, then press Operations to remove it. Read the Q3 2026 report rate tile, or the data table under the charts.',
+      debrief: '<p>Outside Operations, the report rate more than doubled over the year, to the value shown on the tile, while the click rate edged down. Inside Operations the report rate fell after January to well under 10 percent. Reporting is the behavior that turns employees into sensors: one early report lets the security team pull a real phish from every mailbox.</p><p>This is the good news the click rate hides. Most of the workforce is doing what the program asks. The manager reports that improvement to leadership alongside the problem, because it shows the program works where conditions allow it to.</p>',
+      reviewNote: 'Report rate is a positive behavior measure; read it alongside click rate.' },
+    { id: 'repeat', type: 'number', points: 10, short: 'Repeat clickers in Ops', title: 'Repeat clickers in Operations',
+      task: 'A repeat clicker clicked two or more simulations in the same quarter. Select only <b>Operations</b>, with all roles and all lure types. How many repeat clickers did Operations have in Q3 2026?',
+      answer: function () { return B5DATA.answers.repeatOps; }, unit: 'employees',
+      hint: 'Press <b>Clear</b> in the department row, then press OPS. Read the repeat clickers chart or tile. Then compare it with the company total to see how concentrated repeat clicking is.',
+      debrief: '<p>Operations accounts for most of the company’s repeat clickers in Q3 2026, although it is less than a third of the workforce, and its count rose every quarter after January. These are the employees the discipline proposal would warn first and review for termination.</p><p>Concentration in one department after one operational change is a sign of a system cause. When the same people start failing at the same time in the same place, the manager looks at what changed around them before concluding that they changed.</p>',
+      reviewNote: 'Concentrated repeat clicking after a change points to a system cause.' },
+    { id: 'cause', type: 'choice', points: 10, short: 'Most likely cause', title: 'Most likely cause of the pattern',
+      task: 'Read the <b>Program context</b> tab. Which explanation best fits the data?',
+      options: ['Shared handhelds since January put links and QR codes on phones with no report button', 'Operations staff skipped the annual training, so they never learned the warning signs', 'AI-written lures have become too convincing for any employee to detect reliably now', 'The simulation vendor made every lure type harder in 2026 without telling Kittredge'],
+      answer: 0,
+      hint: 'Check the training completion records by department, the date of the handheld rollout, and which lure types and which departments changed. An explanation must fit all of them.',
+      debrief: '<p>Operations completed training at the same rate as everyone else, so missed training does not explain it. If AI-written lures or vendor difficulty were the cause, every department would rise. The rise begins in January 2026, in Operations only, sharpest for QR codes, and reporting falls at the same time. That fits the move to shared handhelds: QR codes are scanned on phones outside URL protection, and the mobile mail app has no report button.</p><p>The manager fixes the environment first: put a report option on the handhelds, extend link protection to mobile, and coach on QR lures in the context where people meet them. Behavior follows the path of least resistance, and right now the safe path is missing.</p>',
+      reviewNote: 'Test explanations against every data point, including training records and timing.' },
+    { id: 'kpi', type: 'choice', points: 15, short: 'Best behavior KPI', title: 'Best behavior KPI for the program',
+      task: 'Leadership wants one headline measure of whether the awareness program is changing behavior. Which is best?',
+      options: ['Annual training completion rate across all departments', 'Click rate on the hardest lure type in each quarter', 'Number of employees disciplined for repeat clicks', 'Report rate, with the median time to the first report'],
+      answer: 3,
+      hint: 'Separate activity measures (what the program does) from behavior measures (what employees do), and ask which measure improves when people act as a defense.',
+      debrief: '<p>Report rate, paired with time to first report, measures the behavior the program wants: employees recognizing and escalating a threat quickly. It rises as culture improves, it maps directly to reduced dwell time for real phishing, and it does not reward hiding mistakes. Training completion is an activity measure; it was 95 percent while clicks rose. Click rate on the hardest lure swings with lure design, and discipline counts measure punishment, not safety.</p><p>CISM frames metrics by the decision they support. A behavior KPI tells leadership whether the investment is changing outcomes. Click rate still has a place as a supporting indicator by segment, but a program judged only on clicks learns to make simulations easier.</p>',
+      reviewNote: 'Choose behavior KPIs over activity counts; pair report rate with speed.' },
+    { id: 'discipline', type: 'choice', points: 15, short: 'Discipline proposal', title: 'Response to the discipline proposal',
+      task: 'How should you respond to the Director of Operations’ proposal for written warnings and termination reviews?',
+      options: ['Adopt it for Operations only, since that is where repeat clickers are concentrated', 'Decline it: fix the handheld gap, coach repeat clickers, and keep sanctions for willful misconduct', 'Adopt it company-wide from January, so the rule is applied consistently to every employee', 'Pause all simulations in Operations until the handheld issue is resolved, then reassess'],
+      answer: 1,
+      hint: 'A just culture separates honest error, at-risk behavior, and reckless or willful conduct. Ask which of these a simulation click is, and what the proposal would do to reporting.',
+      debrief: '<p>A simulation click is usually an honest error under real working conditions, and here the conditions changed for one department. Punishing it would penalize Operations staff for a tooling gap the company created, and it would teach everyone to hide mistakes. Reporting, the behavior that is improving, depends on people feeling safe to say “I clicked.” Pausing simulations removes the measurement, not the problem.</p><p>The just-culture response is to decline the proposal, fix the system (mobile report button, mobile link protection), and give repeat clickers private, supportive coaching. Sanctions stay available for willful policy violations, such as ignoring a direct instruction or disabling a control. The manager makes that case to the director in person and invites Operations to help design the fix.</p>',
+      reviewNote: 'Apply just culture: fix systems and coach errors; reserve sanctions for willful conduct.' },
+    { id: 'proposal', type: 'text', points: 15, short: 'Program change proposal', title: 'Write the program change proposal', reportTitle: 'Awareness program change proposal',
+      task: 'Write a one-page proposal for the CIO and leadership. State the finding with numbers from the dashboard, the program changes you propose (including your response to the discipline proposal), and <b>two behavior KPIs</b> with a baseline, a target, and an owner for each.',
+      fields: [
+        { key: 'finding', label: 'Finding', min: 60, placeholder: 'What drives the trend, what is improving, and the likely cause, with numbers.' },
+        { key: 'changes', label: 'Program changes', min: 80, placeholder: 'Targeted interventions, owners, timing, and the response to the discipline proposal.' },
+        { key: 'kpis', label: 'Two behavior KPIs', min: 60, placeholder: 'For each KPI: definition, baseline, target, owner, and how often it is reported.' }
+      ],
+      hint: 'Lead with the segmented finding, not the company average. Pair each change with the cause it addresses. A behavior KPI measures what employees do, such as reporting, not what the program does, such as training completion.',
+      debrief: '<p><b>Model proposal.</b> <b>Finding:</b> The company click rate rose each quarter, but the rise comes from one department. Operations’ click rate climbed sharply after the January 2026 move to shared handhelds, driven by QR-code lures, and its report rate fell below 10 percent; it now has most of the company’s repeat clickers. Outside Operations, clicks fell and reporting more than doubled. Training completion was 95 percent or higher everywhere, so this is a tooling and context problem, not a training gap. <b>Changes:</b> IT to add a one-tap report option and mobile link and QR protection to the handhelds by January 31. Awareness team to run short, shift-start micro-lessons on QR lures for Operations, co-designed with Operations supervisors. Repeat clickers get private coaching, not warnings. Decline the discipline proposal; sanctions remain for willful policy violations. Decline blanket link blocking, which would stop dispatch work. <b>KPIs:</b> (1) Report rate: Operations from its Q3 2026 baseline to 30 percent by Q2 2027, company to 55 percent; owner, awareness program lead; reported quarterly. (2) Median time to first report on each simulation and real phish: target under 10 minutes; owner, security operations lead; reported monthly. Click rate by segment remains a supporting indicator.</p><p>Your wording will differ. Check that the finding is segmented, that each change answers a cause, and that both KPIs measure employee behavior with a baseline, target, and owner.</p>',
+      reviewNote: 'Ground the proposal in segmented data and track behavior KPIs with owners and targets.' }
+  ],
+
+  /* ===================== Workbench: culture analytics dashboard ===================== */
+  workbench: function (root, api) {
+    var esc = api.esc, D = window.B5DATA, NS = 'http://www.w3.org/2000/svg';
+    var F = api.note('f') || { d: D.depts.map(function () { return true; }), r: D.roles.map(function () { return true; }), l: D.lures.map(function () { return true; }) };
+    var brk = api.note('brk') || 'd';
+    var company = D.stats({});
+    var TABS = [['dash', 'Dashboard'], ['ctx', 'Program context'], ['cat', 'Lure catalog']];
+    function chips(key, list, label) {
+      return '<fieldset class="b5-fg" data-g="' + key + '"><legend>' + label + '</legend><button type="button" class="b5-all" data-all="' + key + '">All</button><button type="button" class="b5-all" data-none="' + key + '">Clear</button>' +
+        list.map(function (x, i) { return '<button type="button" data-k="' + key + '" data-i="' + i + '" aria-pressed="' + !!F[key][i] + '">' + esc(key === 'd' ? x.id : x.name) + '</button>'; }).join('') + '</fieldset>';
+    }
+    root.innerHTML = '<div class="lb-tool"><div class="lb-tabs" role="tablist" aria-label="Culture analytics">' +
+      TABS.map(function (t, i) { return '<button role="tab" id="b5t-' + t[0] + '" aria-controls="b5p-' + t[0] + '" aria-selected="' + (i === 0) + '"' + (i ? ' tabindex="-1"' : '') + '>' + t[1] + '</button>'; }).join('') + '</div>' +
+      '<div role="tabpanel" id="b5p-dash" aria-labelledby="b5t-dash" tabindex="0">' +
+        '<div class="b5-filters">' + chips('d', D.depts, 'Department') + chips('r', D.roles, 'Role') + chips('l', D.lures, 'Lure type') + '<p class="b5-sel" id="b5-sel" aria-live="polite"></p></div>' +
+        '<div class="b5-kpis" id="b5-kpis"></div>' +
+        '<div class="b5-charts"><div class="b5-chart"><h4>Click rate</h4><p>Percent of simulations clicked, by quarter</p><div id="b5-c1"></div><div class="b5-legend"><span>Selection</span><span class="co">Company</span></div></div>' +
+          '<div class="b5-chart"><h4>Report rate</h4><p>Percent of simulations reported, by quarter</p><div id="b5-c2"></div><div class="b5-legend"><span>Selection</span><span class="co">Company</span></div></div>' +
+          '<div class="b5-chart"><h4>Repeat clickers</h4><p>Employees in the selection with two or more clicks in the quarter</p><div id="b5-c3"></div></div></div>' +
+        '<div class="b5-brk"><div class="b5-brk-head"><h4 id="b5-brk-h">Change in click rate, Q4 2025 to Q3 2026</h4><div class="b5-seg" role="group" aria-label="Break down by">' +
+          [['d', 'Department'], ['l', 'Lure type'], ['r', 'Role']].map(function (b) { return '<button type="button" data-brk="' + b[0] + '" aria-pressed="' + (brk === b[0]) + '">' + b[1] + '</button>'; }).join('') + '</div></div>' +
+          '<div class="b5-chart"><p id="b5-brk-note"></p><div id="b5-c4"></div></div></div>' +
+        '<details class="b5-table"><summary>Show the selection as a data table</summary><div id="b5-tbl" style="margin-top:.6rem"></div></details>' +
+      '</div>' +
+      '<div class="lb-panel" role="tabpanel" id="b5p-ctx" aria-labelledby="b5t-ctx" tabindex="0" hidden>' + CONTEXT() + '</div>' +
+      '<div class="lb-panel" role="tabpanel" id="b5p-cat" aria-labelledby="b5t-cat" tabindex="0" hidden>' + CATALOG() + '</div></div>' +
+      '<div class="b5-tip" id="b5-tip" role="presentation"></div>';
+
+    var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+    function sel(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { sel(t); });
+      t.addEventListener('keydown', function (e) {
+        var n = null;
+        if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+        if (e.key === 'ArrowLeft') n = tabs[(i + tabs.length - 1) % tabs.length];
+        if (e.key === 'Home') n = tabs[0];
+        if (e.key === 'End') n = tabs[tabs.length - 1];
+        if (n) { e.preventDefault(); sel(n); n.focus(); }
+      });
+    });
+    if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) sel(tt); }
+
+    root.querySelectorAll('[data-k]').forEach(function (b) { b.addEventListener('click', function () {
+      var k = b.dataset.k, i = +b.dataset.i;
+      F[k][i] = !F[k][i]; save(); paint();
+    }); });
+    root.querySelectorAll('[data-all]').forEach(function (b) { b.addEventListener('click', function () { var k = b.dataset.all; F[k] = F[k].map(function () { return true; }); save(); paint(); }); });
+    root.querySelectorAll('[data-none]').forEach(function (b) { b.addEventListener('click', function () { var k = b.dataset.none; F[k] = F[k].map(function () { return false; }); save(); paint(); }); });
+    root.querySelectorAll('[data-brk]').forEach(function (b) { b.addEventListener('click', function () { brk = b.dataset.brk; api.note('brk', brk); paint(); }); });
+    function save() { api.note('f', F); }
+    function toF(skip) { var o = {}; ['d', 'r', 'l'].forEach(function (k) { if (k === skip) return; if (F[k].every(Boolean)) return; o[k] = {}; F[k].forEach(function (v, i) { if (v) o[k][i] = true; }); }); return o; }
+    function pct(x) { return x.toFixed(1) + '%'; }
+    function pp(x) { return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1) + ' pp'; }
+
+    // ---------- tooltip ----------
+    var tip = document.getElementById('b5-tip');
+    function hover(el, text) {
+      el.addEventListener('mousemove', function (e) { tip.textContent = text; tip.style.display = 'block'; tip.style.left = (e.clientX + 12) + 'px'; tip.style.top = (e.clientY + 12) + 'px'; });
+      el.addEventListener('mouseleave', function () { tip.style.display = 'none'; });
+    }
+    function mk(tag, attrs, parent) { var el = document.createElementNS(NS, tag); for (var k in attrs) el.setAttribute(k, attrs[k]); if (parent) parent.appendChild(el); return el; }
+    function txt(parent, x, y, s, attrs) { var t = mk('text', Object.assign({ x: x, y: y, 'font-size': 10, 'font-family': 'Arial, sans-serif', fill: '#5c7d83' }, attrs || {}), parent); t.textContent = s; return t; }
+    function niceMax(v) { var steps = [5, 10, 15, 20, 25, 30, 40, 50, 60, 80, 100, 150, 200, 300, 400]; for (var i = 0; i < steps.length; i++) if (v <= steps[i]) return steps[i]; return Math.ceil(v / 100) * 100; }
+
+    function lineChart(host, sel, co, key, label) {
+      host.innerHTML = '';
+      var W = 300, H = 170, L = 34, R = 14, T = 12, B = 26, vmax = niceMax(Math.max.apply(null, sel.concat(co)) * 1.1 || 1);
+      var svg = mk('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': label + ' by quarter for the selection: ' + sel.map(function (v, i) { return D.quarters[i] + ' ' + pct(v); }).join(', ') }, host);
+      function X(i) { return L + i * (W - L - R) / 3; } function Y(v) { return T + (H - T - B) * (1 - v / vmax); }
+      [0, .5, 1].forEach(function (f) { var v = vmax * f; mk('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: '#e4eef0', 'stroke-width': 1 }, svg); txt(svg, L - 5, Y(v) + 3, v + '%', { 'text-anchor': 'end' }); });
+      D.quarters.forEach(function (q, i) { txt(svg, X(i), H - 8, q, { 'text-anchor': 'middle' }); });
+      mk('polyline', { points: co.map(function (v, i) { return X(i) + ',' + Y(v); }).join(' '), fill: 'none', stroke: '#7f979c', 'stroke-width': 2, 'stroke-dasharray': '5 4' }, svg);
+      mk('polyline', { points: sel.map(function (v, i) { return X(i) + ',' + Y(v); }).join(' '), fill: 'none', stroke: '#1d5a6e', 'stroke-width': 2 }, svg);
+      sel.forEach(function (v, i) { mk('circle', { cx: X(i), cy: Y(v), r: 4, fill: '#1d5a6e', stroke: '#fff', 'stroke-width': 2 }, svg); });
+      txt(svg, X(3) + 4, Y(sel[3]) - 7, pct(sel[3]), { 'text-anchor': 'end', fill: '#0b2530', 'font-weight': 700 });
+      D.quarters.forEach(function (q, i) { var hit = mk('rect', { x: X(i) - 25, y: T, width: 50, height: H - T - B, class: 'b5-hit' }, svg); hover(hit, q + ': selection ' + pct(sel[i]) + ', company ' + pct(co[i])); });
+    }
+    function barChart(host, vals) {
+      host.innerHTML = '';
+      var W = 300, H = 170, L = 34, R = 14, T = 12, B = 26, vmax = niceMax(Math.max.apply(null, vals) * 1.15 || 1), bw = 34;
+      var svg = mk('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Repeat clickers by quarter: ' + vals.map(function (v, i) { return D.quarters[i] + ' ' + v; }).join(', ') }, host);
+      function X(i) { return L + (i + 0.5) * (W - L - R) / 4; } function Y(v) { return T + (H - T - B) * (1 - v / vmax); }
+      [0, .5, 1].forEach(function (f) { var v = Math.round(vmax * f); mk('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: '#e4eef0', 'stroke-width': 1 }, svg); txt(svg, L - 5, Y(v) + 3, v, { 'text-anchor': 'end' }); });
+      vals.forEach(function (v, i) {
+        var y = Y(v), h = Y(0) - y;
+        mk('path', { d: 'M' + (X(i) - bw / 2) + ',' + Y(0) + 'V' + (y + Math.min(4, h)) + 'q0,-4 4,-4H' + (X(i) + bw / 2 - 4) + 'q4,0 4,4V' + Y(0) + 'Z', fill: '#1d5a6e' }, svg);
+        txt(svg, X(i), y - 4, v, { 'text-anchor': 'middle', fill: '#0b2530', 'font-weight': 700 });
+        txt(svg, X(i), H - 8, D.quarters[i], { 'text-anchor': 'middle' });
+        hover(mk('rect', { x: X(i) - 30, y: T, width: 60, height: H - T - B, class: 'b5-hit' }, svg), D.quarters[i] + ': ' + v + ' repeat clickers');
+      });
+    }
+    function breakdown(host) {
+      host.innerHTML = '';
+      var list = brk === 'd' ? D.depts : (brk === 'l' ? D.lures : D.roles), base = toF(brk);
+      var rows = list.map(function (x, i) { var f = Object.assign({}, base); f[brk] = {}; f[brk][i] = true; var s = D.stats(f); return { name: brk === 'd' ? x.name + ' (' + x.id + ')' : x.name, a: s[0].click, b: s[3].click, n: s[3].n }; });
+      var W = 640, rowH = 26, L = 200, R = 70, T = 8, H = T + rows.length * rowH + 20;
+      var ext = Math.max(5, Math.max.apply(null, rows.map(function (r) { return Math.abs(r.b - r.a); })));
+      ext = niceMax(ext);
+      var mid = L + (W - L - R) * (ext / (2 * ext));
+      function X(v) { return L + (W - L - R) * ((v + ext) / (2 * ext)); }
+      var svg = mk('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Change in click rate by ' + ({ d: 'department', l: 'lure type', r: 'role' })[brk] + ': ' + rows.map(function (r) { return r.name + ' ' + pp(r.b - r.a); }).join(', ') }, host);
+      [-ext, 0, ext].forEach(function (v) { mk('line', { x1: X(v), x2: X(v), y1: T, y2: H - 18, stroke: v ? '#e4eef0' : '#5c7d83', 'stroke-width': 1 }, svg); txt(svg, X(v), H - 5, (v > 0 ? '+' : '') + v + ' pp', { 'text-anchor': 'middle' }); });
+      rows.forEach(function (r, i) {
+        var y = T + i * rowH + 5, d = r.b - r.a, x0 = Math.min(X(0), X(d)), w = Math.max(1, Math.abs(X(d) - X(0)));
+        txt(svg, L - 8, y + 12, r.name, { 'text-anchor': 'end', fill: '#0b2530', 'font-size': 11 });
+        mk('rect', { x: x0, y: y, width: w, height: 16, rx: 3, fill: d > 0 ? '#f59e0b' : '#14b8a6' }, svg);
+        txt(svg, d > 0 ? X(d) + 5 : X(0) + 5, y + 12, pp(d), { fill: '#0b2530', 'font-weight': 700, 'font-size': 11 });
+        hover(mk('rect', { x: L, y: y - 4, width: W - L - R + 60, height: rowH, class: 'b5-hit' }, svg), r.name + ': ' + pct(r.a) + ' in Q4 2025, ' + pct(r.b) + ' in Q3 2026 (' + pp(d) + ')');
+      });
+      document.getElementById('b5-brk-note').textContent = 'Bars to the right (amber) are increases; bars to the left (teal) are decreases. Values are labeled. Other filters still apply; the ' + ({ d: 'department', l: 'lure type', r: 'role' })[brk] + ' filter is ignored here.';
+    }
+
+    function paint() {
+      ['d', 'r', 'l'].forEach(function (k) { root.querySelectorAll('[data-k="' + k + '"]').forEach(function (b) { b.setAttribute('aria-pressed', !!F[k][+b.dataset.i]); }); });
+      root.querySelectorAll('[data-brk]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.brk === brk); });
+      var s = D.stats(toF());
+      function names(k, list) { if (!F[k].some(Boolean)) return 'none (select at least one)'; return F[k].every(Boolean) ? 'all' : list.filter(function (x, i) { return F[k][i]; }).map(function (x) { return k === 'd' ? x.id : x.name; }).join(', '); }
+      document.getElementById('b5-sel').innerHTML = 'Selection: departments <b>' + esc(names('d', D.depts)) + '</b>; roles <b>' + esc(names('r', D.roles)) + '</b>; lures <b>' + esc(names('l', D.lures)) + '</b>.';
+      var a = s[0], z = s[3];
+      document.getElementById('b5-kpis').innerHTML = [
+        ['Simulations, Q3 2026', z.n.toLocaleString(), z.n === 0 ? '' : 'delivered to the selection'],
+        ['Click rate, Q3 2026', pct(z.click), pp(z.click - a.click) + ' since Q4 2025'],
+        ['Report rate, Q3 2026', pct(z.report), pp(z.report - a.report) + ' since Q4 2025'],
+        ['Repeat clickers, Q3 2026', String(z.rep), (z.rep - a.rep >= 0 ? '+' : '−') + Math.abs(z.rep - a.rep) + ' since Q4 2025']
+      ].map(function (k) { return '<div class="b5-kpi"><div class="l">' + k[0] + '</div><div class="v">' + k[1] + '</div><div class="d">' + k[2] + '</div></div>'; }).join('');
+      lineChart(document.getElementById('b5-c1'), s.map(function (o) { return o.click; }), company.map(function (o) { return o.click; }), 'click', 'Click rate');
+      lineChart(document.getElementById('b5-c2'), s.map(function (o) { return o.report; }), company.map(function (o) { return o.report; }), 'report', 'Report rate');
+      barChart(document.getElementById('b5-c3'), s.map(function (o) { return o.rep; }));
+      breakdown(document.getElementById('b5-c4'));
+      document.getElementById('b5-tbl').innerHTML = '<div class="table-wrap"><table class="data"><thead><tr><th scope="col">Quarter</th><th scope="col" class="num">Delivered</th><th scope="col" class="num">Clicked</th><th scope="col" class="num">Click rate</th><th scope="col" class="num">Reported</th><th scope="col" class="num">Report rate</th><th scope="col" class="num">Repeat clickers</th></tr></thead><tbody>' +
+        s.map(function (o, i) { return '<tr><td>' + D.quarters[i] + '</td><td class="num">' + o.n + '</td><td class="num">' + o.c + '</td><td class="num">' + pct(o.click) + '</td><td class="num">' + o.rp + '</td><td class="num">' + pct(o.report) + '</td><td class="num">' + o.rep + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    }
+    paint();
+
+    function CONTEXT() {
+      var comp = [['OPS', 96, 95], ['CS', 97, 96], ['SAL', 94, 95], ['ENG', 98, 97], ['FIN', 99, 98], ['IT', 99, 99], ['HR', 100, 98], ['PRC', 96, 97]];
+      return '<div class="lb-doc"><h4>Program timeline</h4><ul>' +
+        '<li><b>October 2025.</b> Refreshed annual awareness training launched (40 minutes, online). Monthly simulations start for every employee; each month the platform assigns one of six lure types at random.</li>' +
+        '<li><b>January 2026.</b> Operations moves warehouse and dispatch staff from shared desktop kiosks to <b>shared Android handhelds</b>. Email is read in the mobile mail app. The Report Phish add-in is not available in the mobile app, and mobile browsing is not covered by the secure web gateway.</li>' +
+        '<li><b>April 2026.</b> Company click rate reported to the executive team for the second quarter in a row.</li>' +
+        '<li><b>October 2026.</b> Director of Operations submits the repeat-clicker discipline proposal. IT suggests blocking external links in email.</li></ul></div>' +
+        '<div class="lb-doc"><h4>Annual training completion by department (percent)</h4><div class="table-wrap"><table class="data"><thead><tr><th scope="col">Department</th><th scope="col" class="num">FY2025 cycle</th><th scope="col" class="num">FY2026 cycle (refreshed)</th></tr></thead><tbody>' +
+        comp.map(function (c) { var d = D.depts.filter(function (x) { return x.id === c[0]; })[0]; return '<tr><td>' + esc(d.name) + ' (' + c[0] + ')</td><td class="num">' + c[1] + '</td><td class="num">' + c[2] + '</td></tr>'; }).join('') + '</tbody></table></div></div>' +
+        '<div class="lb-doc"><h4>Department headcount</h4><ul>' + D.depts.map(function (d) { return '<li>' + esc(d.name) + ' (' + d.id + '): ' + d.n + '</li>'; }).join('') + '</ul></div>' +
+        '<div class="lb-doc"><h4>Definitions</h4><ul><li><b>Click rate:</b> simulations in which the link was clicked or the QR code was scanned, divided by simulations delivered.</li><li><b>Report rate:</b> simulations reported through Report Phish or the service desk, divided by simulations delivered.</li><li><b>Repeat clicker:</b> an employee who clicked two or more simulations in the same quarter (counted within the selected lure types).</li></ul></div>';
+    }
+    function CATALOG() {
+      return '<p class="lead-p">Each lure type is used at the same difficulty level all year. The platform assigns lure types at random, so each type reaches about one sixth of employees each month.</p><div class="table-wrap"><table class="data"><thead><tr><th scope="col">Lure type</th><th scope="col">Example</th></tr></thead><tbody>' +
+        D.lures.map(function (l) { return '<tr><td><b>' + esc(l.name) + '</b></td><td>' + esc(l.ex) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    }
+  }
+};
+
+/* Independent re-derivation of the key from the event data. */
+window.LAB_SELFTEST = function () {
+  var D = window.B5DATA, log = [], P = [];
+  var nd = D.depts.length, nl = D.lures.length;
+  function z() { return [0, 0, 0, 0]; }
+  var dn = [], dc = [], ln = [], lc = [], tn = z(), tc = z(), on = z(), orp = z(), xn = z(), xrp = z(), clicks = {};
+  for (var i = 0; i < nd; i++) { dn.push(z()); dc.push(z()); }
+  for (i = 0; i < nl; i++) { ln.push(z()); lc.push(z()); }
+  D.ev.forEach(function (x) {
+    var e = D.emps[x[0]], q = x[1];
+    dn[e.d][q]++; dc[e.d][q] += x[3]; ln[x[2]][q]++; lc[x[2]][q] += x[3]; tn[q]++; tc[q] += x[3];
+    if (D.depts[e.d].id === 'OPS') { on[q]++; orp[q] += x[4]; if (q === 3 && x[3]) clicks[x[0]] = (clicks[x[0]] || 0) + 1; }
+    else { xn[q]++; xrp[q] += x[4]; }
+  });
+  var rise = dn.map(function (n, i) { return 100 * (dc[i][3] / n[3] - dc[i][0] / n[0]); });
+  log.push('deptRise=' + D.depts.map(function (d, i) { return d.id + ':' + rise[i].toFixed(1); }).join(' '));
+  var drivers = D.depts.filter(function (d, i) { return rise[i] > 3; }).map(function (d) { return d.id; });
+  if (drivers.join(',') !== D.answers.drivers.join(',') || drivers.join(',') !== 'OPS') P.push('driver key mismatch');
+  rise.forEach(function (r, i) { if (D.depts[i].id !== 'OPS' && r > 1.5) P.push(D.depts[i].id + ' rise too close to the 3 pp threshold'); });
+  if (rise[0] < 8) P.push('OPS rise not pronounced');
+  var lr = ln.map(function (n, i) { return 100 * (lc[i][3] / n[3] - lc[i][0] / n[0]); });
+  var order = D.lures.map(function (l, i) { return { id: l.id, r: lr[i] }; }).sort(function (a, b) { return b.r - a.r; });
+  log.push('lureRise=' + order.map(function (o) { return o.id + ':' + o.r.toFixed(1); }).join(' '));
+  if (order[0].id !== 'QR' || D.lureOpts[D.answers.lure] !== 'QR' || order[0].r - order[1].r < 5) P.push('lure key mismatch or weak margin');
+  var year = ln.map(function (n, i) { return lc[i].reduce(function (a, b) { return a + b; }) / n.reduce(function (a, b) { return a + b; }); });
+  var top = D.lures[year.indexOf(Math.max.apply(null, year))].id;
+  log.push('highestFullYearLure=' + top);
+  if (top !== 'AI') P.push('AI-written distractor is not the highest full-year click rate');
+  var cr = tn.map(function (n, q) { return 100 * tc[q] / n; });
+  log.push('companyClick=' + cr.map(function (v) { return v.toFixed(1); }).join(','));
+  for (var q = 1; q < 4; q++) if (cr[q] <= cr[q - 1]) P.push('company click rate not rising in quarter ' + q);
+  var xr = xn.map(function (n, q) { return 100 * xrp[q] / n; }), orr = on.map(function (n, q) { return 100 * orp[q] / n; });
+  log.push('reportNotOps=' + xr.map(function (v) { return v.toFixed(1); }).join(',') + ' reportOps=' + orr.map(function (v) { return v.toFixed(1); }).join(','));
+  for (q = 1; q < 4; q++) if (xr[q] <= xr[q - 1]) P.push('non-Ops reporting not improving in quarter ' + q);
+  if (orr[3] >= orr[0]) P.push('Ops reporting should fall');
+  if (Math.abs(Math.round(xr[3] * 10) / 10 - D.answers.report) > 1e-9) P.push('report key mismatch');
+  var rep = Object.keys(clicks).filter(function (k) { return clicks[k] >= 2; }).length;
+  var compRep = D.stats({})[3].rep;
+  log.push('repeatOps=' + rep + ' of company ' + compRep);
+  if (rep !== D.answers.repeatOps) P.push('repeat key mismatch');
+  if (rep / compRep < 0.5) P.push('Ops is not the majority of repeat clickers');
+  log.push('employees=' + D.emps.length + ' events=' + D.ev.length);
+  return { log: log, problems: P };
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

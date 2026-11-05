@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A7 Metrics That Matter: KGIs, KPIs, and KRIs | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A7',
+  title: 'Metrics That Matter: KGIs, KPIs, and KRIs',
+  accent: 'KGIs, KPIs, and KRIs',
+  domain: 'Domain 1 and Domain 3',
+  time: '35 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson01.html#s6',
+  lessonLabel: 'Lesson 1, Metrics & Performance Management',
+  lede: 'A board does not need to know how many emails were blocked. It needs to know whether the program is meeting its goals and whether risk is moving toward or away from appetite. Practice naming the type of each metric, matching it to the audience that can act on it, and turning vanity counts into metrics that support a decision.',
+  concepts: [
+    { key: 'type', name: 'KGI, KPI, or KRI', review: 'Lesson 1, Metrics & Performance Management' },
+    { key: 'audience', name: 'Matching metrics to the audience', review: 'Lesson 5, Program Metrics & Reporting' },
+    { key: 'fix', name: 'Decision-useful metrics', review: 'Lesson 5, Program Metrics & Reporting' },
+    { key: 'board', name: 'Board-level reporting', review: 'Lesson 1, Metrics & Performance Management' }
+  ],
+  stations: [
+    {
+      type: 'sort', short: 'Sort the metrics', title: 'KGI, KPI, or KRI?', concept: 'type',
+      instr: 'Kestrel Ridge Insurance is building its security metrics set. Place each metric in its type. A <b>KGI</b> (key goal indicator) shows whether an objective was achieved. A <b>KPI</b> (key performance indicator) shows how well a process is performing. A <b>KRI</b> (key risk indicator) is an early warning that risk is rising.',
+      hint: 'Ask what question the metric answers. "Did we reach the goal?" is a KGI. "How well is the process running?" is a KPI. "Is exposure growing, so we should act before a loss?" is a KRI. Words such as rising, overdue, or lapsed usually signal a KRI.',
+      buckets: ['KGI', 'KPI', 'KRI'],
+      review: { href: 'lesson01.html#s6', label: 'Lesson 1, Metrics & Performance Management' },
+      items: [
+        { text: 'Percentage of critical systems that meet the security baseline, against the strategy goal of 95% by year end', answer: 0, why: 'The metric measures progress toward a stated objective of the strategy. It answers whether the goal was achieved, so it is a KGI.' },
+        { text: 'Mean time to deploy critical patches to production servers', answer: 1, why: 'This measures how well the patching process performs. It is a KPI that operations can improve directly.' },
+        { text: 'Number of overdue high-risk audit findings, up for the third quarter in a row', answer: 2, why: 'Overdue high-risk findings that keep rising warn that exposure is growing. That forward-looking signal is a KRI.' },
+        { text: 'Target profile for the NIST CSF 2.0 Govern function reached in all business units by the fourth quarter', answer: 0, why: 'Reaching a target profile is an outcome the strategy set out to achieve. It is a KGI.' },
+        { text: 'Percentage of staff who completed annual awareness training', answer: 1, why: 'Completion shows how well the training process is delivered. It is a KPI, and it says little about behavior on its own.' },
+        { text: 'Share of employees using unapproved generative AI tools with company data, rising month over month', answer: 2, why: 'Growing use of unsanctioned AI tools signals a rising chance of data leakage before a loss occurs. It is a KRI.' },
+        { text: 'Average number of days to complete a vendor security assessment', answer: 1, why: 'This measures the speed of the vendor assessment process. It is a KPI.' },
+        { text: 'Number of tier 1 SaaS vendors whose SOC 2 reports have lapsed', answer: 2, why: 'Lapsed assurance on critical vendors means risk may be growing unseen. It is an early warning, so it is a KRI.' },
+        { text: 'All deployed AI use cases have a completed risk assessment by June, as the AI governance charter requires', answer: 0, why: 'The charter set this as a goal, and the metric shows whether it was met. It is a KGI.' },
+        { text: 'Mean time to contain confirmed incidents', answer: 1, why: 'Time to contain measures how well the incident response process performs. It is a KPI.' },
+        { text: 'Privileged accounts not reviewed in more than 90 days, trending upward', answer: 2, why: 'Unreviewed privileged access that keeps growing raises the chance of misuse. The trend is a warning, so it is a KRI.' },
+        { text: 'Percentage of business units with an approved and current risk register, against a goal of 100%', answer: 0, why: 'The metric reports whether a governance objective was achieved across the business. It is a KGI.' }
+      ]
+    },
+    {
+      type: 'sort', short: 'Right audience', title: 'Right metric, right audience', concept: 'audience',
+      instr: 'Report each metric to the audience that can act on it. The <b>Board</b> oversees enterprise risk against appetite and strategic outcomes. <b>Executive management</b> owns program performance, resources, and business unit accountability. <b>Security operations</b> tunes and runs the controls day to day.',
+      hint: 'The board sees few metrics, in business terms, compared with appetite or strategy. Executives see who owns what, by when, and at what cost. Operations sees technical counts and tuning data that no one above them needs.',
+      buckets: ['Board', 'Executive management', 'Security operations'],
+      review: { href: 'lesson05.html#s4', label: 'Lesson 5, Program Metrics & Reporting' },
+      items: [
+        { text: 'Residual risk for the five top enterprise cyber risks, each shown against the approved risk appetite', answer: 0, why: 'Comparing residual risk with appetite is the board\'s oversight question. It supports decisions on direction and funding.' },
+        { text: 'Overdue high-risk findings by business unit, with the risk owner and due date for each', answer: 1, why: 'Executives hold business unit leaders accountable. Owner and due date data lets them drive remediation.' },
+        { text: 'Firewall rule hit counts and unused rules by segment', answer: 2, why: 'This is tuning data for the people who manage the firewalls. It does not inform a business decision.' },
+        { text: 'Change in the likelihood of a material breach through phishing, tied to the fall in susceptibility', answer: 0, why: 'The metric links a control to business risk in plain terms. That is the kind of measure a board can act on.' },
+        { text: 'Program spend against the approved roadmap, with milestones at risk', answer: 1, why: 'Executive management allocates resources and tracks delivery. Spend against plan is their decision input.' },
+        { text: 'SIEM alert volume and false-positive rate by detection rule', answer: 2, why: 'Alert tuning is an operational task. These numbers help analysts, not executives.' },
+        { text: 'Progress on the strategy\'s goals for the year, one line per goal', answer: 0, why: 'KGIs against the strategy tell the board whether the program is delivering what it approved.' },
+        { text: 'Policy exceptions past their expiry date, listed by the risk owner who accepted them', answer: 1, why: 'Expired exceptions are an accountability issue for senior managers. Executives need to see who must renew or close them.' },
+        { text: 'Endpoint agent coverage by subnet, with hosts missing the agent', answer: 2, why: 'Coverage gaps by subnet are worked by the operations team. Management may see the overall percentage, not the host list.' },
+        { text: 'Number of phishing emails blocked per day by the email gateway', answer: 2, why: 'A raw block count is an activity metric. At most it helps operations confirm the tool is running.' }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Fix the metric', title: 'Fix the metric for the board', concept: 'fix',
+      instr: 'Kestrel Ridge\'s CISO, Priya Venkataraman, must give the board a one-page dashboard. For each case, choose the <b>BEST</b> answer from the security manager\'s chair.',
+      hint: 'A board metric ties security to business risk or value, shows a trend against a target or appetite, and leads to a decision. Activity counts, tool output, and raw completion rates are weak board metrics even when they are accurate.',
+      review: { href: 'lesson05.html#s4', label: 'Lesson 5, Program Metrics & Reporting' },
+      items: [
+        {
+          title: 'Case 1: The proposed dashboard (former Lab 2)', text: 'The security team proposes five metrics for the board dashboard.',
+          table: {
+            head: ['Ref', 'Proposed metric'],
+            rows: [
+              ['a', 'Number of emails blocked this quarter'],
+              ['b', 'Percentage of staff who completed awareness training'],
+              ['c', 'Number of overdue high-risk findings, trending upward'],
+              ['d', 'Mean time to deploy critical patches'],
+              ['e', 'Reduction in phishing susceptibility, linked to breach likelihood']
+            ]
+          },
+          parts: [
+            { q: 'Which proposed metric is a KRI?', concept: 'type', options: ['(a), because a rising block count shows more attacks', '(b), because low completion raises the risk of a click', '(c), since the upward trend warns of rising exposure', '(d), because slow patching leaves systems exposed'], answer: 2, why: 'Overdue high-risk findings that keep rising are a forward-looking warning. Completion and patch time are KPIs, and the block count is an activity metric.' },
+            { q: 'Which proposed metric is the strongest for the board?', concept: 'board', options: ['(e), because it ties a control to business risk', '(b), because regulators ask about training completion', '(d), because patch speed shows how hard the team works', '(a), because a large number reassures directors'], answer: 0, why: 'Metric (e) connects the awareness program to the likelihood of a breach. That is risk in business terms, which the board can weigh against appetite.' },
+            { q: 'Which pair should Priya present to the board?', concept: 'board', options: ['(a) and (b)', '(b) and (d)', '(a) and (e)', '(c) and (e)'], answer: 3, why: 'The board needs risk and value in business terms. Metric (e) shows value against risk and (c) warns of rising exposure, while (a), (b), and (d) belong lower in the reporting chain.' }
+          ]
+        },
+        {
+          title: 'Case 2: Four million emails blocked', text: 'Last quarter\'s board slide read, "Our gateway blocked 4.1 million malicious emails." A director asked, "Is that good?" No one could answer.',
+          parts: [
+            { q: 'Which rewrite BEST turns the slide into a decision-useful metric?', options: ['Emails blocked rose 12% over the prior quarter, which shows the gateway is working well', 'Phishing susceptibility fell from 18% to 6%, cutting our most likely breach path', 'The gateway blocks 99.7% of known malicious emails, above the vendor benchmark', 'An independent test of the gateway found no missed malicious attachments'], answer: 1, why: 'The rewrite reports a trend in a human risk factor and links it to the most likely way a breach starts. A block rate or an independent test describes the tool, not business risk.' }
+          ]
+        },
+        {
+          title: 'Case 3: Ten thousand vulnerabilities fixed', text: 'The infrastructure team wants to report "10,400 vulnerabilities remediated this year" to the board as proof of progress.',
+          parts: [
+            { q: 'What is the BEST replacement metric?', options: ['Total vulnerabilities remediated this year, broken out by severity and by month', 'Scanner coverage across all assets, with the count of hosts scanned', 'Critical internet-facing flaws fixed within the 15-day target, with trend', 'An audit sample of 40 closed tickets showing the fix was verified'], answer: 2, why: 'Timely fixing of the flaws attackers most often use reflects exposure, and the target gives the board a basis to judge. A raw count grows with the size of the backlog and proves nothing about risk.' }
+          ]
+        },
+        {
+          title: 'Case 4: A KRI with no trigger', text: 'Kestrel Ridge tracks "privileged accounts not reviewed in 90 days." The number has grown from 40 to 160, but nothing has happened because the metric has no threshold.',
+          parts: [
+            { q: 'What should Priya do FIRST?', options: ['Set thresholds tied to tolerance, with an owner and escalation path', 'Have the identity team disable all 160 unreviewed accounts this week', 'Ask internal audit to test the privileged access review control', 'Remove the KRI from the report until the backlog has been cleared'], answer: 0, why: 'A KRI is useful only when crossing a threshold triggers action by someone accountable. Disabling accounts is a practitioner\'s fix, and an audit test does not create the missing trigger.' }
+          ]
+        },
+        {
+          title: 'Case 5: "Are we secure?"', text: 'At the annual strategy session, the board chair, Tomás Okafor, asks Priya, "Are we secure?" She has five minutes.',
+          parts: [
+            { q: 'Which response BEST serves the board?', concept: 'board', options: ['Yes, since there were no material incidents this year', 'A walk through the controls deployed this year, by framework function', 'A summary of the latest penetration test, with findings by severity', 'Residual risk against appetite, its trend, and the decisions needed'], answer: 3, why: 'No organization is fully secure, so the manager reports risk posture against appetite and asks for the decisions that change it. Control lists and test results are inputs, not the answer.' }
+          ]
+        },
+        {
+          title: 'Case 6: A metric that gets gamed', text: 'The security operations team is rewarded for a low mean time to close incident tickets. The metric improved sharply, but the share of tickets reopened within 30 days tripled.',
+          parts: [
+            { q: 'What is the BEST response?', options: ['Keep the metric, since the target has clearly motivated the team', 'Pair time to close with a quality measure such as reopen rate', 'Replace it with the total number of tickets closed each month', 'Ask the SOC lead to review every closed ticket before sign-off'], answer: 1, why: 'A single speed metric invites premature closure. Balancing it with a quality measure keeps the incentive aligned with the real objective, which is resolved incidents.' }
+          ]
+        },
+        {
+          title: 'Case 7: Training completion at 98%', text: 'Completion of awareness training is 98%, yet three staff members fell for a deepfake voice call that asked for a payroll change.',
+          parts: [
+            { q: 'Which metric BEST shows whether the awareness program reduces risk?', options: ['Report rate for simulated and real social engineering attempts', 'Completion rate for the new deepfake awareness module, broken out by department', 'Average quiz score at the end of the annual training course', 'Number of training hours delivered per employee this year'], answer: 0, why: 'Reporting rates show changed behavior under realistic conditions. Completion, quiz scores, and hours measure delivery of the program, not its effect.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'shift', label: 'Pick one security metric your organization reports today. What type is it, who sees it, and what decision does it support? How would you rewrite it for a board?' },
+        { key: 'next', label: 'Which concept from this activity will you review before the next lesson, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

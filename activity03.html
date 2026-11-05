@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A3 Asset Ownership, Classification, and Valuation | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A3',
+  title: 'Asset Ownership, Classification, and Valuation',
+  accent: 'Classification, and Valuation',
+  domain: 'Domain 2 (20%)',
+  time: '35 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson02.html#s3',
+  lessonLabel: 'Lesson 2, Identifying & Owning Assets',
+  lede: 'Risk management starts with knowing what matters and who owns it. Practice telling the owner from the custodian, setting a classification from the highest impact, and valuing assets in business terms so protection spending follows value.',
+  concepts: [
+    { key: 'owner', name: 'Asset and data ownership', review: 'Lesson 2, Identifying and Owning Information Assets' },
+    { key: 'custodian', name: 'Custodian responsibilities', review: 'Lesson 2, Identifying and Owning Information Assets' },
+    { key: 'classify', name: 'Classification by impact', review: 'Lesson 2, Data Classification' },
+    { key: 'value', name: 'Asset valuation', review: 'Lesson 2, Valuing Information Assets' }
+  ],
+  stations: [
+    {
+      type: 'scenario', short: 'Who owns it?', title: 'Who owns it? Owners and custodians',
+      instr: 'Brightfern Lending, a consumer and mortgage lender with 1,800 staff, is rebuilding its asset inventory. For each asset, choose the <b>owner</b> (the business role accountable for it, who classifies it and approves access) or the <b>custodian</b> (the role that operates and protects it on the owner’s behalf), as the question asks.',
+      hint: 'Ownership follows business accountability, not who builds, hosts, or stores the asset. A copy, a backup, or a vendor platform does not change who owns the data. IT and vendors are usually custodians. IT owns only the shared infrastructure it runs for everyone.',
+      table: {
+        caption: 'Selected roles at Brightfern Lending',
+        head: ['Role', 'Responsibility'],
+        rows: [
+          ['VP of Lending', 'Runs consumer and mortgage lending, including credit decisions'],
+          ['CFO', 'Runs finance and financial reporting'],
+          ['Chief HR Officer', 'Runs human resources and employee relations'],
+          ['CMO', 'Runs marketing and customer campaigns'],
+          ['Head of Customer Service', 'Runs the contact center and digital customer support'],
+          ['General counsel', 'Runs legal affairs and the corporate secretary function'],
+          ['Head of Data Science', 'Leads the team that builds and validates models'],
+          ['ML platform team', 'Hosts, retrains, monitors, and secures deployed models'],
+          ['CIO and IT operations team', 'The CIO runs shared IT; the team operates systems, backups, and networks'],
+          ['CISO', 'Runs the information security program and security monitoring']
+        ]
+      },
+      review: { href: 'lesson02.html#s3', label: 'Lesson 2, Identifying and Owning Information Assets' },
+      items: [
+        {
+          title: 'Asset 1: Loan origination system', text: 'The platform that takes loan applications and stores applicant income, identity, and credit data.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['IT operations team', 'CISO', 'VP of Lending', 'Head of Data Science'], answer: 2, why: 'Lending is accountable for the applications and the decisions made from them. The VP of Lending classifies the data and approves access.' },
+            { q: 'Who is the custodian?', concept: 'custodian', options: ['VP of Lending', 'IT operations team', 'CISO', 'Head of Data Science'], answer: 1, why: 'IT operations runs the platform and applies the controls the owner’s classification requires.' }
+          ]
+        },
+        {
+          title: 'Asset 2: General ledger', text: 'The general ledger and month-end close data.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['CFO', 'IT operations team', 'Internal audit', 'CISO'], answer: 0, why: 'Finance is accountable for the ledger. Internal audit reviews it but cannot own what it audits.' }
+          ]
+        },
+        {
+          title: 'Asset 3: Employee records in a SaaS HR platform', text: 'Employee files, salaries, and performance reviews held in PeopleArc, a SaaS HR platform under contract.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['HR SaaS vendor', 'Chief HR Officer', 'IT operations team', 'CISO'], answer: 1, why: 'Moving data to a SaaS platform does not move accountability. The Chief HR Officer still owns the records.' },
+            { q: 'Who is the custodian?', concept: 'custodian', options: ['Chief HR Officer', 'CISO', 'HR SaaS vendor', 'General counsel'], answer: 2, why: 'The vendor operates and protects the platform under contract. The owner sets requirements and oversees the vendor through third-party risk management.' }
+          ]
+        },
+        {
+          title: 'Asset 4: Credit-decision AI model', text: 'A machine learning model trained on ten years of customer loan histories. It scores applicants and recommends approval or decline.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['Head of Data Science', 'ML platform team', 'IT operations team', 'VP of Lending'], answer: 3, why: 'The business line that relies on the model’s decisions owns the model and its risk. Data science builds and validates it, but does not own the lending outcome.' },
+            { q: 'Who is the custodian?', concept: 'custodian', options: ['VP of Lending', 'ML platform team', 'CISO', 'Head of Data Science'], answer: 1, why: 'The ML platform team hosts, retrains, and secures the model as the owner directs. The model and its training data inherit the customer data’s sensitivity.' }
+          ]
+        },
+        {
+          title: 'Asset 5: Marketing email list', text: 'Customer contact details and consent records used for email campaigns.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['CMO', 'CISO', 'IT operations team', 'Head of Customer Service'], answer: 0, why: 'Marketing uses the list and is accountable for consent and proper use. The CMO owns it.' }
+          ]
+        },
+        {
+          title: 'Asset 6: Backups of the loan database', text: 'Nightly encrypted backups of the loan origination database, run by IT operations and stored with an offsite provider.',
+          parts: [
+            { q: 'Who owns the data on the backups?', concept: 'owner', options: ['IT operations team', 'VP of Lending', 'Backup service provider', 'CISO'], answer: 1, why: 'A backup is a copy of the same data, so it keeps the same owner and classification. IT and the provider are custodians.' }
+          ]
+        },
+        {
+          title: 'Asset 7: Core network and data center', text: 'Firewalls, switches, and data center hardware shared by every business unit.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['CISO', 'Each business unit that uses it', 'CIO', 'CFO'], answer: 2, why: 'Shared infrastructure is an IT asset, so IT is the owner here. Business units own the data that crosses it, not the network itself.' }
+          ]
+        },
+        {
+          title: 'Asset 8: Security event logs', text: 'Security event logs collected in the SIEM for monitoring and investigations.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['CISO', 'IT operations team', 'Internal audit', 'General counsel'], answer: 0, why: 'The security function uses the logs to run monitoring and incident response, so the CISO owns them.' }
+          ]
+        },
+        {
+          title: 'Asset 9: AI chatbot transcripts', text: 'Transcripts from the generative AI assistant on the customer website, including account questions and complaints.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['The chatbot’s SaaS provider', 'Head of Data Science', 'IT operations team', 'Head of Customer Service'], answer: 3, why: 'Customer service runs the channel and is accountable for the interactions. The provider and IT are custodians, whatever the technology.' }
+          ]
+        },
+        {
+          title: 'Asset 10: Board minutes and litigation files', text: 'Minutes of board meetings and files on pending lawsuits.',
+          parts: [
+            { q: 'Who is the owner?', concept: 'owner', options: ['CISO', 'General counsel', 'CFO', 'IT operations team'], answer: 1, why: 'Legal runs the corporate secretary function and the litigation. General counsel owns these records.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'sort', short: 'Classify by impact', title: 'Classify by impact', concept: 'classify',
+      instr: 'Brightfern’s policy sets each asset’s classification from the <b>highest</b> of its confidentiality (C), integrity (I), and availability (A) impact ratings, as the table shows. Classify each asset.',
+      hint: 'Find the single highest rating and read across. One High rating makes the asset Restricted, even if the other two are low. A copy has the same impact as the original, wherever it is stored.',
+      table: {
+        caption: 'Brightfern Lending classification scheme',
+        head: ['Highest C, I, or A impact', 'Classification', 'What that impact looks like'],
+        rows: [
+          ['Negligible', 'Public', 'Already public or approved for release'],
+          ['Low', 'Internal', 'Minor inconvenience or embarrassment'],
+          ['Moderate', 'Confidential', 'Noticeable financial loss, contract breach, or customer complaints'],
+          ['High', 'Restricted', 'Regulatory penalty, significant fraud loss, or serious harm to customers']
+        ]
+      },
+      buckets: ['Public', 'Internal', 'Confidential', 'Restricted'],
+      review: { href: 'lesson02.html#s4', label: 'Lesson 2, Data Classification' },
+      items: [
+        { text: 'Published annual report on the investor website. C: Negligible, I: Negligible, A: Negligible', answer: 0, why: 'Every rating is negligible and the content is already public. It needs no confidentiality controls.' },
+        { text: 'Employee handbook on the intranet. C: Low, I: Low, A: Low', answer: 1, why: 'The highest rating is Low, so it is Internal. Disclosure would be a minor embarrassment at most.' },
+        { text: 'Applicant credit reports. C: High, I: Moderate, A: Low', answer: 3, why: 'Disclosure of credit data brings regulatory penalties and customer harm. One High rating sets the level at Restricted.' },
+        { text: 'Signed vendor contracts with pricing terms. C: Moderate, I: Low, A: Low', answer: 2, why: 'The highest rating is Moderate, so the contracts are Confidential.' },
+        { text: 'Wire transfer instructions for loan disbursements. C: Moderate, I: High, A: Moderate', answer: 3, why: 'Altered instructions would send funds to a fraudster. The High integrity rating drives the level, not confidentiality.' },
+        { text: 'Office floor plans for staff. C: Low, I: Negligible, A: Low', answer: 1, why: 'The highest rating is Low, so the floor plans are Internal.' },
+        { text: 'Weights of the credit-decision AI model trained on customer loan histories. C: High, I: High, A: Moderate', answer: 3, why: 'Model weights can leak training data and, if altered, skew lending decisions. They carry the sensitivity of the customer data behind them.' },
+        { text: 'Project status reports for the IT portfolio. C: Moderate, I: Low, A: Low', answer: 2, why: 'Early disclosure of plans and budgets causes noticeable harm, so the reports are Confidential.' },
+        { text: 'Branch addresses and opening hours approved for the public website. C: Negligible, I: Negligible, A: Negligible', answer: 0, why: 'The information is approved for release and its loss would cause negligible harm. It is Public.' },
+        { text: 'A full copy of production customer records loaded into the test environment. The developer rated it C: Low, because "it is only test data."', answer: 3, why: 'A copy of customer records has the same impact as the original. It stays Restricted, and the owner, not the developer, sets the rating.' }
+      ]
+    },
+    {
+      type: 'calc', short: 'Value the asset', title: 'Value the asset', concept: 'value',
+      instr: 'Brightfern values assets quantitatively as <b>replacement cost + revenue impact + regulatory exposure</b>, where revenue impact is <b>revenue at risk per day × days to restore</b>. All figures are in thousands of dollars. Enter each answer in $K.',
+      hint: 'Multiply revenue per day by days to restore first, then add replacement cost and regulatory exposure. For the protection cap, multiply the asset value by 0.15.',
+      table: {
+        caption: 'Valuation inputs, in $ thousands',
+        head: ['Asset', 'Replacement cost', 'Revenue at risk per day', 'Days to restore', 'Regulatory exposure'],
+        rows: [
+          ['Loan origination system', '420', '55', '20', '300'],
+          ['Credit-decision AI model', '260', '30', '18', '750'],
+          ['Employee records (SaaS HR)', '40', '0', '10', '380'],
+          ['Marketing email list', '90', '6', '25', '60']
+        ]
+      },
+      review: { href: 'lesson02.html#s5', label: 'Lesson 2, Valuing Information Assets' },
+      items: [
+        { title: 'Loan origination system', label: 'Asset value', answer: 1820, tol: 1, unit: '$K', why: '420 + (55 × 20 = 1,100) + 300 = $1,820K. Lost originations dominate, so recovery speed is the main lever.' },
+        { title: 'Credit-decision AI model', label: 'Asset value', answer: 1550, tol: 1, unit: '$K', why: '260 + (30 × 18 = 540) + 750 = $1,550K. Nearly half the value is regulatory exposure from fair lending and privacy rules, which a cost-only view would miss.' },
+        { title: 'Employee records (SaaS HR)', label: 'Asset value', answer: 420, tol: 1, unit: '$K', why: '40 + 0 + 380 = $420K. The records earn no revenue, yet privacy exposure makes them far more valuable than their replacement cost.' },
+        { title: 'Marketing email list', label: 'Asset value', answer: 300, tol: 1, unit: '$K', why: '90 + (6 × 25 = 150) + 60 = $300K. It is the least valuable asset here, so it justifies the least protection spending.' },
+        { title: 'Protection cap', text: 'The steering committee caps annual protection spending for any asset at 15% of its value.', label: 'Cap for the loan origination system', answer: 273, tol: 1, unit: '$K', why: '15% of $1,820K is $273K. Value sets the ceiling, so the business can see that spending is proportionate.' },
+        { title: 'Protection cap', text: 'The same 15% cap applies to the AI model.', label: 'Cap for the credit-decision AI model', answer: 232.5, tol: 0.5, unit: '$K', why: '15% of $1,550K is $232.5K. Valued only on replacement cost, the model would have justified about $39K, far too little for its real exposure.' }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'owner', label: 'Name one asset in your own organization whose owner is unclear or defaults to IT. Who should own it, and why?' },
+        { key: 'ai', label: 'How would you classify and value an AI model trained on customer data in your context? What would a cost-only valuation miss?' },
+        { key: 'next', label: 'Which concept from this activity will you review before Lesson 3, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

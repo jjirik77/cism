@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A1 The Management Mindset: Manager, Practitioner, or Auditor? | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A1',
+  title: 'The Management Mindset: Manager, Practitioner, or Auditor?',
+  accent: 'Manager, Practitioner, or Auditor?',
+  domain: 'Domain 1 (17%)',
+  time: '30 min',
+  level: 'Foundational',
+  lessonHref: 'lesson00.html#s4',
+  lessonLabel: 'Lesson 0, The Management Mindset',
+  lede: 'The CISM exam rewards the answer a security manager would give. Technical candidates reach for the hands-on fix, and audit candidates reach for the test. Practice the third view: align with the business, inform the right people, and act through governance and the program.',
+  concepts: [
+    { key: 'mindset', name: 'Whose answer it is', review: 'Lesson 0, The Management Mindset' },
+    { key: 'first', name: 'FIRST, BEST, and MOST', review: 'Lesson 0, The Management Mindset (reading the stem)' },
+    { key: 'govern', name: 'Acting through governance', review: 'Lesson 1, The Governance Hierarchy and Roles' },
+    { key: 'ethics', name: 'Code of Professional Ethics', review: 'Lesson 0, The Code of Professional Ethics' }
+  ],
+  stations: [
+    {
+      type: 'sort', short: 'Whose answer?', title: 'Whose answer is it?', concept: 'mindset',
+      instr: 'Each statement is a reasonable thing for a security professional to say. Decide whose view it reflects: the <b>security manager</b>, the hands-on <b>practitioner</b>, or the <b>auditor</b>. Then select <b>Check answers</b>.',
+      hint: 'The manager directs, aligns, escalates, and lets the business decide. The practitioner configures, patches, and blocks. The auditor tests, samples, and reports on whether controls work. Look at the verb.',
+      buckets: ['Security manager', 'Practitioner', 'Auditor'],
+      review: { href: 'lesson00.html#s4', label: 'Lesson 0, The Management Mindset' },
+      items: [
+        { text: 'I will patch the server tonight and tell the business owner in the morning.', answer: 1, why: 'Acting first and informing later is the practitioner’s reflex. The manager makes sure the owner understands the risk and the outage before the change.' },
+        { text: 'I will present the risk to the business owner in financial terms and recommend a treatment for their decision.', answer: 0, why: 'The manager translates risk into business terms and advises. The business owner decides and accepts the outcome.' },
+        { text: 'I will select a sample of 25 quarterly access reviews and check whether each was completed and signed.', answer: 2, why: 'Sampling to see whether a control operated is the auditor’s work. It gives assurance; it does not run the program.' },
+        { text: 'Before choosing a control, I need to know which business objectives this risk threatens.', answer: 0, why: 'Business alignment comes first. The manager ties every control decision to the objectives and appetite the business set.' },
+        { text: 'The best answer is the newest EDR product with the most detection features.', answer: 1, why: 'Choosing on technical features is a practitioner view. The manager chooses the option that treats the business risk at a justified cost.' },
+        { text: 'My finding will state the condition, the criteria, the cause, and the effect.', answer: 2, why: 'Condition, criteria, cause, and effect is the structure of an audit finding. It is the auditor’s product, not the manager’s.' },
+        { text: 'The fix belongs in the standard, so every business unit applies it, not only this team.', answer: 0, why: 'Durable answers change policy, standards, or process. The manager fixes the program, not a single setting.' },
+        { text: 'I will block the unapproved AI chatbot at the web proxy and close the ticket.', answer: 1, why: 'A block treats the symptom. The manager first asks what business need drove the use and sets an approved path through policy.' },
+        { text: 'Management’s assertion is not enough. I need evidence before I can conclude the control works.', answer: 2, why: 'Concluding only on sufficient evidence is the auditor’s discipline. The manager relies on that independent assurance rather than providing it.' },
+        { text: 'This risk is above the appetite the board approved, so I will escalate it to the steering committee.', answer: 0, why: 'The manager uses the governance structure. Risk above appetite goes to the people with authority to fund or accept it.' },
+        { text: 'I will turn on MFA for the finance team myself, because it is clearly the right control.', answer: 1, why: 'The control may be right, but doing it directly skips ownership, change management, and communication. That is the practitioner’s answer.' },
+        { text: 'I will report to the audit committee that the change management control did not operate as designed.', answer: 2, why: 'Independent reporting to the audit committee is the third line’s role. Security manages risk; it does not provide its own assurance.' }
+      ]
+    },
+    {
+      type: 'scenario', short: 'FIRST, BEST, MOST', title: 'FIRST, BEST, and MOST: the manager’s next step',
+      instr: 'In each case, every option sounds reasonable. Read the word that sets the bar (<b>FIRST</b>, <b>BEST</b>, or <b>MOST</b>) and choose the response a security manager would give.',
+      hint: 'FIRST usually means understand before acting: learn the business need, assess the risk, or invoke the plan. BEST and MOST usually mean the durable governance answer: the right owner decides, policy changes, and the board sees risk in business terms.',
+      review: { href: 'lesson00.html#s4', label: 'Lesson 0, The Management Mindset' },
+      items: [
+        {
+          title: 'Case 1: Quillfeather Media', text: 'The security manager learns that editors at Quillfeather Media are pasting unpublished contracts into a public generative AI chatbot to summarize them.',
+          parts: [
+            { q: 'What should the security manager do FIRST?', concept: 'first', options: ['Determine the business need and the risk the use creates', 'Block every generative AI domain at the web proxy today', 'Pull a sample of browser logs to count how many staff used it', 'Issue written warnings to the editors identified so far'], answer: 0, why: 'Understanding the business need and the risk comes before any response. It leads to an approved tool and an acceptable-use policy instead of a block that staff will work around.' }
+          ]
+        },
+        {
+          title: 'Case 2: Solano Freight', text: 'Nadia Farouk joins Solano Freight as its first CISO. There is no security strategy, the team runs on tickets, and the CEO asks for a roadmap within 90 days.',
+          parts: [
+            { q: 'What should Nadia do FIRST?', concept: 'first', options: ['Buy a SIEM so she can see what is happening', 'Learn the business objectives and the risk appetite', 'Commission an external penetration test of the network', 'Adopt a full policy set from an industry template'], answer: 1, why: 'Strategy is derived from the business. Nadia needs the objectives and appetite before a gap analysis can produce a roadmap.' }
+          ]
+        },
+        {
+          title: 'Case 3: Juniper Lane Hotels', text: 'A critical vulnerability affects the booking platform at Juniper Lane Hotels. The patch needs six hours of downtime, and the VP of Reservations refuses any outage during the holiday peak.',
+          parts: [
+            { q: 'What is the BEST action for the security manager?', concept: 'govern', options: ['Apply the patch overnight anyway, because the security risk is critical', 'Report the refusal to internal audit so it becomes a formal finding', 'Accept the risk, since the business has already said no', 'Brief the owner on the risk and options for a recorded decision'], answer: 3, why: 'The business owner decides, but on an informed basis and on the record. The manager also offers compensating controls so the decision is not all or nothing.' }
+          ]
+        },
+        {
+          title: 'Case 4: Pemberton Water Authority', text: 'The security manager at Pemberton Water Authority reports to the CIO. Twice this year, the CIO has asked that risks caused by IT delays be left out of the board report.',
+          parts: [
+            { q: 'Which change would MOST effectively address this problem?', concept: 'govern', options: ['Encrypt the board report so only directors can read it', 'Ask internal audit to review the report before each meeting', 'Have the CIO and the manager co-sign every board report', 'Move the security reporting line to the CRO, outside IT'], answer: 3, why: 'The problem is structural. A reporting line outside the function being overseen lets the manager report risk candidly.' }
+          ]
+        },
+        {
+          title: 'Case 5: Ardent BioSystems', text: 'Ransomware encrypts file servers at Ardent BioSystems. The attackers say they have copied clinical trial data and will publish it unless they are paid within 72 hours.',
+          parts: [
+            { q: 'What should the security manager do FIRST?', concept: 'first', options: ['Rebuild the affected servers personally from clean images', 'Invoke the incident management plan and its escalation', 'Contact the attackers to negotiate a lower ransom', 'Start a review of why the backup controls failed'], answer: 1, why: 'The plan defines roles, escalation, and notification. Invoking it brings in legal, executives, and communications before anyone acts alone.' },
+            { q: 'Who should decide whether to engage with the extortion demand?', concept: 'govern', options: ['The CISO, because the incident is a security event', 'The incident responders who are closest to the facts', 'Senior management, advised by legal counsel and the CISO', 'Internal audit, because it is independent of the incident'], answer: 2, why: 'Paying or refusing is a business decision with legal and reputational consequences. Senior management decides, with legal and security advice.' }
+          ]
+        },
+        {
+          title: 'Case 6: Brightline Dental Group', text: 'The board of Brightline Dental Group asks the security manager for a quarterly update. The board has also deferred a $600,000 privileged access proposal twice.',
+          parts: [
+            { q: 'Which content would be MOST useful to the board?', concept: 'govern', options: ['Monthly counts of blocked emails and malware detections', 'KRIs trended against the approved risk appetite', 'A list of every open vulnerability by CVSS score', 'Training completion rates for each clinic'], answer: 1, why: 'The board governs by appetite. KRIs trended against that appetite show whether risk is rising and where a decision is needed.' },
+            { q: 'What would BEST help the privileged access proposal win approval?', concept: 'govern', options: ['A demonstration of the product’s technical features', 'A peer survey showing other dental groups bought it', 'A business case linking the spend to reduced risk', 'A memo stating that auditors expect the control'], answer: 2, why: 'Executives fund investments justified in business terms. A business case shows the risk reduced and the value delivered for the cost.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Ethics cases', title: 'Ethics cases under the ISACA Code', concept: 'ethics',
+      instr: 'Every CISM holder agrees to the ISACA <b>Code of Professional Ethics</b>. For each case, name the principle most directly at stake, then choose the <b>BEST</b> response.',
+      hint: 'The principles cover lawful service to stakeholders, objectivity and due care, confidentiality, competency, and disclosing all significant facts. The ethical answer protects stakeholders and discloses the problem. It never conceals it for personal or employer convenience.',
+      review: { href: 'lesson00.html#s6', label: 'Lesson 0, The Code of Professional Ethics' },
+      items: [
+        {
+          title: 'Case 1: The quiet breach', text: 'At Torvane Logistics, attackers exfiltrated records for 40,000 customers. Before the regulator call, the COO asks the CISO, Kwame Mensah, to describe the event as "a few test records."',
+          parts: [
+            { q: 'Which principle is MOST directly at stake?', options: ['Maintain competency in the field', 'Support professional education', 'Disclose all significant facts', 'Keep information confidential'], answer: 2, why: 'Describing a 40,000-record breach as test data would distort the results. The Code requires disclosure of significant facts to appropriate parties.' },
+            { q: 'What is the BEST response for Kwame?', options: ['Agree, and correct the record later if the regulator asks for detail', 'Give the accurate facts via counsel and escalate if overruled', 'Refuse to attend the call and leave the COO to handle it alone', 'Leak the true figures to a reporter to protect customers'], answer: 1, why: 'Kwame states the facts accurately through the legal and incident process and escalates if pressured. Going to the press is not disclosure to appropriate parties.' }
+          ]
+        },
+        {
+          title: 'Case 2: The friendly competitor', text: 'At a conference dinner, a friend who works for a competitor asks Lucía Fernández, a security manager, what her company’s latest penetration test found.',
+          parts: [
+            { q: 'Which principle is MOST directly at stake?', options: ['Privacy and confidentiality', 'Perform duties with due diligence', 'Maintain competency in the field', 'Inform parties of work results'], answer: 0, why: 'Test results are confidential information obtained through work. They may not be released to inappropriate parties.' },
+            { q: 'What is the BEST response for Lucía?', options: ['Share general themes but leave out the system names', 'Share the findings, since the friend is also a professional', 'Politely decline to discuss any of the results', 'Report the friend to ISACA for an ethics violation'], answer: 2, why: 'Lucía simply declines. Partial sharing still releases confidential information, and a question alone is not an ethics violation.' }
+          ]
+        },
+        {
+          title: 'Case 3: Out of depth', text: 'Hiroshi Tanaka, a CISO at a food processor, is asked to personally lead a security assessment of the plant’s industrial control systems. He has no operational technology experience.',
+          parts: [
+            { q: 'Which principle is MOST directly at stake?', options: ['Serve stakeholders in a lawful manner', 'Maintain competency in the field', 'Keep information confidential', 'Support professional education'], answer: 1, why: 'The Code says to undertake only work you can reasonably expect to complete with the necessary skills and competence.' },
+            { q: 'What is the BEST response for Hiroshi?', options: ['Disclose the gap and bring in qualified OT expertise', 'Accept and learn the material as the assessment proceeds', 'Decline and suggest the plant manage the risk itself', 'Accept, but limit the scope to the IT network only'], answer: 0, why: 'Hiroshi stays accountable for the outcome but ensures competent people do the work. Quietly narrowing the scope would leave the real risk unassessed.' }
+          ]
+        },
+        {
+          title: 'Case 4: The family bidder', text: 'Ingrid Solberg is chairing the evaluation of three managed detection vendors. She learns that her brother-in-law is the account executive for one of the bidders.',
+          parts: [
+            { q: 'Which principle is MOST directly at stake?', options: ['Support governance and control standards', 'Maintain competency in the field', 'Support professional education', 'Objectivity and professional care'], answer: 3, why: 'A family tie to a bidder threatens objectivity, in fact and in appearance.' },
+            { q: 'What is the BEST response for Ingrid?', options: ['Disclose the conflict and step back from the evaluation', 'Continue, but score that vendor more strictly than the rest', 'Ask her brother-in-law to withdraw the vendor’s bid', 'Say nothing, because she has no financial interest'], answer: 0, why: 'Disclosure lets the organization manage the conflict, and recusal protects the decision. Scoring harder is still a biased process.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'shift', label: 'Which view do you lean toward by habit: practitioner or auditor? Describe one question type where that habit could cost you points, and what the manager would do instead.' },
+        { key: 'next', label: 'Which concept from this activity will you review before Lesson 1, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

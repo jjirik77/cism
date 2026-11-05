@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B3 Security Budget and Control Portfolio | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+.b3-bar { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; margin-bottom: .9rem; }
+.b3-lab { font: 700 .72rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+.b3-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: .6rem; margin-bottom: .9rem; }
+.b3-kpi { border: 1px solid var(--border); border-radius: 4px; padding: .55rem .7rem; background: var(--blue-pale); }
+.b3-kpi span { display: block; font: 700 .66rem Arial, sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--text-muted); }
+.b3-kpi b { display: block; font: 700 1.25rem Georgia, serif; color: var(--text-primary); margin-top: .15rem; }
+.b3-kpi em { display: block; font: .74rem Arial, sans-serif; color: var(--text-secondary); font-style: normal; }
+.b3-meter { position: relative; height: 14px; border-radius: 7px; background: var(--section-alt); overflow: hidden; margin: .3rem 0 .2rem; }
+.b3-meter i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold); border-radius: 7px; }
+.b3-meter.over i { background: var(--wrong); }
+.b3-mtxt { font: .8rem Arial, sans-serif; color: var(--text-secondary); margin-bottom: .9rem; }
+.b3-grid { display: grid; grid-template-columns: minmax(250px, .9fr) minmax(320px, 1.1fr); gap: 1rem; align-items: start; margin-bottom: 1rem; }
+.b3-side { position: sticky; top: 64px; }
+@media (max-width: 900px) { .b3-side { position: static; } }
+@media (max-width: 900px) { .b3-grid { grid-template-columns: 1fr; } }
+.b3-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; }
+.b3-list li { display: flex; } .b3-list .b3-ctl { flex: 1; }
+.b3-ctl { display: grid; grid-template-columns: auto 1fr auto; gap: .1rem .5rem; align-items: start; border: 1px solid var(--border); border-radius: 4px; padding: .35rem .55rem; background: var(--card-bg); cursor: pointer; }
+.b3-ctl:hover { border-color: var(--gold); }
+.b3-ctl.on { border-color: var(--navy); box-shadow: inset 3px 0 0 var(--navy); }
+.b3-ctl input { margin-top: .2rem; width: 1.05rem; height: 1.05rem; accent-color: var(--navy); }
+.b3-ctl .nm { font: 700 .8rem Arial, sans-serif; color: var(--text-primary); }
+.b3-ctl .cost { font: 700 .84rem Arial, sans-serif; color: var(--text-primary); white-space: nowrap; }
+.b3-ctl .meta { grid-column: 2 / 4; font: .72rem/1.35 Arial, sans-serif; color: var(--text-secondary); }
+.b3-tag { display: inline-block; font: 700 .64rem Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--border); border-radius: 3px; padding: 0 .3rem; margin-right: .25rem; color: var(--text-secondary); background: var(--section-alt); }
+.b3-tag.mand { border-color: var(--navy); color: var(--navy); background: var(--gold-pale); }
+.b3-tag.ai { border-color: var(--amber); color: #7a4a00; background: #fff6e0; }
+.b3-chart { border: 1px solid var(--border); border-radius: 4px; padding: .5rem .6rem .35rem; margin-bottom: .6rem; background: var(--card-bg); }
+.b3-chart h4 { font: 700 .9rem Georgia, serif; margin: 0 0 .2rem; color: var(--text-primary); }
+.b3-chart p.sub { font: .76rem Arial, sans-serif; color: var(--text-muted); margin: 0 0 .4rem; }
+.b3-chart svg { display: block; width: 100%; height: auto; }
+.b3-chart svg text { font-family: Arial, sans-serif; }
+.b3-legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font: .74rem Arial, sans-serif; color: var(--text-secondary); margin-top: .3rem; }
+.b3-legend i { display: inline-block; width: 12px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: .3rem; }
+.b3-warn { list-style: none; margin: 0 0 .9rem; padding: 0; font: .82rem/1.5 Arial, sans-serif; }
+.b3-warn li { border-left: 3px solid var(--amber); background: #fff8e8; padding: .35rem .6rem; margin-bottom: .3rem; color: var(--text-primary); }
+.b3-warn li.ok { border-left-color: var(--correct); background: var(--correct-bg); }
+.b3-doc { font: .88rem/1.6 Arial, sans-serif; color: var(--text-secondary); }
+.b3-doc .formula { font: .84rem 'Courier New', monospace; background: var(--section-alt); padding: .5rem .7rem; border-radius: 4px; color: var(--text-primary); margin: .4rem 0 .8rem; white-space: pre-wrap; }
+.b3-tip { position: fixed; pointer-events: none; z-index: 50; background: var(--navy); color: #fff; font: .78rem/1.4 Arial, sans-serif; padding: .35rem .55rem; border-radius: 4px; max-width: 260px; display: none; }
+table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== Portfolio model (deterministic) =====================
+   Crestline Parcel Company, FY2027 security investment. Five risk scenarios with
+   SLE, ARO, and an appetite set by the Enterprise Risk Committee. Twelve candidate
+   controls, each with an annual cost and a percentage reduction per scenario.
+   Residual ALE combines controls multiplicatively. All answers are computed from
+   these arrays, so the checklist key cannot drift from the charts. */
+(function () {
+  var SC = [
+    { id: 'S1', name: 'Ransomware with data extortion', short: 'Ransomware', sle: 4000, aro: 0.30, appetite: 300, owner: 'Chief Operating Officer', desc: 'Encryption of the dispatch and routing platform plus theft of customer shipment data, with a leak-site extortion demand.' },
+    { id: 'S2', name: 'Payment fraud through business email compromise and deepfake voice', short: 'Payment fraud', sle: 650, aro: 0.60, appetite: 120, owner: 'Chief Financial Officer', desc: 'A spoofed carrier-partner email and an AI-cloned voice call redirect a fuel or linehaul payment.' },
+    { id: 'S3', name: 'Cloud misconfiguration exposing customer data', short: 'Cloud exposure', sle: 2000, aro: 0.20, appetite: 160, owner: 'Chief Technology Officer', desc: 'A public storage bucket or over-permissive role in the cloud tracking platform exposes shipper and recipient records.' },
+    { id: 'S4', name: 'Breach at a critical SaaS or logistics partner', short: 'Third-party breach', sle: 1500, aro: 0.15, appetite: 150, owner: 'Chief Procurement Officer', desc: 'A compromise at the payroll, telematics, or customs-brokerage provider exposes Crestline data or halts operations.' },
+    { id: 'S5', name: 'Insider data theft by a departing employee', short: 'Insider theft', sle: 800, aro: 0.25, appetite: 130, owner: 'Chief People Officer', desc: 'A departing sales or pricing employee takes the customer rate book and contract files to a competitor.' }
+  ];
+  var CT = [
+    { id: 'C01', name: 'Phishing-resistant MFA (passkeys) for all staff', cost: 140, r: { S1: .35, S2: .30, S5: .10 }, note: 'Replaces SMS and push codes with FIDO2 passkeys on every workforce account.' },
+    { id: 'C02', name: 'Immutable offline backups with quarterly restore tests', cost: 110, r: { S1: .50 }, note: 'Cuts ransomware impact by making recovery possible without paying.' },
+    { id: 'C03', name: 'EDR with 24x7 managed detection and response', cost: 260, r: { S1: .45, S5: .15 }, note: 'Outsourced around-the-clock monitoring and containment on endpoints and servers.' },
+    { id: 'C04', name: 'Payment callback verification and dual approval', cost: 25, r: { S2: .60 }, note: 'A process control: any change to payee bank details is confirmed by a call to a number on file, and payments over $25,000 need two approvers.' },
+    { id: 'C05', name: 'Cloud security posture management (CSPM)', cost: 120, r: { S3: .55 }, dep: 'C11', note: 'Continuous scanning of cloud accounts for public exposure and risky permissions.' },
+    { id: 'C06', name: 'Third-party risk program with continuous monitoring', cost: 90, r: { S4: .50 }, note: 'Tiering, due diligence, contract clauses, and an external rating feed for critical vendors.' },
+    { id: 'C07', name: 'Data loss prevention for email and SaaS', cost: 150, r: { S5: .35, S3: .05 }, note: 'Content inspection and blocking on email, file sharing, and the CRM.' },
+    { id: 'C08', name: 'AI-driven autonomous SOC platform', cost: 380, r: { S1: .30, S2: .10, S3: .10, S5: .10 }, conf: 0.4, ai: true, note: 'A 2026 platform that triages and responds with AI agents. Reductions are vendor claims with no reference customers in logistics yet.' },
+    { id: 'C09', name: 'Awareness program with deepfake and callback drills', cost: 45, r: { S2: .25, S1: .10 }, note: 'Role-based training for finance and dispatch, with simulated voice-clone calls.' },
+    { id: 'C10', name: 'Annual independent penetration test and attestation', cost: 70, r: { S3: .05, S4: .05 }, mand: true, note: 'Required by the master services agreement with Crestline’s largest retail customer and by the cyber insurance policy.' },
+    { id: 'C11', name: 'Cloud asset inventory and account baseline', cost: 40, r: { S3: .15 }, note: 'Tags every cloud account and resource to an owner and applies a hardened baseline. Required before CSPM can produce usable findings.' },
+    { id: 'C12', name: 'Privileged access management (PAM)', cost: 130, r: { S1: .20, S5: .30, S4: .10 }, note: 'Vaulted, time-limited administrator access with session recording.' }
+  ];
+  var BUDGET = 950;
+  var DRAFT = ['C01', 'C03', 'C08', 'C10'];
+  function byId(id) { for (var i = 0; i < CT.length; i++) if (CT[i].id === id) return CT[i]; return null; }
+  function inh(s) { return s.sle * s.aro; }
+  function rate(c, sid, basis) { var r = c.r[sid] || 0; return r * (basis === 'claim' ? 1 : (c.conf || 1)); }
+  function live(c, sel) { return sel.indexOf(c.id) >= 0 && (!c.dep || sel.indexOf(c.dep) >= 0); }
+  function evalP(sel, basis) {
+    var res = {}, tot = 0, inT = 0, cost = 0;
+    SC.forEach(function (s) { var f = 1; CT.forEach(function (c) { if (live(c, sel)) f *= 1 - rate(c, s.id, basis); }); res[s.id] = inh(s) * f; tot += res[s.id]; inT += inh(s); });
+    CT.forEach(function (c) { if (sel.indexOf(c.id) >= 0) cost += c.cost; });
+    var within = SC.filter(function (s) { return res[s.id] <= s.appetite + 1e-9; }).length;
+    return { res: res, tot: tot, inh: inT, cost: cost, avoided: inT - tot, rosi: cost ? (inT - tot - cost) / cost * 100 : 0, within: within };
+  }
+  function standalone(c, basis) {
+    var red = SC.reduce(function (a, s) { return a + inh(s) * rate(c, s.id, basis); }, 0);
+    return { red: red, rosi: (red - c.cost) / c.cost * 100 };
+  }
+  function optimum() {
+    var best = null, second = null;
+    for (var m = 0; m < (1 << CT.length); m++) {
+      var sel = CT.filter(function (c, i) { return m >> i & 1; }).map(function (c) { return c.id; });
+      if (CT.some(function (c) { return c.mand && sel.indexOf(c.id) < 0; })) continue;
+      if (CT.some(function (c) { return c.dep && sel.indexOf(c.id) >= 0 && sel.indexOf(c.dep) < 0; })) continue;
+      var e = evalP(sel, 'evidence');
+      if (e.within < SC.length) continue;
+      if (!best || e.cost < best.cost) { second = best; best = { sel: sel, cost: e.cost, e: e }; }
+      else if (!second || e.cost < second.cost) second = { sel: sel, cost: e.cost, e: e };
+    }
+    return { best: best, second: second };
+  }
+  window.B3M = { SC: SC, CT: CT, BUDGET: BUDGET, DRAFT: DRAFT, byId: byId, inh: inh, rate: rate, live: live, evalP: evalP, standalone: standalone, optimum: optimum };
+})();
+</script>
+
+<script>
+(function () {
+  var M = window.B3M, OPT = M.optimum();
+  function r1(x) { return Math.round(x * 10) / 10; }
+  function k(x) { return '$' + (Math.round(x * 10) / 10).toLocaleString('en-US', { maximumFractionDigits: 1 }) + 'k'; }
+  function pct(x) { return (x >= 0 ? '' : '−') + Math.abs(Math.round(x)).toLocaleString('en-US') + '%'; }
+  var failOpts = ['C12', 'C07', 'C05', 'C06'];
+  function failId() { return M.CT.filter(function (c) { return !c.mand && !c.ai && M.standalone(c, 'evidence').rosi < 0; }).map(function (c) { return c.id; }); }
+
+  window.LAB = {
+    id: 'B3',
+    title: 'Security Budget and Control Portfolio',
+    accent: 'Control Portfolio',
+    domain: 'Domain 3 (33%)',
+    time: '50 min',
+    level: 'Intermediate to Advanced',
+    lessonHref: 'lesson04.html#s4',
+    lessonLabel: 'Lesson 4, Selecting Controls',
+    lede: 'Every security program runs on a fixed budget. Fund the controls that bring each risk within appetite at the lowest cost, separate obligations from investments, and defend the portfolio to the risk committee. The best portfolio is rarely the newest tool.',
+    workbenchTitle: 'Portfolio optimizer',
+    ticket: {
+      number: 'FIN-2027-0148',
+      priority: 'High priority',
+      from: 'Adaeze Okafor, Chief Financial Officer',
+      to: 'Security program manager (you)',
+      subject: 'FY2027 security investment: portfolio and memo for the Enterprise Risk Committee',
+      due: 'Memo to the Risk Committee by November 20',
+      body: '<p>The FY2027 security budget for Crestline Parcel Company is fixed at <b>$950,000</b> in annual run cost. That number will not move this year, so the request has to fit inside it.</p>' +
+        '<p>The Enterprise Risk Committee approved a risk appetite for five scenarios last quarter, and each scenario has a named executive owner. I need a portfolio that brings every scenario within appetite, at the lowest cost that does so. Any money we do not need goes back to the operations budget.</p>' +
+        '<p>Two pressures you should know about. First, our COO, Mateus Ferreira, has seen a demo of an <b>AI-driven autonomous SOC platform</b> and has asked that it be the centerpiece of the program. Our draft portfolio from his office is loaded in the tool. Second, the <b>annual penetration test and attestation</b> is written into our largest customer’s contract and our cyber insurance policy.</p>' +
+        '<p>Use the optimizer and its Model tab. Then write the investment memo: what you are funding, why, how you handled the AI platform and the contract obligation, and what residual risk the owners are being asked to accept.</p>'
+    },
+    howTo: 'The <b>Portfolio optimizer</b> lists twelve candidate controls. Check or uncheck a control and the charts recompute at once: residual loss per scenario against appetite, standalone return on security investment (ROSI) per control, budget used, and portfolio totals. The <b>Model</b> tab states every formula the tool uses, and the checklist uses the same formulas. Use the evidence-weighted basis unless an item says otherwise. A hint is available for every item. After your first check you can reveal the manager’s debrief, but a revealed item earns no points.',
+    workIntro: 'All money is in thousands of US dollars per year ($k). Annualized loss expectancy (ALE) is single loss expectancy times annual rate of occurrence. Use the <b>evidence-weighted</b> basis for every checklist answer.',
+    checklist: [
+      { id: 'inh', type: 'number', points: 10, short: 'Total inherent ALE', title: 'Total inherent ALE across the five scenarios',
+        task: 'Before any new control is funded, what is the <b>total annualized loss expectancy</b> across all five risk scenarios? Enter the amount in $k.',
+        unit: '$k per year', tol: 1,
+        answer: function () { return r1(M.SC.reduce(function (a, s) { return a + M.inh(s); }, 0)); },
+        hint: 'Open the Risk scenarios tab. ALE = SLE × ARO for each scenario. Add the five results, or uncheck every control and read the Inherent ALE tile.',
+        debrief: '<p>The five scenarios carry $2,415k of expected loss per year, and ransomware alone is half of it at $1,200k. The appetite the committee set adds up to $860k, so the program must remove about $1,555k of expected loss to bring every scenario within appetite.</p><p>Starting from expected loss in business terms is what makes the rest of the conversation possible. The manager can now show the CFO that a $950k budget is being weighed against a $2.4 million annual exposure, and that each owner’s appetite, not the security team’s preference, defines “enough.”</p>',
+        reviewNote: 'ALE = SLE × ARO, summed across scenarios.' },
+      { id: 'rosi2', type: 'number', points: 10, short: 'ROSI of C02', title: 'Standalone ROSI of immutable backups (C02)',
+        task: 'What is the <b>standalone ROSI</b> of C02, immutable offline backups with quarterly restore tests? Enter a percentage, rounded to one decimal place.',
+        unit: '%', tol: 1,
+        answer: function () { return r1(M.standalone(M.byId('C02'), 'evidence').rosi); },
+        hint: 'Standalone ROSI = (annual loss reduction − annual cost) ÷ annual cost. C02 reduces ransomware ALE by 50 percent. The ROSI chart and the Model tab show the formula.',
+        debrief: '<p>C02 removes half of the $1,200k ransomware ALE, a $600k reduction for $110k a year, so its standalone ROSI is about 445 percent. It is one of the strongest investments in the catalog because it attacks the largest scenario and lowers impact directly: Crestline can restore instead of paying.</p><p>Note that standalone ROSI overstates what a control adds once others are funded, because reductions overlap. The manager should use standalone ROSI to rank candidates and the portfolio view to decide, which is why the optimizer multiplies residual factors rather than adding savings.</p>',
+        reviewNote: 'ROSI = (loss reduction − cost) ÷ cost.' },
+      { id: 'rosiai', type: 'number', points: 10, short: 'ROSI of the AI platform', title: 'Evidence-weighted ROSI of the AI SOC platform (C08)',
+        task: 'Using the <b>evidence-weighted</b> basis, what is the standalone ROSI of C08, the AI-driven autonomous SOC platform? Enter a percentage, rounded to one decimal place (negative if it loses money).',
+        unit: '%', tol: 1,
+        answer: function () { return r1(M.standalone(M.byId('C08'), 'evidence').rosi); },
+        hint: 'The Model tab explains the evidence weight. Multiply each claimed reduction by the 0.4 confidence factor, apply it to the scenario ALEs, then compare the total with the $380k cost. Switch the basis to Vendor claim to see the difference.',
+        debrief: '<p>On the vendor’s claims the platform would remove $459k of loss a year for $380k, a ROSI of about 21 percent. With no reference customers in logistics, the model weights those claims at 40 percent confidence, which leaves about $184k of reduction and a ROSI of about −52 percent. The case for the platform depends entirely on claims nobody has verified.</p><p>The manager does not reject new technology on principle, and does not buy it on a demo. The question is whether the benefit is proven for this organization’s risks. Until it is, the platform is a hypothesis to test, not a control to fund at full scale.</p>',
+        reviewNote: 'Weight unproven benefit claims by the confidence the evidence supports.' },
+      { id: 'failcb', type: 'choice', points: 10, short: 'Fails cost-benefit', title: 'Which other control fails cost-benefit?',
+        task: 'Apart from the AI platform and the mandatory test, which discretionary control returns <b>less in reduced loss than it costs</b> each year?',
+        options: failOpts.map(function (id) { return id + ' ' + M.byId(id).name; }),
+        answer: function () { return failOpts.indexOf(failId()[0]); },
+        hint: 'Read the ROSI chart. Look for a bar to the left of zero that is not C08 or C10.',
+        debrief: '<p>Data loss prevention costs $150k a year and removes about $90k of expected loss: 35 percent of the $200k insider-theft ALE plus a sliver of cloud exposure. Its ROSI is about −40 percent. PAM addresses the same insider scenario and also ransomware and third-party access, for less money, and it brings insider theft within appetite together with MFA.</p><p>A control can be good practice and still be a poor investment for a given risk profile. The manager funds controls that trace to a risk objective and return more than they cost. If a business owner still wants DLP for other reasons, such as a customer requirement, that need should be stated and justified on its own terms.</p>',
+        reviewNote: 'Compare annual loss reduced with annual cost for each control.' },
+      { id: 'mand', type: 'choice', points: 10, short: 'Mandatory control', title: 'Handle the contract-mandated control (C10)',
+        task: 'C10, the annual penetration test and attestation, has a negative ROSI in the model. It is required by the largest customer’s contract and by the cyber insurance policy. What should the manager do?',
+        options: [
+          'Drop it, because its ROSI is negative and the money reduces more loss when it is spent elsewhere',
+          'Fund it only if a cheaper control can be cut, so that the portfolio ROSI stays above 100 percent',
+          'Ask the customer to waive the clause, and log the obligation as an accepted risk until renewal',
+          'Fund it as a non-discretionary obligation outside the ROSI ranking, at the lowest compliant cost'
+        ],
+        answer: 3,
+        hint: 'Is this decision about risk reduction, or about an obligation the organization has already agreed to? Who could accept the consequence of breaching a contract?',
+        debrief: '<p>The model shows C10 removing only about $31k of expected loss for $70k. That number is beside the point. Dropping the test would breach the master services agreement and could void insurance coverage, and those consequences are not in the five scenarios at all.</p><p>The manager separates obligations from investments: legal, regulatory, and contractual requirements are funded first, as a fixed cost of doing business, and the discretionary budget is optimized around them. The manager can still look for the least costly way to comply, such as scoping the test to what the contract requires, but cannot trade compliance for ROSI.</p>',
+        reviewNote: 'Contractual and regulatory obligations are funded first, outside the ROSI ranking.' },
+      { id: 'opt', type: 'set', points: 15, short: 'Lowest-cost portfolio', title: 'The lowest-cost portfolio that meets appetite',
+        task: 'Find the portfolio that brings <b>every scenario within appetite</b> at the <b>lowest annual cost</b>. It must include the mandatory control, and any control you fund must have its dependency funded too. Enter the control IDs.',
+        label: 'Control IDs', placeholder: 'e.g., C01, C04',
+        answer: function () { return OPT.best.sel.slice(); },
+        hint: 'Start with every control checked, then remove the most expensive controls one at a time and watch the appetite chart. A control that is not needed for any scenario to stay within appetite is a candidate to drop. Check the CSPM dependency.',
+        debrief: '<p>The lowest-cost portfolio is nine controls for $770k a year: passkey MFA, immutable backups, payment callback and dual approval, CSPM with its cloud asset baseline, the third-party program, awareness drills, PAM, and the mandatory test. Every scenario lands within appetite, total residual ALE falls from $2,415k to about $730k, and $180k of the budget is returned. The next-cheapest portfolio that meets appetite costs $890k.</p><p>The surprise is what is left out. Managed detection and response is a strong control, but MFA, backups, and PAM already bring ransomware within appetite, so its marginal value does not justify $260k. The AI platform and DLP are out on cost-benefit. The COO’s draft spends $850k and still leaves all five scenarios above appetite, because it concentrates on detection tools and ignores fraud, cloud, and third-party exposure.</p>',
+        reviewNote: 'Optimize to appetite: fund the cheapest set that brings every scenario within it.' },
+      { id: 'resid', type: 'number', points: 10, short: 'Residual ALE', title: 'Residual ALE of your recommended portfolio',
+        task: 'For the lowest-cost portfolio that meets appetite, what is the <b>total residual ALE</b> across the five scenarios? Enter the amount in $k, to one decimal place.',
+        unit: '$k per year', tol: 2,
+        answer: function () { return r1(OPT.best.e.tot); },
+        hint: 'Load your portfolio in the optimizer and read the Residual ALE tile, which uses the evidence-weighted basis. The value is the sum of the five residual bars.',
+        debrief: '<p>The recommended portfolio leaves about $730k of expected loss per year, spread across the five scenarios and each one below its owner’s appetite. The portfolio removes about $1,685k of expected loss for $770k, a portfolio ROSI of roughly 119 percent.</p><p>Residual risk is not zero, and the memo must say so. Each owner accepts the remaining exposure for their scenario. The manager recommends and reports; the business owners, through the risk committee, accept.</p>',
+        reviewNote: 'Residual ALE = inherent ALE × the product of (1 − reduction) for funded controls.' },
+      { id: 'ai', type: 'choice', points: 10, short: 'AI platform decision', title: 'Respond to the COO’s request for the AI platform',
+        task: 'The COO wants the AI-driven SOC platform funded as the centerpiece of the FY2027 program. What should the manager recommend?',
+        options: [
+          'Propose a time-boxed pilot with agreed success measures, and fund the full contract only if the pilot proves the benefit',
+          'Buy it now at full scope, since AI tooling is where the industry is heading and early adopters gain the most from it',
+          'Buy it in place of MFA and backups, since its claims cover ransomware and payment fraud with a single platform',
+          'Reject it permanently, since a tool without a loss history in our sector can never be justified to the board'
+        ],
+        answer: 0,
+        hint: 'The benefit is unproven, not disproven. What would give the committee evidence without spending $380k on a hypothesis?',
+        debrief: '<p>Funding the platform at full scope would consume 40 percent of the budget for a benefit the evidence does not support, and replacing proven controls with it would leave ransomware and fraud above appetite. Rejecting it forever is also wrong: AI-driven operations may well pay off, and the manager should find out.</p><p>The management answer is a structured pilot: a defined scope, a fixed cost and duration, success measures agreed in advance (for example, time to triage or containment on real alerts), and a decision gate. The manager reports the result to the COO and the committee, so the decision is made on evidence and the executive sponsor stays engaged.</p>',
+        reviewNote: 'Unproven benefit calls for a time-boxed pilot with success criteria and a decision gate.' },
+      { id: 'memo', type: 'text', points: 15, short: 'Investment memo', title: 'Write the investment memo for the risk committee', reportTitle: 'Investment memo',
+        task: 'Write a short investment memo to the Enterprise Risk Committee. Use the numbers from your optimizer.',
+        fields: [
+          { key: 'request', label: 'Funding request: what you are funding and the total cost', min: 40, placeholder: 'The controls, the annual cost, and what is returned from the budget.' },
+          { key: 'value', label: 'Business case: risk reduced and return', min: 40, placeholder: 'Inherent and residual ALE, portfolio ROSI, and each scenario against appetite.' },
+          { key: 'handled', label: 'The AI platform and the contract obligation', min: 40, placeholder: 'How each was handled and why.' },
+          { key: 'accept', label: 'Residual risk the owners are asked to accept', min: 30, placeholder: 'Which owner accepts what, and when the portfolio is reviewed.' }
+        ],
+        hint: 'Lead with the decision you want. Write in business terms: dollars of expected loss, appetite, owners. Keep the AI platform recommendation constructive.',
+        debrief: '<p><b>Model memo.</b> <b>Request:</b> Approve nine controls at $770k per year, within the $950k budget, returning $180k to operations: passkey MFA, immutable backups with restore testing, payment callback and dual approval, cloud asset baseline with CSPM, the third-party risk program, deepfake-aware awareness drills, privileged access management, and the contract-required penetration test. <b>Business case:</b> The portfolio reduces expected annual loss from $2,415k to about $730k, a portfolio ROSI of about 119 percent, and brings all five scenarios within the appetite the committee approved; ransomware falls from $1,200k to about $281k against a $300k appetite. <b>AI platform and obligation:</b> The AI SOC platform is not funded at full scope because its benefit is unproven for our sector (evidence-weighted ROSI about −52 percent); we propose a 90-day pilot with success measures agreed with the COO and a decision gate in Q2. The penetration test is funded as a contractual and insurance obligation outside the ROSI ranking. DLP and managed detection were evaluated and not funded because the selected controls meet appetite at lower cost. <b>Residual risk:</b> Each scenario owner (the COO, CFO, CTO, Chief Procurement Officer, and Chief People Officer) is asked to accept the residual exposure for their scenario as shown, and the portfolio is reviewed after the pilot or on any material change in threat or business.</p><p>Your wording will differ. Check that the memo asks for a decision, uses business numbers, and names who accepts the residual risk.</p>',
+        reviewNote: 'The memo should request a decision in business terms and name the owners who accept residual risk.' }
+    ],
+
+    workbench: function (root, api) {
+      var esc = api.esc, CT = M.CT, SC = M.SC;
+      var sel = api.note('sel') || M.DRAFT.slice(), basis = api.note('basis') || 'evidence';
+      root.innerHTML = '<div class="lb-tool"><div class="lb-tabs" role="tablist" aria-label="Workbench tools">' +
+        '<button role="tab" id="b3t-opt" aria-controls="b3p-opt" aria-selected="true">Portfolio optimizer</button>' +
+        '<button role="tab" id="b3t-sc" aria-controls="b3p-sc" aria-selected="false" tabindex="-1">Risk scenarios</button>' +
+        '<button role="tab" id="b3t-cat" aria-controls="b3p-cat" aria-selected="false" tabindex="-1">Control catalog</button>' +
+        '<button role="tab" id="b3t-mod" aria-controls="b3p-mod" aria-selected="false" tabindex="-1">Model</button></div>' +
+        '<div class="lb-panel" role="tabpanel" id="b3p-opt" aria-labelledby="b3t-opt"></div>' +
+        '<div class="lb-panel" role="tabpanel" id="b3p-sc" aria-labelledby="b3t-sc" hidden>' + scenTab() + '</div>' +
+        '<div class="lb-panel" role="tabpanel" id="b3p-cat" aria-labelledby="b3t-cat" hidden>' + catTab() + '</div>' +
+        '<div class="lb-panel b3-doc" role="tabpanel" id="b3p-mod" aria-labelledby="b3t-mod" hidden>' + modelTab() + '</div></div><div class="b3-tip" id="b3-tip" role="presentation"></div>';
+      var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+      function selTab(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+      tabs.forEach(function (t, i) { t.addEventListener('click', function () { selTab(t); }); t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; selTab(n); n.focus(); } }); });
+      if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) selTab(tt); }
+
+      var P = document.getElementById('b3p-opt');
+      P.innerHTML = '<div class="b3-bar"><span class="b3-lab" id="b3-blab">Benefit basis</span><div class="px-seg" role="group" aria-labelledby="b3-blab">' +
+        '<button type="button" data-basis="evidence">Evidence-weighted</button><button type="button" data-basis="claim">Vendor claim</button></div>' +
+        '<span class="b3-lab" id="b3-plab">Presets</span><div class="px-seg" role="group" aria-labelledby="b3-plab">' +
+        '<button type="button" data-pre="draft">COO draft</button><button type="button" data-pre="all">Check all</button><button type="button" data-pre="none">Clear all</button></div></div>' +
+        '<div class="b3-kpis" id="b3-kpis" aria-live="polite"></div>' +
+        '<div class="b3-lab">Budget used</div><div class="b3-meter" id="b3-meter" role="img"><i></i></div><div class="b3-mtxt" id="b3-mtxt"></div>' +
+        '<ul class="b3-warn" id="b3-warn" aria-live="polite"></ul>' +
+        '<div class="b3-grid"><div><p class="b3-lab" style="margin:0 0 .4rem">Candidate controls (check to fund)</p><ul class="b3-list" id="b3-list"></ul></div>' +
+        '<div class="b3-side"><div class="b3-chart"><h4>Residual ALE against appetite, by scenario</h4><p class="sub">Light bar: inherent ALE. Dark bar: residual ALE with the funded controls. Dashed line: the owner’s appetite.</p><div id="b3-c1"></div>' +
+        '<div class="b3-legend"><span><i style="background:#cfe3e4"></i>Inherent ALE</span><span><i style="background:var(--navy)"></i>Residual ALE</span><span><i style="background:repeating-linear-gradient(90deg,#b45309 0 3px,transparent 3px 5px)"></i>Appetite</span></div></div>' +
+        '<div class="b3-chart"><h4>Standalone ROSI by control</h4><p class="sub">(Annual loss reduction − annual cost) ÷ annual cost, each control on its own. Funded controls are marked with a check.</p><div id="b3-c2"></div></div></div></div>' +
+        '<div class="table-wrap"><table class="data" id="b3-tab"><caption class="sr-only">Scenario results in table form</caption></table></div>';
+
+      var list = document.getElementById('b3-list');
+      list.innerHTML = CT.map(function (c) {
+        var tags = (c.mand ? '<span class="b3-tag mand">Contract mandated</span>' : '') + (c.ai ? '<span class="b3-tag ai">Unproven benefit</span>' : '') + (c.dep ? '<span class="b3-tag">Requires ' + c.dep + '</span>' : '');
+        var hits = Object.keys(c.r).map(function (s) { return s + ' ' + Math.round(c.r[s] * 100) + '%'; }).join(', ');
+        return '<li><label class="b3-ctl" data-c="' + c.id + '"><input type="checkbox" value="' + c.id + '"><span class="nm">' + c.id + ' ' + esc(c.name) + '</span><span class="cost">$' + c.cost + 'k</span>' +
+          '<span class="meta">' + tags + 'Reduces ' + hits + (c.conf ? ' (claimed; weighted ×' + c.conf + ')' : '') + '</span></label></li>';
+      }).join('');
+      list.querySelectorAll('input').forEach(function (inp) { inp.addEventListener('change', function () { var id = inp.value; if (inp.checked) { if (sel.indexOf(id) < 0) sel.push(id); } else sel = sel.filter(function (x) { return x !== id; }); update(); }); });
+      P.querySelectorAll('[data-basis]').forEach(function (b) { b.addEventListener('click', function () { basis = b.dataset.basis; update(); }); });
+      P.querySelectorAll('[data-pre]').forEach(function (b) { b.addEventListener('click', function () { var p = b.dataset.pre; sel = p === 'draft' ? M.DRAFT.slice() : p === 'all' ? CT.map(function (c) { return c.id; }) : []; update(); }); });
+
+      var tip = document.getElementById('b3-tip');
+      function wireTips(box) {
+        box.querySelectorAll('[data-tip]').forEach(function (el) {
+          el.addEventListener('mousemove', function (e) { tip.textContent = el.getAttribute('data-tip'); tip.style.display = 'block'; tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; });
+          el.addEventListener('mouseleave', function () { tip.style.display = 'none'; });
+        });
+      }
+
+      function chart1(e) {
+        var W = 400, rowH = 40, top = 6, left = 128, right = 16, H = top + SC.length * rowH + 22, max = 1300, sx = function (v) { return left + (W - left - right) * Math.min(v, max) / max; };
+        var g = '';
+        [0, 400, 800, 1200].forEach(function (t) { g += '<line x1="' + sx(t) + '" x2="' + sx(t) + '" y1="' + top + '" y2="' + (H - 20) + '" stroke="#dbe7e8"/><text x="' + sx(t) + '" y="' + (H - 6) + '" font-size="10" fill="#5c7d83" text-anchor="middle">$' + t + 'k</text>'; });
+        SC.forEach(function (s, i) {
+          var y = top + i * rowH, inh = M.inh(s), res = e.res[s.id], ok = res <= s.appetite + 1e-9;
+          g += '<text x="0" y="' + (y + 15) + '" font-size="11.5" font-weight="700" fill="#0b2530">' + s.id + ' ' + esc(s.short) + '</text>';
+          g += '<text x="0" y="' + (y + 30) + '" font-size="10.5" fill="' + (ok ? '#1a7a4c' : '#c0182b') + '">' + (ok ? '✓ Within appetite' : '✕ Above appetite') + '</text>';
+          g += '<rect x="' + left + '" y="' + (y + 4) + '" width="' + Math.max(1, sx(inh) - left) + '" height="14" rx="3" fill="#cfe3e4" data-tip="' + s.id + ' inherent ALE ' + k(inh) + '"/>';
+          g += '<rect x="' + left + '" y="' + (y + 20) + '" width="' + Math.max(1, sx(res) - left) + '" height="14" rx="3" fill="#0f3b4c" data-tip="' + s.id + ' residual ALE ' + k(res) + ' against appetite ' + k(s.appetite) + '"/>';
+          g += '<line x1="' + sx(s.appetite) + '" x2="' + sx(s.appetite) + '" y1="' + (y + 1) + '" y2="' + (y + 36) + '" stroke="#b45309" stroke-width="2" stroke-dasharray="4 2"/>';
+          g += '<text x="' + Math.min(sx(res) + 5, W - 70) + '" y="' + (y + 31) + '" font-size="10.5" fill="#0b2530">' + k(res) + '</text>';
+        });
+        return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Residual ALE against appetite for five scenarios; see the table below the charts">' + g + '</svg>';
+      }
+      function chart2() {
+        var W = 400, rowH = 18, top = 4, left = 50, right = 44, H = top + CT.length * rowH + 22, lo = -100, hi = 900;
+        var sx = function (v) { return left + (W - left - right) * (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo); };
+        var g = '';
+        [-100, 0, 300, 600, 900].forEach(function (t) { g += '<line x1="' + sx(t) + '" x2="' + sx(t) + '" y1="' + top + '" y2="' + (H - 20) + '" stroke="' + (t === 0 ? '#5c7d83' : '#dbe7e8') + '"/><text x="' + sx(t) + '" y="' + (H - 6) + '" font-size="10" fill="#5c7d83" text-anchor="middle">' + t + '%</text>'; });
+        CT.forEach(function (c, i) {
+          var y = top + i * rowH, st = M.standalone(c, basis), v = st.rosi, x0 = sx(0), x1 = sx(v), on = sel.indexOf(c.id) >= 0;
+          g += '<text x="0" y="' + (y + 13) + '" font-size="11" fill="#0b2530" font-weight="' + (on ? 700 : 400) + '">' + (on ? '✓ ' : ' ') + c.id + '</text>';
+          g += '<rect x="' + Math.min(x0, x1) + '" y="' + (y + 3) + '" width="' + Math.max(1, Math.abs(x1 - x0)) + '" height="13" rx="3" fill="' + (v < 0 ? '#c0182b' : (on ? '#0f3b4c' : '#14b8a6')) + '" data-tip="' + c.id + ' ' + esc(c.name) + ': reduction ' + k(st.red) + ', cost $' + c.cost + 'k, ROSI ' + r1(v) + '%"/>';
+          g += '<text x="' + (v < 0 ? x0 + 4 : Math.min(x1 + 4, W - right + 4)) + '" y="' + (y + 13) + '" font-size="10.5" fill="#0b2530">' + r1(v) + '%</text>';
+        });
+        return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Standalone ROSI for twelve controls">' + g + '</svg>';
+      }
+
+      function update() {
+        api.note('sel', sel); api.note('basis', basis);
+        var e = M.evalP(sel, basis);
+        P.querySelectorAll('[data-basis]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.basis === basis); });
+        list.querySelectorAll('input').forEach(function (inp) { inp.checked = sel.indexOf(inp.value) >= 0; inp.closest('.b3-ctl').classList.toggle('on', inp.checked); });
+        document.getElementById('b3-kpis').innerHTML =
+          '<div class="b3-kpi"><span>Inherent ALE</span><b>' + k(e.inh) + '</b><em>no new controls</em></div>' +
+          '<div class="b3-kpi"><span>Residual ALE</span><b>' + k(e.tot) + '</b><em>with funded controls</em></div>' +
+          '<div class="b3-kpi"><span>Loss avoided</span><b>' + k(e.avoided) + '</b><em>per year</em></div>' +
+          '<div class="b3-kpi"><span>Portfolio cost</span><b>$' + e.cost + 'k</b><em>of $' + M.BUDGET + 'k budget</em></div>' +
+          '<div class="b3-kpi"><span>Portfolio ROSI</span><b>' + (e.cost ? r1(e.rosi) + '%' : 'n/a') + '</b><em>(avoided − cost) ÷ cost</em></div>' +
+          '<div class="b3-kpi"><span>Within appetite</span><b>' + e.within + ' of ' + SC.length + '</b><em>scenarios</em></div>';
+        var m = document.getElementById('b3-meter'), used = e.cost / M.BUDGET;
+        m.classList.toggle('over', used > 1); m.querySelector('i').style.width = Math.min(100, used * 100) + '%'; m.setAttribute('aria-label', 'Budget used ' + Math.round(used * 100) + ' percent');
+        document.getElementById('b3-mtxt').textContent = '$' + e.cost + 'k of $' + M.BUDGET + 'k (' + Math.round(used * 100) + '%). ' + (used > 1 ? 'Over budget by $' + (e.cost - M.BUDGET) + 'k.' : '$' + (M.BUDGET - e.cost) + 'k unallocated.');
+        var w = [];
+        if (e.cost > M.BUDGET) w.push('Over budget: the portfolio costs $' + e.cost + 'k against a fixed $' + M.BUDGET + 'k.');
+        CT.forEach(function (c) { if (c.dep && sel.indexOf(c.id) >= 0 && sel.indexOf(c.dep) < 0) w.push('Dependency not met: ' + c.id + ' delivers no reduction until ' + c.dep + ' is funded, but its cost still counts.'); });
+        CT.forEach(function (c) { if (c.mand && sel.indexOf(c.id) < 0) w.push('Obligation unfunded: ' + c.id + ' is required by contract and by the insurance policy.'); });
+        if (basis === 'claim') w.push('Vendor claim basis is on. Checklist answers use the evidence-weighted basis.');
+        if (e.within < SC.length) w.push(SC.length - e.within + ' scenario' + (SC.length - e.within === 1 ? ' is' : 's are') + ' above appetite.');
+        var wl = document.getElementById('b3-warn');
+        wl.innerHTML = w.length ? w.map(function (x) { return '<li>&#9888; ' + esc(x) + '</li>'; }).join('') : '<li class="ok">&#10003; Within budget, all dependencies met, obligations funded, and every scenario within appetite.</li>';
+        document.getElementById('b3-c1').innerHTML = chart1(e); document.getElementById('b3-c2').innerHTML = chart2();
+        wireTips(P);
+        document.getElementById('b3-tab').innerHTML = '<caption class="sr-only">Scenario results in table form</caption><thead><tr><th>Scenario</th><th class="num">Inherent ALE</th><th class="num">Residual ALE</th><th class="num">Appetite</th><th style="white-space:nowrap">Status</th></tr></thead><tbody>' +
+          SC.map(function (s) { var r = e.res[s.id], ok = r <= s.appetite + 1e-9; return '<tr><td>' + s.id + ' ' + esc(s.name) + '</td><td class="num">' + k(M.inh(s)) + '</td><td class="num">' + k(r) + '</td><td class="num">' + k(s.appetite) + '</td><td>' + (ok ? '&#10003; Within' : '&#10005; Above') + '</td></tr>'; }).join('') +
+          '<tr class="px-total"><td>Total</td><td class="num">' + k(e.inh) + '</td><td class="num">' + k(e.tot) + '</td><td class="num">' + k(SC.reduce(function (a, s) { return a + s.appetite; }, 0)) + '</td><td>' + e.within + ' of ' + SC.length + '</td></tr></tbody>';
+      }
+      update();
+
+      function scenTab() {
+        return '<p class="lead-p">The Enterprise Risk Committee approved these scenarios and appetite values in Q3 2026. Each owner is the executive accountable for the business process at risk.</p><div class="table-wrap"><table class="data"><thead><tr><th>ID</th><th>Scenario</th><th class="num">SLE ($k)</th><th class="num">ARO</th><th class="num">Inherent ALE ($k)</th><th class="num">Appetite ($k)</th><th>Risk owner</th></tr></thead><tbody>' +
+          SC.map(function (s) { return '<tr><td>' + s.id + '</td><td><b>' + esc(s.name) + '</b><br><span style="font-size:.8rem">' + esc(s.desc) + '</span></td><td class="num">' + s.sle.toLocaleString('en-US') + '</td><td class="num">' + s.aro.toFixed(2) + '</td><td class="num">' + r1(M.inh(s)).toLocaleString('en-US') + '</td><td class="num">' + s.appetite + '</td><td>' + esc(s.owner) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+      }
+      function catTab() {
+        return '<p class="lead-p">Reduction percentages come from the security architecture team’s control assessments, except C08, where they are the vendor’s claims. Costs are fully loaded annual run costs, including staff time.</p><div class="table-wrap"><table class="data"><thead><tr><th>ID</th><th>Control</th><th class="num">Cost ($k)</th>' + SC.map(function (s) { return '<th class="num">' + s.id + '</th>'; }).join('') + '<th>Notes</th></tr></thead><tbody>' +
+          CT.map(function (c) { return '<tr><td>' + c.id + '</td><td>' + esc(c.name) + '</td><td class="num">' + c.cost + '</td>' + SC.map(function (s) { return '<td class="num">' + (c.r[s.id] ? Math.round(c.r[s.id] * 100) + '%' : '') + '</td>'; }).join('') + '<td style="font-size:.8rem">' + esc(c.note) + (c.dep ? ' Requires ' + c.dep + '.' : '') + (c.conf ? ' Evidence weight ' + c.conf + '.' : '') + '</td></tr>'; }).join('') + '</tbody></table></div>';
+      }
+      function modelTab() {
+        return '<div class="lb-doc"><p class="eyebrow">Model</p><h4>How the optimizer computes every number</h4>' +
+          '<p>1. <b>Inherent ALE</b> for each scenario is single loss expectancy times annual rate of occurrence.</p><div class="formula">ALE(s) = SLE(s) × ARO(s)</div>' +
+          '<p>2. <b>Effective reduction.</b> Each control lowers a scenario’s ALE by a percentage r. On the evidence-weighted basis, a claimed reduction is multiplied by the control’s evidence weight w (1.0 for assessed controls, 0.4 for C08, whose figures are unverified vendor claims). On the vendor-claim basis, w = 1 for every control.</p><div class="formula">r_eff(c, s) = r(c, s) × w(c)</div>' +
+          '<p>3. <b>Dependencies.</b> A control whose prerequisite is not funded delivers no reduction, but its cost still counts. C05 requires C11.</p>' +
+          '<p>4. <b>Residual ALE</b> combines funded controls multiplicatively, because controls overlap: each one removes a share of what the others leave.</p><div class="formula">Residual(s) = ALE(s) × Π over funded c of (1 − r_eff(c, s))</div>' +
+          '<p>5. <b>Standalone ROSI</b> treats each control on its own (with its dependency assumed met).</p><div class="formula">Reduction(c) = Σ over s of ALE(s) × r_eff(c, s)\nROSI(c) = (Reduction(c) − Cost(c)) ÷ Cost(c) × 100%</div>' +
+          '<p>6. <b>Portfolio ROSI</b> uses the combined result.</p><div class="formula">ROSI(portfolio) = (Σ ALE − Σ Residual − Σ Cost) ÷ Σ Cost × 100%</div>' +
+          '<p>7. <b>Within appetite</b> means Residual(s) ≤ Appetite(s). A portfolio is <b>acceptable</b> when every scenario is within appetite, every funded control’s dependency is funded, and the contract-mandated control is funded. The <b>recommended</b> portfolio is the acceptable portfolio with the lowest total cost.</p></div>' +
+          '<div class="lb-doc"><p class="eyebrow">Limits</p><h4>What the model leaves out</h4><ul><li>It treats ARO and SLE as point estimates. A real program would carry ranges and test sensitivity.</li><li>Contract and insurance consequences of dropping C10 are not in the five scenarios, so its ROSI understates its value.</li><li>Reductions are annual and assume each control is operating as designed for the full year.</li></ul></div>';
+      }
+    }
+  };
+
+  window.LAB_SELFTEST = function () {
+    var log = [], P = [], SC = M.SC, CT = M.CT;
+    // Independent ALE and ROSI calculation
+    var A = {}; SC.forEach(function (s) { A[s.id] = s.sle * s.aro; });
+    var inhT = Object.keys(A).reduce(function (a, x) { return a + A[x]; }, 0);
+    function red(c, b) { var t = 0; Object.keys(c.r).forEach(function (s) { t += A[s] * c.r[s] * (b === 'e' && c.conf ? c.conf : 1); }); return t; }
+    function rosi(c, b) { return (red(c, b) - c.cost) / c.cost * 100; }
+    var key = {}; LAB.checklist.forEach(function (it) { key[it.id] = typeof it.answer === 'function' ? it.answer() : it.answer; });
+    if (Math.abs(inhT - key.inh) > 0.5) P.push('inherent ' + inhT + ' vs ' + key.inh);
+    var c2 = rosi(M.byId('C02'), 'e'), c8 = rosi(M.byId('C08'), 'e'), c8c = rosi(M.byId('C08'), 'c');
+    if (Math.abs(c2 - key.rosi2) > 0.1) P.push('C02 rosi'); if (Math.abs(c8 - key.rosiai) > 0.1) P.push('C08 rosi');
+    if (!(c8 < 0 && c8c > 0)) P.push('AI platform should lose on evidence and win on claims');
+    var neg = CT.filter(function (c) { return rosi(c, 'e') < 0; }).map(function (c) { return c.id; });
+    log.push('negative ROSI: ' + neg.join(' ') + '; C02 ' + c2.toFixed(1) + '% C08 ' + c8.toFixed(1) + '% (claim ' + c8c.toFixed(1) + '%)');
+    var negDisc = CT.filter(function (c) { return !c.mand && !c.ai && rosi(c, 'e') < 0; });
+    if (negDisc.length !== 1) P.push('expected exactly one other discretionary control with negative ROSI');
+    else if (LAB.checklist.filter(function (i) { return i.id === 'failcb'; })[0].options[key.failcb].indexOf(negDisc[0].id + ' ') !== 0) P.push('failcb key does not point to ' + negDisc[0].id);
+    if (!(rosi(M.byId('C10'), 'e') < 0)) P.push('mandatory control should have negative ROSI');
+    // Independent recursive search for the cheapest acceptable portfolio
+    var found = [];
+    (function rec(i, chosen) {
+      if (i === CT.length) {
+        var c = CT;
+        if (c.some(function (x) { return x.mand && chosen.indexOf(x.id) < 0; })) return;
+        if (c.some(function (x) { return x.dep && chosen.indexOf(x.id) >= 0 && chosen.indexOf(x.dep) < 0; })) return;
+        var ok = true, tot = 0, cost = 0;
+        SC.forEach(function (s) { var v = A[s.id]; c.forEach(function (x) { if (chosen.indexOf(x.id) >= 0) v *= 1 - (x.r[s.id] || 0) * (x.conf || 1); }); tot += v; if (v > s.appetite) ok = false; });
+        chosen.forEach(function (id) { cost += M.byId(id).cost; });
+        if (ok) found.push({ ids: chosen.slice().sort(), cost: cost, tot: tot });
+        return;
+      }
+      rec(i + 1, chosen); rec(i + 1, chosen.concat([CT[i].id]));
+    })(0, []);
+    found.sort(function (a, b) { return a.cost - b.cost; });
+    var b = found[0];
+    if (b.ids.join() !== key.opt.slice().sort().join()) P.push('optimum ' + b.ids.join(' ') + ' vs key ' + key.opt.join(' '));
+    if (found[1] && found[1].cost === b.cost) P.push('optimum not unique');
+    if (b.cost > M.BUDGET) P.push('optimum over budget');
+    if (Math.abs(b.tot - key.resid) > 0.2) P.push('residual ' + b.tot + ' vs ' + key.resid);
+    log.push('optimum $' + b.cost + 'k ' + b.ids.join(' ') + ' residual ' + b.tot.toFixed(1) + '; next $' + found[1].cost + 'k; acceptable portfolios ' + found.length);
+    var d = M.evalP(M.DRAFT, 'evidence'); log.push('COO draft $' + d.cost + 'k within ' + d.within + '/5');
+    if (d.within === SC.length) P.push('COO draft should fail appetite');
+    if (b.ids.indexOf('C08') >= 0 || b.ids.indexOf('C07') >= 0) P.push('optimum includes a failing control');
+    return { log: log, problems: P };
+  };
+})();
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

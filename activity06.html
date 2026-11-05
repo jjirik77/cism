@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A6 Awareness, Culture, and Third-Party Risk | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A6',
+  title: 'Awareness, Culture, and Third-Party Risk',
+  accent: 'Third-Party Risk',
+  domain: 'Domain 3 (33%)',
+  time: '40 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson05.html#s1',
+  lessonLabel: 'Lesson 5, Awareness, Training & Culture',
+  lede: 'People and suppliers carry much of an organization’s risk. Rank awareness metrics by what they reveal about behavior, respond to mistakes and violations the way a just culture would, and govern vendors from tiering and due diligence through offboarding. Training completion is not behavior change, and outsourcing is not a transfer of accountability.',
+  concepts: [
+    { key: 'measure', name: 'Measuring behavior, not attendance', review: 'Lesson 5, Awareness, Training & Culture' },
+    { key: 'culture', name: 'Just culture responses', review: 'Lesson 5, Awareness, Training & Culture' },
+    { key: 'diligence', name: 'Vendor due diligence and contracts', review: 'Lesson 5, Third-Party & Supply-Chain Risk' },
+    { key: 'lifecycle', name: 'Vendor tiering and life cycle', review: 'Lesson 5, Third-Party & Supply-Chain Risk' }
+  ],
+  stations: [
+    {
+      type: 'order', short: 'Measure behavior', title: 'Measure behavior, not attendance', concept: 'measure',
+      instr: 'Marigold Valley Credit Union reports six awareness metrics to its steering committee. Rank them from the metric that reveals the <b>most</b> about real security behavior to the one that reveals the <b>least</b>.',
+      hint: 'Ask what each metric proves. Real behavior in the wild beats behavior in a test. Behavior in a test beats knowledge on a quiz. Knowledge beats attendance, and attendance beats a count of what the security team produced.',
+      topLabel: 'Most revealing',
+      bottomLabel: 'Least revealing',
+      review: { href: 'lesson05.html#s1', label: 'Lesson 5, Awareness, Training & Culture' },
+      items: [
+        { text: 'Training completion rate for the annual awareness course', rank: 3, why: 'Completion shows attendance only. A 98 percent completion rate says nothing about whether anyone acts differently.' },
+        { text: 'Phishing simulation click rate and report rate, trended by role over four quarters', rank: 1, why: 'Simulations measure behavior under test conditions, and trends by role show where to target effort. Real-world reporting still reveals more.' },
+        { text: 'Number of awareness emails, posters, and videos published this year', rank: 5, accept: [4, 5], why: 'This counts the security team’s output, not staff behavior. Output counts sit at the bottom of the ladder.' },
+        { text: 'Share of real malicious emails that staff report before any tool flags them, and the median time to report', rank: 0, why: 'This is secure behavior in live conditions. Fast, accurate reporting of real attacks is the clearest sign that culture is working.' },
+        { text: 'Hours of training content available in the learning platform', rank: 4, accept: [4, 5], why: 'Available content, like published materials, measures supply rather than behavior. Either order of the two activity counts is accepted.' },
+        { text: 'Average score on the post-training knowledge quiz', rank: 2, why: 'Quiz scores show what people know, which is a step closer to behavior than attendance but still not behavior itself.' }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Just culture', title: 'Just culture and due diligence',
+      instr: 'Choose the response a security manager at Marigold should give. The first four cases test a just culture: learning from error, coaching risky behavior, and holding people accountable for reckless choices. The last case moves to a supplier.',
+      hint: 'A just culture separates honest error, at-risk behavior, and reckless disregard. Error gets support and a system fix, at-risk behavior gets coaching, and only deliberate disregard of known rules goes to HR. For vendors, the organization keeps accountability, so assurance must be verified before signing.',
+      review: { href: 'lesson05.html#s1', label: 'Lesson 5, Awareness, Training & Culture' },
+      items: [
+        {
+          title: 'Case 1: Rising click rates (former Lab 7)', text: 'Phishing simulation click rates have risen for three straight quarters despite annual training. The retail lending director, Curtis Mbeki, proposes disciplining repeat clickers. IT proposes blocking all external email that contains links.',
+          parts: [
+            { q: 'What is the BEST response?', concept: 'culture', options: ['Discipline repeat clickers to show the policy has teeth', 'Block external email with links until click rates fall', 'Revise content, frequency, and reinforcement', 'Stop running simulations, since they hurt staff morale'], answer: 2, why: 'A rising click rate is a measured decline in program effectiveness. The fix is role-based, more frequent, and positively reinforced training, driven from the top.' },
+            { q: 'Why is blocking all external email with links the wrong answer?', concept: 'culture', options: ['It is impractical and leaves the human layer untrained', 'It costs more than the awareness program does each year', 'It would need board approval before it could be deployed', 'It would stop the simulations from reaching employees'], answer: 0, why: 'Members and partners send links every day, so the business cannot run that way. It also leaves staff no better prepared for the attacks that still get through.' }
+          ]
+        },
+        {
+          title: 'Case 2: A reported mistake', text: 'A member services representative, Amara Nwosu, calls the help desk at 9:12. Ten minutes earlier she entered her password on a page that looked like the credit union’s payroll portal.',
+          parts: [
+            { q: 'What should the security manager do FIRST?', concept: 'culture', options: ['Thank her and start the incident process to reset access', 'Ask her supervisor to note the error in her performance file', 'Enroll her in remedial training before her account is reset', 'Hold her account until HR completes an interview with her'], answer: 0, why: 'Fast reporting is exactly the behavior the program wants. Containment starts at once, and thanking her keeps others willing to report.' },
+            { q: 'Her supervisor wants to list her by name as a "failure" in the monthly department report. What is the BEST advice?', concept: 'culture', options: ['Agree, since visibility will deter other staff from clicking', 'Agree, but only if she clicks again within the next quarter', 'Advise against it, since blame discourages future reporting', 'Leave the decision to HR, since it is a personnel matter'], answer: 2, why: 'Punishing a person who self-reported teaches everyone to stay quiet. The lesson goes into the program as an anonymized example instead.' }
+          ]
+        },
+        {
+          title: 'Case 3: Repeat clickers', text: 'Five percent of staff have clicked three or more simulations in the past year. Most work in the loan operations team, which handles a heavy volume of external documents.',
+          parts: [
+            { q: 'What is the BEST response?', concept: 'culture', options: ['Refer every repeat clicker to HR for a written warning', 'Remove email access from the loan operations team', 'Exempt loan operations, since its workload is unusual', 'Coach the team and review its workflow'], answer: 3, why: 'Repeated clicks concentrated in one team signal at-risk behavior and a workflow problem. Coaching and a process fix, such as a secure document portal, address both.' }
+          ]
+        },
+        {
+          title: 'Case 4: A deliberate workaround', text: 'The vice president of commercial lending, Victor Lindqvist, has twice been warned in writing for sharing his MFA codes with his assistant so she can approve wires in his name. A third instance is found.',
+          parts: [
+            { q: 'What is the BEST response under a just culture?', concept: 'culture', options: ['Coach him again, since a just culture never disciplines staff', 'Escalate through HR and offer a sanctioned delegation', 'Disable his account until he finishes awareness training', 'Accept the risk, since his wire volume needs the shortcut'], answer: 1, why: 'Repeated, knowing violation after warnings is reckless disregard, which a just culture holds accountable. A sanctioned delegation option removes the reason for the workaround.' }
+          ]
+        },
+        {
+          title: 'Case 5: The SaaS vendor next week (former Lab 6)', text: 'The digital banking team wants to sign a critical SaaS loan platform next week. The vendor’s SOC 2 Type II report lists a complementary user entity control (CUEC): "the customer reviews privileged access quarterly." It carves out the vendor’s cloud hosting provider. The draft contract has no right-to-audit clause.',
+          parts: [
+            { q: 'What must happen before Marigold engages the vendor?', concept: 'diligence', options: ['Sign now and complete the review within 90 days', 'Rely on the vendor’s reputation in the industry', 'Accept the SOC 2 report as full assurance', 'Complete due diligence and note reliance limits'], answer: 3, why: 'Due diligence comes before engagement. Signing to meet a deadline, or trusting a well-known name, is unverified trust, and Marigold keeps accountability for member data.' },
+            { q: 'Who is responsible for the quarterly privileged-access review named in the CUEC?', concept: 'diligence', options: ['The vendor, as part of its SOC 2 program', 'Marigold, which must perform the review', 'The SOC 2 auditor, during its next audit', 'The cloud host, as the subservice provider'], answer: 1, why: 'A CUEC is a control the vendor’s report assumes the customer performs. If Marigold does not run the review, the assurance in the report does not hold.' },
+            { q: 'How should the manager handle the carved-out cloud hosting provider?', concept: 'diligence', options: ['Rely on the vendor’s report, since the host is a large provider', 'Obtain separate assurance on the host, such as its own SOC 2', 'Ask the vendor to sign a letter that the host is secure', 'Ignore it, since the carve-out is the auditor’s decision'], answer: 1, why: 'A carve-out means the report gives no assurance over that provider. Marigold needs separate evidence, usually the host’s own SOC 2 report.' },
+            { q: 'What should happen about the missing right-to-audit clause?', concept: 'diligence', options: ['Negotiate it into the contract now', 'Drop it, since the SOC 2 report replaces any audit', 'Add it at renewal, after the vendor has proven itself', 'Ask internal audit to waive it for this vendor only'], answer: 0, why: 'Contracts carry the controls. Right to audit, breach-notification timelines, SLAs, and data return on exit should be agreed before signing, when Marigold has leverage.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'order', short: 'Vendor life cycle', title: 'Tier the vendors and run the life cycle',
+      instr: 'In the first list, rank Marigold’s vendors from <b>most</b> to <b>least</b> critical using the tiering rule below. Any order within a tier is accepted. In the second list, put the vendor life-cycle steps in order.<br><br><b>Tier 1:</b> holds sensitive member data <b>and</b> provides an essential service or has privileged access to Marigold systems. <b>Tier 2:</b> one of those, but not both. <b>Tier 3:</b> neither.',
+      hint: 'For each vendor, ask two questions: does it hold sensitive data, and would its failure or compromise stop operations or open Marigold’s network? Two yes answers make Tier 1, one makes Tier 2, and none makes Tier 3. For the life cycle, due diligence and the contract come before access, and offboarding comes last.',
+      topLabel: 'Most critical / first',
+      bottomLabel: 'Least critical / last',
+      review: { href: 'lesson05.html#s2', label: 'Lesson 5, Third-Party & Supply-Chain Risk' },
+      groups: [
+        {
+          title: 'Rank the vendors by tier', concept: 'lifecycle',
+          items: [
+            { text: 'Office coffee and snack supplier', rank: 7, accept: [6, 7], why: 'No member data, no system access, and no essential service. This is Tier 3.' },
+            { text: 'Core banking SaaS platform that holds every member account and runs daily transactions', rank: 0, accept: [0, 1, 2], why: 'Sensitive data and an essential service together make this Tier 1.' },
+            { text: 'Document shredding firm that collects paper member records each month', rank: 3, accept: [3, 4, 5], why: 'It handles sensitive records, but its failure would not stop operations and it has no system access. This is Tier 2.' },
+            { text: 'Managed detection and response provider with administrator access to every endpoint', rank: 1, accept: [0, 1, 2], why: 'Privileged access to every endpoint plus visibility into member data make this Tier 1. A compromise of the provider would reach Marigold directly.' },
+            { text: 'Sole internet service provider for the branch network, with no access to member data', rank: 5, accept: [3, 4, 5], why: 'An essential service but no data access, so it is Tier 2. Concentration on a single provider is still a risk to note.' },
+            { text: 'Debit card processor that authorizes every member card transaction', rank: 2, accept: [0, 1, 2], why: 'It holds card data and its outage stops member payments. This is Tier 1.' },
+            { text: 'Conference-room booking app that holds staff names only', rank: 6, accept: [6, 7], why: 'Staff names are not sensitive member data, and the app is not essential. This is Tier 3.' },
+            { text: 'Marketing email platform that holds member names, emails, and product holdings', rank: 4, accept: [3, 4, 5], why: 'It holds member data but provides no essential service and has no system access. This is Tier 2.' }
+          ]
+        },
+        {
+          title: 'Run the vendor life cycle', concept: 'lifecycle', topLabel: 'First step', bottomLabel: 'Last step',
+          items: [
+            { text: 'Negotiate contract terms: right to audit, breach notification, SLAs, and data return or destruction', rank: 3, why: 'The contract carries the controls and is agreed before access is granted.' },
+            { text: 'Monitor performance and reassess the vendor on a schedule set by its tier', rank: 5, why: 'Due diligence is not a one-time event. Tier 1 vendors are reassessed most often.' },
+            { text: 'Define the business need and the data and services the vendor will touch', rank: 0, why: 'The relationship starts with the business purpose, which also scopes the risk.' },
+            { text: 'Offboard: revoke access and confirm return or certified destruction of data', rank: 6, why: 'Exit closes the risk. Access left open after a contract ends is a common finding.' },
+            { text: 'Perform due diligence scaled to the tier, such as reviewing a SOC 2 Type II report', rank: 2, why: 'Assurance is verified before engagement, and the depth of review follows the tier.' },
+            { text: 'Onboard with least-privilege access and put the CUECs into operation', rank: 4, why: 'Access is granted only after the contract, and Marigold starts performing the controls the vendor’s report relies on.' },
+            { text: 'Assess inherent risk and assign the vendor a tier', rank: 1, why: 'Tiering decides how much due diligence, contract protection, and monitoring the vendor needs.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'culture', label: 'Think of the last time someone in your organization reported their own security mistake. What happened to them, and what did everyone else learn from it?' },
+        { key: 'next', label: 'Which concept from this activity will you review before the next lesson, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

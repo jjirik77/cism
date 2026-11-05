@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A9 Business Continuity: BIA, Recovery Objectives, and Testing | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A9',
+  title: 'Business Continuity: BIA, Recovery Objectives, and Testing',
+  accent: 'BIA, Recovery Objectives, and Testing',
+  domain: 'Domain 4',
+  time: '40 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson07.html#s1',
+  lessonLabel: 'Lesson 7, Business Continuity & the BIA',
+  lede: 'Recovery objectives come from the business, through the BIA, and the maximum tolerable downtime is the ceiling every RTO must fit under. Practice deriving MTD, RTO, and RPO from impact data, judging whether a recovery strategy is under-built or over-built, and choosing the test that proves the plan works.',
+  concepts: [
+    { key: 'objectives', name: 'Deriving MTD, RTO, and RPO', review: 'Lesson 7, Recovery Objectives: RTO, RPO & MTD' },
+    { key: 'fit', name: 'Strategy fit and gaps', review: 'Lesson 7, Recovery Strategies & Sites' },
+    { key: 'testing', name: 'Backups and plan testing', review: 'Lesson 7, Backups & Plan Testing' },
+    { key: 'bia', name: 'The BIA-driven sequence', review: 'Lesson 7, Business Continuity & the BIA' }
+  ],
+  stations: [
+    {
+      type: 'calc', short: 'Set the objectives', title: 'From impact to MTD, RTO, and RPO', concept: 'objectives',
+      instr: 'Marrowfield Credit Union\'s board has set two limits. Any loss above <b>$200,000</b> from one process is outside risk tolerance. Any loss above <b>$1,000,000</b> is harm the credit union cannot accept. Using the cumulative impacts below, find the <b>longest duration in the table whose impact stays at or below the limit</b>: the $1,000,000 limit on the outage row gives the <b>MTD</b>, the $200,000 limit on the outage row gives the <b>RTO</b>, and the $200,000 limit on the data-lost row gives the <b>RPO</b>. Enter hours (1 week = 168 hours).',
+      hint: 'Read across a row and stop at the last column still at or below the limit. Each RTO should come out shorter than its MTD, because recovery has to finish before harm becomes unacceptable. A row that never crosses the limit within the table takes the last column. For the final item, subtract the work recovery time from the MTD.',
+      table: {
+        caption: 'Cumulative impact in $ thousands, by length of outage or amount of data lost',
+        head: ['Process and impact', '1 h', '4 h', '8 h', '24 h', '72 h', '1 week'],
+        rows: [
+          ['Card authorization: outage', '80', '180', '450', '1,600', '5,000', '12,000'],
+          ['Card authorization: data lost', '150', '600', '1,100', '2,400', '6,000', '9,000'],
+          ['Online banking: outage', '20', '70', '160', '420', '1,100', '3,000'],
+          ['Online banking: data lost', '30', '190', '350', '800', '1,500', '2,600'],
+          ['Loan origination: outage', '0', '10', '40', '150', '600', '1,800'],
+          ['Loan origination: data lost', '5', '25', '60', '180', '500', '900'],
+          ['Member analytics: outage', '0', '0', '5', '20', '90', '240'],
+          ['Member analytics: data lost', '0', '0', '0', '10', '40', '120']
+        ]
+      },
+      review: { href: 'lesson07.html#s2', label: 'Lesson 7, Recovery Objectives: RTO, RPO & MTD' },
+      items: [
+        { title: 'Card authorization', label: 'MTD', answer: 8, unit: 'hours', why: 'Outage impact is $450K at 8 hours and $1.6M at 24 hours. Beyond 8 hours the harm is unacceptable, so the MTD is 8 hours.' },
+        { title: 'Card authorization', label: 'RTO', answer: 4, unit: 'hours', why: 'Impact is $180K at 4 hours and $450K at 8 hours. The RTO is 4 hours, which sits inside the 8-hour MTD.' },
+        { title: 'Card authorization', label: 'RPO', answer: 1, unit: 'hours', why: 'Losing 1 hour of transactions costs $150K, and 4 hours costs $600K. Data must be captured at least hourly.' },
+        { title: 'Online banking', label: 'MTD', answer: 24, unit: 'hours', why: 'Impact is $420K at 24 hours and $1.1M at 72 hours, so the MTD is 24 hours.' },
+        { title: 'Online banking', label: 'RTO', answer: 8, unit: 'hours', why: 'Impact reaches $160K at 8 hours and $420K at 24 hours. The RTO is 8 hours, well inside the MTD.' },
+        { title: 'Online banking', label: 'RPO', answer: 4, unit: 'hours', why: 'Data loss costs $190K at 4 hours and $350K at 8 hours. The RPO is 4 hours, shorter than the RTO, which is common for transaction systems.' },
+        { title: 'Loan origination', label: 'MTD', answer: 72, unit: 'hours', why: 'Impact is $600K at 72 hours and $1.8M at 1 week. The MTD is 72 hours.' },
+        { title: 'Loan origination', label: 'RTO', answer: 24, unit: 'hours', why: 'Impact is $150K at 24 hours and $600K at 72 hours, so the RTO is 24 hours.' },
+        { title: 'Loan origination', label: 'RPO', answer: 24, unit: 'hours', why: 'A day of lost application data costs $180K, and three days costs $500K. A daily backup meets this RPO.' },
+        { title: 'Member analytics', label: 'RTO', answer: 72, unit: 'hours', why: 'Impact is $90K at 72 hours and $240K at 1 week. Analytics can wait three days, so premium recovery is not justified.' },
+        { title: 'Member analytics', label: 'RPO', answer: 168, unit: 'hours', why: 'Even a week of lost data stays at $120K, because the data can be reloaded from source systems. The RPO is 168 hours.' },
+        { title: 'Wire transfers', text: 'A separate BIA sets the MTD for wire transfers at 12 hours. After systems return, staff need 3 hours to reconcile and release queued wires before the process is truly running again.', label: 'Longest RTO that still fits within the MTD', answer: 9, unit: 'hours', why: 'Systems recovery plus the 3 hours of work recovery must finish inside the 12-hour MTD. The RTO can be no longer than 12 minus 3, or 9 hours.' }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Strategy fit', title: 'Under-built, over-built, or a fit', concept: 'fit',
+      instr: 'Use Marrowfield\'s objectives from Station 1. You are the information security manager, Yusuf Adeyemi-Clarke. For each case, compare the strategy and its tested results with the objectives and choose the <b>BEST</b> answer from the manager\'s chair.',
+      hint: 'Hot sites recover in minutes to hours, warm sites in hours to days, and cold sites in days to weeks. Backup frequency drives the RPO, and restore speed drives the RTO. The objectives come from the BIA, and no RTO may exceed the MTD. Tested results, not the design, are the evidence.',
+      review: { href: 'lesson07.html#s3', label: 'Lesson 7, Recovery Strategies & Sites' },
+      items: [
+        {
+          title: 'Case 1: Card authorization (former Lab 9)', text: 'Card authorization has an MTD of 8 hours, an RTO of 4 hours, and an RPO of 1 hour. Its DR strategy is a warm site fed by nightly backups. Two DR tests recovered service in 10 and 12 hours, with data up to 24 hours old. The finance director, Ingrid Halloway, proposes "just changing the RTO to 12 hours so we pass."',
+          parts: [
+            { q: 'How does the tested recovery compare with the objectives?', options: ['It meets the RTO, since warm sites are built for this', 'It misses the 4-hour RTO and also exceeds the 8-hour MTD', 'It misses the RTO, but stays within the 8-hour MTD', 'It cannot be judged until a full-interruption test is run'], answer: 1, why: 'Tested recovery of 10 to 12 hours misses the RTO by 6 to 8 hours and runs past the point where harm becomes unacceptable. That is a serious capability gap.' },
+            { q: 'What is the RPO exposure?', options: ['Up to 24 hours of data, against a 1-hour RPO', 'About 12 hours, the length of the slowest test', 'None, because the backups are stored off-site', 'About 1 hour, since the BIA sets the RPO at 1 hour'], answer: 0, why: 'Nightly backups mean a failure just before the next run loses almost a day of transactions. Backup frequency, not restore speed, sets the RPO exposure.' },
+            { q: 'How should Yusuf respond to the proposal to raise the RTO to 12 hours?', options: ['Decline, since 12 hours exceeds the MTD set by the BIA', 'Agree, since the BIA should match the proven capability', 'Agree, if the DR test results are attached to the revised BIA', 'Ask IT to run more tests until a 4-hour recovery is achieved'], answer: 0, why: 'Changing the objective to fit the capability inverts the BIA and manufactures a pass. A 12-hour RTO is also past the 8-hour MTD, so no risk owner could accept it as a recovery objective.' },
+            { q: 'What should Yusuf recommend to senior management?', options: ['Add hourly incremental backups and keep the warm site as it is', 'Move the warm site closer to the main data center', 'Switch the nightly full backups to differential backups', 'A business case for a hot site with real-time replication'], answer: 3, why: 'Only a hot site with near-real-time replication meets a 4-hour RTO and a 1-hour RPO. The manager presents it as a business case, with cost set against the impact the BIA quantified.' }
+          ]
+        },
+        {
+          title: 'Case 2: Member analytics', text: 'Member analytics (RTO 72 hours, RPO 168 hours) runs active-active across two data centers with synchronous replication, at a cost of $850,000 a year. Failover tests finish in under 10 minutes.',
+          parts: [
+            { q: 'What should Yusuf conclude?', options: ['No issue, since more resilience always lowers risk', 'A gap, since active-active needs a near-zero RTO in the BIA', 'An over-build to present to management for a decision', 'A gap, because replication cannot meet a 168-hour RPO'], answer: 2, why: 'Capability far exceeds what the BIA requires. The manager reports that the spend is not justified by the impact, and management decides whether to redirect it.' },
+            { q: 'Which strategy BEST fits the objectives?', options: ['Cold site or cloud restore from weekly backups', 'A hot site with synchronous replication, as now', 'A warm site with backups every 4 hours', 'An active-passive pair with hourly replication'], answer: 0, why: 'A 72-hour RTO and a one-week RPO allow a low-cost option. A warm or hot site would still over-build for a process the BIA ranks as low impact.' }
+          ]
+        },
+        {
+          title: 'Case 3: Replication only', text: 'After card authorization moves to a hot site with synchronous replication, the infrastructure lead, Haruto Bianchi, proposes retiring the tape and immutable cloud backups because "replication already gives us a live copy."',
+          parts: [
+            { q: 'What is the main risk in this plan?', options: ['The hot site may run slower than the main site', 'Ransomware or corruption replicates there too', 'Regulators require tape for core banking systems', 'Synchronous replication cannot meet a 1-hour RPO'], answer: 1, why: 'Replication copies every change, including encrypted or corrupted data. Point-in-time backups, ideally immutable or offline, are needed to restore to a clean state.' }
+          ]
+        },
+        {
+          title: 'Case 4: Backups that always succeed', text: 'Loan origination is backed up nightly to a cloud vault. Backup jobs show a 100 percent success rate for 18 months. The operations manager, Leilani Kapoor, confirms that no restore has been attempted in that time.',
+          parts: [
+            { q: 'What is Yusuf\'s FIRST concern?', concept: 'testing', options: ['Nightly backups are too frequent for loan origination', 'Backups should be stored on tape, not in the cloud', 'The backup software should be replaced with a newer tool', 'Job success does not show that the data can be restored'], answer: 3, why: 'A successful job proves only that a copy was written. The manager requires periodic, documented restore tests before relying on the backups.' }
+          ]
+        },
+        {
+          title: 'Case 5: Choose the test', text: 'Choose the test that BEST fits each situation.',
+          parts: [
+            { q: 'The plan was rewritten after a merger, and the new call tree and vendor contacts have never been checked.', concept: 'testing', options: ['Full-interruption test', 'Parallel test', 'Checklist review', 'Simulation'], answer: 2, why: 'A checklist review confirms that plan content such as contacts and inventories is current, with no disruption. It is the right first step for a rewritten plan.' },
+            { q: 'Management wants proof that card authorization can run at the hot site, without risking live card transactions.', concept: 'testing', options: ['Checklist review', 'Parallel test', 'Full-interruption test', 'Tabletop exercise'], answer: 1, why: 'A parallel test brings systems up at the alternate site while production keeps running. It proves recovery without disrupting members.' },
+            { q: 'Executives need to practice decisions about a ransomware outage that forces the BCP, without touching any systems.', concept: 'testing', options: ['Parallel test', 'Full-interruption test', 'Checklist review', 'Tabletop exercise'], answer: 3, why: 'A tabletop exercise walks leaders through a scenario so they rehearse decisions, roles, and communication at no operational risk.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'order', short: 'Test ladder', title: 'Test ladder and the BIA sequence',
+      instr: 'Put each list in order. In the first, rank continuity and DR test types from <b>least</b> to <b>most</b> disruption to operations. In the second, order the steps that take the credit union from business impact to a verified recovery capability.',
+      hint: 'Paper reviews come before discussion exercises, exercises come before live recovery, and only a full interruption takes production offline. For the sequence, ask what each step needs as its input: no strategy can be chosen before the objectives exist.',
+      topLabel: 'First / least disruptive',
+      bottomLabel: 'Last / most disruptive',
+      review: { href: 'lesson07.html#s4', label: 'Lesson 7, Backups & Plan Testing' },
+      groups: [
+        {
+          title: 'Test types, least to most disruptive', concept: 'testing',
+          items: [
+            { text: 'Simulation: the team carries out its response to a realistic scenario, short of recovering production', rank: 2, why: 'A simulation tests actions and decisions under realistic conditions at low risk, without moving production.' },
+            { text: 'Full interruption: production is shut down and operations move to the recovery site', rank: 4, why: 'This is the most thorough and the riskiest test. It is used sparingly, with senior approval and careful planning.' },
+            { text: 'Checklist or desk review: plan owners confirm contacts, inventories, and procedures are current', rank: 0, why: 'A desk review of plan content involves no exercise and no disruption.' },
+            { text: 'Parallel test: recovery systems run at the alternate site while production keeps running', rank: 3, why: 'A parallel test proves recovery capability with moderate risk, because production is not shut down.' },
+            { text: 'Structured walkthrough: each team member steps through their part of the plan in sequence', rank: 1, why: 'A walkthrough is discussion-based and adds rehearsal of each role, with little or no disruption.' }
+          ]
+        },
+        {
+          title: 'From business impact to verified recovery', concept: 'bia', topLabel: 'First step', bottomLabel: 'Last step',
+          items: [
+            { text: 'Set the MTD, then an RTO and RPO for each process that fit inside it', rank: 2, why: 'Objectives come from the impact data and are approved by the business owner. The RTO must fit within the MTD.' },
+            { text: 'Test the plan and record the recovery time and data loss actually achieved', rank: 4, why: 'Testing turns a design into evidence. Untested capability is assumed, not proven.' },
+            { text: 'Identify critical business processes and the owners accountable for them', rank: 0, why: 'The BIA starts with the business processes and the people who own them.' },
+            { text: 'Report any gap to senior management and update the plan after every test', rank: 5, why: 'Gaps go to the people who fund and accept risk, and the plan stays a living document.' },
+            { text: 'Quantify the impact of an outage and of lost data over time', rank: 1, why: 'Impact over time is the input that becomes the MTD, RTO, and RPO.' },
+            { text: 'Select and fund recovery strategies that meet the objectives at acceptable cost', rank: 3, why: 'Strategy follows the objectives. The business case weighs cost against the impact the BIA quantified.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'shift', label: 'Think of a critical process you know. Do you know its MTD, RTO, and RPO, and has anyone shown in a test that recovery fits inside them? Who would you ask?' },
+        { key: 'next', label: 'Which concept from this activity will you review before the next lesson, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

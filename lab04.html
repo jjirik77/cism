@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B4 Third-Party and AI Vendor Risk Onboarding | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+.b4-rpt { border: 1px solid var(--border); border-radius: 4px; padding: 1rem 1.2rem; background: #fff; margin-bottom: 1.2rem; }
+.b4-rpt p { font: .9rem/1.65 Georgia, serif; color: var(--text-primary); margin: 0 0 .75rem; }
+.b4-rpt h4 { font: 700 1rem Georgia, serif; color: var(--text-primary); margin: 1rem 0 .45rem; }
+.b4-rpt h4:first-child { margin-top: 0; }
+.b4-rpt ul, .b4-rpt ol { font: .9rem/1.6 Georgia, serif; color: var(--text-primary); margin: 0 0 .75rem; padding-left: 1.4rem; }
+.b4-rpt p.b4-hdr { font: 700 .7rem Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 .5rem; }
+.b4-sig { font-style: italic; }
+.b4-t td { font-size: .8rem; vertical-align: top; }
+.b4-t td.id { font-family: 'Courier New', monospace; white-space: nowrap; font-weight: 700; color: var(--text-primary); }
+.b4-sec { font-family: 'Courier New', monospace; font-weight: 700; color: var(--navy); margin-right: .35rem; }
+.b4-rpt p.b4-note, .b4-note { font: .82rem/1.55 Arial, sans-serif; color: var(--text-secondary); margin: .5rem 0 0; }
+.b4-calc { margin-top: 1.4rem; }
+.b4-calc-head { padding: .9rem 1.2rem; border-bottom: 1px solid var(--border); background: var(--blue-pale); border-radius: 4px 4px 0 0; }
+.b4-calc-head h3 { font: 700 1.05rem Georgia, serif; margin: 0 0 .2rem; color: var(--text-primary); }
+.b4-calc-head p { font: .84rem/1.5 Arial, sans-serif; margin: 0; color: var(--text-secondary); }
+.b4-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; padding: 1rem 1.2rem; }
+.b4-f { border: 1px solid var(--border); border-radius: 4px; padding: .6rem .8rem .7rem; margin: 0; min-width: 0; }
+.b4-f legend { font: 700 .8rem Arial, sans-serif; color: var(--text-primary); padding: 0 .3rem; }
+.b4-f legend span { font-weight: 400; color: var(--text-muted); }
+.b4-f label { display: flex; gap: .5rem; align-items: flex-start; padding: .3rem .35rem; border-radius: 3px; cursor: pointer; font: .8rem/1.4 Arial, sans-serif; color: var(--text-secondary); }
+.b4-f label:hover { background: var(--blue-pale); }
+.b4-f label b { color: var(--text-primary); }
+.b4-f input { accent-color: var(--navy); margin-top: .15rem; flex-shrink: 0; }
+.b4-out { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem 1.4rem; align-items: center; padding: 0 1.2rem 1.1rem; }
+.b4-tier { border: 2px solid var(--navy); border-radius: 6px; padding: .6rem 1rem; text-align: center; min-width: 9.5rem; background: #fff; }
+.b4-tier .n { font: 900 1.7rem 'Arial Narrow', Arial, sans-serif; color: var(--navy); line-height: 1.1; }
+.b4-tier .l { font: 700 .7rem Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+.b4-tier.t1 { border-color: var(--wrong); } .b4-tier.t1 .n { color: var(--wrong); }
+.b4-tier.t2 { border-color: var(--amber); } .b4-tier.t2 .n { color: #8a5a00; }
+.b4-meter { position: relative; height: 26px; border-radius: 4px; overflow: hidden; display: flex; border: 1px solid var(--border); }
+.b4-meter i { display: block; height: 100%; font: 700 .64rem/26px Arial, sans-serif; color: var(--text-secondary); text-align: center; letter-spacing: .05em; }
+.b4-meter i.z3 { background: var(--correct-bg); } .b4-meter i.z2 { background: #fdf3dc; } .b4-meter i.z1 { background: var(--wrong-bg); }
+.b4-meter b { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; background: var(--text-primary); border-radius: 2px; transition: left .25s; }
+.b4-calc-detail { font: .84rem/1.6 Arial, sans-serif; color: var(--text-secondary); margin: .5rem 0 0; }
+.b4-calc-detail b { color: var(--text-primary); }
+.b4-btns { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0 1.2rem 1.1rem; align-items: center; }
+.b4-src { font: .78rem Arial, sans-serif; color: var(--text-muted); }
+@media (max-width: 760px) { .b4-grid { grid-template-columns: minmax(0, 1fr); } .b4-out { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== Vendor file data (fixed) =====================
+   Bellhaven Mutual Insurance (customer) and Lumora Labs, Inc. (generative AI SaaS vendor).
+   Planted: a business-owner self-assessment that under-tiers the vendor; five questionnaire
+   answers that contradict the SOC 2 report, plus two that contradict other documents (not the
+   SOC 2); two carve-outs and an excluded training pipeline; a four-month gap with no bridge
+   letter; contract clauses that are required but missing, and two that are required but already
+   present; CUECs that apply and CUECs for features Bellhaven will not use.
+   Every checklist key below is computed from these arrays. */
+(function () {
+  var factors = [
+    { key: 'data', label: 'Data sensitivity', weight: 3, levels: [
+      ['Public', 'Approved for public release.'],
+      ['Internal', 'Routine business information, such as procedures and templates.'],
+      ['Confidential', 'Claim amounts, reserves, and business plans without personal identifiers.'],
+      ['Restricted', 'Social Security numbers, medical or health information, or bank details.']] },
+    { key: 'crit', label: 'Business criticality', weight: 2, levels: [
+      ['Low', 'An outage never causes a missed customer commitment.'],
+      ['Moderate', 'A customer commitment is missed only after more than 72 hours.'],
+      ['High', 'A customer commitment is missed within 72 hours.'],
+      ['Critical', 'A commitment or regulatory filing is missed within 24 hours.']] },
+    { key: 'access', label: 'Access and integration', weight: 2, levels: [
+      ['None', 'No Bellhaven data or system connection.'],
+      ['User-level', 'Users upload or paste data. No system connection.'],
+      ['Integrated, read', 'An integration reads from Bellhaven systems.'],
+      ['Integrated, write', 'An integration writes to Bellhaven systems or holds privileged access.']] },
+    { key: 'ai', label: 'AI use', weight: 2, levels: [
+      ['No AI', 'The service does not use AI models.'],
+      ['AI, no Bellhaven data', 'AI features never receive Bellhaven data in prompts.'],
+      ['Generative AI, protected', 'Processes Bellhaven data. Contractually no training, and retention of 30 days or less.'],
+      ['Generative AI, exposed', 'Processes Bellhaven data, and the vendor may train on it or keep it longer than 30 days.']] }
+  ];
+  var bands = { t1: 18, t2: 10, max: 27 };
+  function score(sel) { return factors.reduce(function (s, f) { return s + f.weight * (sel[f.key] || 0); }, 0); }
+  function tier(sel) { var s = score(sel); if (sel.data === 3 && sel.ai === 3) return 1; return s >= bands.t1 ? 1 : (s >= bands.t2 ? 2 : 3); }
+
+  // Data classification (Bellhaven policy DC-1) and the facts in the business request
+  var classOf = { 'Claimant names and addresses': 2, 'Policy and claim numbers': 2, 'Claimant Social Security numbers (bodily injury claims)': 3, 'Medical records and treatment notes': 3, 'Adjuster notes': 2, 'Letter templates': 1 };
+  var request = {
+    data: ['Claimant names and addresses', 'Policy and claim numbers', 'Claimant Social Security numbers (bodily injury claims)', 'Medical records and treatment notes', 'Adjuster notes', 'Letter templates'],
+    missHours: 7 * 24, // the 10-day letter commitment is missed after about a week of outage
+    integration: { reads: true, writes: true },
+    features: ['sso', 'api', 'console', 'outputs'],
+    plan: 'Standard',
+    owner: { data: 1, crit: 0, access: 1, ai: 2 }
+  };
+
+  var period = { start: 'January 1, 2026', end: 'June 30, 2026', issued: 'August 14, 2026', tsc: 'Security', keys: 'vendor', scope: 'partial' };
+  var controls = [
+    ['LM-01', 'CC1.4', 'Background checks are completed for new workforce members before access is granted.', 'Inspected background check results for a sample of 20 new hires.', 'No exceptions noted.'],
+    ['LM-02', 'CC6.2', 'Workforce access is removed within one business day of termination.', 'Compared termination and removal dates for a sample of 15 terminations.', 'No exceptions noted.'],
+    ['LM-03', 'CC6.1', 'Workforce access to production requires single sign-on with multi-factor authentication.', 'Inspected identity provider policy and observed a production sign-on.', 'No exceptions noted.'],
+    ['LM-04', 'CC6.7', 'Customer data is encrypted in transit with TLS 1.2 or higher and at rest with AES-256 using Lumora-managed keys in the Vantor key management service.', 'Inspected encryption settings for databases, object storage, and endpoints.', 'No exceptions noted.'],
+    ['LM-05', 'CC8.1', 'Production changes are peer reviewed and approved before deployment.', 'Inspected approval evidence for a sample of 30 changes.', 'No exceptions noted.'],
+    ['LM-06', 'CC6.3', 'Security staff review workforce access to production quarterly.', 'Inspected the access reviews for the two quarters in the period.', 'Exception noted. The review for the quarter ended June 30, 2026 was not performed.'],
+    ['LM-07', 'CC7.2', 'Security events are monitored around the clock. Logs are retained for one year.', 'Inspected monitoring configuration, log retention settings, and a sample of 25 alerts.', 'No exceptions noted.'],
+    ['LM-08', 'CC7.1', 'Vulnerability scans run weekly. Critical vulnerabilities are remediated within 14 days.', 'Inspected scan schedules and remediation dates for all 25 critical findings.', 'Exception noted. 4 of 25 critical vulnerabilities were remediated in 22 to 41 days.'],
+    ['LM-09', 'CC4.1', 'An independent firm performs a penetration test annually and findings are tracked to closure.', 'Inspected the March 2026 test report and the remediation tracker.', 'No exceptions noted.'],
+    ['LM-10', 'CC7.4', 'The incident response plan is tested at least annually.', 'Inspected the April 2026 tabletop exercise report.', 'No exceptions noted.'],
+    ['LM-11', 'CC9.2', 'Subservice organizations are reviewed annually.', 'Inspected the annual review file for each subservice organization.', 'No exceptions noted.'],
+    ['LM-12', 'CC6.1', 'Customer data is logically separated by tenant identifier at the application and storage layers.', 'Inspected tenant isolation configuration and re-performed a cross-tenant query.', 'No exceptions noted.']
+  ].map(function (r) { return { id: r[0], tsc: r[1], activity: r[2], test: r[3], result: r[4], exception: /^Exception noted/.test(r[4]) }; });
+
+  var cuecs = [
+    { id: 'CUEC-1', feature: 'sso', text: 'Customers that use single sign-on provision and deprovision their users through their own identity provider.' },
+    { id: 'CUEC-2', feature: 'extension', text: 'Customers that deploy the Lumora browser extension restrict it to managed browsers and approved users.' },
+    { id: 'CUEC-3', feature: 'sso', text: 'Customers that use single sign-on enforce multi-factor authentication in their identity provider.' },
+    { id: 'CUEC-4', feature: 'byok', text: 'Customers that bring their own encryption keys manage key rotation and revocation.' },
+    { id: 'CUEC-5', feature: 'console', text: 'Customer administrators configure the data controls in the Admin Console (training opt-out and retention) and review them after each plan or terms change.' },
+    { id: 'CUEC-6', feature: 'agent', text: 'Customers that run the on-premises connector agent patch and monitor the agent host.' },
+    { id: 'CUEC-7', feature: 'api', text: 'Customers that use API connectors protect connector credentials, scope them to least privilege, and rotate them.' },
+    { id: 'CUEC-8', feature: 'outputs', text: 'Customers review generated outputs before relying on them or sending them to third parties.' }
+  ];
+
+  // Questionnaire: ref names the document and fact each answer can be checked against.
+  var questions = [
+    ['Q-01', 'Identity', 'Is multi-factor authentication required for all workforce access to production?', 'Yes', 'Enforced through single sign-on for every engineer and administrator.', 'soc', 'LM-03', 'effective'],
+    ['Q-02', 'Encryption', 'How is customer data encrypted at rest, and who manages the keys?', 'AES-256, customer-managed keys', 'Every customer’s data is encrypted with keys the customer controls.', 'soc', 'keys', 'customer'],
+    ['Q-03', 'Personnel', 'Are background checks performed before workforce members receive access?', 'Yes', 'Third-party background screening at hire.', 'soc', 'LM-01', 'effective'],
+    ['Q-04', 'Access', 'Are workforce access rights reviewed quarterly?', 'Yes', 'All quarterly reviews were completed in the last 12 months.', 'soc', 'LM-06', 'effective'],
+    ['Q-05', 'Vulnerabilities', 'What is your remediation commitment for critical vulnerabilities?', '14 days', '100 percent of critical findings met the 14-day commitment in 2026.', 'soc', 'LM-08', 'effective'],
+    ['Q-06', 'Testing', 'Is an independent penetration test performed at least annually?', 'Yes', 'Most recent test March 2026. Executive summary available under NDA.', 'soc', 'LM-09', 'effective'],
+    ['Q-07', 'Incidents', 'Is the incident response plan tested at least annually?', 'Yes', 'Tabletop exercise held April 2026.', 'soc', 'LM-10', 'effective'],
+    ['Q-08', 'Assurance', 'Does your SOC 2 report cover every system and provider that processes customer data?', 'Yes', 'The report covers the full Lumora platform end to end.', 'soc', 'scope', 'complete'],
+    ['Q-09', 'AI', 'Is customer data used to train or improve AI models?', 'No', 'Customer data is never used for model training.', 'terms', 'training', 'never'],
+    ['Q-10', 'Residency', 'Where is customer data stored and processed?', 'United States only', 'All processing occurs in US data centers.', 'subs', 'location', 'us'],
+    ['Q-11', 'Logging', 'Are security logs monitored continuously and retained for at least one year?', 'Yes', 'Around-the-clock monitoring. One-year retention.', 'soc', 'LM-07', 'effective'],
+    ['Q-12', 'Change', 'Are production changes reviewed and approved before deployment?', 'Yes', 'Peer review and approval are enforced in the pipeline.', 'soc', 'LM-05', 'effective'],
+    ['Q-13', 'Assurance', 'Which trust services criteria does your SOC 2 report cover?', 'Security, Availability, Confidentiality', 'Type II report issued August 2026.', 'soc', 'tsc', 'Security, Availability, Confidentiality'],
+    ['Q-14', 'Incidents', 'How quickly do you notify customers of a security incident?', 'Without undue delay', 'As stated in our standard DPA.', 'dpa', 'notice', 'undue'],
+    ['Q-15', 'Access', 'How quickly is access removed when workforce members leave?', 'Within one business day', 'HR-driven deprovisioning.', 'soc', 'LM-02', 'effective'],
+    ['Q-16', 'Isolation', 'How is one customer’s data separated from another’s?', 'Logical tenant isolation', 'Tenant identifier enforced at the application and storage layers.', 'soc', 'LM-12', 'effective']
+  ].map(function (r) { return { id: r[0], domain: r[1], q: r[2], a: r[3], c: r[4], src: r[5], ref: r[6], claim: r[7] }; });
+
+  // Bellhaven Third-Party Contract Standard TP-4, clause library. status = what the current Lumora paper says.
+  var clauses = [
+    { id: 'TC-01', name: 'Security incident notice to Bellhaven within 72 hours of discovery', rule: 'Tier 1 or Tier 2', req: function (l, t) { return t <= 2; }, status: 'deficient', where: 'DPA 7.1' },
+    { id: 'TC-02', name: 'Right to assess, with annual delivery of the SOC 2 report and a bridge letter for any gap', rule: 'Tier 1', req: function (l, t) { return t === 1; }, status: 'deficient', where: 'DPA 9.2' },
+    { id: 'TC-03', name: 'Thirty days’ advance notice of new subprocessors, with a right to object', rule: 'Tier 1', req: function (l, t) { return t === 1; }, status: 'absent', where: 'DPA 6.3' },
+    { id: 'TC-04', name: 'Restricted data stored and processed, including any human review, only in the United States', rule: 'Restricted data', req: function (l) { return l.data === 3; }, status: 'absent', where: 'DPA 8.1' },
+    { id: 'TC-05', name: 'Return or deletion of data within 30 days of termination, with a certificate of deletion', rule: 'Tier 1 or Tier 2', req: function (l, t) { return t <= 2; }, status: 'present', where: 'DPA 10.2' },
+    { id: 'TC-06', name: 'Written prohibition on training or improving any model with Bellhaven inputs or outputs', rule: 'AI use level 2 or 3', req: function (l) { return l.ai >= 2; }, status: 'absent', where: 'AI terms 3.1' },
+    { id: 'TC-07', name: 'Prompts and outputs retained no longer than 30 days', rule: 'AI use level 2 or 3', req: function (l) { return l.ai >= 2; }, status: 'deficient', where: 'AI terms 4.1' },
+    { id: 'TC-08', name: 'Source code and model escrow with release conditions', rule: 'Criticality Critical', req: function (l) { return l.crit === 3; }, status: 'absent', where: 'MSA (none)' },
+    { id: 'TC-09', name: 'Availability commitment of 99.9 percent with service credits', rule: 'Criticality High or Critical', req: function (l) { return l.crit >= 2; }, status: 'absent', where: 'MSA (none)' },
+    { id: 'TC-10', name: 'Vendor cyber liability insurance of at least $5 million', rule: 'Tier 1', req: function (l, t) { return t === 1; }, status: 'present', where: 'MSA 14.3' }
+  ];
+
+  var subs = [
+    ['Vantor Compute, Inc.', 'Cloud hosting, storage, and inference infrastructure', 'All customer data', 'US East (Virginia), US West (Oregon)', 'us'],
+    ['Arclight Model Co.', 'Foundation model inference (no retention under contract)', 'Prompts and outputs in transit', 'United States', 'us'],
+    ['Talwar Annotation Services Pvt. Ltd.', 'Human review of flagged content and output quality evaluation', 'Samples of inputs and outputs', 'Pune, India', 'non-us'],
+    ['Fennick Analytics Ltd.', 'Product usage telemetry', 'Usage metadata, no content', 'Dublin, Ireland', 'non-us'],
+    ['Brightdesk, Inc.', 'Customer support ticketing', 'Content that customers attach to support tickets', 'United States', 'us']
+  ].map(function (r) { return { name: r[0], svc: r[1], data: r[2], loc: r[3], region: r[4] }; });
+
+  var terms = { trainingDefault: true, optOutProspective: true, retentionMonths: 18, optedOutDays: 30 };
+
+  // ---------- Derivation of the correct factor levels from the request facts ----------
+  function truth() {
+    var data = Math.max.apply(null, request.data.map(function (d) { return classOf[d]; }));
+    var h = request.missHours, crit = h === Infinity ? 0 : (h > 72 ? 1 : (h > 24 ? 2 : 3));
+    var access = request.integration.writes ? 3 : (request.integration.reads ? 2 : 1);
+    var ai = (terms.trainingDefault || terms.retentionMonths * 30 > 30) ? 3 : 2;
+    return { data: data, crit: crit, access: access, ai: ai };
+  }
+  var T = truth(), tierT = tier(T);
+  var socFacts = { keys: period.keys, scope: period.scope, tsc: period.tsc };
+  controls.forEach(function (c) { socFacts[c.id] = c.exception ? 'exception' : 'effective'; });
+
+  window.B4DATA = {
+    factors: factors, bands: bands, score: score, tier: tier, classOf: classOf, request: request, period: period,
+    controls: controls, cuecs: cuecs, questions: questions, clauses: clauses, subs: subs, terms: terms, truth: T,
+    answers: {
+      score: score(T), tier: tierT,
+      contra: questions.filter(function (q) { return q.src === 'soc' && socFacts[q.ref] !== q.claim; }).map(function (q) { return q.id; }),
+      clauses: clauses.filter(function (c) { return c.req(T, tierT) && c.status !== 'present'; }).map(function (c) { return c.id; }),
+      cuecs: cuecs.filter(function (c) { return request.features.indexOf(c.feature) >= 0; }).map(function (c) { return c.id; })
+    }
+  };
+})();
+</script>
+
+<script>
+window.LAB = {
+  id: 'B4',
+  title: 'Third-Party and AI Vendor Risk Onboarding',
+  accent: 'AI Vendor Risk',
+  domain: 'Domain 3 (33%)',
+  time: '60 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson05.html#s2',
+  lessonLabel: 'Lesson 5, Third-Party & Supply-Chain Risk',
+  lede: 'A business unit wants a generative AI service live next week. Tier the vendor on its real risk, read the assurance critically, and decide what must be true before any claim data leaves the building.',
+  workbenchTitle: 'Vendor file and tiering',
+  ticket: {
+    number: 'TPRM-2026-0417',
+    priority: 'High priority',
+    from: 'Marcus Delacroix-Hale, Chief Risk Officer',
+    to: 'Information Security Manager (you)',
+    subject: 'Onboarding decision: Lumora Draft for Claims Operations',
+    due: 'Decision memo by Friday; Claims wants go-live Monday',
+    body: '<p>Claims Operations wants <b>Lumora Draft</b>, a generative AI service from Lumora Labs, Inc., to summarize claim files and draft claimant letters for 180 adjusters. Adaeze Okonkwo, our VP of Claims Operations, has already bought 180 Standard plan seats on a corporate card and wants it live <b>Monday</b>. Her request rates the vendor Tier 3, which would mean a light-touch onboarding.</p>' +
+      '<p>Third-party risk is your call under our Third-Party Contract Standard TP-4. Run the vendor file. Tier Lumora on the facts, not on the request form. Test the questionnaire against the SOC 2 report, read the DPA and the AI terms, and decide which contract clauses and which of our own controls must be in place.</p>' +
+      '<p>I want a decision I can stand behind: approve, approve with conditions, or decline. If you set conditions, give each one an owner. Claims is a core business and I do not want security to be the reason a good tool fails. I also do not want claimant medical records training someone else’s model.</p>'
+  },
+  howTo: 'The <b>vendor file</b> in step 2 has a tab for each document: the business request, the SOC 2 excerpt, the security questionnaire, the DPA and MSA, the AI use terms, the subprocessor list, and Bellhaven’s own standard. Use the arrow keys to move between tabs. Below the file, the <b>tiering calculator</b> starts with the business owner’s self-assessment. Change each factor to what the evidence supports and the score and tier recompute live. Every checklist item has a hint. After your first check you can reveal the manager’s debrief, but a revealed item earns no points. Team mode: split the documents, then agree on the tier and the decision together.',
+  workIntro: 'Read the vendor file, correct the tiering calculator, and record your conclusions in the checklist below. The documents are fixed records; only the calculator changes as you work.',
+  checklist: [
+    { id: 'score', type: 'number', points: 10, short: 'Inherent risk score', title: 'Inherent risk score',
+      task: 'Set each factor in the <b>tiering calculator</b> to the level the evidence supports, using the definitions in the <b>Bellhaven standard</b> tab and the facts in the <b>Business request</b>. Do not accept the business owner’s self-assessment. What inherent risk score does Lumora Draft receive?',
+      answer: function () { return B4DATA.answers.score; }, unit: 'points (of 27)',
+      hint: 'Rate each factor on the worst case that applies. Data sensitivity takes the highest class in the claim file. Criticality turns on when the 10-day letter commitment is missed. Access turns on whether the connector writes. AI use turns on the terms as signed, not on the plan Claims might buy later.',
+      debrief: '<p>The evidence supports Restricted data (Social Security numbers and medical records, 3 × 3 = 9), Moderate criticality (the 10-day letter commitment slips after about a week, 1 × 2 = 2), integrated write access (the ClaimsCore connector writes draft letters back, 3 × 2 = 6), and exposed generative AI use (the Standard terms allow training and 18-month retention, 3 × 2 = 6). The score is <b>23 of 27, Tier 1</b>. The override for Restricted data with exposed AI use would make it Tier 1 on its own.</p><p>The self-assessment scored 9, Tier 3, by describing the tool as a writing aid with internal data. Business owners rate what they intend to do. The security manager rates what the data, the integration, and the contract actually allow. Tiering sets how much due diligence the vendor gets, so an under-tiered vendor skips the controls it most needs.</p>',
+      reviewNote: 'Tier on the data, the integration, and the contract as signed, not on the request form.' },
+    { id: 'contra', type: 'set', points: 15, short: 'Questionnaire contradictions', title: 'Questionnaire answers the SOC 2 report contradicts',
+      task: 'Compare each answer in the <b>Security questionnaire</b> with the <b>SOC 2 excerpt</b>. Enter the question ID of every answer that the SOC 2 report contradicts. Consider only the SOC 2 report here.',
+      label: 'Question IDs contradicted by the SOC 2 report', placeholder: 'e.g., Q-01, Q-02',
+      answer: function () { return B4DATA.answers.contra; },
+      hint: 'Check the control results, the trust services criteria named in the opinion, the scope paragraph, and how the system description says keys are managed. Two answers are contradicted by other documents in the file, not by the SOC 2 report; leave those out here and use them later.',
+      debrief: '<p>Five answers conflict with the SOC 2 report. Q-02 claims customer-managed keys; LM-04 says Lumora manages the keys. Q-04 claims every quarterly access review was done; LM-06 shows the June 2026 review was skipped. Q-05 claims 100 percent on-time critical remediation; LM-08 shows 4 of 25 were late by up to four weeks. Q-08 claims full coverage; the report carves out Vantor and Arclight and excludes the training pipeline. Q-13 claims three criteria; the opinion covers Security only. Q-09 (training) and Q-10 (residency) are also false, but the AI terms and the subprocessor list contradict them, not the report.</p><p>A questionnaire is the vendor’s self-description; the SOC 2 report is independent evidence. When they disagree, the manager trusts the tested evidence, records each contradiction, and asks the vendor to correct the answers in writing. Seven inaccurate answers out of sixteen is itself a finding about how Lumora’s sales and security teams work together, and it lowers the weight the questionnaire deserves.</p>',
+      reviewNote: 'Test self-reported questionnaire answers against independent assurance.' },
+    { id: 'soc', type: 'choice', points: 10, short: 'What the SOC 2 leaves out', title: 'What the SOC 2 report does not give Bellhaven',
+      task: 'Read the <b>SOC 2 excerpt</b> closely: the period, the criteria, the carve-outs, and the scope note. Which statement best describes what the report does <b>not</b> give Bellhaven?',
+      options: ['Assurance that Lumora’s own access and change controls operated during the period', 'Any usable assurance, because a six-month Type II period is too short to rely on', 'Assurance over Vantor and Arclight, the training pipeline, or the months since June 30', 'Assurance over encryption, because the Security criteria do not address encryption at all'],
+      answer: 2,
+      hint: 'A Type II report gives tested assurance only for what is inside its scope and its period. List what is carved out, what is excluded, and how much time has passed since the period ended.',
+      debrief: '<p>The report gives tested assurance over Lumora’s own Security controls from January through June 2026. It gives none over Vantor (hosting) or Arclight (model inference), which are carved out, and none over the training and evaluation pipeline, which is excluded from the system. That pipeline is exactly where Bellhaven’s data would go under the Standard terms. More than four months have passed since June 30, and there is no bridge letter on file.</p><p>A six-month Type II report is usable; it is common for a first examination. The manager’s job is to know its edges and cover them: request Vantor’s and Arclight’s reports, a bridge letter for July onward, and contractual commitments where no assurance exists. Availability and Confidentiality were not examined, so those questionnaire claims carry no assurance either.</p>',
+      reviewNote: 'Map carve-outs, exclusions, criteria, and the gap period before relying on a SOC 2 report.' },
+    { id: 'ai', type: 'choice', points: 10, short: 'AI data use', title: 'What happens to claim data under the AI terms',
+      task: 'Read the <b>AI use terms</b> and the <b>Business request</b>. Claims bought the Standard plan and no administrator has changed the data controls. What happens to the claim data adjusters submit?',
+      options: ['It is deleted after 30 days and is never used to train any Lumora model', 'It trains only a private model for Bellhaven, so other customers never benefit', 'It is processed statelessly by Arclight, so Lumora itself retains nothing at all', 'It may train Lumora models and is kept up to 18 months until an admin opts out'],
+      answer: 3,
+      hint: 'Read sections 3.1 and 4.1 together, and note which plan they apply to. Then check whether the opt-out reaches data submitted before it takes effect.',
+      debrief: '<p>Under Standard terms, inputs and outputs may train and improve Lumora’s models by default, and they are retained for up to 18 months. An administrator can opt out, but the opt-out is prospective: anything submitted before it takes effect stays in scope. Flagged inputs and quality samples may also be reviewed by contracted reviewers, and the subprocessor list places that review in Pune, India.</p><p>This is the risk that most changes the tier. The fix is not a technical setting alone. The Enterprise terms already offer no training, zero retention, and US-only processing, so the manager makes the Enterprise terms and a written no-training clause a condition of go-live, and makes the data-controls review a Bellhaven control. Q-09 in the questionnaire said customer data is never used for training; the terms say otherwise.</p>',
+      reviewNote: 'Read AI terms for default training, retention, opt-out timing, and human review.' },
+    { id: 'clauses', type: 'set', points: 15, short: 'Clauses to negotiate', title: 'Contract clauses Bellhaven must negotiate',
+      task: 'Using the clause library in the <b>Bellhaven standard</b> tab, find the clauses TP-4 requires for this vendor at its correct tier and factor levels. Then check the <b>DPA and MSA</b> and the <b>AI use terms</b>. Enter the ID of every required clause that the current Lumora paper does <b>not</b> already satisfy.',
+      label: 'Clause IDs to negotiate', placeholder: 'e.g., TC-01, TC-02',
+      answer: function () { return B4DATA.answers.clauses; },
+      hint: 'Set the calculator correctly first; it lists the clauses the standard requires at that tier. Then read the cited section for each one. A clause the paper already meets does not need negotiation, and a clause the standard does not require for this vendor is not a condition.',
+      debrief: '<p>At Tier 1 with Restricted data and exposed AI use, TP-4 requires TC-01 through TC-07 and TC-10. Two are already met: DPA 10.2 deletes data within 30 days with a certificate (TC-05), and MSA 14.3 carries $10 million of cyber insurance (TC-10). Six must be negotiated: TC-01 (DPA 7.1 says only “without undue delay”), TC-02 (DPA 9.2 offers the SOC 2 report but no assessment right or bridge letter), TC-03 (subprocessor changes are posted to a website), TC-04 (data may be processed in any country), TC-06 (training is opt-out), and TC-07 (18-month retention). TC-08 escrow and TC-09 availability credits apply only at High or Critical criticality.</p><p>Contract terms are a control when assurance runs out. They cover what the SOC 2 report does not test: the training pipeline, offshore review, and the gap period. Asking for escrow and uptime credits on a moderate-criticality drafting tool spends negotiating capital on the wrong risks.</p>',
+      reviewNote: 'Derive required clauses from the tier, then negotiate only the gaps in the current paper.' },
+    { id: 'cuecs', type: 'set', points: 10, short: 'CUECs Bellhaven runs', title: 'Complementary user entity controls Bellhaven must operate',
+      task: 'The SOC 2 report lists complementary user entity controls (CUECs). Using the deployment described in the <b>Business request</b>, enter the ID of every CUEC that applies to Bellhaven’s planned use, and that Bellhaven will therefore have to operate.',
+      label: 'CUEC IDs Bellhaven must operate', placeholder: 'e.g., CUEC-1',
+      answer: function () { return B4DATA.answers.cuecs; },
+      hint: 'Each CUEC is tied to a feature. Check which features the request says Claims will use: single sign-on, the cloud API connector, the Admin Console, and generated letters. The request also says which features Claims will not use.',
+      debrief: '<p>Five CUECs apply. CUEC-1 and CUEC-3 come with single sign-on: Bellhaven’s identity team must deprovision leavers and enforce MFA. CUEC-5 makes a Bellhaven administrator responsible for the training opt-out and retention settings, and for rechecking them after any plan or terms change. CUEC-7 covers the ClaimsCore connector credentials. CUEC-8 means adjusters must review every draft before it goes to a claimant. CUEC-2, CUEC-4, and CUEC-6 cover the browser extension, customer-managed keys, and the on-premises agent, none of which Claims will use.</p><p>A vendor’s controls are designed on the assumption that the customer runs these. If Bellhaven does not, the vendor’s assurance does not hold for Bellhaven. Each CUEC needs a named Bellhaven owner before go-live, and CUEC-8 belongs to the business, not to IT.</p>',
+      reviewNote: 'Assign every applicable CUEC to a named owner in your organization.' },
+    { id: 'decision', type: 'choice', points: 15, short: 'Onboarding decision', title: 'The onboarding decision',
+      task: 'Weigh the tier, the assurance gaps, the AI terms, and what Lumora already offers on its Enterprise plan. What should you decide?',
+      options: ['Approve for next week’s go-live, because the SOC 2 Type II opinion is unmodified', 'Approve with conditions that must be met before any claim data flows to the vendor', 'Decline the vendor, since a generative AI service that can train on inputs is outside appetite', 'Approve with conditions: go live Monday on Standard terms and fix the contract at renewal'],
+      answer: 1,
+      hint: 'Ask whether the gaps can be closed, and when. Read AI terms section 3.2 for what the Enterprise plan changes. Then ask which option enables the business without accepting the exposure in the meantime.',
+      debrief: '<p>The risks are real but closable. The Enterprise terms already provide no training, zero retention, and US-only processing that disables offshore review; the remaining gaps are standard clauses, follow-up assurance, and Bellhaven’s own CUECs. Approving with conditions, gated so no claim data flows until they are met, enables a legitimate business need and keeps Restricted data inside appetite. Monday may slip by a few weeks, or Claims can start with synthetic or de-identified files.</p><p>Approving now relies on an opinion that does not cover where the data goes. Declining treats a fixable contract problem as a reason to refuse, which pushes the business toward unmanaged tools. Fixing the contract at renewal means a year of claimant medical records under training-by-default terms, and the opt-out would not reach back. The decision and the residual risk belong to the business owner, recorded with the CRO’s concurrence.</p>',
+      reviewNote: 'Gate conditional approvals so the exposure does not start before the conditions are met.' },
+    { id: 'memo', type: 'text', points: 15, short: 'Decision memo', title: 'Write the onboarding decision memo', reportTitle: 'Vendor onboarding decision memo',
+      task: 'Write a short memo to the Chief Risk Officer and the VP of Claims Operations. State the decision and the tier, list the conditions with an owner and a due point for each, and state the residual risk and when the vendor will be reviewed again.',
+      fields: [
+        { key: 'decision', label: 'Decision and tier', min: 40, placeholder: 'Approve, approve with conditions, or decline; the tier and the main reasons.' },
+        { key: 'conditions', label: 'Conditions and owners', min: 80, placeholder: 'Each condition, who owns it, and whether it must be met before go-live.' },
+        { key: 'residual', label: 'Residual risk and review', min: 40, placeholder: 'What risk remains after the conditions, who accepts it, and the next review date.' }
+      ],
+      hint: 'Tie each condition to a gap you found: the AI terms, the clauses to negotiate, the assurance gaps, and the CUECs. Every condition needs an owner, and the go-live gate should be explicit.',
+      debrief: '<p><b>Model memo.</b> <b>Decision:</b> Approve Lumora Draft <b>with conditions</b>. Inherent risk is Tier 1 (score 23 of 27): Restricted claimant data, write access to ClaimsCore, and Standard terms that allow training and 18-month retention. No production claim data flows until conditions 1 to 4 are met. <b>Conditions:</b> (1) Procurement and Legal to move the purchase to Enterprise terms and negotiate TC-01, TC-02, TC-03, TC-04, TC-06, and TC-07, before go-live. (2) Vendor risk to obtain Vantor’s and Arclight’s SOC 2 reports, a bridge letter from July 1, 2026, and corrected questionnaire answers, before go-live. (3) Identity team to own CUEC-1, CUEC-3, and CUEC-7 (deprovisioning, MFA, scoped connector credential), before go-live. (4) Claims Operations admin to own CUEC-5 and confirm training opt-out and zero retention are set, before go-live. (5) VP Claims to own CUEC-8: adjusters approve every draft, with a 30-day spot check. <b>Residual risk:</b> remaining exposure from LM-06 and LM-08 exceptions and reliance on contract terms for the training pipeline, accepted by the VP of Claims Operations with CRO concurrence. Reassess on receipt of the 2027 SOC 2 report, and no later than 12 months.</p><p>Your wording will differ. Check that the decision gates data flow, that each condition maps to evidence, and that a named role owns every condition and the residual risk.</p>',
+      reviewNote: 'A conditional approval needs a gate, owners, and an explicit acceptance of residual risk.' }
+  ],
+
+  /* ===================== Workbench: vendor file viewer + tiering calculator ===================== */
+  workbench: function (root, api) {
+    var esc = api.esc, D = window.B4DATA;
+    function tbl(head, rows) { return '<div class="table-wrap"><table class="data b4-t"><thead><tr>' + head.map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('') + '</tr></thead><tbody>' + rows.join('') + '</tbody></table></div>'; }
+    function sec(n, txt) { return '<p><span class="b4-sec">' + n + '</span>' + txt + '</p>'; }
+    var TABS = [
+      ['req', 'Business request', REQUEST], ['soc', 'SOC 2 excerpt', SOC], ['q', 'Questionnaire', QUEST],
+      ['dpa', 'DPA and MSA', DPA], ['ai', 'AI use terms', AITERMS], ['sub', 'Subprocessors', SUBS], ['std', 'Bellhaven standard', STD]
+    ];
+    root.innerHTML = '<div class="lb-tool"><div class="lb-tabs" role="tablist" aria-label="Lumora vendor file">' +
+      TABS.map(function (t, i) { return '<button role="tab" id="b4t-' + t[0] + '" aria-controls="b4p-' + t[0] + '" aria-selected="' + (i === 0) + '"' + (i ? ' tabindex="-1"' : '') + '>' + t[1] + '</button>'; }).join('') + '</div>' +
+      TABS.map(function (t, i) { return '<div class="lb-panel" role="tabpanel" id="b4p-' + t[0] + '" aria-labelledby="b4t-' + t[0] + '" tabindex="0"' + (i ? ' hidden' : '') + '>' + t[2]() + '</div>'; }).join('') + '</div>' +
+      '<section class="lb-tool b4-calc" aria-labelledby="b4-calc-h"><div class="b4-calc-head"><h3 id="b4-calc-h">Inherent risk tiering calculator (TP-4 section 2)</h3><p>Score = data × 3 + criticality × 2 + access × 2 + AI use × 2. Tier 1 at 18 or more, Tier 2 at 10 to 17, Tier 3 at 9 or less. Override: Restricted data with exposed AI use is always Tier 1.</p></div>' +
+      '<div class="b4-grid">' + D.factors.map(function (f) {
+        return '<fieldset class="b4-f"><legend>' + esc(f.label) + ' <span>(weight ' + f.weight + ')</span></legend>' + f.levels.map(function (lv, k) {
+          return '<label><input type="radio" name="b4-' + f.key + '" value="' + k + '"><span><b>' + k + ' ' + esc(lv[0]) + '.</b> ' + esc(lv[1]) + '</span></label>';
+        }).join('') + '</fieldset>';
+      }).join('') + '</div>' +
+      '<div class="b4-out"><div class="b4-tier" id="b4-tier" aria-live="polite"></div><div><div class="b4-meter" role="img" id="b4-meter"><i class="z3" style="width:' + (100 * D.bands.t2 / (D.bands.max + 1)) + '%">TIER 3</i><i class="z2" style="width:' + (100 * (D.bands.t1 - D.bands.t2) / (D.bands.max + 1)) + '%">TIER 2</i><i class="z1" style="flex:1">TIER 1</i><b id="b4-mark"></b></div><p class="b4-calc-detail" id="b4-detail"></p></div></div>' +
+      '<div class="b4-btns"><button type="button" class="btn secondary" id="b4-owner">Load the business owner’s self-assessment</button><span class="b4-src" id="b4-src"></span></div></section>';
+
+    var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+    function sel(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { sel(t); });
+      t.addEventListener('keydown', function (e) {
+        var n = null;
+        if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+        if (e.key === 'ArrowLeft') n = tabs[(i + tabs.length - 1) % tabs.length];
+        if (e.key === 'Home') n = tabs[0];
+        if (e.key === 'End') n = tabs[tabs.length - 1];
+        if (n) { e.preventDefault(); sel(n); n.focus(); }
+      });
+    });
+    if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) sel(tt); }
+
+    // ---------- Calculator ----------
+    var cur = api.note('calc') || Object.assign({}, D.request.owner);
+    function same(a, b) { return D.factors.every(function (f) { return a[f.key] === b[f.key]; }); }
+    function paint() {
+      D.factors.forEach(function (f) { var r = root.querySelector('input[name="b4-' + f.key + '"][value="' + cur[f.key] + '"]'); if (r) r.checked = true; });
+      var s = D.score(cur), t = D.tier(cur), over = cur.data === 3 && cur.ai === 3;
+      var box = document.getElementById('b4-tier');
+      box.className = 'b4-tier t' + t;
+      box.innerHTML = '<div class="l">Inherent risk</div><div class="n">Tier ' + t + '</div><div class="l">' + ['', 'High', 'Moderate', 'Low'][t] + ' &middot; score ' + s + '</div>';
+      document.getElementById('b4-mark').style.left = (100 * (s + 0.5) / (D.bands.max + 1)) + '%';
+      document.getElementById('b4-meter').setAttribute('aria-label', 'Score ' + s + ' of ' + D.bands.max + ', Tier ' + t);
+      var req = D.clauses.filter(function (c) { return c.req(cur, t); }).map(function (c) { return c.id; });
+      document.getElementById('b4-detail').innerHTML = D.factors.map(function (f) { return esc(f.label) + ' ' + cur[f.key] + ' × ' + f.weight + ' = <b>' + cur[f.key] * f.weight + '</b>'; }).join('; ') + '. Total <b>' + s + '</b> of ' + D.bands.max + '.' +
+        (over ? ' <b>Override applies</b>: Restricted data with exposed AI use.' : '') +
+        '<br>Clauses TP-4 requires at these levels: <b>' + (req.length ? req.join(', ') : 'none') + '</b>. Due diligence: ' + ['', 'full assessment, CRO sign-off, annual review', 'standard assessment, biennial review', 'light-touch onboarding'][t] + '.';
+      document.getElementById('b4-src').textContent = same(cur, D.request.owner) ? 'Currently showing the business owner’s self-assessment.' : 'Showing your ratings.';
+    }
+    root.querySelectorAll('.b4-f input').forEach(function (r) { r.addEventListener('change', function () { cur[r.name.slice(3)] = +r.value; api.note('calc', cur); paint(); }); });
+    document.getElementById('b4-owner').addEventListener('click', function () { cur = Object.assign({}, D.request.owner); api.note('calc', cur); paint(); });
+    paint();
+
+    // ---------- Documents ----------
+    function REQUEST() {
+      var o = D.request.owner;
+      return '<div class="b4-rpt"><p class="b4-hdr">Vendor onboarding request &middot; submitted October 30, 2026</p>' +
+        '<p><b>From:</b> Adaeze Okonkwo, VP Claims Operations. <b>Vendor:</b> Lumora Labs, Inc. <b>Product:</b> Lumora Draft, Standard plan, 180 seats (purchased on a corporate card, October 27, 2026). <b>Requested go-live:</b> Monday.</p>' +
+        '<h4>What we want to do</h4><p>Adjusters will use Lumora Draft to summarize claim files and draft claimant letters. We miss our 10-business-day letter commitment on about 12 percent of claims today, and the pilot (synthetic files only) cut drafting time by half.</p>' +
+        '<h4>Data in the claim files</h4><ul>' + D.request.data.map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('') + '</ul>' +
+        '<h4>How it connects</h4><ul><li>Adjusters sign in through our corporate identity provider (single sign-on).</li><li>Lumora’s <b>cloud API connector</b> uses a ClaimsCore service account to read claim files and to <b>write draft letters back into ClaimsCore</b> as drafts for the adjuster.</li><li>A Claims Operations analyst will administer the Lumora Admin Console.</li><li>We will not use the browser extension, the on-premises connector agent, or customer-managed encryption keys.</li><li>Adjusters review and send every letter.</li></ul>' +
+        '<h4>If Lumora is unavailable</h4><p>Adjusters go back to the current letter templates. Our backlog would build, and we would start missing the 10-day letter commitment after <b>about a week</b>.</p>' +
+        '<h4>Business owner self-assessment</h4>' + tbl(['Factor', 'Self-rating', 'Owner’s reason'], [
+          '<tr><td>Data sensitivity</td><td>' + o.data + ' ' + D.factors[0].levels[o.data][0] + '</td><td>It is a writing tool. Letters are internal drafts.</td></tr>',
+          '<tr><td>Business criticality</td><td>' + o.crit + ' ' + D.factors[1].levels[o.crit][0] + '</td><td>We can always fall back to templates.</td></tr>',
+          '<tr><td>Access and integration</td><td>' + o.access + ' ' + D.factors[2].levels[o.access][0] + '</td><td>Adjusters just use a web page.</td></tr>',
+          '<tr><td>AI use</td><td>' + o.ai + ' ' + D.factors[3].levels[o.ai][0] + '</td><td>The sales team said our data is never used for training.</td></tr>']) +
+        '<p class="b4-note">Requested tier: <b>Tier 3</b>, light-touch onboarding.</p></div>';
+    }
+    function SOC() {
+      var P = D.period;
+      return '<div class="b4-rpt"><p class="b4-hdr">SOC 2 Type II report, excerpt &middot; received from Lumora sales October 28, 2026 &middot; no bridge letter provided</p>' +
+        '<h4>Scope and opinion (Section 1)</h4><p>We have examined Lumora’s description of its Lumora Draft platform <b>throughout the period ' + P.start + ' to ' + P.end + '</b>, and the suitability of design and operating effectiveness of controls to meet the trust services criteria relevant to <b>' + P.tsc + '</b>. In our opinion, in all material respects, the description is fairly presented and the controls were suitably designed and operated effectively throughout the period, if the complementary subservice organization controls and complementary user entity controls assumed in the design operated effectively.</p>' +
+        '<p>Lumora uses <b>Vantor Compute, Inc.</b> for hosting, storage, and inference infrastructure, and <b>Arclight Model Co.</b> for foundation model inference. The description <b>excludes the controls of Vantor and Arclight</b> (carve-out method), and our examination did not extend to them.</p>' +
+        '<p>The <b>model training and evaluation pipeline</b>, including any use of customer inputs to improve models, is not part of the system described and was not examined.</p>' +
+        '<p class="b4-sig">Okonjo Reyes LLP, Certified Public Accountants, Denver, Colorado, ' + P.issued + '</p>' +
+        '<h4>System description: encryption (Section 3)</h4><p>Customer data is encrypted at rest with AES-256 using keys that Lumora manages in the Vantor key management service. Customer-managed keys are available on the Enterprise plan.</p>' +
+        '<h4>Controls, tests, and results (Section 4)</h4>' +
+        tbl(['Control', 'Criteria', 'Control activity', 'Test performed', 'Result'], D.controls.map(function (c) { return '<tr><td class="id">' + c.id + '</td><td>' + c.tsc + '</td><td>' + esc(c.activity) + '</td><td>' + esc(c.test) + '</td><td>' + esc(c.result) + '</td></tr>'; })) +
+        '<h4 style="margin-top:1.2rem">Complementary user entity controls (Section 3)</h4><p>Lumora’s controls were designed on the assumption that each customer operates the following controls where they apply. The service auditor did not test them.</p>' +
+        tbl(['CUEC', 'Complementary user entity control'], D.cuecs.map(function (c) { return '<tr><td class="id">' + c.id + '</td><td>' + esc(c.text) + '</td></tr>'; })) + '</div>';
+    }
+    function QUEST() {
+      return '<p class="lead-p">Lumora’s answers to Bellhaven’s standard security questionnaire, completed by Lumora’s sales engineering team on October 22, 2026.</p>' +
+        tbl(['ID', 'Area', 'Question', 'Vendor answer', 'Vendor comment'], D.questions.map(function (q) { return '<tr><td class="id">' + q.id + '</td><td>' + q.domain + '</td><td>' + esc(q.q) + '</td><td><b>' + esc(q.a) + '</b></td><td>' + esc(q.c) + '</td></tr>'; }));
+    }
+    function DPA() {
+      return '<div class="b4-rpt"><p class="b4-hdr">Lumora Data Processing Agreement v2.4 and Master Services Agreement (excerpts), as accepted at checkout</p>' +
+        sec('DPA 2.1', 'Lumora processes Customer Data to provide, maintain, and improve the Services.') +
+        sec('DPA 6.3', 'Lumora maintains a list of subprocessors on its website and may update it from time to time. Continued use of the Services after an update constitutes acceptance.') +
+        sec('DPA 7.1', 'Lumora will notify Customer of a Security Incident affecting Customer Data without undue delay.') +
+        sec('DPA 8.1', 'Lumora and its subprocessors may process Customer Data in any country in which they operate.') +
+        sec('DPA 9.2', 'On written request, no more than once a year, Lumora will provide its most recent SOC 2 report. Customer may not conduct audits, assessments, or on-site visits.') +
+        sec('DPA 10.2', 'Within 30 days after termination, Lumora will delete Customer Data and provide Customer a certificate of deletion.') +
+        sec('MSA 11.1', 'Each party’s liability is capped at the fees paid in the 12 months before the claim.') +
+        sec('MSA 14.3', 'Lumora maintains cyber liability insurance of at least $10 million per claim and will provide a certificate on request.') +
+        '<p class="b4-note">The MSA has no availability commitment and no escrow provision.</p></div>';
+    }
+    function AITERMS() {
+      return '<div class="b4-rpt"><p class="b4-hdr">Lumora AI Service Terms v3.2 &middot; effective September 1, 2026</p>' +
+        sec('2.1', 'Customer owns its Inputs (prompts, files, and data submitted) and Outputs (generated content).') +
+        sec('3.1', '<b>Standard plans.</b> Lumora may use Inputs and Outputs to train and improve Lumora models. Administrators may opt out under Admin Console, Data Controls. An opt-out applies only to Inputs submitted after it takes effect.') +
+        sec('3.2', '<b>Enterprise plans.</b> Inputs and Outputs are not used to train or improve any model. Zero data retention and US-only processing, which disables offshore human review, are available as account settings.') +
+        sec('4.1', 'On Standard plans, Inputs and Outputs are retained for up to 18 months. If a customer opts out of model improvement, Inputs and Outputs are retained for 30 days for abuse monitoring and then deleted.') +
+        sec('5.1', 'Inputs flagged by automated safety systems, and a sample of Inputs used for quality evaluation, may be reviewed by Lumora personnel and contracted reviewers.') +
+        sec('6.1', 'Outputs may be inaccurate. Customer is responsible for reviewing Outputs before relying on them.') + '</div>';
+    }
+    function SUBS() {
+      return '<p class="lead-p">Lumora subprocessor list, published at lumora.example/subprocessors, last updated October 2, 2026.</p>' +
+        tbl(['Subprocessor', 'Service', 'Customer data accessed', 'Location'], D.subs.map(function (s) { return '<tr><td><b>' + esc(s.name) + '</b></td><td>' + esc(s.svc) + '</td><td>' + esc(s.data) + '</td><td>' + esc(s.loc) + '</td></tr>'; }));
+    }
+    function STD() {
+      return '<div class="b4-rpt"><p class="b4-hdr">Bellhaven Mutual Insurance &middot; Third-Party Contract Standard TP-4 (internal policy)</p>' +
+        '<h4>Section 1. Data classification (from policy DC-1)</h4>' + tbl(['Data type in the claim file', 'Class'], Object.keys(D.classOf).map(function (k) { return '<tr><td>' + esc(k) + '</td><td>' + D.classOf[k] + ' ' + D.factors[0].levels[D.classOf[k]][0] + '</td></tr>'; })) +
+        '<h4>Section 2. Inherent risk tiering</h4><p>Rate each factor on the worst case that applies to the planned use and the contract as signed. Use the calculator below the vendor file. Tier 1 vendors receive a full assessment, CRO sign-off, and annual review.</p>' +
+        '<h4>Section 3. Clause library</h4><p>The clauses below are required when the condition applies. A required clause that the vendor’s current paper does not meet must be negotiated before signature, or the gap must be accepted as an exception by the CRO.</p>' +
+        tbl(['Clause', 'Requirement', 'Required when'], D.clauses.map(function (c) { return '<tr><td class="id">' + c.id + '</td><td>' + esc(c.name) + '</td><td>' + esc(c.rule) + '</td></tr>'; })) +
+        '<h4>Section 4. Ownership</h4><p>The business owner owns the vendor relationship and accepts residual risk. The information security manager sets the tier, the conditions, and the controls. The CRO concurs on Tier 1 vendors.</p></div>';
+    }
+  },
+  onReset: function () { }
+};
+
+/* Independent re-derivation of the key from the displayed data. */
+window.LAB_SELFTEST = function () {
+  var D = window.B4DATA, log = [], P = [];
+  function same(a, b) { return a.slice().sort().join(',') === b.slice().sort().join(','); }
+  // Score: re-derive levels from the request facts by reading the classes directly.
+  var maxClass = 0; D.request.data.forEach(function (d) { maxClass = Math.max(maxClass, D.classOf[d]); });
+  var lv = { data: maxClass, crit: D.request.missHours > 72 ? 1 : 2, access: D.request.integration.writes ? 3 : 2, ai: D.terms.trainingDefault ? 3 : 2 };
+  var s = lv.data * 3 + lv.crit * 2 + lv.access * 2 + lv.ai * 2;
+  log.push('score=' + s + ' tier=' + D.tier(lv) + ' owner=' + D.score(D.request.owner) + '/T' + D.tier(D.request.owner));
+  if (s !== D.answers.score || s !== 23) P.push('score key mismatch');
+  if (D.tier(D.request.owner) !== 3) P.push('owner self-assessment should land in Tier 3');
+  // Contradictions: re-derive from the SOC text.
+  var excIds = D.controls.filter(function (c) { return /Exception/.test(c.result); }).map(function (c) { return c.id; });
+  var keysVendor = /Lumora-managed keys/.test(D.controls.filter(function (c) { return c.id === 'LM-04'; })[0].activity);
+  var contra = D.questions.filter(function (q) {
+    if (q.src !== 'soc') return false;
+    if (/^LM-/.test(q.ref)) return excIds.indexOf(q.ref) >= 0;
+    if (q.ref === 'keys') return keysVendor && q.claim !== 'vendor';
+    if (q.ref === 'tsc') return q.claim !== D.period.tsc;
+    if (q.ref === 'scope') return q.claim === 'complete';
+    return false;
+  }).map(function (q) { return q.id; });
+  log.push('contra=' + contra.join(','));
+  if (!same(contra, D.answers.contra) || !same(contra, ['Q-02', 'Q-04', 'Q-05', 'Q-08', 'Q-13'])) P.push('contradiction key mismatch');
+  // Traps must be contradicted elsewhere.
+  if (!D.terms.trainingDefault) P.push('Q-09 trap no longer contradicted by terms');
+  if (!D.subs.some(function (x) { return x.region !== 'us'; })) P.push('Q-10 trap no longer contradicted by subprocessors');
+  // Clauses: Tier 1 + Restricted + AI 3 + Moderate.
+  var reqd = D.clauses.filter(function (c) { return /Tier 1|Restricted|AI use/.test(c.rule) && c.status !== 'present'; }).map(function (c) { return c.id; });
+  log.push('clauses=' + reqd.join(','));
+  if (!same(reqd, D.answers.clauses) || !same(reqd, ['TC-01', 'TC-02', 'TC-03', 'TC-04', 'TC-06', 'TC-07'])) P.push('clause key mismatch');
+  var cu = D.cuecs.filter(function (c) { return ['sso', 'api', 'console', 'outputs'].indexOf(c.feature) >= 0; }).map(function (c) { return c.id; });
+  log.push('cuecs=' + cu.join(','));
+  if (!same(cu, D.answers.cuecs) || !same(cu, ['CUEC-1', 'CUEC-3', 'CUEC-5', 'CUEC-7', 'CUEC-8'])) P.push('CUEC key mismatch');
+  return { log: log, problems: P };
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B6 Ransomware Incident Command Tabletop | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+/* ===== Lab B6: ransomware incident command tabletop (scoped b6-) ===== */
+.b6-modes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin: 0 0 1rem; }
+.b6-mode { text-align: left; border: 1px solid var(--border); background: var(--card-bg); border-radius: 4px; padding: .7rem .85rem; cursor: pointer; font: .82rem/1.45 Arial, sans-serif; color: var(--text-secondary); }
+.b6-mode b { display: block; font: 700 .95rem Georgia, serif; color: var(--text-primary); margin-bottom: .15rem; }
+.b6-mode:hover { border-color: var(--gold); }
+.b6-mode[aria-pressed="true"] { border-color: var(--navy); box-shadow: inset 0 0 0 2px var(--navy); background: var(--blue-pale); }
+.b6-mode[aria-pressed="true"] b::after { content: " (selected)"; font: 700 .7rem Arial, sans-serif; color: var(--navy); letter-spacing: .04em; }
+.b6-mode:focus-visible, .b6-btnrow .btn:focus-visible, .b6-seg button:focus-visible, .b6-opt:focus-within, .b6-wi button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.b6-bar { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; padding: .75rem .9rem; border: 1px solid var(--blue-pale-border); background: var(--blue-pale); border-radius: 4px; margin-bottom: 1rem; font: .88rem Arial, sans-serif; color: var(--text-secondary); }
+.b6-bar .b6-simclk { font: 900 1.4rem 'Arial Narrow', Arial, sans-serif; color: var(--navy); letter-spacing: .02em; }
+.b6-btnrow { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.b6-seg { display: inline-flex; gap: .3rem; flex-wrap: wrap; }
+.b6-seg button { border: 1px solid var(--border); background: var(--card-bg); color: var(--text-secondary); border-radius: 4px; padding: .45rem .8rem; font: 700 .82rem Arial, sans-serif; cursor: pointer; }
+.b6-seg button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.b6-lbl { display: block; font: 700 .7rem Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+
+/* Facilitator / team board (projector) */
+.b6-board { border: 2px solid var(--navy); border-radius: 6px; background: #fff; padding: 1.1rem 1.3rem 1.2rem; margin-bottom: 1.1rem; }
+.b6-b-top { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1rem 1.6rem; align-items: start; padding-bottom: .9rem; border-bottom: 1px solid var(--border); }
+.b6-code { display: block; font: 700 3.4rem/1.05 'Courier New', monospace; letter-spacing: .08em; color: var(--navy); margin: .2rem 0 .3rem; }
+.b6-codenote { display: block; font: 700 .9rem/1.45 Arial, sans-serif; color: var(--navy); background: var(--gold-pale); border: 1px solid var(--gold); border-left-width: 5px; border-radius: 3px; padding: .35rem .6rem; }
+.b6-codenote.calm { color: var(--text-secondary); background: var(--blue-pale); border-color: var(--blue-pale-border); border-left-width: 1px; }
+.b6-clock { display: block; font: 900 3.2rem/1.05 'Arial Narrow', Arial, sans-serif; color: var(--text-primary); margin: .2rem 0 .25rem; }
+.b6-clock-sub { display: block; font: 700 1.05rem/1.4 Arial, sans-serif; color: var(--text-secondary); }
+.b6-state { display: inline-block; font: 700 .78rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; border-radius: 3px; padding: .15rem .5rem; margin-left: .4rem; vertical-align: middle; border: 1px solid var(--navy); color: var(--navy); }
+.b6-state.paused { border-color: var(--amber); color: #7a4a00; background: #fff5e0; }
+.b6-cur { padding: 1rem 0 .4rem; }
+.b6-cur .b6-cur-meta { font: 700 1rem Arial, sans-serif; color: var(--navy-light); letter-spacing: .04em; }
+.b6-cur h3 { font: 700 1.9rem/1.2 Georgia, serif; color: var(--text-primary); margin: .25rem 0 .5rem; }
+.b6-cur p { font: 1.15rem/1.55 Arial, sans-serif; color: var(--text-secondary); margin: 0 0 .6rem; max-width: 72ch; }
+.b6-cur ol.b6-cur-opts { list-style: none; margin: .4rem 0 .5rem; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .9rem; }
+.b6-cur ol.b6-cur-opts li { font: 1.08rem/1.45 Arial, sans-serif; color: var(--text-primary); border: 1px solid var(--blue-pale-border); background: var(--blue-pale); border-radius: 4px; padding: .5rem .7rem; }
+.b6-cur ol.b6-cur-opts li b { font: 900 1.2rem 'Arial Narrow', Arial, sans-serif; color: var(--navy); margin-right: .35rem; }
+.b6-cur .b6-ask { font: 700 1.1rem Georgia, serif; color: var(--navy); margin: .3rem 0 .2rem; }
+.b6-board .b6-btnrow { padding-top: .8rem; border-top: 1px solid var(--border); }
+.b6-board.team .b6-code { font-size: 1.6rem; }
+.b6-board.team .b6-clock { font-size: 2.2rem; }
+.b6-board.team .b6-cur h3 { font-size: 1.4rem; }
+.b6-board.team .b6-cur p { font-size: .98rem; }
+.b6-prev { font: .8rem Arial, sans-serif; color: var(--text-muted); margin: .4rem 0 0; }
+.b6-join { display: flex; flex-wrap: wrap; gap: .6rem; align-items: flex-end; margin-bottom: .8rem; }
+.b6-join label { display: block; font: 700 .9rem Georgia, serif; color: var(--text-primary); margin-bottom: .3rem; }
+.b6-join input { font: 700 1.3rem 'Courier New', monospace; letter-spacing: .1em; text-transform: uppercase; width: 11rem; padding: .45rem .6rem; border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary); }
+.b6-join input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px var(--gold-pale); }
+.b6-err { font: 700 .88rem Arial, sans-serif; color: var(--wrong); margin: 0 0 .8rem; }
+.b6-warn { font: .88rem Arial, sans-serif; color: var(--text-primary); background: #fff5e0; border-left: 4px solid var(--amber); padding: .5rem .7rem; margin: 0 0 .8rem; }
+.b6-board:fullscreen { box-sizing: border-box; width: 100vw; height: 100vh; border: 0; border-radius: 0; padding: 3.5vh 4vw; display: flex; flex-direction: column; overflow: hidden; }
+.b6-board:fullscreen .b6-code { font-size: min(9vh, 6vw); }
+.b6-board:fullscreen .b6-clock { font-size: min(9vh, 6vw); }
+.b6-board:fullscreen .b6-clock-sub, .b6-board:fullscreen .b6-codenote { font-size: min(2.5vh, 1.6vw); }
+.b6-board:fullscreen .b6-cur { flex: 1; min-height: 0; overflow: hidden; }
+.b6-board:fullscreen .b6-cur h3 { font-size: min(4.6vh, 3vw); }
+.b6-board:fullscreen .b6-cur p { font-size: min(2.6vh, 1.7vw); max-width: none; }
+.b6-board:fullscreen .b6-cur ol.b6-cur-opts li { font-size: min(2.5vh, 1.6vw); }
+.b6-board:fullscreen .b6-cur .b6-cur-meta, .b6-board:fullscreen .b6-cur .b6-ask { font-size: min(2.5vh, 1.6vw); }
+
+/* Impact clock */
+.b6-ic { border: 1px solid var(--border); border-radius: 4px; padding: .9rem 1rem 1rem; margin-bottom: 1.1rem; background: var(--card-bg); }
+.b6-ic h4 { font: 700 1rem Georgia, serif; color: var(--text-primary); margin: 0 0 .2rem; }
+.b6-ic .b6-ic-sum { font: .86rem/1.55 Arial, sans-serif; color: var(--text-secondary); margin: .1rem 0 .7rem; }
+.b6-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin-bottom: .8rem; }
+.b6-tile { border: 1px solid var(--blue-pale-border); background: var(--blue-pale); border-radius: 4px; padding: .55rem .7rem .6rem; }
+.b6-tile .v { display: block; font: 900 1.75rem/1.1 'Arial Narrow', Arial, sans-serif; color: var(--navy); }
+.b6-tile .u { font: 700 .8rem Arial, sans-serif; color: var(--text-secondary); margin-left: .2rem; }
+.b6-tile .dl { display: block; font: 700 .74rem Arial, sans-serif; color: var(--text-muted); margin-top: .15rem; min-height: 1em; }
+.b6-tile .dl.up { color: var(--wrong); } .b6-tile .dl.good { color: var(--correct); }
+.b6-meter { height: 8px; background: #fff; border: 1px solid var(--blue-pale-border); border-radius: 4px; overflow: hidden; margin-top: .35rem; }
+.b6-meter i { display: block; height: 100%; background: var(--navy-light); }
+.b6-chart { width: 100%; height: auto; display: block; }
+.b6-chart text { font: 11px Arial, sans-serif; fill: #52606b; }
+.b6-chart .ax { stroke: #c9d6da; stroke-width: 1; }
+.b6-chart .grid { stroke: #e4eef0; stroke-width: 1; }
+.b6-chart .ln { fill: none; stroke: #0f3b4c; stroke-width: 2.5; }
+.b6-chart .ln2 { fill: none; stroke: #0d8a7c; stroke-width: 2.5; stroke-dasharray: 7 5; }
+.b6-chart .pt { fill: #0f3b4c; } .b6-chart .pt2 { fill: #fff; stroke: #0d8a7c; stroke-width: 2; }
+.b6-chart .lbl { font-weight: 700; fill: #0f3b4c; } .b6-chart .lbl2 { font-weight: 700; fill: #0b6f64; }
+.b6-legend { font: .78rem Arial, sans-serif; color: var(--text-secondary); margin: .2rem 0 .4rem; display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.b6-legend span::before { content: ""; display: inline-block; width: 26px; height: 0; border-top: 3px solid #0f3b4c; vertical-align: middle; margin-right: .35rem; }
+.b6-legend span.wi::before { border-top: 3px dashed #0d8a7c; }
+
+/* Inject feed and decisions */
+.b6-feed { display: grid; gap: .8rem; }
+.b6-inj { border: 1px solid var(--border); border-left: 4px solid var(--navy); border-radius: 0 4px 4px 0; padding: .8rem 1rem .9rem; background: var(--card-bg); }
+.b6-inj.newest { border-left-color: var(--gold); }
+.b6-inj-h { font: 700 .74rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+.b6-inj h5 { font: 700 1.02rem Georgia, serif; color: var(--text-primary); margin: .2rem 0 .4rem; }
+.b6-inj p { font: .88rem/1.6 Arial, sans-serif; color: var(--text-secondary); margin: 0 0 .5rem; }
+.b6-inj p b { color: var(--text-primary); }
+.b6-dec { border-top: 1px dashed var(--border); padding-top: .6rem; margin-top: .3rem; }
+.b6-dec fieldset { border: 0; margin: 0; padding: 0; }
+.b6-dec legend { font: 700 .72rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .35rem; }
+.b6-opt { display: flex; gap: .5rem; align-items: flex-start; border: 1px solid var(--border); border-radius: 4px; padding: .45rem .6rem; margin-bottom: .35rem; font: .86rem/1.45 Arial, sans-serif; color: var(--text-primary); cursor: pointer; background: #fff; }
+.b6-opt:hover { border-color: var(--gold); }
+.b6-opt input { margin-top: .2rem; }
+.b6-opt b { color: var(--navy); }
+.b6-opt.mine { border-color: var(--navy); box-shadow: inset 0 0 0 1px var(--navy); background: var(--blue-pale); cursor: default; }
+.b6-opt.dim { opacity: .62; cursor: default; }
+.b6-tag { font: 700 .66rem Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; border-radius: 3px; padding: .05rem .35rem; border: 1px solid var(--navy); color: var(--navy); white-space: nowrap; background: #fff; }
+.b6-res { border-left: 4px solid var(--navy-light); background: var(--blue-pale); padding: .55rem .75rem; margin-top: .5rem; font: .86rem/1.55 Arial, sans-serif; color: var(--text-primary); }
+.b6-res .fx { display: block; font: 700 .78rem Arial, sans-serif; color: var(--text-secondary); margin-top: .3rem; }
+.b6-empty { font: .9rem Arial, sans-serif; color: var(--text-muted); border: 1px dashed var(--border); border-radius: 4px; padding: 1rem; text-align: center; }
+.b6-pending { font: .82rem Arial, sans-serif; color: var(--text-muted); margin: .3rem 0 0; }
+.b6-h4 { font: 700 1.05rem Georgia, serif; color: var(--text-primary); margin: 1.2rem 0 .6rem; }
+
+/* What-if replay */
+.b6-wi { border: 1px solid var(--border); border-radius: 4px; padding: .9rem 1rem 1rem; margin-top: 1.1rem; background: var(--card-bg); }
+.b6-wi-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .4rem 1rem; align-items: center; padding: .35rem 0; border-bottom: 1px solid var(--section-alt); font: .85rem Arial, sans-serif; color: var(--text-primary); }
+.b6-wi-row .b6-seg button { min-width: 2.6rem; }
+.b6-wi-row .b6-seg button.yours { border-style: dashed; border-color: var(--navy); }
+.b6-wi table.data td.num, .b6-wi table.data th.num { text-align: right; }
+@media (max-width: 760px) {
+  .b6-modes { grid-template-columns: 1fr; }
+  .b6-b-top { grid-template-columns: 1fr; }
+  .b6-code { font-size: 2.4rem; }
+  .b6-clock { font-size: 2.4rem; }
+  .b6-cur h3 { font-size: 1.35rem; }
+  .b6-cur p { font-size: 1rem; }
+  .b6-cur ol.b6-cur-opts { grid-template-columns: 1fr; }
+  .b6-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .b6-wi-row { grid-template-columns: 1fr; }
+}
+@media print { .b6-path-wrap { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== Scenario, consequence model, and session-code engine =====================
+   Halvard Precision Components: ransomware with data extortion. Eight decision injects.
+   Each option carries a deterministic consequence (downtime hours, records exposed in
+   thousands, direct cost in $K, reputation points). A few options set flags that change
+   the consequence of a later decision. Business interruption is priced per downtime hour. */
+(function () {
+  var BASE = { h: 1, m: 40 }; // T+0:00 = Saturday 01:40
+  var DAYS = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
+  var BI_RATE = 30; // $K of business interruption per downtime hour
+  var LETTERS = 'ABCD';
+  function o(t, dt, ex, cost, rep, res, flag) { return { t: t, d: { dt: dt, ex: ex, cost: cost, rep: rep }, res: res, flag: flag || null }; }
+  var INJECTS = [
+    { id: 'I1', t: 0, title: 'Encryption is spreading at Plant 2', refs: 'IMP 3.1', best: 1,
+      base: { dt: 24, ex: 38, cost: 250, rep: 0 },
+      sit: 'At 01:31 the SOC sees mass file renames on the Plant 2 file servers and the ERP application tier. EDR shows a domain administrator account, svc-backup, logging on to servers across all three plants. Firewall logs show 38 GB sent to an unfamiliar cloud storage host over the last six hours. Plants 1 and 3 are still running.',
+      ask: 'What do you direct the response team to do first?',
+      opts: [
+        o('Shut down every server, workstation, and plant network at all three sites now.', 30, 0, 120, -3, 'The spread stops, but so do Plants 1 and 3, which were clean. Memory on the infected servers is lost when they power off, so the forensics team loses the attacker’s running tools and keys.', 'volatile'),
+        o('Isolate affected segments, block outbound traffic, and disable the stolen account.', 8, 0, 40, 0, 'The spread stops at Plant 2 and the ERP tier. Outbound transfer ends. Plants 1 and 3 keep running on local systems under enhanced monitoring, and the infected servers stay powered on for evidence capture.'),
+        o('Keep everything running and watch the attacker until the full scope of the attack is known.', 36, 46, 220, -8, 'While the team watches, the attacker encrypts Plant 3 and sends another 46,000 records out. By the time containment starts, two plants are down instead of one.'),
+        o('Restore the encrypted file servers from last night’s backup right away.', 22, 18, 140, -4, 'The restored servers are re-encrypted within the hour because the attacker still holds the domain account. The restore also overwrites disk evidence, and more data leaves during the confusion.', 'evidence')
+      ] },
+    { id: 'I2', t: 70, title: 'Severity and escalation', refs: 'IMP 1.2, 2.1', best: 0,
+      base: { dt: 6, ex: 0, cost: 50, rep: 0 },
+      sit: 'Containment is under way. ERP order entry and production scheduling are down at Plant 2, and the exfiltration confirms that data left the network. The IMP severity matrix is on the Incident plan tab. It is 02:50 on a Saturday, and the CIO asks whether to wake the CEO.',
+      ask: 'How do you classify and escalate?',
+      opts: [
+        o('Declare Severity 1 and convene the executive crisis team within the hour.', 0, 0, 10, 0, 'The crisis team meets at 03:45 with the CEO in the chair. Business decisions, including plant operations and outside engagements, now have an owner, and you can run the response without waiting for approvals.'),
+        o('Hold it at Severity 2 inside IT until scope is confirmed, then brief executives Monday.', 10, 0, 60, -5, 'Without the crisis team, nobody can authorize outside spending or speak for the company. Requests stall until Sunday, when the CEO learns about the incident from a customer.', 'late'),
+        o('Brief only the CIO now and let the CIO decide whether the CEO is told.', 4, 0, 30, -2, 'The CIO waits until 08:00 to call the CEO. Legal and communications join late, and the escalation path in the IMP is bypassed.', 'late'),
+        o('Ask the board chair to take personal command of the technical response.', 6, 0, 40, -3, 'The board chair is willing but is not an incident leader. Technical calls go through a director with no context, and the crisis team that owns business decisions never forms.')
+      ] },
+    { id: 'I3', t: 200, title: 'Who to call: counsel, insurer, or forensics', refs: 'IMP 3.2', best: 3,
+      base: { dt: 6, ex: 0, cost: 200, rep: 0 },
+      sit: 'The crisis team approves outside help. IT wants to call ByteForge Security, a firm it used last year. The cyber policy with Granite Shield Mutual requires notice within 48 hours and reimburses only panel vendors or vendors it approves in writing. The General Counsel recommends Whitcombe and Arrul LLP as breach counsel.',
+      ask: 'In what order do you bring in outside parties?',
+      opts: [
+        o('Hire ByteForge directly right now, and tell the insurer once the facts are clear.', -2, 0, 420, 0, 'ByteForge starts two hours sooner. Granite Shield later declines to reimburse its fees because it was not a panel vendor and was not approved in writing, and its reports are not protected by legal privilege.'),
+        o('Wait for the insurer to assign every vendor before engaging anyone at all.', 10, 0, 60, -2, 'The insurer’s claims desk is slow on a weekend. Ten hours pass before a forensics team is assigned, and counsel is not engaged in that time.'),
+        o('Run the forensics with internal IT staff to save money and keep things quiet.', 14, 20, 80, -3, 'The internal team is skilled at operations but not at forensics. It misses a persistence mechanism on two domain controllers, and more data leaves before the gap is found.', 'weak'),
+        o('Notify the insurer, and have breach counsel retain the panel forensics firm.', 0, 0, 70, 0, 'Counsel retains Northlight DFIR from the insurer’s panel under a privileged engagement by 07:30. Fees are covered under the policy, and findings flow to counsel and the crisis team.')
+      ] },
+    { id: 'I4', t: 500, title: 'Rebuild now or preserve evidence first', refs: 'IMP 4.1', best: 1,
+      base: { dt: 8, ex: 0, cost: 200, rep: 0 },
+      sit: 'Gold images for the ERP servers are ready. The COO, Marcus Lindqvist, wants the servers wiped and rebuilt now so Plant 2 can run Monday shifts. Northlight DFIR needs about six hours to image disks and memory on the in-scope systems to establish what data was taken.',
+      ask: 'What do you recommend to the crisis team?',
+      opts: [
+        o('Rebuild the servers from gold images now and skip forensic imaging.', -4, 0, 260, -4, 'Plant 2 restarts four hours sooner. Without images, Northlight cannot show what was taken, and the insurer questions the claim.', 'evidence'),
+        o('Image in-scope disks and memory first, and rebuild in a clean enclave.', 3, 0, 90, 0, 'Evidence is captured with chain of custody, and the rebuild proceeds in parallel in a clean network enclave. The delay is three hours, and the scope of exposure can be proven.'),
+        o('Preserve every system in the company in full before any rebuild begins.', 28, 0, 170, -3, 'Imaging more than 400 systems takes more than a day. Most of them were never touched, and production waits for evidence nobody needs.'),
+        o('Clean the encrypted servers in place with antivirus and bring them back up.', 18, 24, 110, -4, 'Antivirus removes the ransomware binary but not the attacker’s access. Two servers are re-encrypted, and the restart slips by most of a day.', 'weakErad')
+      ] },
+    { id: 'I5', t: 1220, title: 'The leak site names Halvard', refs: 'IMP 5.1', best: 2,
+      base: { dt: 4, ex: 14, cost: 60, rep: -8 },
+      sit: 'At 21:40 Saturday, a group calling itself VELLUM posts Halvard on its leak site with sample files: customer engineering drawings and an employee tax form export. Northlight confirms the samples match the stolen data. Two aerospace customers and a trade reporter are calling the account teams.',
+      ask: 'What do you tell customers, and when?',
+      opts: [
+        o('Say nothing publicly until the investigation is complete and every fact is final.', 0, 0, 140, -16, 'Customers learn more from the leak site than from Halvard. One aerospace customer suspends new orders, citing silence from its supplier.'),
+        o('State publicly that no customer or employee data was taken in the attack.', 0, 0, 320, -24, 'The statement is contradicted by the leak site within a day. Customers and the press treat every later update with suspicion, and counsel warns of claims based on the statement.'),
+        o('Issue the approved holding statement and brief key customers from a script.', 0, 0, 40, -3, 'The communications director issues the holding statement at 23:10. Account executives brief the top customers with what is known, what is being done, and when the next update comes. Customers stay engaged.'),
+        o('Let plant managers and account reps answer their own customers as they see fit.', 0, 0, 90, -11, 'Customers hear five different versions. One rep speculates about the attacker, and a quote appears in the trade press.')
+      ] },
+    { id: 'I6', t: 1820, title: 'The extortion demand', refs: 'IMP 5.2', best: 0,
+      base: { dt: 4, ex: 0, cost: 40, rep: -2 },
+      sit: 'VELLUM emails the CFO: $4.2 million in cryptocurrency within 72 hours, or all 410 GB will be published. It offers a free test decryption. Northlight reports that the immutable backups are clean and that restoration is on track. A board member asks whether paying would end this faster.',
+      ask: 'How does Halvard handle the demand?',
+      opts: [
+        o('Follow the extortion policy: no contact, and counsel and insurer advise the CEO.', 0, 0, 50, 0, 'No employee replies. Counsel, the insurer, and the crisis team review the demand; sanctions screening flags the group as high risk. With clean backups, the CEO and board decline to pay and record the decision.'),
+        o('Pay the $4.2 million now to stop the publication and get the decryptor.', -6, 8, 4380, -6, 'The decryptor works slowly and corrupts some files. Two weeks later, part of the data appears on another forum anyway. The payment raised sanctions questions that counsel must now answer.'),
+        o('Have the IT director message the attacker to stall the 72-hour deadline for a while.', 0, 12, 260, -5, 'The attacker shares screenshots of the chat and publishes a larger sample to raise pressure. Counsel must now review the staff contact for sanctions and disclosure issues.'),
+        o('Refuse publicly and call out the group on social media to show strength.', 0, 30, 90, -7, 'VELLUM responds by publishing the full data set early. The post draws more press attention to Halvard than to the attacker.')
+      ] },
+    { id: 'I7', t: 2180, title: 'Law enforcement and notifications', refs: 'IMP 5.3, Appendix N', best: 3,
+      base: { dt: 2, ex: 0, cost: 40, rep: 0 },
+      sit: 'Northlight confirms that customer drawings for 11 accounts and records for about 1,900 current and former employees were taken. Halvard’s notification matrix (Appendix N) lists obligations to law enforcement, customer contracts, the insurer, and employees, with internal deadlines. Some executives worry that a law enforcement report will make the incident public.',
+      ask: 'What do you recommend on reporting and notification?',
+      opts: [
+        o('Stay away from law enforcement so the incident does not become more public.', 0, 0, 200, -8, 'Halvard loses access to threat intelligence on VELLUM, and the insurer and two customers ask why no report was made. Later notices look reluctant.'),
+        o('Report to law enforcement, but hold all other notices until forensics is complete.', 0, 0, 240, -6, 'The report is filed, but the 72-hour customer contract notices are missed. Two aerospace customers invoke contract remedies.'),
+        o('Send notices to every regulator, customer, and media outlet at once, today.', 0, 0, 120, -5, 'Notices go out before counsel reviews them. Several contain errors that must be corrected, and some go to parties with no obligation.'),
+        o('Report to law enforcement, and run the notification matrix through counsel.', 0, 0, 30, 0, 'Counsel files the law enforcement report and works the matrix with owners and deadlines. Customer and employee notices go out accurate and on time.')
+      ] },
+    { id: 'I8', t: 4340, title: 'When to declare recovery', refs: 'IMP 4.2', best: 2,
+      base: { dt: 6, ex: 0, cost: 60, rep: 0 },
+      sit: 'It is 02:00 Tuesday. ERP and production scheduling are back at Plants 1 and 2. Northlight has removed the persistence it found, but validation at Plant 3 is not finished, and 80 percent of credentials have been reset. The COO wants recovery declared and the incident closed so overtime can end.',
+      ask: 'What do you recommend?',
+      opts: [
+        o('Declare recovery now, since ERP is up at two plants and the COO wants closure.', 30, 16, 380, -10, 'Monitoring is scaled back. Nine days later, an unreset account is used to log on again, and Plant 3 goes down for a second time.'),
+        o('Keep all plants on manual work until the entire network is rebuilt from scratch.', 54, 0, 220, -3, 'The full rebuild is thorough, but more than two days of manual work cost far more than the remaining risk justified.'),
+        o('Recommend recovery to the crisis team once the IMP exit criteria are met.', 12, 0, 70, 0, 'Validation finishes, all credentials are reset, and enhanced monitoring runs for 30 days. Business owners sign off, and the crisis team declares recovery at 14:00 Tuesday.'),
+        o('Let each plant manager decide when that plant has recovered and can return.', 20, 0, 90, -4, 'Plants return on different criteria. Plant 3 reconnects before validation and must be isolated again.')
+      ] }
+  ];
+  var SIM_END = 4820;
+
+  /* Consequence of committing option c at inject k, given the other committed decisions */
+  function effect(k, c, dec) {
+    var op = INJECTS[k].opts[c], d = { dt: op.d.dt, ex: op.d.ex, cost: op.d.cost, rep: op.d.rep }, notes = [];
+    function has(f) { for (var j = 0; j < k; j++) if (dec[j] != null && INJECTS[j].opts[dec[j]].flag === f) return true; return false; }
+    if (k === 3) {
+      if (has('volatile')) { d.cost += 60; notes.push('Memory lost in the shutdown at Inject 1 adds forensic work: +$60K.'); }
+      if (has('evidence') || op.flag === 'evidence') { d.ex += 60; d.cost += 180; notes.push('Evidence was destroyed, so the exposure cannot be narrowed and every share counts as exposed: +60,000 records and +$180K in broader notification.'); }
+    }
+    if (k === 4 && has('late')) { d.rep -= 4; notes.push('The late escalation at Inject 2 left communications behind the story: 4 more reputation points.'); }
+    if (k === 7 && (has('weak') || has('weakErad'))) {
+      var add = [20, 0, 8, 10][c];
+      if (add) { d.dt += add; notes.push('Weak forensics or in-place cleaning earlier left more persistence to find: +' + add + ' downtime hours.'); }
+    }
+    return { d: d, notes: notes };
+  }
+  /* Totals after `count` injects released with decisions `dec` (array of option index or null) */
+  function model(dec, count) {
+    var n = count == null ? 8 : count, T = { dt: 0, ex: 0, cost: 0, rep: 100 }, steps = [], decided = 0;
+    for (var k = 0; k < n; k++) {
+      var b = INJECTS[k].base; T.dt += b.dt; T.ex += b.ex; T.cost += b.cost; T.rep += b.rep;
+      if (dec[k] != null) { var e = effect(k, dec[k], dec).d; T.dt += e.dt; T.ex += e.ex; T.cost += e.cost; T.rep += e.rep; decided++; }
+      steps.push({ dt: T.dt, ex: T.ex, cost: T.cost, total: T.cost + BI_RATE * T.dt, rep: T.rep, decided: dec[k] != null });
+    }
+    return { dt: T.dt, ex: T.ex, cost: T.cost, total: T.cost + BI_RATE * T.dt, rep: Math.max(0, T.rep), steps: steps, decided: decided };
+  }
+  var BEST = INJECTS.map(function (x) { return x.best; });
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function hm(min) { min = Math.max(0, Math.floor(min)); return Math.floor(min / 60) + ':' + pad(min % 60); }
+  function tplus(min) { return 'T+' + hm(min); }
+  function wall(min) { var tot = BASE.h * 60 + BASE.m + Math.floor(min), d = Math.floor(tot / 1440), r = tot % 1440; return DAYS[Math.min(d, DAYS.length - 1)] + ' ' + pad(Math.floor(r / 60)) + ':' + pad(r % 60); }
+  function money(k) { return '$' + (k / 1000).toFixed(2) + 'M'; }
+
+  /* ---------- Session code (same design as CISA B5, own lab tag) ----------
+     30 payload bits in 6 Crockford base32 characters + 1 checksum character.
+     tag(2) | interval(2) | paused(1) | inject index(3) | anchor(22).
+     Running: anchor = start epoch second of the current inject window, mod 2^22.
+     Paused: anchor = seconds already elapsed in the current inject window. */
+  var ALPHA = '0123456789ABCDEFGHJKMNPQRSTVWXYZ', M = 4194304, TAG = 3, IVS = [180, 300, 420];
+  function checksum(vals) { var s = 7; vals.forEach(function (v, i) { s += (2 * i + 1) * v; }); return s % 32; }
+  function encode(st) {
+    var a = ((Math.floor(st.anchor) % M) + M) % M;
+    var v = (((TAG * 4 + st.iv) * 2 + (st.paused ? 1 : 0)) * 8 + st.b) * M + a, ch = [];
+    for (var i = 5; i >= 0; i--) { ch[i] = v % 32; v = Math.floor(v / 32); }
+    ch.push(checksum(ch));
+    return ch.map(function (c) { return ALPHA[c]; }).join('');
+  }
+  function fmtCode(c) { return c.slice(0, 3) + '-' + c.slice(3); }
+  function clean(s) { return String(s || '').toUpperCase().replace(/[\s\-_.]/g, '').replace(/O/g, '0').replace(/[IL]/g, '1').replace(/U/g, 'V'); }
+  function resolve(a, nowSec) { var c = nowSec - (((nowSec - a) % M) + M) % M; if (nowSec - c > M / 2) c += M; return c; }
+  function decode(raw, nowSec) {
+    var s = clean(raw);
+    if (!s) return { error: 'Enter the session code shown on the projector.' };
+    if (s.length !== 7) return { error: 'Session codes have 7 characters, such as K7Q-4MZP. You entered ' + s.length + '.' };
+    var vals = [];
+    for (var i = 0; i < 7; i++) { var k = ALPHA.indexOf(s[i]); if (k < 0) return { error: 'The code contains a character that session codes do not use: ' + s[i] + '.' }; vals.push(k); }
+    if (checksum(vals.slice(0, 6)) !== vals[6]) return { error: 'That code does not check out. One character is probably mistyped. Compare it with the projector and try again.' };
+    var v = 0; for (i = 0; i < 6; i++) v = v * 32 + vals[i];
+    var a = v % M, r = Math.floor(v / M), b = r % 8; r = Math.floor(r / 8); var p = r % 2; r = Math.floor(r / 2); var iv = r % 4, tag = Math.floor(r / 4);
+    if (tag !== TAG || iv > 2) return { error: 'That is not a session code for this lab. Ask the facilitator for the B6 code.' };
+    var st = { code: s, b: b, paused: !!p, iv: iv };
+    if (p) { st.within = a; if (a > IVS[iv]) return { error: 'That code is not valid. Ask the facilitator for the current code.' }; }
+    else st.t0 = resolve(a, nowSec);
+    return { state: st };
+  }
+  function derive(st, nowSec) {
+    var I = IVS[st.iv], idx, within, nextIn = null;
+    if (st.paused) { idx = st.b; within = st.within || 0; }
+    else {
+      var el = Math.max(0, nowSec - st.t0), steps = Math.floor(el / I);
+      idx = Math.min(7, st.b + steps);
+      within = el - (idx - st.b) * I;
+      if (idx < 7) nextIn = I - within;
+    }
+    var w = Math.min(within, I), nextT = idx < 7 ? INJECTS[idx + 1].t : SIM_END;
+    var sim = INJECTS[idx].t + (nextT - INJECTS[idx].t) * w / I;
+    return { idx: idx, count: idx + 1, within: within, nextIn: nextIn, sim: sim, closed: idx === 7 && within >= I, I: I };
+  }
+
+  window.B6 = {
+    INJECTS: INJECTS, BEST: BEST, BI_RATE: BI_RATE, LETTERS: LETTERS, IVS: IVS, ALPHA: ALPHA, M: M, TAG: TAG,
+    hm: hm, tplus: tplus, wall: wall, money: money, effect: effect, model: model,
+    encode: encode, decode: decode, derive: derive, fmtCode: fmtCode, clean: clean, checksum: checksum,
+    answers: {
+      bestDowntime: function () { return model(BEST, 8).dt; },
+      bestCostM: function () { return Math.round(model(BEST, 8).total) / 1000; }
+    }
+  };
+})();
+</script>
+
+<script>
+(function () {
+  var B = window.B6, API = null, CUR = null;
+  function nowSec() { return Math.floor(Date.now() / 1000); }
+  function note(k, v) { var a = API || window.LAB_API; return a ? a.note(k, v) : undefined; }
+  function decs() { var d = note('dec') || {}; return B.INJECTS.map(function (x) { return d[x.id] == null ? null : +d[x.id]; }); }
+  function allDecided() { return decs().every(function (v) { return v != null; }); }
+  function lockDecision(k) { return function () { return decs()[k - 1] != null ? false : 'Unlocks after you commit your decision at Inject ' + k + ' on the Exercise tab.'; }; }
+  function lockAll() { return allDecided() ? false : 'Unlocks when all eight decisions are committed and the what-if replay opens on the Exercise tab.'; }
+
+  function live() {
+    var mode = note('mode') || 'solo', n = nowSec();
+    if (mode === 'solo') { var c = +(note('solo') || 0); return { mode: mode, count: c, idx: c - 1, sim: c ? B.INJECTS[c - 1].t : 0 }; }
+    if (mode === 'fac') {
+      var f = note('fac');
+      if (!f || !f.started) return { mode: mode, count: 0, idx: -1, sim: 0 };
+      var d = B.derive(f, n); d.mode = mode; d.fac = f; return d;
+    }
+    var code = note('code'), dec = code ? B.decode(code, n) : null;
+    if (!dec || !dec.state) return { mode: mode, count: 0, idx: -1, sim: 0, noCode: true };
+    var dt = B.derive(dec.state, n); dt.mode = mode; dt.state = dec.state; return dt;
+  }
+  function mmss(s) { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + (s % 60 < 10 ? '0' : '') + (s % 60); }
+
+  function keepFocus(fn) {
+    var a = document.activeElement, id = a && a.id, s1, s2;
+    try { s1 = a.selectionStart; s2 = a.selectionEnd; } catch (e) { }
+    fn();
+    if (id) { var el = document.getElementById(id); if (el && el !== document.activeElement) { el.focus({ preventScroll: true }); try { if (s1 != null) el.setSelectionRange(s1, s2); } catch (e) { } } }
+  }
+
+  /* ---------- Facilitator actions: every schedule change issues a new code ---------- */
+  function facCode(f, reason) {
+    var st = { iv: f.iv, b: f.b, paused: f.paused, anchor: f.paused ? f.within : f.t0 };
+    f.code = B.encode(st);
+    f.history = (f.history || []).concat([{ code: f.code, at: Date.now(), reason: reason }]).slice(-6);
+  }
+  function facAction(kind) {
+    var f = note('fac') || { iv: 1 }, n = nowSec();
+    if (kind === 'start') { f = { iv: f.iv == null ? 1 : f.iv, b: 0, t0: n, paused: false, within: 0, started: true, history: [] }; facCode(f, 'start'); }
+    else if (f.started) {
+      var d = B.derive(f, n);
+      if (kind === 'pause' && !f.paused) { f.b = d.idx; f.within = Math.min(Math.floor(d.within), B.IVS[f.iv]); f.paused = true; facCode(f, 'pause'); }
+      else if (kind === 'resume' && f.paused) { f.t0 = n - (f.within || 0); f.paused = false; facCode(f, 'resume'); }
+      else if (kind === 'next' && d.idx < 7) { f.b = d.idx + 1; f.within = 0; f.t0 = n; facCode(f, 'next'); }
+      else if (kind === 'end') { if (!confirm('End this exercise? Teams keep their decisions. You can start a new session afterward.')) return; f = { iv: f.iv }; }
+    }
+    note('fac', f); renderLive(true);
+  }
+
+  /* ---------- Rendering ---------- */
+  function esc(s) { return API.esc(s); }
+  function sgn(v, unit, dec) { var s = (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v).toFixed(dec || 0); return s + (unit || ''); }
+  function fxLine(e) {
+    return 'Impact of this decision: downtime ' + sgn(e.dt, ' h') + ', exposure ' + sgn(e.ex, 'K records') + ', direct cost ' + sgn(e.cost / 1000, 'M', 2).replace(/^([+−±])/, '$1$') + ', reputation ' + sgn(e.rep, ' pts') + '.';
+  }
+  function injCard(x, k, newest, D) {
+    var mine = D[k], draft = CUR.draft6 && CUR.draft6[x.id];
+    var opts = x.opts.map(function (op, c) {
+      var cls = mine != null ? (mine === c ? ' mine' : ' dim') : '';
+      return '<label class="b6-opt' + cls + '"><input type="radio" name="b6d-' + x.id + '" id="b6d-' + x.id + '-' + c + '" value="' + c + '" data-dec="' + x.id + '"' + ((mine != null ? mine === c : draft === c) ? ' checked' : '') + (mine != null ? ' disabled' : '') + '><span><b>' + B.LETTERS[c] + '.</b> ' + esc(op.t) + (mine === c ? ' <span class="b6-tag">your decision</span>' : '') + '</span></label>';
+    }).join('');
+    var res = '';
+    if (mine != null) {
+      var e = B.effect(k, mine, D);
+      res = '<div class="b6-res" role="status"><b>What happens.</b> ' + esc(x.opts[mine].res) + (e.notes.length ? ' ' + esc(e.notes.join(' ')) : '') + '<span class="fx">' + esc(fxLine(e.d)) + '</span></div>';
+    }
+    return '<article class="b6-inj' + (newest ? ' newest' : '') + '" aria-labelledby="b6h-' + x.id + '">' +
+      '<div class="b6-inj-h">Inject ' + (k + 1) + ' of 8 &middot; ' + B.tplus(x.t) + ' &middot; ' + B.wall(x.t) + (newest ? ' &middot; newest' : '') + (mine != null ? ' &middot; decision committed' : ' &middot; decision needed') + '</div>' +
+      '<h5 id="b6h-' + x.id + '">' + x.id + '. ' + esc(x.title) + '</h5>' +
+      '<p><b>Situation.</b> ' + esc(x.sit) + '</p>' +
+      '<p class="b6-pending">Plan sections in play: ' + esc(x.refs) + '</p>' +
+      '<div class="b6-dec"><fieldset><legend>' + esc(x.ask) + '</legend>' + opts + '</fieldset>' +
+      (mine == null ? '<div class="b6-btnrow"><button type="button" class="btn" id="b6-commit-' + x.id + '" data-commit="' + x.id + '">Commit decision</button><span class="b6-pending">Decisions are final once committed, as in a real incident.</span></div>' : '') + res + '</div></article>';
+  }
+  function feedHTML(L) {
+    if (!L.count) return '<p class="b6-empty">No injects released yet. ' + (L.mode === 'solo' ? 'Select <b>Start exercise</b> to release Inject 1.' : L.mode === 'fac' ? 'Select <b>Start exercise</b> to begin the clock.' : 'Enter the session code to join.') + '</p>';
+    var D = decs(), out = [];
+    for (var i = L.count - 1; i >= 0; i--) out.push(injCard(B.INJECTS[i], i, i === L.count - 1, D));
+    var open = D.slice(0, L.count).filter(function (v) { return v == null; }).length;
+    return '<p class="b6-pending" style="margin-bottom:.6rem">' + L.count + ' of 8 injects released. Newest first. ' + (open ? '<b>' + open + ' decision' + (open > 1 ? 's' : '') + ' waiting.</b> ' : '') + 'Your decisions are saved on this device only.</p><div class="b6-feed">' + out.join('') + '</div>';
+  }
+
+  function chartSVG(lines, n) {
+    // lines: [{steps, cls, pt, lbl}] cumulative total cost ($K) after each inject
+    var W = 640, H = 190, l = 52, r = 16, t = 14, b = 30, max = 1000;
+    lines.forEach(function (ln) { ln.steps.forEach(function (s) { max = Math.max(max, s.total); }); });
+    max = Math.ceil(max / 1000) * 1000;
+    function X(i) { return l + (W - l - r) * i / 7; }
+    function Y(v) { return t + (H - t - b) * (1 - v / max); }
+    var g = '', stepK = max <= 6000 ? 1000 : max <= 12000 ? 2000 : 5000;
+    for (var v = 0; v <= max; v += stepK) g += '<line class="grid" x1="' + l + '" x2="' + (W - r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '"/><text x="' + (l - 6) + '" y="' + (Y(v) + 4) + '" text-anchor="end">$' + (v / 1000) + 'M</text>';
+    for (var i = 0; i < 8; i++) g += '<text x="' + X(i) + '" y="' + (H - 10) + '" text-anchor="middle">I' + (i + 1) + '</text>';
+    lines.forEach(function (ln) {
+      var s = ln.steps.slice(0, n); if (!s.length) return;
+      g += '<polyline class="' + ln.cls + '" points="' + s.map(function (p, i) { return X(i) + ',' + Y(p.total); }).join(' ') + '"/>';
+      s.forEach(function (p, i) { g += '<circle class="' + ln.pt + '" cx="' + X(i) + '" cy="' + Y(p.total) + '" r="4"/>'; });
+      var lp = s[s.length - 1], lx = X(s.length - 1);
+      g += '<text class="' + ln.lbl + '" x="' + (lx > W - 90 ? lx - 8 : lx + 8) + '" y="' + (Y(lp.total) + (ln.dy || -8)) + '" text-anchor="' + (lx > W - 90 ? 'end' : 'start') + '">' + B.money(lp.total) + '</text>';
+    });
+    return '<svg class="b6-chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(lines.map(function (ln) { var s = ln.steps.slice(0, n); return ln.name + ': total cost ' + (s.length ? B.money(s[s.length - 1].total) : 'none') + ' after ' + s.length + ' injects'; }).join('; ')) + '"><line class="ax" x1="' + l + '" x2="' + (W - r) + '" y1="' + Y(0) + '" y2="' + Y(0) + '"/>' + g + '</svg>';
+  }
+  function tile(label, val, unit, delta, goodDown, meter) {
+    var cls = delta == null || delta === 0 ? '' : ((delta > 0) === goodDown ? ' up' : ' good');
+    return '<div class="b6-tile"><span class="b6-lbl">' + label + '</span><span class="v">' + val + '<span class="u">' + unit + '</span></span>' + (meter != null ? '<div class="b6-meter" aria-hidden="true"><i style="width:' + meter + '%"></i></div>' : '') + '<span class="dl' + cls + '">' + (delta == null ? '&nbsp;' : 'Last decision ' + delta) + '</span></div>';
+  }
+  function icHTML(L) {
+    var D = decs(), m = B.model(D, L.count), last = CUR.lastDec, ld = null;
+    if (last != null && D[last] != null && last < L.count) ld = B.effect(last, D[last], D).d;
+    var waiting = D.slice(0, L.count).filter(function (v) { return v == null; }).length;
+    var sum = L.count ? 'Exercise time ' + B.tplus(L.sim || 0) + ' (' + B.wall(L.sim || 0) + '). ' + m.decided + ' of ' + L.count + ' released decisions committed' + (waiting ? '; waiting decisions are not yet counted.' : '.') + ' Cost includes business interruption at $' + B.BI_RATE + 'K per downtime hour.' : 'The impact clock starts when Inject 1 is released. Every decision you commit changes it.';
+    return '<section class="b6-ic" aria-labelledby="b6-ic-h"><h4 id="b6-ic-h">Impact clock: your incident path</h4><p class="b6-ic-sum">' + sum + '</p>' +
+      '<div class="b6-tiles">' +
+        tile('Downtime', m.dt, ' h', ld ? sgn(ld.dt, ' h') : null, true) +
+        tile('Data exposure', m.ex, 'K records', ld ? sgn(ld.ex, 'K') : null, true) +
+        tile('Total cost', B.money(m.total), '', ld ? sgn((ld.cost + B.BI_RATE * ld.dt) / 1000, 'M', 2).replace(/^([+\u2212\u00b1])/, '$1$') : null, true) +
+        tile('Reputation', m.rep, ' / 100', ld ? sgn(ld.rep, ' pts') : null, false, m.rep) + '</div>' +
+      '<span class="b6-lbl">Total cost after each inject (direct cost plus business interruption)</span>' + chartSVG([{ name: 'Your path', steps: m.steps, cls: 'ln', pt: 'pt', lbl: 'lbl' }], L.count) + '</section>';
+  }
+
+  function wiHTML() {
+    var D = decs(); if (!D.every(function (v) { return v != null; })) return '';
+    var W = note('wi'); if (!W || W.length !== 8) W = D.slice();
+    var mine = B.model(D, 8), alt = B.model(W, 8);
+    var rows = B.INJECTS.map(function (x, k) {
+      return '<div class="b6-wi-row"><span><b>' + x.id + '.</b> ' + esc(x.title) + '</span><span class="b6-seg" role="group" aria-label="What-if decision for ' + x.id + '">' + B.LETTERS.split('').map(function (L, c) {
+        return '<button type="button" id="b6w-' + x.id + '-' + c + '" data-wi="' + k + '" data-c="' + c + '" aria-pressed="' + (W[k] === c) + '"' + (D[k] === c ? ' class="yours" title="Your committed decision"' : '') + '>' + L + (D[k] === c ? '<span class="sr-only"> (your decision)</span>' : '') + '</button>';
+      }).join('') + '</span></div>';
+    }).join('');
+    function diff(a, b, dec, unit) { var d = b - a; return d === 0 ? 'same' : sgn(d, unit || '', dec); }
+    var tbl = '<div class="table-wrap"><table class="data"><thead><tr><th scope="col">Measure</th><th scope="col" class="num">Your path</th><th scope="col" class="num">What-if path</th><th scope="col" class="num">Difference</th></tr></thead><tbody>' +
+      '<tr><td>Downtime (hours)</td><td class="num">' + mine.dt + '</td><td class="num"><b>' + alt.dt + '</b></td><td class="num">' + diff(mine.dt, alt.dt) + '</td></tr>' +
+      '<tr><td>Data exposure (thousand records)</td><td class="num">' + mine.ex + '</td><td class="num"><b>' + alt.ex + '</b></td><td class="num">' + diff(mine.ex, alt.ex) + '</td></tr>' +
+      '<tr><td>Direct cost</td><td class="num">' + B.money(mine.cost) + '</td><td class="num">' + B.money(alt.cost) + '</td><td class="num">' + diff(mine.cost / 1000, alt.cost / 1000, 2, 'M') + '</td></tr>' +
+      '<tr><td>Total cost, including interruption</td><td class="num">' + B.money(mine.total) + '</td><td class="num"><b>' + B.money(alt.total) + '</b></td><td class="num">' + diff(mine.total / 1000, alt.total / 1000, 2, 'M') + '</td></tr>' +
+      '<tr><td>Reputation (of 100)</td><td class="num">' + mine.rep + '</td><td class="num"><b>' + alt.rep + '</b></td><td class="num">' + diff(mine.rep, alt.rep) + '</td></tr></tbody></table></div>';
+    var same = W.join() === D.join();
+    return '<section class="b6-wi" aria-labelledby="b6-wi-h"><h4 class="b6-h4" id="b6-wi-h" style="margin-top:0">What-if replay</h4>' +
+      '<p class="lead-p" style="margin:.1rem 0 .6rem">All eight decisions are committed. Your path is fixed; use the replay to test other paths through the same consequence model. A dashed outline marks your committed choice. The checklist number items ask you to set the replay to the decisions the IMP supports.</p>' +
+      rows + '<div class="b6-btnrow" style="margin:.8rem 0"><button type="button" class="btn secondary" id="b6-wi-mine">Reset to my path</button><button type="button" class="btn ghost" id="b6-wi-ver">Apply my verified checklist answers</button><span class="b6-pending" id="b6-wi-msg" aria-live="polite">' + (same ? 'Showing your path.' : 'What-if path differs at ' + W.map(function (v, k) { return v !== D[k] ? 'I' + (k + 1) : null; }).filter(Boolean).join(', ') + '.') + '</span></div>' +
+      '<div class="b6-legend" aria-hidden="true"><span>Your path</span><span class="wi">What-if path</span></div>' +
+      chartSVG([{ name: 'Your path', steps: mine.steps, cls: 'ln', pt: 'pt', lbl: 'lbl', dy: -8 }, { name: 'What-if path', steps: alt.steps, cls: 'ln2', pt: 'pt2', lbl: 'lbl2', dy: 22 }], 8) + tbl + '</section>';
+  }
+
+  function curHTML(L, board) {
+    if (!L.count) return '<div class="b6-cur"><p>Waiting for Inject 1.</p></div>';
+    var x = B.INJECTS[L.idx];
+    return '<div class="b6-cur"><div class="b6-cur-meta">Inject ' + (L.idx + 1) + ' of 8 &middot; ' + B.tplus(x.t) + ' &middot; ' + B.wall(x.t) + '</div><h3>' + esc(x.title) + '</h3><p>' + esc(x.sit) + '</p>' +
+      (board ? '<p class="b6-ask">' + esc(x.ask) + '</p><ol class="b6-cur-opts">' + x.opts.map(function (op, c) { return '<li><b>' + B.LETTERS[c] + '</b>' + esc(op.t) + '</li>'; }).join('') + '</ol>' : '<p class="b6-pending">Decide on this inject in the feed below.</p>') + '</div>';
+  }
+  function clockText(L) {
+    if (!L.count) return { clk: 'T+0:00', sub: 'Not started' };
+    var sub = B.wall(L.sim);
+    if (L.mode === 'solo') sub += ' &middot; self-paced';
+    else if (L.closed) sub += ' &middot; all injects released; decision window closed';
+    else if (L.nextIn != null) sub += ' &middot; next inject in ' + mmss(L.nextIn);
+    else if (L.idx === 7) sub += ' &middot; final inject';
+    if (L.fac ? L.fac.paused : (L.state && L.state.paused)) sub += ' &middot; <b>paused</b>';
+    return { clk: B.tplus(L.sim), sub: sub };
+  }
+  function ctlHTML(L) {
+    var mode = L.mode;
+    if (mode === 'solo') {
+      var D = decs(), cur = L.count ? D[L.count - 1] : 0, btn;
+      if (L.count >= 8) btn = '<span><b>All 8 injects released.</b> ' + (allDecided() ? 'Use the what-if replay and complete the checklist.' : 'Commit the remaining decisions.') + '</span>';
+      else if (L.count && cur == null) btn = '<button type="button" class="btn" id="b6-rel" disabled aria-describedby="b6-relnote">Release next inject (' + (L.count + 1) + ' of 8)</button><span class="b6-pending" id="b6-relnote">Commit your decision on Inject ' + L.count + ' first.</span>';
+      else btn = '<button type="button" class="btn" id="b6-rel">' + (L.count ? 'Release next inject (' + (L.count + 1) + ' of 8)' : 'Start exercise: release Inject 1') + '</button>';
+      return '<div class="b6-bar"><div><span class="b6-lbl">Incident clock</span><span class="b6-simclk" id="b6-clk">' + clockText(L).clk + '</span> <span id="b6-sub">' + clockText(L).sub + '</span></div>' +
+        '<div class="b6-btnrow" style="margin-left:auto">' + btn + '</div></div>';
+    }
+    if (mode === 'fac') {
+      var f = L.fac || note('fac') || { iv: 1 };
+      var ivSel = '<div class="b6-seg" role="group" aria-label="Real minutes per inject">' + B.IVS.map(function (s, k) { return '<button type="button" id="b6-iv' + k + '" data-iv="' + k + '" aria-pressed="' + ((f.iv == null ? 1 : f.iv) === k) + '"' + (f.started ? ' disabled' : '') + '>' + (s / 60) + ' min</button>'; }).join('') + '</div>';
+      if (!f.started) return '<div class="b6-board"><p class="b6-lbl">Facilitator setup</p><p class="lead-p" style="margin:.3rem 0 .8rem">Choose the real time per inject, then start. The board shows a session code; each team types it on its own device and follows this clock. The board shows the current inject and its options for discussion. Each team commits its own decisions, which stay on that team’s device.</p>' +
+        '<div class="b6-btnrow"><span class="b6-lbl" style="margin-right:.3rem">Pace</span>' + ivSel + '<button type="button" class="btn" id="b6-start">Start exercise</button></div></div>';
+      var last = f.history[f.history.length - 1], reasons = { start: 'Session started', pause: 'Exercise paused', resume: 'Exercise resumed', next: 'Next inject released early' };
+      var t = new Date(last.at), tt = (t.getHours() < 10 ? '0' : '') + t.getHours() + ':' + (t.getMinutes() < 10 ? '0' : '') + t.getMinutes();
+      var noteTxt = last.reason === 'start' ? 'Teams: open Lab B6, choose Team, and enter this code.' : reasons[last.reason] + ' at ' + tt + '. <b>New code.</b> Teams: enter this code to re-sync.';
+      var ct = clockText(L);
+      return '<div class="b6-board" id="b6-board" aria-label="Facilitator display">' +
+        '<div class="b6-b-top"><div><span class="b6-lbl">Session code</span><span class="b6-code" id="b6-code" aria-live="polite">' + B.fmtCode(f.code) + '</span><span class="b6-codenote' + (last.reason === 'start' ? ' calm' : '') + '">' + noteTxt + '</span>' +
+          (f.history.length > 1 ? '<p class="b6-prev">Earlier codes this session (no longer current): ' + f.history.slice(0, -1).map(function (h) { return B.fmtCode(h.code); }).join(', ') + '</p>' : '') + '</div>' +
+          '<div><span class="b6-lbl">Incident clock <span class="b6-state' + (f.paused ? ' paused' : '') + '">' + (f.paused ? 'Paused' : 'Running') + '</span></span><span class="b6-clock" id="b6-clk">' + ct.clk + '</span><span class="b6-clock-sub" id="b6-sub">' + ct.sub + '</span><span class="b6-prev">Pace: ' + (B.IVS[f.iv] / 60) + ' real minutes per inject</span></div></div>' +
+        '<div id="b6-curbox">' + curHTML(L, true) + '</div>' +
+        '<div class="b6-btnrow">' + (f.paused ? '<button type="button" class="btn" id="b6-resume">Resume</button>' : '<button type="button" class="btn secondary" id="b6-pause">Pause</button>') +
+          (L.idx < 7 ? '<button type="button" class="btn ghost" id="b6-next">Release next inject now</button>' : '') +
+          (document.fullscreenEnabled ? '<button type="button" class="btn ghost" id="b6-fs">Present full screen</button>' : '') +
+          '<button type="button" class="btn ghost" id="b6-end">End exercise</button></div></div>';
+    }
+    var code = note('code'), err = CUR && CUR.err, warn = '';
+    var form = '<div class="b6-join"><div><label for="b6-codein">Session code</label><input type="text" id="b6-codein" maxlength="9" autocomplete="off" spellcheck="false" placeholder="ABC-DEFG" value="' + esc(CUR && CUR.draft != null ? CUR.draft : (code ? B.fmtCode(code) : '')) + '" aria-describedby="b6-codehelp' + (err ? ' b6-err' : '') + '"></div><button type="button" class="btn" id="b6-join">' + (code ? 'Re-sync with this code' : 'Join session') + '</button></div>' +
+      '<p class="b6-pending" id="b6-codehelp" style="margin:-.3rem 0 .8rem">Seven characters from the projector. Dashes and case do not matter. When the facilitator pauses, resumes, or skips ahead, a new code appears: enter it here. Device clocks must be correct to within a few seconds. Your team’s decisions stay on this device.</p>' +
+      (err ? '<p class="b6-err" id="b6-err" role="alert">' + esc(err) + '</p>' : '');
+    if (L.noCode) return '<div class="b6-board team"><span class="b6-lbl">Join a facilitated session</span>' + form + '</div>';
+    if (L.state && !L.state.paused) { var age = nowSec() - L.state.t0; if (age > 6 * 3600) warn = 'This code is from a session that started more than 6 hours ago. Ask the facilitator for the current code.'; if (age < -300) warn = 'This code starts in the future. Check that this device’s clock is set correctly.'; }
+    var c2 = clockText(L);
+    return '<div class="b6-board team" aria-label="Team display">' + (warn ? '<p class="b6-warn" role="status">' + esc(warn) + '</p>' : '') +
+      '<div class="b6-b-top"><div><span class="b6-lbl">Synced with code</span><span class="b6-code">' + B.fmtCode(code) + '</span><span class="b6-pending">' + (L.state.paused ? 'The facilitator paused the exercise. Wait for a new code.' : 'Following the facilitator clock.') + '</span></div>' +
+      '<div><span class="b6-lbl">Incident clock</span><span class="b6-clock" id="b6-clk">' + c2.clk + '</span><span class="b6-clock-sub" id="b6-sub">' + c2.sub + '</span></div></div>' +
+      '<div id="b6-curbox">' + curHTML(L, false) + '</div><div style="border-top:1px solid var(--border);padding-top:.8rem">' + form + '</div></div>';
+  }
+
+  // In team and facilitator modes, an inject seen once stays visible (the clock may be re-synced backward)
+  function effCount(L) {
+    var seen = +(note('maxSeen') || 0);
+    if (L.mode === 'solo') return L.count;
+    return Math.max(L.count, Math.min(seen, 8));
+  }
+  function renderLive(force) {
+    if (!CUR || !document.body.contains(CUR.root)) return;
+    var L = live(), n = effCount(L), LL = Object.assign({}, L, { count: n });
+    keepFocus(function () {
+      CUR.root.querySelector('#b6-ctl').innerHTML = ctlHTML(L);
+      CUR.root.querySelector('#b6-icbox').innerHTML = icHTML(LL);
+      if (force || CUR.lastCount !== n) { CUR.root.querySelector('#b6-feed').innerHTML = feedHTML(LL); CUR.root.querySelector('#b6-wibox').innerHTML = wiHTML(); }
+      document.querySelectorAll('.b6-mode').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.mode === L.mode); });
+    });
+    if (CUR.lastCount !== n && n && CUR.lastCount != null) { var x = B.INJECTS[n - 1]; CUR.root.querySelector('#b6-live').textContent = 'Inject ' + n + ' released: ' + x.title + ', ' + B.tplus(x.t) + '. A decision is needed.'; }
+    CUR.lastCount = n; CUR.lastMin = Math.floor((L.sim || 0) / 10);
+    if (n > +(note('maxSeen') || 0)) note('maxSeen', n);
+  }
+  function tick() {
+    if (!CUR || !document.body.contains(CUR.root)) return;
+    var L = live();
+    if (effCount(L) !== CUR.lastCount) return renderLive();
+    var ct = clockText(L), c = document.getElementById('b6-clk'), s = document.getElementById('b6-sub');
+    if (c) c.textContent = ct.clk; if (s) s.innerHTML = ct.sub;
+    var m = Math.floor((L.sim || 0) / 10);
+    if (m !== CUR.lastMin) { CUR.lastMin = m; CUR.root.querySelector('#b6-icbox').innerHTML = icHTML(Object.assign({}, L, { count: effCount(L) })); }
+  }
+  setInterval(tick, 1000);
+
+  function commit(id) {
+    var k = +id.slice(1) - 1, sel = CUR.root.querySelector('input[name="b6d-' + id + '"]:checked');
+    if (!sel) { var b = document.getElementById('b6-commit-' + id); if (b && !document.getElementById('b6-ce-' + id)) { b.insertAdjacentHTML('afterend', '<span class="b6-err" id="b6-ce-' + id + '" role="alert" style="margin:0">Choose an option first.</span>'); } return; }
+    var d = note('dec') || {}; if (d[id] != null) return;
+    d[id] = +sel.value; note('dec', d); CUR.lastDec = k;
+    if (CUR.draft6) delete CUR.draft6[id];
+    renderLive(true);
+    API.refresh();
+    var h = document.getElementById('b6h-' + id); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+    CUR.root.querySelector('#b6-live').textContent = 'Decision committed for ' + id + '. The impact clock is updated.';
+  }
+
+  function plansHTML() {
+    function sec(n, h, t) { return '<li><b>' + n + ' ' + h + '.</b> ' + t + '</li>'; }
+    return '<div class="lb-doc"><p class="eyebrow">Document 1</p><h4>Halvard Precision Components: Incident Management Plan v3.2 (excerpt)</h4><p class="b6-pending" style="margin:0 0 .5rem">Approved by the IT steering committee, February 2026. Plan owner: CISO.</p><ul>' +
+      sec('1.2', 'Roles', 'The security manager is the incident manager and directs the response. The executive crisis team (CEO as chair, COO, CFO, CIO, General Counsel, CISO, Director of Communications) owns business decisions: plant operations, outside spending, public statements, payments, and declaring recovery.') +
+      sec('2.1', 'Severity', 'Severity 1: a critical business process is down for more than 2 hours, or confirmed exfiltration of customer, employee, or regulated data, or active ransomware. The incident manager convenes the crisis team within 1 hour of a Severity 1 classification, at any hour.') +
+      sec('3.1', 'Containment', 'Isolate affected segments and accounts, block suspected exfiltration, and keep unaffected operations running where it is safe. Do not power off or restore affected systems before volatile evidence is captured, unless spread cannot be stopped otherwise or safety is at risk.') +
+      sec('3.2', 'Outside parties', 'The General Counsel engages breach counsel. Counsel retains forensics to support legal privilege. The insurer is notified within 48 hours. Use the insurer’s panel vendors, or obtain written approval for others, to preserve coverage.') +
+      sec('4.1', 'Evidence', 'Before any in-scope system is wiped or rebuilt, capture disk and memory images and logs with chain of custody. Rebuild in a clean environment in parallel where possible. Preserve only what the investigation needs.') +
+      sec('4.2', 'Eradication and recovery exit criteria', 'All persistence removed and validated; all privileged and user credentials reset; systems restored from known-good images or scanned backups; enhanced monitoring for 30 days; business owner sign-off. The incident manager recommends; the crisis team declares recovery.') +
+      sec('5.1', 'Communications', 'The Director of Communications is the only spokesperson. A pre-approved holding statement is issued within 4 hours of public awareness. Account executives brief key customers from an approved script. No speculation, and no denials ahead of the facts.') +
+      sec('5.2', 'Extortion', 'Board-approved policy: no employee communicates with a threat actor. Messages go to security and counsel. Any payment decision rests with the CEO and the board, on counsel’s advice, after insurer consultation and sanctions screening. Where restoration from backups is viable, the default is not to pay.') +
+      sec('5.3', 'Notification', 'The General Counsel owns notification and works Appendix N with the owners named there. Law enforcement is informed of confirmed ransomware through counsel. Notices are reviewed by counsel before release.') +
+      sec('6.1', 'Post-incident review', 'Within 14 days of recovery, the incident manager leads a blameless review and presents lessons learned and program changes to the steering committee.') +
+      '</ul></div>' +
+      '<div class="lb-doc"><p class="eyebrow">Document 2</p><h4>Appendix N: notification matrix (Halvard internal policy, not legal advice)</h4><div class="table-wrap"><table class="data"><thead><tr><th scope="col">Party</th><th scope="col">Trigger</th><th scope="col">Internal deadline</th><th scope="col">Owner</th></tr></thead><tbody>' +
+      '<tr><td>Cyber insurer (Granite Shield Mutual)</td><td>Severity 1 incident</td><td>48 hours from classification</td><td>General Counsel</td></tr>' +
+      '<tr><td>Law enforcement</td><td>Confirmed ransomware or extortion</td><td>As soon as practical, through counsel</td><td>General Counsel</td></tr>' +
+      '<tr><td>Aerospace customers (contract clause 14.3)</td><td>Customer technical data confirmed affected</td><td>72 hours from confirmation</td><td>Account executives with counsel</td></tr>' +
+      '<tr><td>Employees, current and former</td><td>Personal data confirmed affected</td><td>Per counsel’s jurisdiction review</td><td>HR with counsel</td></tr>' +
+      '<tr><td>Board of directors</td><td>Severity 1 incident</td><td>Within 24 hours</td><td>CEO</td></tr></tbody></table></div></div>';
+  }
+  function ctxHTML() {
+    return '<div class="lb-doc"><p class="eyebrow">Document 3</p><h4>Executive crisis team and key contacts</h4><div class="table-wrap"><table class="data"><thead><tr><th scope="col">Role</th><th scope="col">Name</th></tr></thead><tbody>' +
+      '<tr><td>CEO, crisis team chair</td><td>Adaeze Okonkwo</td></tr><tr><td>COO</td><td>Marcus Lindqvist</td></tr><tr><td>CFO</td><td>Daniel Osei</td></tr><tr><td>CIO</td><td>Priya Venkataraman</td></tr>' +
+      '<tr><td>General Counsel</td><td>Tomás Herrera</td></tr><tr><td>CISO</td><td>Elena Marchetti</td></tr><tr><td>Director of Communications</td><td>Hana Kobayashi</td></tr>' +
+      '<tr><td>Incident manager</td><td>You (security manager)</td></tr><tr><td>SOC lead</td><td>Kenji Watanabe</td></tr><tr><td>Breach counsel</td><td>Whitcombe and Arrul LLP</td></tr><tr><td>Panel forensics firm</td><td>Northlight DFIR</td></tr></tbody></table></div></div>' +
+      '<div class="lb-doc"><p class="eyebrow">Document 4</p><h4>Business context</h4><ul>' +
+      '<li><b>Halvard Precision Components:</b> machined parts for aerospace and medical device makers; $640 million annual revenue; 1,900 employees; plants in Millbrook (Plant 1), Easton Falls (Plant 2), and Red Hollow (Plant 3).</li>' +
+      '<li><b>Critical processes:</b> ERP order entry and production scheduling (RTO 24 hours), plant MES (RTO 12 hours), customer engineering file exchange (RTO 48 hours).</li>' +
+      '<li><b>Backups:</b> nightly immutable backups to a separate cloud tenant with separate credentials; last restore test passed in August 2026.</li>' +
+      '<li><b>Risk appetite (board statement):</b> low tolerance for loss of customer trust and for regulatory or contractual breach; moderate tolerance for short production delays.</li></ul></div>' +
+      '<div class="lb-doc"><p class="eyebrow">Document 5</p><h4>How the impact clock works</h4><ul>' +
+      '<li>Each inject brings unavoidable impact (the attack itself). Each decision you commit adds its own consequence, and some decisions change the consequence of later ones.</li>' +
+      '<li><b>Downtime:</b> hours until critical operations are restored and recovery is declared. <b>Data exposure:</b> thousands of records taken or treated as exposed. <b>Total cost:</b> direct response cost plus business interruption at $30K per downtime hour (finance estimate of lost margin). <b>Reputation:</b> an index from 100 based on customer and press response.</li>' +
+      '<li>The model is deterministic: the same decisions always produce the same outcome, so teams can compare paths in the debrief.</li></ul></div>';
+  }
+
+  window.B6UI = {
+    workbench: function (root, api) {
+      API = api; CUR = { root: root, lastCount: null, draft6: {} };
+      root.innerHTML = '<div class="lb-tool"><div class="lb-tabs" role="tablist" aria-label="Workbench tools">' +
+        '<button role="tab" id="tb-ex" aria-controls="pn-ex" aria-selected="true">Exercise</button>' +
+        '<button role="tab" id="tb-plan" aria-controls="pn-plan" aria-selected="false" tabindex="-1">Incident plan</button>' +
+        '<button role="tab" id="tb-ctx" aria-controls="pn-ctx" aria-selected="false" tabindex="-1">Team and context</button></div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-ex" aria-labelledby="tb-ex">' +
+          '<div class="b6-modes" role="group" aria-label="Exercise mode">' +
+            '<button type="button" class="b6-mode" id="b6m-solo" data-mode="solo" aria-pressed="false"><b>Solo</b>Self-paced. Release each inject after you commit a decision.</button>' +
+            '<button type="button" class="b6-mode" id="b6m-fac" data-mode="fac" aria-pressed="false"><b>Facilitator</b>For the projector. Start the clock, show the code, and display each inject with its options.</button>' +
+            '<button type="button" class="b6-mode" id="b6m-team" data-mode="team" aria-pressed="false"><b>Team</b>Join with the projector code. Timing follows the facilitator; decisions stay on your device.</button></div>' +
+          '<div id="b6-ctl"></div><p class="sr-only" id="b6-live" aria-live="polite"></p><div id="b6-icbox"></div>' +
+          '<h4 class="b6-h4">Injects and decisions</h4><div id="b6-feed"></div><div id="b6-wibox"></div></div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-plan" aria-labelledby="tb-plan" hidden>' + plansHTML() + '</div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-ctx" aria-labelledby="tb-ctx" hidden>' + ctxHTML() + '</div></div>';
+      var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+      function sel(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+      tabs.forEach(function (t, i) { t.addEventListener('click', function () { sel(t); }); t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; sel(n); n.focus(); } }); });
+      if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) sel(tt); }
+
+      root.addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b || !root.contains(b)) return;
+        if (b.dataset.mode) { api.note('mode', b.dataset.mode); CUR.err = null; CUR.draft = null; renderLive(true); return; }
+        if (b.id === 'b6-rel') { var c = Math.min(8, +(api.note('solo') || 0) + 1); api.note('solo', c); renderLive(); var nb = document.getElementById('b6-rel'); if (nb && !nb.disabled) nb.focus(); else { var h = document.getElementById('b6h-I' + c); if (h) { h.setAttribute('tabindex', '-1'); h.focus(); } } return; }
+        if (b.dataset.iv != null) { var f = api.note('fac') || {}; f.iv = +b.dataset.iv; api.note('fac', f); renderLive(); return; }
+        if (b.id === 'b6-start') { facAction('start'); var p = document.getElementById('b6-pause'); if (p) p.focus(); return; }
+        if (b.id === 'b6-pause') { facAction('pause'); var r = document.getElementById('b6-resume'); if (r) r.focus(); return; }
+        if (b.id === 'b6-resume') { facAction('resume'); var q = document.getElementById('b6-pause'); if (q) q.focus(); return; }
+        if (b.id === 'b6-next') return facAction('next');
+        if (b.id === 'b6-end') return facAction('end');
+        if (b.id === 'b6-fs') { var bd = document.getElementById('b6-board'); if (document.fullscreenElement) document.exitFullscreen(); else if (bd && bd.requestFullscreen) bd.requestFullscreen(); return; }
+        if (b.id === 'b6-join') return join();
+        if (b.dataset.commit) return commit(b.dataset.commit);
+        if (b.dataset.wi != null) { var W = api.note('wi'); if (!W || W.length !== 8) W = decs(); W[+b.dataset.wi] = +b.dataset.c; api.note('wi', W); keepFocus(function () { CUR.root.querySelector('#b6-wibox').innerHTML = wiHTML(); }); return; }
+        if (b.id === 'b6-wi-mine') { api.note('wi', decs()); keepFocus(function () { CUR.root.querySelector('#b6-wibox').innerHTML = wiHTML(); }); return; }
+        if (b.id === 'b6-wi-ver') {
+          var W2 = api.note('wi'); if (!W2 || W2.length !== 8) W2 = decs();
+          var S = api.state(), applied = 0;
+          LAB.checklist.forEach(function (it) { if (it.inj != null && S.st[it.id] === 'ok') { W2[it.inj] = it.answer; applied++; } });
+          api.note('wi', W2); keepFocus(function () { CUR.root.querySelector('#b6-wibox').innerHTML = wiHTML(); });
+          var mg = document.getElementById('b6-wi-msg'); if (mg) mg.textContent = applied ? 'Applied ' + applied + ' verified checklist answer' + (applied > 1 ? 's' : '') + '. ' + mg.textContent : 'No decision items are verified yet. Verify checklist items 1 to 8 first.';
+          return;
+        }
+      });
+      function join() {
+        var inp = document.getElementById('b6-codein'), d = B.decode(inp.value, nowSec());
+        if (d.error) { CUR.err = d.error; CUR.draft = inp.value; renderLive(); var i2 = document.getElementById('b6-codein'); if (i2) i2.focus(); return; }
+        CUR.err = null; CUR.draft = null; api.note('code', d.state.code); renderLive(true);
+        var i3 = document.getElementById('b6-codein'); if (i3) i3.focus();
+      }
+      root.addEventListener('keydown', function (e) { if (e.target.id === 'b6-codein' && e.key === 'Enter') { e.preventDefault(); join(); } });
+      root.addEventListener('input', function (e) { if (e.target.id === 'b6-codein') CUR.draft = e.target.value; });
+      root.addEventListener('change', function (e) { var t = e.target; if (t.dataset.dec) { CUR.draft6[t.dataset.dec] = +t.value; } });
+      document.addEventListener('fullscreenchange', function () { var fb = document.getElementById('b6-fs'); if (fb) fb.textContent = document.fullscreenElement ? 'Exit full screen' : 'Present full screen'; });
+      renderLive(true);
+    },
+    lockDecision: lockDecision,
+    lockAll: lockAll
+  };
+
+  /* ---------- Report: add the learner's incident path ---------- */
+  function pathHTML() {
+    var D = decs(), S = (API || window.LAB_API).state(), m = B.model(D, 8);
+    var byInj = {}; LAB.checklist.forEach(function (it) { if (it.inj != null) byInj[it.inj] = it; });
+    var rows = B.INJECTS.map(function (x, k) {
+      var it = byInj[k], known = it && (S.st[it.id] === 'ok' || S.revealed[it.id]);
+      var mine = D[k], e = mine != null ? B.effect(k, mine, D).d : null;
+      return '<tr><td>' + x.id + '. ' + esc(x.title) + '</td><td>' + (mine == null ? '<em>Not committed</em>' : B.LETTERS[mine] + '. ' + esc(x.opts[mine].t)) + '</td><td>' + (known ? B.LETTERS[x.best] + (mine === x.best ? ' (matches)' : '') : 'Shown after item ' + (k + 1) + ' is verified') + '</td><td>' + (e ? sgn(e.dt, ' h') + ', ' + sgn(e.rep, ' rep') + ', ' + sgn((e.cost + B.BI_RATE * e.dt) / 1000, 'M', 2).replace(/^([+\u2212\u00b1])/, '$1$') : '') + '</td></tr>';
+    }).join('');
+    return '<div class="b6-path-wrap" id="b6-path"><h3>Your incident command path</h3><div class="table-wrap"><table class="data"><thead><tr><th>Inject</th><th>Your committed decision</th><th>IMP-supported decision</th><th>Decision impact (downtime, reputation, total cost)</th></tr></thead><tbody>' + rows +
+      '<tr class="px-total"><td>Outcome of your path</td><td colspan="3">' + (m.decided === 8 ? 'Downtime ' + m.dt + ' h; exposure ' + m.ex + 'K records; total cost ' + B.money(m.total) + '; reputation ' + m.rep + ' of 100.' : m.decided + ' of 8 decisions committed.') + '</td></tr></tbody></table></div></div>';
+  }
+  function decorateReport() {
+    var rep = document.querySelector('.px-report'); if (!rep || rep.querySelector('#b6-path') || !API) return;
+    var hs = rep.querySelectorAll('h3'), anchor = null;
+    for (var i = 0; i < hs.length; i++) if (/Answers recorded/.test(hs[i].textContent)) anchor = hs[i];
+    if (anchor) anchor.insertAdjacentHTML('beforebegin', pathHTML());
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    var app = document.getElementById('app');
+    if (app) new MutationObserver(decorateReport).observe(app, { childList: true, subtree: true });
+  });
+  if (!API) { var waitApi = setInterval(function () { if (window.LAB_API) { API = API || window.LAB_API; clearInterval(waitApi); decorateReport(); } }, 200); }
+
+  // Automated test hook: release every inject in Solo mode and commit a path
+  window.LAB_TEST_UNLOCK = function () { var a = API || window.LAB_API; if (!a) return; a.note('mode', 'solo'); a.note('solo', 8); a.note('maxSeen', 8); var d = {}; B.INJECTS.forEach(function (x, k) { d[x.id] = (x.best + 1 + (k % 3)) % 4; }); a.note('dec', d); if (CUR) renderLive(true); };
+
+  window.LAB_SELFTEST = function () {
+    var log = [], P = [], now = nowSec(), i, j;
+    // 1) Round-trip encode/decode
+    var states = [
+      { iv: 1, b: 0, paused: false, anchor: now - 30 },
+      { iv: 0, b: 3, paused: false, anchor: now - 400 },
+      { iv: 2, b: 7, paused: false, anchor: now - 3600 },
+      { iv: 1, b: 4, paused: true, anchor: 100 },
+      { iv: 2, b: 0, paused: true, anchor: 0 },
+      { iv: 2, b: 6, paused: true, anchor: 420 }
+    ];
+    var kb = Math.ceil(now / B.M) * B.M; states.push({ iv: 1, b: 2, paused: false, anchor: kb - 5, _now: kb + 100 });
+    states.forEach(function (s, k) {
+      var c = B.encode(s), n = s._now || now, d = B.decode(B.fmtCode(c).toLowerCase(), n);
+      if (!/^[0-9A-HJKMNP-TV-Z]{7}$/.test(c)) P.push('code ' + c + ' has unexpected characters');
+      if (!d.state) { P.push('state ' + k + ' failed to decode: ' + d.error); return; }
+      var ok = d.state.iv === s.iv && d.state.b === s.b && d.state.paused === s.paused && (s.paused ? d.state.within === s.anchor : d.state.t0 === s.anchor);
+      if (!ok) P.push('state ' + k + ' did not round-trip (' + c + ')');
+    });
+    log.push('round-trip ' + states.length + ' session states');
+    // 2) Checksum rejects every single-character corruption; wrong tags rejected
+    var base = B.encode(states[0]), accepted = 0, tried = 0;
+    for (i = 0; i < 7; i++) for (j = 0; j < 32; j++) {
+      if (B.ALPHA[j] === base[i]) continue;
+      var bad = base.slice(0, i) + B.ALPHA[j] + base.slice(i + 1); tried++;
+      if (B.decode(bad, now).state) accepted++;
+    }
+    if (accepted) P.push(accepted + ' corrupted codes were accepted');
+    log.push('checksum rejected ' + (tried - accepted) + '/' + tried + ' single-character corruptions');
+    if (B.decode('ABC-DEF', now).state || B.decode('ABC-DEFU!', now).state || B.decode('', now).state) P.push('malformed code accepted');
+    [0, 1, 2].forEach(function (tag) { var v = (((tag * 4 + 1) * 2) * 8) * B.M + 5, ch = []; for (var q = 5; q >= 0; q--) { ch[q] = v % 32; v = Math.floor(v / 32); } ch.push(B.checksum(ch)); if (B.decode(ch.map(function (x) { return B.ALPHA[x]; }).join(''), now).state) P.push('code with lab tag ' + tag + ' accepted (CISA B5 uses tag 2)'); });
+    // 3) Inject derivation at sample times
+    var I = B.IVS[1], t0 = 1800000000;
+    [[0, 0], [I - 1, 0], [I, 1], [3 * I - 1, 2], [7 * I, 7], [7 * I + 9999, 7], [-50, 0]].forEach(function (c) {
+      var d = B.derive({ iv: 1, b: 0, paused: false, t0: t0 }, t0 + c[0]); if (d.idx !== c[1]) P.push('running b=0 at +' + c[0] + 's gave inject ' + (d.idx + 1) + ', expected ' + (c[1] + 1));
+    });
+    var I0 = B.IVS[0], d3 = B.derive({ iv: 0, b: 3, paused: false, t0: t0 }, t0 + 2 * I0 + 10); if (d3.idx !== 5 || d3.within !== 10) P.push('running b=3, fast pace, two windows plus 10 s should be inject 6 with 10 s elapsed');
+    var d4 = B.derive({ iv: 2, b: 7, paused: false, t0: t0 }, t0 + 30); if (d4.nextIn !== null || d4.idx !== 7) P.push('final inject should have no next release');
+    [0, 500, 99999].forEach(function (dt) { var x4 = B.INJECTS[4], x5 = B.INJECTS[5], d = B.derive({ iv: 1, b: 4, paused: true, within: 150 }, t0 + dt); if (d.idx !== 4 || d.nextIn !== null || Math.abs(d.sim - (x4.t + (x5.t - x4.t) * 0.5)) > 1e-9) P.push('paused state drifted at +' + dt + 's'); });
+    var dr = B.derive({ iv: 1, b: 4, paused: false, t0: t0 - 120 }, t0); if (dr.idx !== 4 || dr.within !== 120) P.push('resume anchor should keep the elapsed time in the inject');
+    var pc = B.decode(B.encode({ iv: 1, b: 2, paused: true, anchor: 90 }), now).state, rc = B.decode(B.encode({ iv: 1, b: 2, paused: false, anchor: now - 90 }), now).state;
+    if (B.derive(pc, now + 5000).idx !== 2 || B.derive(rc, now + I - 90).idx !== 3 || B.derive(rc, now + I - 91).idx !== 2) P.push('decoded pause/resume derivation wrong');
+    log.push('inject derivation checked at sample times, including paused states');
+    // 4) Consequence model: the IMP-supported path, re-derived independently
+    var X = B.INJECTS, best = X.map(function (x) { return x.best; });
+    var dt = 0, cost = 0, ex = 0, rep = 100;
+    X.forEach(function (x) { var o = x.opts[x.best].d; dt += x.base.dt + o.dt; cost += x.base.cost + o.cost; ex += x.base.ex + o.ex; rep += x.base.rep + o.rep; if (x.opts[x.best].flag) P.push(x.id + ' best option should not set a penalty flag'); });
+    var tot = cost + B.BI_RATE * dt;
+    if (dt !== B.answers.bestDowntime()) P.push('best-path downtime mismatch: ' + dt + ' vs ' + B.answers.bestDowntime());
+    if (Math.abs(tot / 1000 - B.answers.bestCostM()) > 1e-9) P.push('best-path cost mismatch');
+    // The checklist keys must match the inject keys and options
+    LAB.checklist.forEach(function (it) { if (it.inj == null) return; var x = X[it.inj]; if (it.answer !== x.best) P.push(it.id + ' key differs from ' + x.id + ' best'); if (it.options.join('|') !== x.opts.map(function (o) { return o.t; }).join('|')) P.push(it.id + ' options differ from the workbench'); });
+    // Exhaustive: the IMP path is lowest total cost, lowest exposure, and highest reputation of all 65,536 paths
+    var path = [0, 0, 0, 0, 0, 0, 0, 0], beat = 0, ties = 0, minDt = 1e9, n = 0;
+    for (var code = 0; code < 65536; code++) {
+      for (i = 0; i < 8; i++) path[i] = (code >> (2 * i)) & 3;
+      var m = B.model(path, 8); n++;
+      if (m.dt < minDt) minDt = m.dt;
+      if (path.join() === best.join()) continue;
+      if (m.total < tot || m.rep > rep || m.ex < ex) beat++;
+      if (m.total === tot) ties++;
+    }
+    if (beat) P.push(beat + ' paths beat the IMP path on cost, exposure, or reputation');
+    if (ties) P.push(ties + ' paths tie the IMP path on total cost');
+    // Every option produces a visibly different consequence within its inject
+    X.forEach(function (x) { var sig = x.opts.map(function (o) { return [o.d.dt, o.d.ex, o.d.cost, o.d.rep].join(); }); if (sig.filter(function (s, k) { return sig.indexOf(s) === k; }).length !== 4) P.push(x.id + ' has options with identical consequences'); });
+    // Option-length balance: the keyed option is never the strictly longest
+    X.forEach(function (x) { var L = x.opts.map(function (o) { return o.t.length; }), bl = L[x.best]; if (L.every(function (v, k) { return k === x.best || v < bl; })) P.push(x.id + ' keyed option is the longest'); });
+    var letters = best.map(function (b) { return 'ABCD'[b]; }).join('');
+    for (i = 1; i < 8; i++) if (X[i].t <= X[i - 1].t) P.push('inject times not increasing');
+    log.push('IMP path ' + letters + ': downtime ' + dt + ' h (fastest possible ' + minDt + ' h), exposure ' + ex + 'K, total ' + B.money(tot) + ', reputation ' + rep + '; checked ' + n + ' paths');
+    return { log: log, problems: P };
+  };
+})();
+</script>
+
+<script>
+window.LAB = {
+  id: 'B6',
+  title: 'Ransomware Incident Command Tabletop',
+  accent: 'Incident Command',
+  domain: 'Domain 4',
+  time: '60–90 min',
+  level: 'Advanced',
+  lessonHref: 'lesson06.html#s4',
+  lessonLabel: 'Lesson 6, Containment, Eradication & Recovery',
+  lede: 'In this tabletop you lead. As the incident manager for a manufacturer hit by ransomware with data extortion, decide at each of eight injects, watch the impact clock respond, and defend your path in a post-incident review.',
+  workbenchTitle: 'Incident command workbench',
+  ticket: {
+    number: 'IR-2026-0317',
+    priority: 'Severity 1 candidate',
+    from: 'Elena Marchetti, CISO',
+    to: 'Security manager and on-call incident manager (you)',
+    subject: 'Ransomware at Plant 2: you have incident command',
+    due: 'Post-incident review due within 14 days of recovery (IMP 6.1)',
+    body: '<p>Halvard Precision Components makes machined parts for aerospace and medical device customers from three plants. At 01:31 this Saturday, the SOC saw encryption on Plant 2 servers and a large transfer of data out of the network. It looks like double extortion: encrypt, steal, and threaten to publish.</p>' +
+      '<p>Under the Incident Management Plan, <b>you are the incident manager</b>. You direct the response; the executive crisis team owns the business decisions, and you bring those decisions to it with a recommendation. I will sit on the crisis team and back you, but I will not run the response for you.</p>' +
+      '<p>Eight injects will arrive over the next three days of incident time. At each one, commit a decision. Your choices drive the impact clock: <b>downtime, data exposure, total cost, and reputation</b>. Use the IMP, the notification matrix, and the board’s risk appetite on the workbench. Fast is not always right. Neither is cautious.</p>' +
+      '<p>When it is over, lead the post-incident review: what happened, what you learned, and three program changes you will take to the steering committee.</p>'
+  },
+  howTo: 'Choose a mode on the <b>Exercise</b> tab. <b>Solo</b>: release each inject yourself after you commit a decision. <b>Facilitator</b>: for the projector; start the clock, show the session code, and display each inject with its options for discussion. <b>Team</b>: type the projector’s session code on your device; timing follows the facilitator, and your team’s decisions stay on your device. If the facilitator pauses or skips ahead, a new code appears; enter it to re-sync. Decision items unlock as you commit each decision. When all eight are committed, the <b>what-if replay</b> opens for the number items. The report shows your path. Team mode: enter the team name and members on the report.',
+  workIntro: 'Release or follow the injects on the <b>Exercise</b> tab, check each option against the <b>Incident plan</b> and the <b>Team and context</b> documents, and commit a decision. Watch the impact clock. Checklist items unlock as your decisions are committed.',
+  checklist: [
+    { id: 'd1', inj: 0, type: 'choice', points: 7, short: 'I1: containment', title: 'Inject 1: first containment decision',
+      locked: B6UI.lockDecision(1),
+      task: 'Encryption is spreading from Plant 2, a domain account is being misused, and data is leaving the network. Which decision <b>best</b> meets IMP 3.1 and the board’s risk appetite?',
+      options: B6.INJECTS[0].opts.map(function (o) { return o.t; }), answer: 1,
+      hint: 'IMP 3.1 asks for three things at once: stop the spread, stop the exfiltration, and keep unaffected operations running where safe. Which option does all three without destroying evidence?',
+      debrief: '<p>Targeted isolation stops the spread and the exfiltration at the source: the compromised account and the outbound channel. It keeps Plants 1 and 3 producing, and it leaves the infected servers powered on so volatile evidence can be captured. A full shutdown buys certainty at the cost of two clean plants and the memory evidence, and watching the attacker trades customer data for intelligence the business never asked for.</p><p>The manager’s job here is proportion. Containment is a business decision about acceptable loss, not a technical reflex. The incident manager directs the specialists to contain in a way that matches the risk appetite: low tolerance for data loss, moderate tolerance for short delays. Restoring before the attacker is out simply invites re-encryption.</p>',
+      reviewNote: 'Contain proportionately: isolate segments and accounts, block egress, preserve evidence, keep clean operations running.' },
+    { id: 'd2', inj: 1, type: 'choice', points: 7, short: 'I2: escalation', title: 'Inject 2: severity and escalation',
+      locked: B6UI.lockDecision(2),
+      task: 'It is 02:50 on a Saturday. ERP is down at Plant 2 and exfiltration is confirmed. Which decision <b>best</b> follows the IMP?',
+      options: B6.INJECTS[1].opts.map(function (o) { return o.t; }), answer: 0,
+      hint: 'Read the Severity 1 criteria in IMP 2.1. How many of them are met, and who owns business decisions under IMP 1.2?',
+      debrief: '<p>The incident meets Severity 1 on all three criteria: a critical process down for more than two hours, confirmed exfiltration, and active ransomware. IMP 2.1 requires the crisis team within one hour at any hour. Holding the incident inside IT or filtering it through the CIO delays every decision only executives can make: spending, plant operations, statements, and payments.</p><p>Escalation is not a sign of weakness. It puts business decisions with the people who own the risk. The incident manager keeps directing the response and brings options to the crisis team; the board is informed through the CEO, and it governs rather than commands the technical work.</p>',
+      reviewNote: 'Classify by business impact against the IMP matrix; Severity 1 means the executive crisis team, at any hour.' },
+    { id: 'd3', inj: 2, type: 'choice', points: 7, short: 'I3: outside parties', title: 'Inject 3: counsel, insurer, and forensics',
+      locked: B6UI.lockDecision(3),
+      task: 'IT wants its familiar forensics firm now. Which sequence of outside engagements <b>best</b> protects Halvard?',
+      options: B6.INJECTS[2].opts.map(function (o) { return o.t; }), answer: 3,
+      hint: 'IMP 3.2 says who retains forensics and why, and the policy terms say which vendors are reimbursed. What does each option do to privilege and coverage?',
+      debrief: '<p>Notifying the insurer early and having breach counsel retain a panel forensics firm protects two things the company will need later: insurance coverage for response costs and legal privilege over the findings. Hiring a non-panel firm directly gains two hours but loses roughly $420K in unreimbursed fees and privilege. Waiting for the insurer to do everything stalls the response, and doing forensics in house misses what specialists find.</p><p>Engaging outside parties is sequencing, not paperwork. The incident manager knows the contracts before the incident: who to call first, what the policy requires, and which vendors are preapproved. That preparation turns a weekend scramble into a 30-minute decision.</p>',
+      reviewNote: 'Insurer notice and breach counsel come first; counsel retains panel forensics to protect privilege and coverage.' },
+    { id: 'd4', inj: 3, type: 'choice', points: 7, short: 'I4: evidence', title: 'Inject 4: preserve evidence before rebuild',
+      locked: B6UI.lockDecision(4),
+      task: 'The COO wants the ERP servers wiped and rebuilt now. What should the incident manager <b>recommend</b>?',
+      options: B6.INJECTS[3].opts.map(function (o) { return o.t; }), answer: 1,
+      hint: 'IMP 4.1 sets the order of operations and the scope of preservation. What happens to the notification scope if nobody can prove what was taken?',
+      debrief: '<p>Imaging the in-scope systems first costs about three hours, and a clean parallel enclave keeps the rebuild moving. Skipping imaging is faster by four hours but expensive: without evidence, counsel must treat every share as exposed, which widens notification and invites an insurance dispute. Imaging all 400 systems overshoots, and cleaning in place leaves the attacker’s access behind.</p><p>The manager reframes the COO’s request as a trade-off the crisis team can own: hours of production against the ability to prove scope, recover costs, and avoid over-notifying. Preservation is scoped to what the investigation needs, and recovery runs in parallel rather than waiting.</p>',
+      reviewNote: 'Capture evidence on in-scope systems before rebuild, and rebuild in parallel in a clean environment.' },
+    { id: 'd5', inj: 4, type: 'choice', points: 7, short: 'I5: communication', title: 'Inject 5: what to tell customers, and when',
+      locked: B6UI.lockDecision(5),
+      task: 'The leak site names Halvard and shows real samples. Customers and a reporter are calling. Which communication decision is <b>best</b>?',
+      options: B6.INJECTS[4].opts.map(function (o) { return o.t; }), answer: 2,
+      hint: 'IMP 5.1 names one spokesperson, a time limit, and two things to avoid. The board has low tolerance for loss of customer trust.',
+      debrief: '<p>Once the attacker has gone public, silence is a message, and a denial is a liability waiting to be contradicted. The approved holding statement, issued by the one named spokesperson, says what is known, what is being done, and when the next update will come. Scripted briefings for key accounts keep customers hearing from Halvard before they hear from the leak site.</p><p>Communication is a core incident management control. The incident manager makes sure the plan’s templates, spokesperson, and approval path exist before the incident, and that counsel reviews statements without slowing them past the four-hour window.</p>',
+      reviewNote: 'Communicate early and accurately through one spokesperson; never deny ahead of the facts.' },
+    { id: 'd6', inj: 5, type: 'choice', points: 7, short: 'I6: extortion', title: 'Inject 6: the extortion demand',
+      locked: B6UI.lockDecision(6),
+      task: 'VELLUM demands $4.2 million and threatens to publish 410 GB. Backups are clean and restoration is on track. Which response <b>best</b> follows Halvard’s policy?',
+      options: B6.INJECTS[5].opts.map(function (o) { return o.t; }), answer: 0,
+      hint: 'Read IMP 5.2 closely: who may communicate with the attacker, who decides on payment, what must happen first, and what the default is when backups work.',
+      debrief: '<p>The policy settles who decides and how: no staff contact, counsel and the insurer advise, sanctions screening happens first, and the CEO and board decide. With clean backups, the default is not to pay, and the decision is recorded. Paying does not guarantee deletion, a staff chat hands the attacker leverage, and public taunting brings the full dump forward.</p><p>A ransom decision is a governance decision made under a policy the board approved in calm conditions. The incident manager’s role is to give the decision makers the facts: restoration status, data at risk, and legal and sanctions considerations, not to negotiate or decide alone.</p>',
+      reviewNote: 'Ransom decisions follow board policy: no staff contact; counsel, insurer, and sanctions screening; CEO and board decide.' },
+    { id: 'd7', inj: 6, type: 'choice', points: 7, short: 'I7: notification', title: 'Inject 7: law enforcement and notifications',
+      locked: B6UI.lockDecision(7),
+      task: 'Customer drawings and employee records are confirmed stolen. Some executives fear that a law enforcement report will add publicity. Which recommendation is <b>best</b>?',
+      options: B6.INJECTS[6].opts.map(function (o) { return o.t; }), answer: 3,
+      hint: 'Open Appendix N. Note the triggers, the internal deadlines, and the owner. When did the 72-hour customer clock start?',
+      debrief: '<p>Appendix N makes law enforcement reporting a standard step for confirmed ransomware, and it puts every notice through counsel with a named owner and deadline. The 72-hour customer clause started when the drawings were confirmed, not when forensics finishes. Avoiding law enforcement forfeits intelligence and looks evasive, holding notices misses contracts, and notifying everyone at once spreads errors.</p><p>The incident manager does not give legal advice; the General Counsel owns notification. The manager makes sure the matrix is worked on time, that facts given to counsel are accurate, and that the crisis team sees which deadlines are approaching.</p>',
+      reviewNote: 'Report confirmed ransomware to law enforcement through counsel and work the notification matrix to its deadlines.' },
+    { id: 'd8', inj: 7, type: 'choice', points: 7, short: 'I8: recovery', title: 'Inject 8: when to declare recovery',
+      locked: B6UI.lockDecision(8),
+      task: 'ERP is back at two plants, validation at Plant 3 is unfinished, and 80 percent of credentials are reset. The COO wants closure. What do you <b>recommend</b>?',
+      options: B6.INJECTS[7].opts.map(function (o) { return o.t; }), answer: 2,
+      hint: 'IMP 4.2 lists the exit criteria and says who recommends and who declares. Which criteria are still open?',
+      debrief: '<p>Recovery is declared against criteria, not against fatigue. With validation open at Plant 3 and a fifth of credentials unreset, the attacker may still have a way back in. Meeting the IMP exit criteria costs about twelve more hours, while closing early risks a second outage, and a full rebuild of everything overshoots the remaining risk.</p><p>The incident manager recommends; the crisis team declares, with business owner sign-off. Enhanced monitoring after recovery turns the decision into a managed risk rather than a hope, and it gives the post-incident review evidence that eradication worked.</p>',
+      reviewNote: 'Declare recovery when the exit criteria are met: eradication validated, credentials reset, monitoring in place, owner sign-off.' },
+    { id: 'dt', type: 'number', points: 12, short: 'IMP path downtime', title: 'Downtime under the IMP-supported path',
+      locked: B6UI.lockAll, unit: 'hours', tol: 0.5,
+      task: 'In the <b>what-if replay</b>, set all eight decisions to the IMP-supported answers from items 1 to 8 (the <b>Apply my verified checklist answers</b> button helps). What is the total <b>downtime</b>?',
+      answer: function () { return B6.answers.bestDowntime(); },
+      hint: 'Verify items 1 to 8 first, then apply them in the replay and read the downtime row in the What-if column. Some other paths are faster; that is the point of item 10.',
+      debrief: '<p>The IMP-supported path restores operations in 83 hours: about 60 hours of unavoidable impact from the attack, plus targeted containment, evidence capture, and the time to meet the recovery exit criteria. Several other paths are faster, for example rebuilding without imaging or paying the ransom, and the fastest possible path is 15 hours shorter.</p><p>Downtime is one measure, not the goal. The manager optimizes for the whole risk picture the board set: customer trust, data exposure, contractual exposure, and total cost. A faster restart that widens exposure or weakens recovery is not a better outcome.</p>',
+      reviewNote: 'Read the What-if column after applying the IMP-supported decisions; the best path is not the fastest.' },
+    { id: 'cost', type: 'number', points: 12, short: 'IMP path cost', title: 'Total cost under the IMP-supported path',
+      locked: B6UI.lockAll, unit: '$ millions', tol: 0.01,
+      task: 'With the same what-if path, what is the <b>total cost</b>, including business interruption, in millions of dollars (for example, 4.25)?',
+      answer: function () { return B6.answers.bestCostM(); },
+      hint: 'Use the Total cost row, What-if column. Total cost is direct cost plus $30K per downtime hour.',
+      debrief: '<p>The IMP-supported path costs $3.79 million: $1.30 million in direct response cost and $2.49 million in business interruption for 83 hours. No other combination of decisions costs less, and none ends with lower exposure or a higher reputation score. Paying the ransom alone would have added more than $4 million in direct cost while saving only six hours.</p><p>Putting a number on each path lets the crisis team see the trade-offs it is making and lets the post-incident review show the board the value of preparation: panel vendors, a holding statement, a ransom policy, and exit criteria all reduced cost because they existed before the incident.</p>',
+      reviewNote: 'Total cost = direct cost + downtime hours x $30K; compare paths on the whole picture, not only speed.' },
+    { id: 'pir', type: 'text', points: 20, short: 'Post-incident review', title: 'Post-incident review', reportTitle: 'Post-incident review',
+      locked: B6UI.lockAll,
+      task: 'Write the post-incident review for the steering committee (IMP 6.1). Summarize the incident and your path, including where it differed from the IMP-supported path and what that cost, using numbers from the impact clock. Record lessons learned in a blameless way, and propose three program changes, each with an owner and a measure of success.',
+      fields: [
+        { key: 'sum', label: 'Incident summary and your decision path, with impact numbers', min: 80, placeholder: 'What happened, when, what you decided, and the outcome against the IMP-supported path.' },
+        { key: 'lessons', label: 'Lessons learned: what worked, what did not, and why', min: 60, placeholder: 'Blameless: focus on plans, preparation, and decisions, not people.' },
+        { key: 'c1', label: 'Program change 1: change, owner, and measure', min: 30, placeholder: 'For example, a control, contract, or process change.' },
+        { key: 'c2', label: 'Program change 2: change, owner, and measure', min: 30, placeholder: '' },
+        { key: 'c3', label: 'Program change 3: change, owner, and measure', min: 30, placeholder: '' }
+      ],
+      hint: 'Use the What-if replay to quantify the gap between your path and the IMP-supported path. Program changes should fix causes the incident exposed: the compromised service account, egress controls, plan rehearsal, executive decision readiness, or vendor and contract preparation.',
+      debrief: '<p><b>Model review.</b> <b>Summary.</b> On Saturday at 01:31, VELLUM used the svc-backup domain account to encrypt Plant 2 and the ERP tier after sending 38 GB out over six hours. The IMP-supported path, isolating segments, convening the crisis team within the hour, engaging counsel and panel forensics, imaging before rebuild, issuing the holding statement, declining the demand under policy, reporting and notifying through counsel, and declaring recovery against exit criteria, ends at 83 hours of downtime, 52,000 records exposed, $3.79 million total cost, and a reputation score of 87. State your own path and its numbers, and name each departure and its cost. <b>Lessons.</b> Prepared decisions held up: the panel vendor list, the holding statement, the ransom policy, and the exit criteria each saved time or money. The gaps were upstream: a privileged service account with access to all three plants, six hours of exfiltration without an alert, and pressure to restart that the plan anticipated but executives had not rehearsed.</p><p><b>Program changes.</b> (1) Move service accounts to a privileged access management vault with tiered administration and no cross-plant rights; owner, CIO; measure, zero standing domain administrator service accounts within 90 days. (2) Add egress monitoring with alerts on large transfers to new cloud hosts; owner, CISO; measure, alert within 30 minutes in a quarterly test. (3) Run a crisis team tabletop twice a year that includes the ransom policy and recovery criteria; owner, CEO with the CISO; measure, attendance and decision time against IMP targets. Your wording will differ; check that each change addresses a cause, names an owner, and is measurable.</p>',
+      reviewNote: 'A post-incident review quantifies the path, stays blameless, and turns lessons into owned, measurable program changes.' }
+  ],
+  workbench: function (root, api) { B6UI.workbench(root, api); }
+};
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

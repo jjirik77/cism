@@ -325,11 +325,12 @@
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="#lessons">Lessons</a></li>
+      <li><a href="#practice">Practice</a></li>
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#domains">Domains</a></li>
-      <li><a href="#resources">Resources</a></li>
+      <li><a href="#exam-prep">Exam Prep</a></li>
+      <li><a href="#faculty-tools">Faculty Tools</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="#feedback">Feedback</a></li>
     </ul>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790; Dark</button>
   </div>
@@ -440,8 +441,47 @@
   </div>
 </section>
 
+<!-- PRACTICE: CISM PRACTICES + CISM LEADERSHIP LAB -->
+<div class="section-alt" id="practice">
+  <div class="section">
+    <p class="section-eyebrow">Practice</p>
+    <h2 class="section-title">Practice Every Lesson</h2>
+    <div class="rule"></div>
+    <p class="section-desc">Read a lesson, then practice it. The CISM Practices build management judgment with self-checking activities. The CISM Leadership Lab puts you in the security manager&rsquo;s seat with interactive tools. Every item ends with a report you can print or save as a PDF.</p>
+    <div class="resource-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+
+      <article class="resource-card">
+        <span class="rc-type">Concept Practice</span>
+        <div class="rc-icon-title">
+          <span class="rc-icon">&#127919;</span>
+          <div class="rc-title">CISM Practices</div>
+        </div>
+        <p class="rc-desc">Nine self-checking activities, one or more for every lesson. Answer as the security manager: assign governance roles, value assets, calculate and treat risk, select controls, pick board-level metrics, triage incidents, and set recovery objectives while a mastery meter tracks each concept. Every activity ends with a summary report you can print or save as a PDF.</p>
+        <p class="rc-covers"><strong>Covers:</strong> All Four Domains &middot; Management Mindset &middot; Concept Mastery &middot; PDF Reports</p>
+        <div class="card-footer">
+          <a href="practices.html" class="launch-btn">Open Practices <span class="arrow">&#8594;</span></a>
+        </div>
+      </article>
+
+      <article class="resource-card">
+        <span class="rc-type">Hands-On Lab</span>
+        <div class="rc-icon-title">
+          <span class="rc-icon">&#129517;</span>
+          <div class="rc-title">CISM Leadership Lab</div>
+        </div>
+        <p class="rc-desc">Eight interactive labs in the manager&rsquo;s seat: a strategy roadmap with a live maturity radar, a risk register with a live heat map, a control portfolio optimizer, an AI vendor onboarding file, a culture analytics dashboard, a ransomware command tabletop with a classroom session clock, a breach notification clock, and a recovery strategy planner. Each lab is scored out of 100 and ends with a printable lab report, individually or as a team.</p>
+        <p class="rc-covers"><strong>Covers:</strong> Interactive Tools &middot; Management Decisions &middot; Team Mode &middot; Graded Lab Reports</p>
+        <div class="card-footer">
+          <a href="labs.html" class="launch-btn">Open the Leadership Lab <span class="arrow">&#8594;</span></a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</div>
+
 <!-- SCHEDULE -->
-<div class="section-alt" id="schedule">
+<div id="schedule">
   <div class="section">
     <p class="section-eyebrow">Boot Camp Schedule</p>
     <h2 class="section-title">Five Days to Certification-Ready</h2>
@@ -498,7 +538,7 @@
 </div>
 
 <!-- DOMAIN WEIGHTS -->
-<section id="domains" aria-labelledby="domains-heading">
+<section id="domains" class="section-alt" aria-labelledby="domains-heading">
   <div class="section">
     <p class="section-eyebrow">Exam Blueprint</p>
     <h2 class="section-title" id="domains-heading">Domain Weights at a Glance</h2>
@@ -513,21 +553,14 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════
-     EXAM RESOURCES  |  LAB ACTIVITIES  |  CONTENT DEV TOOLS
-     ═══════════════════════════════════════════════════════════ -->
-<div class="section-alt" id="resources">
+<!-- EXAM PREP -->
+<span id="resources" aria-hidden="true"></span>
+<section id="exam-prep" aria-labelledby="exam-prep-heading">
   <div class="section">
-    <p class="section-eyebrow">Boot Camp Resources</p>
-    <h2 class="section-title">Exam Resources, Labs &amp; Development Tools</h2>
+    <p class="section-eyebrow">Exam Prep</p>
+    <h2 class="section-title" id="exam-prep-heading">Exam Resources</h2>
     <div class="rule"></div>
-    <p class="section-desc">Supplemental tools to reinforce every CISM domain &mdash; from scored practice assessments and study audio to hands-on management scenario labs and AI-assisted content creation utilities, all calibrated to the business-first manager&rsquo;s perspective.</p>
-
-    <!-- ── 🎯 EXAM RESOURCES ── -->
-    <div class="resource-section-heading">
-      <span class="rsh-icon">&#127919;</span>
-      <h3>Exam Resources</h3>
-    </div>
+    <p class="section-desc">Timed practice, a printable exam-day review, and audio study files for the final days before the exam.</p>
     <div class="resource-grid">
 
       <article class="resource-card">
@@ -570,26 +603,17 @@
       </article>
 
     </div>
+  </div>
+</section>
 
-    <!-- ── 🔬 LAB ACTIVITIES ── -->
-    <div class="resource-section-heading">
-      <span class="rsh-icon">&#128300;</span>
-      <h3>Labs &amp; Activities</h3>
-    </div>
+<!-- FACULTY TOOLS -->
+<div class="section-alt" id="faculty-tools">
+  <div class="section">
+    <p class="section-eyebrow">Faculty Tools</p>
+    <h2 class="section-title">Content Development Tools</h2>
+    <div class="rule"></div>
+    <p class="section-desc">AI-assisted tools for faculty who adapt this boot camp: build new activities, graphics, lesson content, and case studies aligned to the CISM domains.</p>
     <div class="resource-grid">
-
-      <article class="resource-card">
-        <span class="rc-type">Hands-On Lab</span>
-        <div class="rc-icon-title">
-          <span class="rc-icon">&#128187;</span>
-          <div class="rc-title">CISM Management Scenario Labs</div>
-        </div>
-        <p class="rc-desc">Apply CISM domain concepts in structured, scenario-based exercises designed for the practicing security manager. Each lab presents a realistic enterprise challenge drawn from the four domains &mdash; analyze the situation, complete guided tasks, and demonstrate the business-aligned, risk-based decision-making the credential requires.</p>
-        <p class="rc-covers"><strong>Covers:</strong> Scenario Analysis &middot; Guided Tasks &middot; Domain Application &middot; Management Decisions</p>
-        <div class="card-footer">
-          <a href="labs.html" class="launch-btn">Launch Labs <span class="arrow">&#8594;</span></a>
-        </div>
-      </article>
 
       <article class="resource-card">
         <span class="rc-type">Activity Builder</span>
@@ -603,15 +627,6 @@
           <a href="gen-activity.html" class="launch-btn">Open Resource <span class="arrow">&#8594;</span></a>
         </div>
       </article>
-
-    </div>
-
-    <!-- ── 🛠️ CONTENT DEVELOPMENT TOOLS ── -->
-    <div class="resource-section-heading">
-      <span class="rsh-icon">&#128295;</span>
-      <h3>Content Development Tools</h3>
-    </div>
-    <div class="resource-grid">
 
       <article class="resource-card">
         <span class="rc-type">Dev Tool</span>
@@ -657,7 +672,7 @@
 </div>
 
 <!-- ABOUT -->
-<div class="section-alt" id="about">
+<div id="about">
   <div class="section">
     <p class="section-eyebrow">About This Boot Camp</p>
     <h2 class="section-title">Built for Security Leaders</h2>
@@ -710,6 +725,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-links" style="font-family:Arial,sans-serif;font-size:.82rem;margin:0 0 .6rem"><a href="#feedback" style="color:var(--navy-light);font-weight:700">Share feedback</a> &nbsp;&middot;&nbsp; <a href="practices.html" style="color:var(--navy-light)">CISM Practices</a> &nbsp;&middot;&nbsp; <a href="labs.html" style="color:var(--navy-light)">CISM Leadership Lab</a></p>
   <p class="footer-disclaimer">
     This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA (Information Systems Audit and Control Association). CISM&#174; is a registered trademark of ISACA. All domain descriptions and exam details are based on publicly available ISACA documentation and the CISM Job Practice effective 2022 (current as of 2026). Always verify the live exam content outline at isaca.org before registering.
   </p>
@@ -741,6 +757,5 @@
   }, { threshold: 0.2 });
   bars.forEach(b => observer.observe(b));
 </script>
-<script src="assistant.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B8 Continuity and Recovery Strategy Planner | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+.b8-bar { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; margin-bottom: .9rem; }
+.b8-lab { font: 700 .72rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+.b8-doc { font: .88rem/1.6 Arial, sans-serif; color: var(--text-secondary); }
+.b8-two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+@media (max-width: 900px) { .b8-two { grid-template-columns: 1fr; } }
+.b8-card { border: 1px solid var(--border); border-radius: 4px; padding: .6rem .7rem .45rem; background: var(--card-bg); margin-bottom: .9rem; }
+.b8-card h4 { font: 700 .92rem Georgia, serif; margin: 0 0 .25rem; color: var(--text-primary); }
+.b8-card p.sub { font: .76rem/1.45 Arial, sans-serif; color: var(--text-muted); margin: 0 0 .45rem; }
+.b8-card svg { display: block; width: 100%; height: auto; }
+.b8-card svg text { font-family: Arial, sans-serif; }
+.b8-legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font: .74rem Arial, sans-serif; color: var(--text-secondary); margin-top: .3rem; }
+.b8-legend i { display: inline-block; width: 12px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: .3rem; }
+.b8-meter { position: relative; height: 14px; border-radius: 7px; background: var(--section-alt); overflow: hidden; margin: .3rem 0 .2rem; }
+.b8-meter i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold); border-radius: 7px; }
+.b8-meter.over i { background: var(--wrong); }
+.b8-mtxt { font: .8rem Arial, sans-serif; color: var(--text-secondary); margin-bottom: .8rem; }
+table.data.b8-plan td, table.data.b8-plan th { padding: .45rem .45rem; vertical-align: middle; font-size: .8rem; }
+table.data.b8-plan input[type=number] { width: 3.5rem; padding: .3rem .35rem; border: 1px solid var(--border); border-radius: 3px; font: .82rem Arial, sans-serif; color: var(--text-primary); background: var(--card-bg); }
+table.data.b8-plan select { padding: .28rem .3rem; border: 1px solid var(--border); border-radius: 3px; font: .78rem Arial, sans-serif; color: var(--text-primary); background: var(--card-bg); max-width: 9rem; }
+table.data.b8-plan th { letter-spacing: .04em; }
+table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
+.b8-flag { display: inline-block; font: 700 .68rem/1.3 Arial, sans-serif; border-radius: 3px; padding: .12rem .35rem; margin: .1rem .2rem .1rem 0; border: 1px solid; }
+.b8-flag.gap { color: var(--wrong); border-color: var(--wrong); background: var(--wrong-bg); }
+.b8-flag.over { color: #7a4a00; border-color: var(--amber); background: #fff6e0; }
+.b8-flag.ok { color: var(--correct); border-color: var(--correct); background: var(--correct-bg); }
+.b8-flag.na { color: var(--text-muted); border-color: var(--border); background: var(--section-alt); }
+.b8-warn { list-style: none; margin: 0 0 .9rem; padding: 0; font: .82rem/1.5 Arial, sans-serif; }
+.b8-warn li { border-left: 3px solid var(--amber); background: #fff8e8; padding: .35rem .6rem; margin-bottom: .3rem; color: var(--text-primary); }
+.b8-warn li.ok { border-left-color: var(--correct); background: var(--correct-bg); }
+.b8-log { font: .8rem/1.55 'Courier New', monospace; background: var(--section-alt); border-radius: 4px; padding: .6rem .8rem; color: var(--text-primary); margin: 0 0 .9rem; white-space: pre-wrap; max-height: 16rem; overflow: auto; }
+.b8-doc .formula { font: .84rem 'Courier New', monospace; background: var(--section-alt); padding: .5rem .7rem; border-radius: 4px; color: var(--text-primary); margin: .4rem 0 .8rem; white-space: pre-wrap; }
+.b8-pinfo { font: .84rem/1.55 Arial, sans-serif; color: var(--text-secondary); margin: 0 0 .7rem; }
+.b8-pinfo b { color: var(--text-primary); }
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== BIA and recovery model (deterministic) =====================
+   Oakhurst Home Goods, an online home-furnishings retailer. Six processes from the
+   2026 business impact analysis, each with impact-over-time and data-loss ratings,
+   work recovery time, and dependencies. Recovery options have fixed activation and
+   restore times and annual costs. Objectives, gaps, over-builds, test results, and
+   the lowest-cost strategy are all computed from these arrays. */
+(function () {
+  var T = [1, 4, 8, 24, 48, 72, 168, 336], TL = ['1 h', '4 h', '8 h', '24 h', '48 h', '72 h', '1 week', '2 weeks'];
+  var DL = [0.25, 1, 4, 24, 168], DLL = ['15 min', '1 h', '4 h', '24 h', '1 week'];
+  var RATE = ['', 'Minimal', 'Minor', 'Moderate', 'Severe', 'Critical'];
+  var SITES = [
+    { id: 'HOT', sh: 'Hot site', name: 'Hot site (active standby)', act: 0.5, cost: 220 },
+    { id: 'CLD', sh: 'Cloud DR', name: 'Cloud DR (pilot light)', act: 2, cost: 95 },
+    { id: 'WRM', sh: 'Warm site', name: 'Warm site', act: 10, cost: 60 },
+    { id: 'COLD', sh: 'Cold site', name: 'Cold site', act: 60, cost: 25 },
+    { id: 'QS', sh: 'Quick-ship', name: 'Quick-ship rebuild contract', act: 120, cost: 8 }
+  ];
+  var BACKUPS = [
+    { id: 'REP', sh: 'Replication', name: 'Continuous replication', rpo: 0.25, restore: 0, cost: 80 },
+    { id: 'SNP', sh: 'Hourly snapshots', name: 'Hourly immutable snapshots', rpo: 1, restore: 1, cost: 50 },
+    { id: 'INC', sh: '4-hour incrementals', name: '4-hour incrementals to vault', rpo: 4, restore: 3, cost: 25 },
+    { id: 'NGT', sh: 'Nightly backup', name: 'Nightly backup to vault', rpo: 24, restore: 6, cost: 12 },
+    { id: 'WK', sh: 'Weekly tape', name: 'Weekly full to offline tape', rpo: 168, restore: 12, cost: 5 }
+  ];
+  var PR = [
+    { id: 'IDN', name: 'Identity and access services', owner: 'VP Infrastructure, Tomás Herrera', w: 0.6, deps: [], wrt: 2,
+      desc: 'Single sign-on, directory, and MFA for staff, store associates, and warehouse scanners.',
+      down: [2, 3, 3, 4, 5, 5, 5, 5], loss: [15, 60, 120, 380, 800, 1200, 2600, 5200], sev: 'At 24 hours, no staff, scanner, or service account can sign in, so every dependent process stops even if its own systems are up.',
+      data: [1, 1, 2, 2, 3], dnote: 'Directory changes since the last copy can be re-entered from HR and ticket records.', asis: ['WRM', 'SNP'] },
+    { id: 'ERP', name: 'Inventory and order management (ERP)', owner: 'VP Supply Chain, Mei-Lin Zhao', w: 1.4, deps: ['IDN'], wrt: 6,
+      desc: 'Stock positions, purchase orders, order routing, and the financial ledger.',
+      down: [1, 2, 3, 4, 5, 5, 5, 5], loss: [10, 45, 110, 420, 900, 1500, 3600, 7400], sev: 'At 24 hours, stock positions are unreliable, store replenishment stops, and the month-end ledger is at risk.',
+      data: [1, 2, 3, 4, 5], dnote: 'Order and inventory transactions are posted continuously; more than an hour of loss cannot be rebuilt reliably from the web store and carriers.', asis: ['WRM', 'INC'] },
+    { id: 'ORD', name: 'Online order capture and payment', owner: 'Chief Digital Officer, Priya Venkataraman', w: 1.2, deps: ['IDN', 'ERP'], wrt: 2,
+      desc: 'The web store, mobile app checkout, and card authorization through the payment gateway.',
+      down: [2, 3, 4, 5, 5, 5, 5, 5], loss: [60, 240, 520, 1600, 3300, 5000, 11800, 24000], sev: 'At 8 hours, lost sales pass $500k, marketplace partners suspend listings under their uptime terms, and customer complaints reach social media.',
+      data: [1, 2, 4, 5, 5], dnote: 'Lost orders mean charged customers with no order record. More than an hour of loss requires manual card reconciliation.', asis: ['HOT', 'SNP'] },
+    { id: 'WMS', name: 'Warehouse fulfillment and shipping', owner: 'VP Fulfillment, Darnell Okoro', w: 1.0, deps: ['IDN', 'ERP'], wrt: 12,
+      desc: 'Pick, pack, and ship at two distribution centers, with carrier label printing.',
+      down: [1, 2, 3, 4, 5, 5, 5, 5], loss: [5, 30, 90, 350, 800, 1300, 3200, 6800], sev: 'At 24 hours, the two-day delivery promise fails for a full day of orders and carrier pickups are missed.',
+      data: [1, 1, 2, 2, 4], dnote: 'Pick and pack status can be rebuilt from scanner logs and carrier manifests for up to a day.', asis: ['CLD', 'NGT'] },
+    { id: 'PAY', name: 'Payroll and workforce scheduling', owner: 'Chief People Officer, Ana Lucía Pérez', w: 0.6, deps: ['IDN'], wrt: 24,
+      desc: 'Payroll for 2,100 employees and shift scheduling for stores and warehouses.',
+      down: [1, 1, 1, 2, 3, 4, 5, 5], loss: [0, 0, 5, 20, 60, 180, 520, 1100], sev: 'At 72 hours, Oakhurst misses the pay-date commitment in its own pay policy, and hourly staff in the distribution centers are not paid on time.',
+      data: [1, 1, 2, 2, 4], dnote: 'Time records since the last nightly copy can be re-collected from the time clocks.', asis: ['COLD', 'NGT'] },
+    { id: 'ANL', name: 'Marketing analytics and BI', owner: 'VP Marketing, Jonas Abebe', w: 1.0, deps: ['ERP'], wrt: 48,
+      desc: 'Dashboards, demand forecasting, and campaign attribution.',
+      down: [1, 1, 1, 1, 2, 2, 2, 4], loss: [0, 2, 4, 10, 20, 30, 70, 180], sev: 'At two weeks, the quarterly forecast and holiday markdown plan miss their deadlines.',
+      data: [1, 1, 1, 2, 2], dnote: 'Source data lives in the ERP and ad platforms, so the warehouse can be reloaded from sources.', asis: ['HOT', 'REP'] }
+  ];
+  var BUDGET = 760;
+  function site(id) { return SITES.filter(function (s) { return s.id === id; })[0]; }
+  function bk(id) { return BACKUPS.filter(function (b) { return b.id === id; })[0]; }
+  function proc(id) { return PR.filter(function (p) { return p.id === id; })[0]; }
+  function objectives(p) { var i = -1; for (var k = 0; k < p.down.length; k++) if (p.down[k] >= 4) { i = k; break; } var mtd = T[i], rpo = 0; p.data.forEach(function (r, k) { if (r <= 2) rpo = DL[k]; }); return { mtd: mtd, rto: mtd - p.wrt, rpo: rpo }; }
+  function own(s, b) { return site(s).act + bk(b).restore; }
+  function cost(p, s, b) { return Math.round(p.w * (site(s).cost + bk(b).cost)); }
+  function allDeps(id) { var out = []; (function walk(x) { proc(x).deps.forEach(function (d) { if (out.indexOf(d) < 0) { out.push(d); walk(d); } }); })(id); return out; }
+  function dependents(id) { return PR.filter(function (q) { return allDeps(q.id).indexOf(id) >= 0; }).map(function (q) { return q.id; }); }
+  function effRto(id, obj) { var r = obj[id] && obj[id].rto != null ? obj[id].rto : Infinity; dependents(id).forEach(function (q) { if (obj[q] && obj[q].rto != null) r = Math.min(r, obj[q].rto); }); return r; }
+  function test(plan) {
+    var res = {};
+    PR.forEach(function (p) { var a = plan[p.id], o = own(a[0], a[1]), t = o, by = null; allDeps(p.id).forEach(function (d) { var od = own(plan[d][0], plan[d][1]); if (od > t) { t = od; by = d; } }); res[p.id] = { own: o, act: site(a[0]).act, restore: bk(a[1]).restore, done: t, waitFor: by, loss: bk(a[1]).rpo }; });
+    return res;
+  }
+  function cheapest(p, rto, rpo) { var best = null; SITES.forEach(function (s) { BACKUPS.forEach(function (b) { if (own(s.id, b.id) <= rto && b.rpo <= rpo) { var c = cost(p, s.id, b.id); if (!best || c < best.cost) best = { s: s.id, b: b.id, cost: c }; } }); }); return best; }
+  var OBJ = {}; PR.forEach(function (p) { OBJ[p.id] = objectives(p); });
+  var ASIS = {}; PR.forEach(function (p) { ASIS[p.id] = p.asis.slice(); });
+  window.B8M = { T: T, TL: TL, DL: DL, DLL: DLL, RATE: RATE, SITES: SITES, BACKUPS: BACKUPS, PR: PR, BUDGET: BUDGET, site: site, bk: bk, proc: proc, objectives: objectives, own: own, cost: cost, allDeps: allDeps, dependents: dependents, effRto: effRto, test: test, cheapest: cheapest, OBJ: OBJ, ASIS: ASIS };
+})();
+</script>
+
+<script>
+(function () {
+  var M = window.B8M, PR = M.PR;
+  function planCost(plan) { return PR.reduce(function (a, p) { return a + M.cost(p, plan[p.id][0], plan[p.id][1]); }, 0); }
+  function under(plan, obj) { return PR.filter(function (p) { var a = plan[p.id]; return M.own(a[0], a[1]) > obj[p.id].rto || M.bk(a[1]).rpo > obj[p.id].rpo; }).map(function (p) { return p.id; }); }
+  function depFail(plan, obj) { var t = M.test(plan), u = under(plan, obj); return PR.filter(function (p) { return u.indexOf(p.id) < 0 && t[p.id].done > obj[p.id].rto; }).map(function (p) { return p.id; }); }
+  function overBuilt(plan, obj) { return PR.filter(function (p) { var a = plan[p.id], e = M.effRto(p.id, obj), c = M.cost(p, a[0], a[1]); if (!(M.own(a[0], a[1]) <= e && M.bk(a[1]).rpo <= obj[p.id].rpo)) return false; var ch = M.cheapest(p, e, obj[p.id].rpo); return ch && ch.cost < c; }).map(function (p) { return p.id; }); }
+  function minPlan(obj) { var plan = {}, tot = 0; PR.forEach(function (p) { var ch = M.cheapest(p, M.effRto(p.id, obj), obj[p.id].rpo); plan[p.id] = [ch.s, ch.b]; tot += ch.cost; }); return { plan: plan, cost: tot }; }
+  window.B8K = { planCost: planCost, under: under, depFail: depFail, overBuilt: overBuilt, minPlan: minPlan };
+  var K = window.B8K;
+
+  window.LAB = {
+    id: 'B8',
+    title: 'Continuity and Recovery Strategy Planner',
+    accent: 'Strategy Planner',
+    domain: 'Domain 4 (30%)',
+    time: '50 min',
+    level: 'Intermediate',
+    lessonHref: 'lesson07.html#s2',
+    lessonLabel: 'Lesson 7, Recovery Objectives and Strategies',
+    lede: 'Turn the business impact analysis into a funded recovery strategy. Set the objectives the business needs, choose sites and backups that meet them within budget, and run a recovery test before you tell executives the plan works.',
+    workbenchTitle: 'Strategy planner',
+    ticket: {
+      number: 'BCM-2026-0417',
+      priority: 'High priority',
+      from: 'Folasade Adeyemi, Chief Operating Officer and continuity sponsor',
+      to: 'Information security manager (you)',
+      subject: 'Recovery strategy for FY2027: objectives, funding, and test before executive approval',
+      due: 'Strategy summary to the executive committee by December 4',
+      body: '<p>The 2026 business impact analysis for Oakhurst Home Goods is complete and signed by each process owner. Our recovery strategy has not been revisited since we moved the web store to the cloud in 2023, and nobody has checked it against the new BIA.</p>' +
+        '<p>Three things need to come together. First, set the <b>MTD, RTO, and RPO</b> for the six processes from the BIA, using our continuity policy. Second, choose a <b>recovery site and backup method</b> for each process. The executive committee has set the FY2027 disaster recovery budget at <b>$760,000</b> in annual run cost, down from the $938,000 we spend on the current strategy. Third, <b>run a recovery test</b> of the strategy before you bring it to us.</p>' +
+        '<p>One more item. Gregor Lindqvist, our CFO, has suggested that if the order platform cannot recover in time, we should simply raise its RTO so the plan passes. Please address that in your summary.</p>' +
+        '<p>The current strategy is loaded in the planner. I need a continuity strategy summary the executive committee can approve.</p>'
+    },
+    howTo: 'Start in <b>BIA data</b>: read each process’s impact over time, data-loss tolerance, work recovery time, and dependencies, and apply the policy in <b>Catalog and policy</b>. In the <b>Strategy planner</b>, enter MTD, RTO, and RPO for each process and choose a site and backup method. The planner shows each process’s own achievable RTO and RPO, its cost, and flags gaps and over-builds. <b>Recovery test</b> runs the whole strategy with dependencies and reports pass or fail. The current strategy loads first; checklist items about the current strategy use it, so use <b>Restore current strategy</b> if you have changed it. A hint is available for every item. After your first check you can reveal the manager’s debrief, but a revealed item earns no points.',
+    workIntro: 'Times are in hours and money in thousands of US dollars per year ($k). The process owners signed the BIA; the policy in the Catalog and policy tab turns it into objectives.',
+    checklist: [
+      { id: 'mtd', type: 'number', points: 8, short: 'MTD for orders', title: 'Maximum tolerable downtime for online order capture',
+        task: 'From the BIA and the continuity policy, what is the <b>MTD</b> for ORD, online order capture and payment? Enter hours.',
+        unit: 'hours', tol: 0,
+        answer: function () { return M.OBJ.ORD.mtd; },
+        hint: 'Policy CP-3.1: MTD is the outage length at which impact is first rated Severe (4). Read the ORD downtime row in BIA data.',
+        debrief: '<p>The ORD impact reaches Severe at 8 hours: lost sales pass $500k and marketplace partners suspend listings under their uptime terms. The MTD is 8 hours, and it comes from business impact, not from what IT can deliver today.</p><p>The manager’s job is to make sure the process owner, not IT, sets this tolerance through the BIA, and that every later choice traces to it. The MTD is the outer wall; the recovery strategy has to work well inside it.</p>',
+        reviewNote: 'MTD is the outage length at which impact becomes intolerable, from the BIA.' },
+      { id: 'rto', type: 'number', points: 8, short: 'RTO for orders', title: 'Recovery time objective for online order capture',
+        task: 'What is the <b>RTO</b> for ORD? Enter hours.',
+        unit: 'hours', tol: 0,
+        answer: function () { return M.OBJ.ORD.rto; },
+        hint: 'Policy CP-3.2: RTO = MTD − work recovery time (WRT). ORD needs 2 hours of work recovery to reconcile orders and payments after systems return.',
+        debrief: '<p>The RTO is 6 hours: the 8-hour MTD less 2 hours of work recovery to reconcile orders with the payment gateway. Systems must be back by hour 6 so the business is operating again by hour 8.</p><p>Setting the RTO equal to the MTD is a common mistake. Systems that come back at the MTD leave no time for the business to resume, so the process still breaches its tolerance.</p>',
+        reviewNote: 'RTO = MTD − WRT, so systems return in time for the business to resume.' },
+      { id: 'rpo', type: 'number', points: 8, short: 'RPO for ERP', title: 'Recovery point objective for inventory and order management',
+        task: 'What is the <b>RPO</b> for ERP, inventory and order management? Enter hours.',
+        unit: 'hours', tol: 0,
+        answer: function () { return M.OBJ.ERP.rpo; },
+        hint: 'Policy CP-3.3: RPO is the longest data-loss window rated Minor (2) or lower. Read the ERP data-loss row.',
+        debrief: '<p>The ERP tolerates 1 hour of data loss at a Minor rating; at 4 hours the loss is Moderate and order and inventory records can no longer be rebuilt reliably. The RPO is 1 hour.</p><p>An RPO of 1 hour rules out the current 4-hour incrementals. The manager should notice that the ERP’s RTO is generous (18 hours) while its RPO is tight; objectives are set independently, and the backup method follows the RPO.</p>',
+        reviewNote: 'RPO comes from data-loss tolerance and drives the backup method.' },
+      { id: 'under', type: 'set', points: 11, short: 'Under-built processes', title: 'Processes the current strategy under-builds',
+        task: 'With the BIA objectives entered and the <b>current strategy</b> loaded, which processes cannot meet their own RTO or RPO, even before dependencies are considered? Enter the process IDs.',
+        label: 'Process IDs', placeholder: 'e.g., ORD, WMS',
+        answer: function () { return K.under(M.ASIS, M.OBJ); },
+        hint: 'Enter all six processes’ objectives in the planner. Rows flagged “Gap” are under-built. Compare planned RTO with RTO, and planned RPO with RPO.',
+        debrief: '<p>Two processes are under-built on their own. The ERP’s 4-hour incrementals cannot meet its 1-hour RPO. Payroll sits on a cold site: 60 hours of activation plus 6 hours of restore is 66 hours against a 48-hour RTO, which would miss the pay date.</p><p>These gaps are real capability shortfalls, not paperwork. The manager reports them to the process owners and either funds a strategy that closes them or obtains a documented, senior-level acceptance of the lower capability.</p>',
+        reviewNote: 'Compare each process’s achievable RTO and RPO with the BIA objectives.' },
+      { id: 'dep', type: 'set', points: 11, short: 'Dependency failures', title: 'Processes that fail only because of a dependency',
+        task: 'Run the recovery test on the <b>current strategy</b>. Which processes meet their objectives on their own in the planner but <b>fail the test</b> because they wait for a process they depend on? Enter the process IDs.',
+        label: 'Process IDs', placeholder: 'e.g., PAY',
+        answer: function () { return K.depFail(M.ASIS, M.OBJ); },
+        hint: 'In the Recovery test tab, look for results marked “Fail” where the reason is waiting for another process. Exclude processes already under-built on their own.',
+        debrief: '<p>The order platform has a hot site and recovers on its own in 1.5 hours, but it cannot take orders until identity (11 hours on the warm site) and the ERP (13 hours) are back. It finishes at hour 13 against a 6-hour RTO. Warehouse fulfillment recovers in 8 hours on its own but also waits for the ERP, finishing at 13 against 12.</p><p>A recovery strategy is only as fast as its slowest dependency. The manager sets objectives for supporting services from the most demanding process that depends on them, so identity and the ERP each need an effective RTO of 6 hours, and recovers in dependency order: identity first, then the ERP, then the processes that use them.</p>',
+        reviewNote: 'Supporting services inherit the tightest RTO of the processes that depend on them.' },
+      { id: 'over', type: 'set', points: 11, short: 'Over-built processes', title: 'Processes the current strategy over-builds',
+        task: 'In the <b>current strategy</b>, which processes are over-built: they meet their objectives, including the needs of processes that depend on them, and a <b>cheaper</b> site and backup combination would still meet them? Enter the process IDs.',
+        label: 'Process IDs', placeholder: 'e.g., IDN',
+        answer: function () { return K.overBuilt(M.ASIS, M.OBJ); },
+        hint: 'Rows flagged “Over-built” in the planner. Use the option explorer to see whether a cheaper combination still meets the effective RTO and the RPO.',
+        debrief: '<p>Marketing analytics runs on a hot site with continuous replication, $300k a year, for a process that tolerates two weeks of downtime and a week of data loss. A quick-ship contract with weekly tape meets its objectives for about $13k. The order platform’s hot site is also more than it needs: cloud DR with hourly snapshots meets its 6-hour RTO and 1-hour RPO for about $174k instead of $324k.</p><p>Over-building is a governance failure too. It spends money that the under-built processes need, and the hot site for the order platform gave a false sense of safety while its dependencies were the real bottleneck. There is no universally best site; the right one fits the objective.</p>',
+        reviewNote: 'Match the strategy to the objective; faster than needed is wasted spend.' },
+      { id: 'min', type: 'number', points: 12, short: 'Lowest-cost strategy', title: 'Annual cost of the lowest-cost strategy that passes',
+        task: 'Build the strategy that <b>passes the recovery test for every process</b> at the <b>lowest annual cost</b>. What is its total annual cost in $k? Does it fit the budget?',
+        unit: '$k per year', tol: 2,
+        answer: function () { return K.minPlan(M.OBJ).cost; },
+        hint: 'For each process, choose the cheapest combination that meets its RPO and the tightest RTO among itself and every process that depends on it. The option explorer lists combinations by cost. Then run the test.',
+        debrief: '<p>The lowest-cost passing strategy costs $612k a year, $148k under the $760k budget and $326k less than the current $938k. Identity moves to cloud DR with 4-hour incrementals and the ERP to cloud DR with hourly snapshots, both meeting the 6-hour need of the order platform. The order platform moves from the hot site to cloud DR. Warehouse keeps cloud DR with nightly backups. Payroll moves to a warm site, and analytics to a quick-ship contract with weekly tape.</p><p>Simply adding upgrades to the current strategy would have cost more than $1 million. The budget works only because the over-builds fund the gaps. The manager presents this as a reallocation in business terms: every process meets the objective its owner signed, for less money.</p>',
+        reviewNote: 'Fund the cheapest option that meets each process’s effective objectives.' },
+      { id: 'cfo', type: 'choice', points: 8, short: 'CFO proposal', title: 'Respond to the CFO’s proposal to raise the RTO',
+        task: 'The CFO suggests raising the order platform’s RTO from 6 to 16 hours so the current strategy passes. What should the manager do?',
+        options: [
+          'Accept it, since the CFO owns the budget and a longer objective closes the gap at no added cost',
+          'Accept it for FY2027 only, and restore the 6-hour objective once the budget allows an upgrade',
+          'Decline it: the BIA sets the RTO, so fund a strategy that meets it or get formal owner acceptance',
+          'Decline it for now, and raise the RTO only after IT confirms the recovery time it can achieve today'
+        ],
+        answer: 2,
+        hint: 'Where does the RTO come from? And would 16 hours even be inside the MTD?',
+        debrief: '<p>A 16-hour RTO is already beyond the 8-hour MTD, so the order platform would breach its tolerance by design. Changing the objective to match the current capability inverts the relationship: the BIA sets the objective from business impact, and the recovery strategy is built and funded to meet it.</p><p>The manager declines the change and offers two legitimate paths: fund a strategy that meets the objective (here, within budget, by reallocating the over-builds) or, if the business truly cannot fund it, document the gap and have the process owner and the executive committee formally accept the residual risk. Waiting for IT to say what it can do is the same inversion with a delay.</p>',
+        reviewNote: 'Objectives come from the BIA; never change them to match current capability.' },
+      { id: 'test', type: 'choice', points: 8, short: 'Next test type', title: 'Choose the next test before peak season',
+        task: 'The executive committee wants proof that the new strategy works before the holiday peak. The order platform cannot be taken down in the fourth quarter. Which test should the manager schedule?',
+        options: [
+          'A full-interruption test of the order platform, since only a real cutover can prove the RTO',
+          'A parallel test that recovers processes at the alternate sites while production keeps running',
+          'A checklist review of the updated plan by each owner, since it causes no disruption at all',
+          'A structured walkthrough with the IT team only, since recovery is a technical DR matter'
+        ],
+        answer: 1,
+        hint: 'Which test actually recovers systems and data at the alternate site without interrupting production?',
+        debrief: '<p>A parallel test brings the processes up at their alternate sites, in dependency order, and measures real recovery times and data loss against the objectives, while production keeps running. It produces the evidence the committee asked for without the risk of a full interruption in peak season.</p><p>A full-interruption test is the most thorough but would put holiday revenue at risk. Checklist reviews and walkthroughs are useful first steps but do not prove recovery, and a walkthrough with IT alone leaves out the process owners who perform the work recovery. Results, failures included, should be documented and fed back into the plan.</p>',
+        reviewNote: 'A parallel test proves recovery without disrupting production.' },
+      { id: 'summary', type: 'text', points: 15, short: 'Strategy summary', title: 'Write the continuity strategy summary for executive approval', reportTitle: 'Continuity strategy summary',
+        task: 'Write a one-page continuity strategy summary for the executive committee. Use the numbers from your planner and test.',
+        fields: [
+          { key: 'strategy', label: 'Recommended strategy and cost', min: 40, placeholder: 'Site and backup for each process, total annual cost against the budget.' },
+          { key: 'gaps', label: 'Gaps closed, over-builds removed, and recovery order', min: 40, placeholder: 'What the current strategy got wrong and the dependency order.' },
+          { key: 'decision', label: 'The CFO’s proposal and any residual risk', min: 30, placeholder: 'How objectives are handled and who accepts what.' },
+          { key: 'testing', label: 'Test plan and approval requested', min: 30, placeholder: 'The next test, when, and what you need the committee to approve.' }
+        ],
+        hint: 'Lead with the decision you want. Explain the reallocation in business terms and name the recovery order.',
+        debrief: '<p><b>Model summary.</b> <b>Strategy:</b> Approve a revised recovery strategy at $612k a year, $148k under the $760k budget: identity on cloud DR with 4-hour incrementals; ERP on cloud DR with hourly snapshots; order capture on cloud DR with hourly snapshots; fulfillment on cloud DR with nightly backups; payroll on a warm site with nightly backups; analytics on a quick-ship contract with weekly tape. <b>Gaps and order:</b> The current strategy misses the ERP’s 1-hour RPO and payroll’s 48-hour RTO, and a simulated test showed order capture and fulfillment failing because they wait for identity and the ERP. It also spends $300k on a hot site for analytics and more than needed on the order platform’s hot site. The revised strategy recovers identity first, then the ERP, then order capture and fulfillment, then payroll and analytics, and every process meets its objective in the test. <b>Decision:</b> The order platform’s RTO stays at 6 hours, as set in the BIA; raising it to 16 hours would exceed the 8-hour MTD. No residual gap needs acceptance at this budget. <b>Testing and approval:</b> We will run a parallel test in October, before peak, with process owners performing work recovery, and report results to the committee. We request approval of the strategy, the budget reallocation, and the test plan.</p><p>Your wording will differ. Check that the summary asks for a decision, ties every choice to the BIA, and names the recovery order.</p>',
+        reviewNote: 'The summary should tie choices to the BIA, show the budget, and ask for approval.' }
+    ],
+
+    workbench: function (root, api) {
+      var esc = api.esc;
+      var plan = api.note('plan') || JSON.parse(JSON.stringify(M.ASIS));
+      var obj = api.note('obj') || {}; PR.forEach(function (p) { if (!obj[p.id]) obj[p.id] = { mtd: null, rto: null, rpo: null }; });
+      var bp = api.note('bp') || 'ORD', xp = api.note('xp') || 'ORD', tested = api.note('tested') || false;
+      root.innerHTML = '<div class="lb-tool"><div class="lb-tabs" role="tablist" aria-label="Workbench tools">' +
+        '<button role="tab" id="b8t-bia" aria-controls="b8p-bia" aria-selected="true">BIA data</button>' +
+        '<button role="tab" id="b8t-plan" aria-controls="b8p-plan" aria-selected="false" tabindex="-1">Strategy planner</button>' +
+        '<button role="tab" id="b8t-test" aria-controls="b8p-test" aria-selected="false" tabindex="-1">Recovery test</button>' +
+        '<button role="tab" id="b8t-pol" aria-controls="b8p-pol" aria-selected="false" tabindex="-1">Catalog and policy</button></div>' +
+        '<div class="lb-panel" role="tabpanel" id="b8p-bia" aria-labelledby="b8t-bia"></div>' +
+        '<div class="lb-panel" role="tabpanel" id="b8p-plan" aria-labelledby="b8t-plan" hidden></div>' +
+        '<div class="lb-panel" role="tabpanel" id="b8p-test" aria-labelledby="b8t-test" hidden></div>' +
+        '<div class="lb-panel b8-doc" role="tabpanel" id="b8p-pol" aria-labelledby="b8t-pol" hidden>' + polTab() + '</div></div>';
+      var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+      function selTab(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+      tabs.forEach(function (t, i) { t.addEventListener('click', function () { selTab(t); }); t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; selTab(n); n.focus(); } }); });
+      if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) selTab(tt); }
+      function save() { api.note('plan', plan); api.note('obj', obj); api.note('bp', bp); api.note('xp', xp); api.note('tested', tested); }
+      function h(x) { return x == null ? 'not set' : (x < 1 ? Math.round(x * 60) + ' min' : (Math.round(x * 10) / 10) + ' h'); }
+      function lx(t, L, W) { var a = Math.log(0.25), b = Math.log(400); return L + (W - L) * (Math.log(Math.max(0.25, Math.min(400, t))) - a) / (b - a); }
+      var TICKS = [[0.25, '15m'], [1, '1h'], [4, '4h'], [12, '12h'], [24, '1d'], [72, '3d'], [168, '1w'], [336, '2w']];
+
+      /* ---- BIA tab ---- */
+      function renderBIA() {
+        var p = M.proc(bp), P = document.getElementById('b8p-bia');
+        var seg = '<div class="b8-bar"><span class="b8-lab" id="b8-bpl">Process</span><div class="px-seg" role="group" aria-labelledby="b8-bpl">' + PR.map(function (q) { return '<button type="button" data-bp="' + q.id + '" aria-pressed="' + (q.id === bp) + '">' + q.id + '</button>'; }).join('') + '</div></div>';
+        var info = '<p class="b8-pinfo"><b>' + p.id + ', ' + esc(p.name) + '.</b> ' + esc(p.desc) + '<br><b>Owner:</b> ' + esc(p.owner) + ' &nbsp; <b>Depends on:</b> ' + (p.deps.length ? p.deps.join(', ') : 'none') + ' &nbsp; <b>Used by:</b> ' + (M.dependents(p.id).length ? M.dependents(p.id).join(', ') : 'none') + ' &nbsp; <b>Work recovery time (WRT):</b> ' + p.wrt + ' h</p>';
+        var t1 = '<div class="table-wrap"><table class="data"><caption class="sr-only">Downtime impact over time for ' + p.id + '</caption><thead><tr><th>Outage length</th>' + M.TL.map(function (l) { return '<th class="num">' + l + '</th>'; }).join('') + '</tr></thead><tbody>' +
+          '<tr><td>Cumulative loss ($k)</td>' + p.loss.map(function (v) { return '<td class="num">' + v.toLocaleString('en-US') + '</td>'; }).join('') + '</tr>' +
+          '<tr><td>Impact rating</td>' + p.down.map(function (r) { return '<td class="num">' + (r >= 4 ? '<b>' : '') + r + ' ' + M.RATE[r] + (r >= 4 ? '</b>' : '') + '</td>'; }).join('') + '</tr></tbody></table></div><p class="b8-pinfo">' + esc(p.sev) + '</p>';
+        var t2 = '<div class="table-wrap"><table class="data"><caption class="sr-only">Data-loss tolerance for ' + p.id + '</caption><thead><tr><th>Data lost</th>' + M.DLL.map(function (l) { return '<th class="num">' + l + '</th>'; }).join('') + '</tr></thead><tbody>' +
+          '<tr><td>Impact rating</td>' + p.data.map(function (r) { return '<td class="num">' + r + ' ' + M.RATE[r] + '</td>'; }).join('') + '</tr></tbody></table></div><p class="b8-pinfo">' + esc(p.dnote) + '</p>';
+        // impact-over-time step chart
+        var W = 460, H = 170, L = 70, top = 10, bot = 26, ys = function (r) { return top + (H - top - bot) * (5 - r) / 4; }, xs = function (i) { return L + (W - L - 10) * i / (M.T.length - 1); };
+        var g = '';
+        for (var r = 1; r <= 5; r++) g += '<line x1="' + L + '" x2="' + (W - 10) + '" y1="' + ys(r) + '" y2="' + ys(r) + '" stroke="' + (r === 4 ? '#b45309' : '#dbe7e8') + '"' + (r === 4 ? ' stroke-dasharray="5 3" stroke-width="1.5"' : '') + '/><text x="' + (L - 6) + '" y="' + (ys(r) + 4) + '" font-size="10" fill="#5c7d83" text-anchor="end">' + r + ' ' + M.RATE[r] + '</text>';
+        M.TL.forEach(function (l, i) { g += '<text x="' + xs(i) + '" y="' + (H - 8) + '" font-size="10" fill="#5c7d83" text-anchor="middle">' + l + '</text>'; });
+        var d = p.down.map(function (r, i) { return (i ? 'L' : 'M') + xs(i) + ' ' + ys(r); }).join(' ');
+        g += '<path d="' + d + '" fill="none" stroke="#0f3b4c" stroke-width="2"/>';
+        p.down.forEach(function (r, i) { g += '<circle cx="' + xs(i) + '" cy="' + ys(r) + '" r="4.5" fill="' + (r >= 4 ? '#c0182b' : '#0f3b4c') + '" stroke="#fff" stroke-width="2"><title>' + M.TL[i] + ': ' + r + ' ' + M.RATE[r] + ', $' + p.loss[i] + 'k</title></circle>'; });
+        var chart = '<div class="b8-card"><h4>Impact over time, ' + p.id + '</h4><p class="sub">Impact rating by outage length. The dashed line marks Severe (4). Red points are Severe or worse.</p><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Impact rating over time for ' + p.id + '; values are in the table">' + g + '</svg></div>';
+        P.innerHTML = seg + info + '<div class="b8-two"><div>' + chart + '</div><div>' + depDiagram() + '</div></div>' + '<p class="b8-lab">Downtime impact</p>' + t1 + '<p class="b8-lab" style="margin-top:.6rem">Data-loss tolerance</p>' + t2;
+        P.querySelectorAll('[data-bp]').forEach(function (b) { b.addEventListener('click', function () { bp = b.dataset.bp; save(); renderBIA(); P.querySelector('[data-bp="' + bp + '"]').focus(); }); });
+      }
+      function depDiagram() {
+        var pos = { IDN: [230, 26], PAY: [70, 96], ERP: [390, 96], ORD: [150, 170], WMS: [290, 170], ANL: [410, 170] };
+        var g = '<defs><marker id="b8ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5c7d83"/></marker></defs>';
+        PR.forEach(function (p) { p.deps.forEach(function (d) { var a = pos[p.id], b = pos[d]; g += '<line x1="' + a[0] + '" y1="' + (a[1] - 15) + '" x2="' + b[0] + '" y2="' + (b[1] + 15) + '" stroke="#5c7d83" stroke-width="1.5" marker-end="url(#b8ar)"/>'; }); });
+        PR.forEach(function (p) { var a = pos[p.id], on = p.id === bp; g += '<rect x="' + (a[0] - 44) + '" y="' + (a[1] - 15) + '" width="88" height="30" rx="4" fill="' + (on ? '#0f3b4c' : '#e6faf6') + '" stroke="#0f3b4c"/><text x="' + a[0] + '" y="' + (a[1] + 4) + '" font-size="12" font-weight="700" text-anchor="middle" fill="' + (on ? '#fff' : '#0b2530') + '">' + p.id + '</text>'; });
+        return '<div class="b8-card"><h4>Dependencies</h4><p class="sub">An arrow points from a process to a service it needs. A process cannot resume until everything it depends on is back.</p><svg viewBox="0 0 460 190" role="img" aria-label="Dependency map: ERP depends on IDN; ORD and WMS depend on IDN and ERP; PAY depends on IDN; ANL depends on ERP">' + g + '</svg></div>';
+      }
+
+      /* ---- Planner tab ---- */
+      function flags(p) {
+        var o = obj[p.id], a = plan[p.id], ow = M.own(a[0], a[1]), rp = M.bk(a[1]).rpo, out = [];
+        if (o.mtd == null || o.rto == null || o.rpo == null) return '<span class="b8-flag na">Set objectives</span>';
+        if (o.rto + p.wrt > o.mtd) out.push('<span class="b8-flag gap">&#9888; RTO + WRT exceeds MTD</span>');
+        if (ow > o.rto) out.push('<span class="b8-flag gap">&#10005; Gap: RTO</span>');
+        if (rp > o.rpo) out.push('<span class="b8-flag gap">&#10005; Gap: RPO</span>');
+        if (!out.length) {
+          var e = M.effRto(p.id, obj), c = M.cost(p, a[0], a[1]), ch = M.cheapest(p, e, o.rpo);
+          if (ow <= e && ch && ch.cost < c) out.push('<span class="b8-flag over">&#9650; Over-built</span>');
+          else out.push('<span class="b8-flag ok">&#10003; Meets own</span>');
+        }
+        return out.join('');
+      }
+      function renderPlan() {
+        var P = document.getElementById('b8p-plan'), tot = K.planCost(plan), used = tot / M.BUDGET;
+        var rows = PR.map(function (p) {
+          var o = obj[p.id], a = plan[p.id];
+          function num(f) { return '<input type="number" min="0" step="any" data-o="' + p.id + '" data-f="' + f + '" value="' + (o[f] == null ? '' : o[f]) + '" aria-label="' + p.id + ' ' + f.toUpperCase() + ' in hours">'; }
+          return '<tr><td><b title="' + esc(p.name) + '">' + p.id + '</b></td><td>' + num('mtd') + '</td><td>' + num('rto') + '</td><td>' + num('rpo') + '</td>' +
+            '<td><select data-s="' + p.id + '" aria-label="' + p.id + ' recovery site">' + M.SITES.map(function (s) { return '<option value="' + s.id + '"' + (s.id === a[0] ? ' selected' : '') + '>' + esc(s.sh) + '</option>'; }).join('') + '</select></td>' +
+            '<td><select data-b="' + p.id + '" aria-label="' + p.id + ' backup method">' + M.BACKUPS.map(function (b) { return '<option value="' + b.id + '"' + (b.id === a[1] ? ' selected' : '') + '>' + esc(b.sh) + '</option>'; }).join('') + '</select></td>' +
+            '<td class="num">' + h(M.own(a[0], a[1])) + ' / ' + h(M.bk(a[1]).rpo) + '</td><td class="num">$' + M.cost(p, a[0], a[1]) + 'k</td><td>' + flags(p) + '</td></tr>';
+        }).join('');
+        // capability chart
+        var W = 820, L = 44, rowH = 26, top = 6, H = top + PR.length * rowH + 22, g = '';
+        TICKS.forEach(function (t) { var x = lx(t[0], L, W - 10); g += '<line x1="' + x + '" x2="' + x + '" y1="' + top + '" y2="' + (H - 20) + '" stroke="#dbe7e8"/><text x="' + x + '" y="' + (H - 6) + '" font-size="10" fill="#5c7d83" text-anchor="middle">' + t[1] + '</text>'; });
+        PR.forEach(function (p, i) {
+          var y = top + i * rowH, a = plan[p.id], ow = M.own(a[0], a[1]), o = obj[p.id];
+          g += '<text x="0" y="' + (y + 17) + '" font-size="11" font-weight="700" fill="#0b2530">' + p.id + '</text>';
+          g += '<rect x="' + L + '" y="' + (y + 7) + '" width="' + Math.max(2, lx(ow, L, W - 10) - L) + '" height="12" rx="3" fill="' + (o.rto != null && ow > o.rto ? '#c0182b' : '#0f3b4c') + '"><title>' + p.id + ' planned RTO ' + h(ow) + '</title></rect>';
+          if (o.rto != null) { var xr = lx(o.rto, L, W - 10); g += '<path d="M' + xr + ' ' + (y + 4) + 'l6 9l-6 9l-6 -9z" fill="#14b8a6" stroke="#0b2530" stroke-width="1"><title>' + p.id + ' RTO ' + h(o.rto) + '</title></path>'; }
+          if (o.mtd != null) { var xm = lx(o.mtd, L, W - 10); g += '<line x1="' + xm + '" x2="' + xm + '" y1="' + (y + 2) + '" y2="' + (y + 25) + '" stroke="#b45309" stroke-width="2.5"><title>' + p.id + ' MTD ' + h(o.mtd) + '</title></line>'; }
+        });
+        var e = PR.filter(function (p) { var o = obj[p.id]; return o.mtd == null || o.rto == null || o.rpo == null; }).length;
+        P.innerHTML = '<div class="b8-bar"><button type="button" class="btn secondary" id="b8-asis">Restore current strategy</button><span class="b8-lab">Annual cost</span><b style="font:700 1.1rem Georgia,serif">$' + tot + 'k</b><span class="b8-lab">Budget</span><b style="font:700 1.1rem Georgia,serif">$' + M.BUDGET + 'k</b></div>' +
+          '<div class="b8-meter' + (used > 1 ? ' over' : '') + '" role="img" aria-label="Budget used ' + Math.round(used * 100) + ' percent"><i style="width:' + Math.min(100, used * 100) + '%"></i></div><div class="b8-mtxt">$' + tot + 'k of $' + M.BUDGET + 'k (' + Math.round(used * 100) + '%). ' + (used > 1 ? 'Over budget by $' + (tot - M.BUDGET) + 'k.' : '$' + (M.BUDGET - tot) + 'k unallocated.') + (e ? ' Objectives not yet set for ' + e + ' process' + (e === 1 ? '' : 'es') + '.' : '') + '</div>' +
+          '<div class="table-wrap"><table class="data b8-plan"><caption class="sr-only">Recovery strategy by process</caption><thead><tr><th>ID</th><th>MTD (h)</th><th>RTO (h)</th><th>RPO (h)</th><th>Recovery site</th><th>Backup method</th><th class="num">Planned RTO / RPO</th><th class="num">Cost</th><th>Flags</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+          '<p class="b8-pinfo" style="margin-top:.5rem">Planned RTO is this process on its own: site activation plus data restore. It does not include waiting for dependencies; the recovery test does. “Over-built” means a cheaper combination still meets this process’s RPO and the tightest RTO among it and the processes that depend on it.</p>' +
+          '<div class="b8-card"><h4>Planned recovery against objectives</h4><p class="sub">Bar: planned RTO (red when it misses the RTO). Diamond: RTO. Orange tick: MTD. Log time scale.</p><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Planned RTO, RTO, and MTD for each process; values are in the planner table">' + g + '</svg>' +
+          '<div class="b8-legend"><span><i style="background:#0f3b4c"></i>Planned RTO</span><span><i style="background:#c0182b"></i>Misses RTO</span><span><i style="background:#14b8a6"></i>RTO</span><span><i style="background:#b45309"></i>MTD</span></div></div>' +
+          '<div class="b8-card"><h4>Option explorer</h4><p class="sub">Every site and backup combination for one process, cheapest first, checked against the objectives entered for that row.</p><div class="b8-bar" style="margin-bottom:.4rem"><label class="b8-lab" for="b8-xp">Process</label><select id="b8-xp">' + PR.map(function (p) { return '<option' + (p.id === xp ? ' selected' : '') + '>' + p.id + '</option>'; }).join('') + '</select></div><div class="table-wrap" style="max-height:15rem;overflow:auto">' + explorer() + '</div></div>';
+        P.querySelector('#b8-asis').addEventListener('click', function () { plan = JSON.parse(JSON.stringify(M.ASIS)); save(); renderPlan(); renderTest(); P.querySelector('#b8-asis').focus(); });
+        P.querySelector('#b8-xp').addEventListener('change', function (ev) { xp = ev.target.value; save(); renderPlan(); document.getElementById('b8-xp').focus(); });
+        P.querySelectorAll('[data-o]').forEach(function (inp) { inp.addEventListener('change', function () { var v = inp.value.trim() === '' ? null : parseFloat(inp.value); obj[inp.dataset.o][inp.dataset.f] = isNaN(v) ? null : v; save(); var id = '[data-o="' + inp.dataset.o + '"][data-f="' + inp.dataset.f + '"]'; renderPlan(); renderTest(); var f = document.querySelector('#b8p-plan ' + id); if (f) f.focus(); }); });
+        P.querySelectorAll('[data-s],[data-b]').forEach(function (sel) { sel.addEventListener('change', function () { var id = sel.dataset.s || sel.dataset.b; plan[id][sel.dataset.s ? 0 : 1] = sel.value; save(); var q = sel.dataset.s ? '[data-s="' + id + '"]' : '[data-b="' + id + '"]'; renderPlan(); renderTest(); var f = document.querySelector('#b8p-plan ' + q); if (f) f.focus(); }); });
+      }
+      function explorer() {
+        var p = M.proc(xp), o = obj[xp], rows = [];
+        M.SITES.forEach(function (s) { M.BACKUPS.forEach(function (b) { rows.push({ s: s, b: b, t: M.own(s.id, b.id), c: M.cost(p, s.id, b.id) }); }); });
+        rows.sort(function (a, b) { return a.c - b.c || a.t - b.t; });
+        return '<table class="data"><thead><tr><th>Site</th><th>Backup</th><th class="num">RTO</th><th class="num">RPO</th><th class="num">Cost</th><th>Meets row</th></tr></thead><tbody>' + rows.map(function (r) {
+          var m = o.rto == null || o.rpo == null ? 'n/a' : (r.t <= o.rto && r.b.rpo <= o.rpo ? '&#10003; Yes' : '&#10005; No');
+          return '<tr><td>' + esc(r.s.sh) + '</td><td>' + esc(r.b.sh) + '</td><td class="num">' + h(r.t) + '</td><td class="num">' + h(r.b.rpo) + '</td><td class="num">$' + r.c + 'k</td><td>' + m + '</td></tr>';
+        }).join('') + '</tbody></table>';
+      }
+
+      /* ---- Test tab ---- */
+      function renderTest() {
+        var P = document.getElementById('b8p-test');
+        var head = '<p class="b8-pinfo"><b>Scenario.</b> At 02:00 on a Tuesday, ransomware forces Oakhurst to shut down its primary data center and cloud production accounts. Every process fails over to its recovery site and restores from its most recent clean copy. A process resumes only when its own systems and everything it depends on are back.</p>' +
+          '<div class="b8-bar"><button type="button" class="btn" id="b8-run">&#9654; Run recovery test</button><span class="b8-lab">Tests the strategy currently in the planner, against the objectives entered there</span></div>';
+        if (!tested) { P.innerHTML = head + '<p class="b8-pinfo">No test run yet.</p>'; wireRun(); return; }
+        var t = M.test(plan), order = PR.slice().sort(function (a, b) { return t[a.id].done - t[b.id].done || M.allDeps(a.id).length - M.allDeps(b.id).length || (a.id < b.id ? -1 : 1); });
+        var log = [], pass = 0;
+        var rows = order.map(function (p) {
+          var r = t[p.id], o = obj[p.id], set = o.rto != null && o.rpo != null;
+          var okT = set && r.done <= o.rto, okD = set && r.loss <= o.rpo, ok = okT && okD;
+          if (ok) pass++;
+          var why = !set ? 'No objective set' : (ok ? 'Within RTO and RPO' : [!okT ? (r.waitFor && r.own <= o.rto ? 'Waited for ' + r.waitFor + ' until ' + h(r.done) : 'Own recovery took ' + h(r.own)) + ' against RTO ' + h(o.rto) : '', !okD ? 'Lost ' + h(r.loss) + ' of data against RPO ' + h(o.rpo) : ''].filter(Boolean).join('; '));
+          log.push('T+' + h(r.done).padEnd(7) + p.id + ' resumed' + (r.waitFor ? ' (waited for ' + r.waitFor + ')' : '') + '. ' + (set ? (ok ? 'PASS' : 'FAIL') : 'NO OBJECTIVE'));
+          return '<tr><td><b title="' + esc(p.name) + '">' + p.id + '</b></td><td class="num">' + h(r.own) + '</td><td>' + (r.waitFor ? r.waitFor : 'none') + '</td><td class="num">' + h(r.done) + '</td><td class="num">' + h(o.rto) + '</td><td class="num">' + h(r.loss) + '</td><td class="num">' + h(o.rpo) + '</td><td>' + (!set ? '<span class="b8-flag na">No objective</span>' : ok ? '<span class="b8-flag ok">&#10003; Pass</span>' : '<span class="b8-flag gap">&#10005; Fail</span>') + '</td><td style="font-size:.78rem">' + esc(why) + '</td></tr>';
+        }).join('');
+        // Gantt
+        var W = 820, L = 44, rowH = 26, top = 6, H = top + PR.length * rowH + 22, g = '';
+        TICKS.forEach(function (tk) { var x = lx(tk[0], L, W - 10); g += '<line x1="' + x + '" x2="' + x + '" y1="' + top + '" y2="' + (H - 20) + '" stroke="#dbe7e8"/><text x="' + x + '" y="' + (H - 6) + '" font-size="10" fill="#5c7d83" text-anchor="middle">' + tk[1] + '</text>'; });
+        order.forEach(function (p, i) {
+          var y = top + i * rowH, r = t[p.id], o = obj[p.id], x0 = L, xa = lx(r.act, L, W - 10), xo = lx(r.own, L, W - 10), xd = lx(r.done, L, W - 10);
+          g += '<text x="0" y="' + (y + 17) + '" font-size="11" font-weight="700" fill="#0b2530">' + p.id + '</text>';
+          g += '<rect x="' + x0 + '" y="' + (y + 7) + '" width="' + Math.max(2, xa - x0) + '" height="12" fill="#14b8a6"><title>' + p.id + ' site activation ' + h(r.act) + '</title></rect>';
+          if (xo > xa + 1) g += '<rect x="' + (xa + 1) + '" y="' + (y + 7) + '" width="' + (xo - xa - 1) + '" height="12" fill="#0f3b4c"><title>' + p.id + ' data restore ' + h(r.restore) + '</title></rect>';
+          if (xd > xo + 1) g += '<rect x="' + (xo + 1) + '" y="' + (y + 7) + '" width="' + (xd - xo - 1) + '" height="12" fill="url(#b8hatch)" stroke="#5c7d83" stroke-width=".8"><title>' + p.id + ' waiting for ' + r.waitFor + ' until ' + h(r.done) + '</title></rect>';
+          if (o.rto != null) { var xr = lx(o.rto, L, W - 10); g += '<path d="M' + xr + ' ' + (y + 4) + 'l6 9l-6 9l-6 -9z" fill="#fff" stroke="#c0182b" stroke-width="1.6"><title>' + p.id + ' RTO ' + h(o.rto) + '</title></path>'; }
+        });
+        var defs = '<defs><pattern id="b8hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#eef3f4"/><line x1="0" y1="0" x2="0" y2="6" stroke="#5c7d83" stroke-width="2"/></pattern></defs>';
+        P.innerHTML = head + '<ul class="b8-warn"><li class="' + (pass === PR.length ? 'ok' : '') + '">' + (pass === PR.length ? '&#10003; ' : '&#9888; ') + pass + ' of ' + PR.length + ' processes passed. Strategy cost $' + K.planCost(plan) + 'k against a $' + M.BUDGET + 'k budget.</li></ul>' +
+          '<div class="b8-card"><h4>Recovery timeline, in order of resumption</h4><p class="sub">Teal: site activation. Navy: data restore. Hatched: waiting for a dependency. Open diamond: RTO. Log time scale.</p><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Recovery timeline for each process; results are in the table">' + defs + g + '</svg>' +
+          '<div class="b8-legend"><span><i style="background:#14b8a6"></i>Activation</span><span><i style="background:#0f3b4c"></i>Restore</span><span><i style="background:repeating-linear-gradient(45deg,#5c7d83 0 2px,#eef3f4 2px 5px)"></i>Waiting for dependency</span><span><i style="background:#fff;border:1.5px solid #c0182b"></i>RTO</span></div></div>' +
+          '<div class="table-wrap"><table class="data"><caption class="sr-only">Recovery test results</caption><thead><tr><th>Process</th><th class="num">Own recovery</th><th>Waited for</th><th class="num">Resumed at</th><th class="num">RTO</th><th class="num">Data lost</th><th class="num">RPO</th><th>Result</th><th>Reason</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+          '<p class="b8-lab" style="margin-top:.8rem">Test log</p><pre class="b8-log">' + esc('T+0      Primary site declared lost. Failover begins for all six processes.\n' + log.join('\n')) + '</pre>';
+        wireRun();
+      }
+      function wireRun() { document.getElementById('b8-run').addEventListener('click', function () { tested = true; save(); renderTest(); document.getElementById('b8-run').focus(); }); }
+
+      function polTab() {
+        return '<div class="lb-doc"><p class="eyebrow">Policy</p><h4>Oakhurst Continuity Policy CP-3 (excerpt)</h4><ul>' +
+          '<li><b>3.1 MTD.</b> The maximum tolerable downtime is the outage length at which the BIA first rates impact Severe (4) or worse.</li>' +
+          '<li><b>3.2 RTO.</b> The recovery time objective equals the MTD less the process’s work recovery time (WRT), so the business can resume before the MTD.</li>' +
+          '<li><b>3.3 RPO.</b> The recovery point objective is the longest data-loss window the BIA rates Minor (2) or lower.</li>' +
+          '<li><b>3.4 Dependencies.</b> A supporting service must recover within the shortest RTO of any process that depends on it.</li>' +
+          '<li><b>3.5 Changes to objectives.</b> Objectives change only through a revised BIA signed by the process owner. A strategy that cannot meet an objective is reported to the executive committee, which funds it or formally accepts the gap.</li>' +
+          '<li><b>3.6 Testing.</b> Every strategy is tested before approval and at least annually. Results are documented and fed back into the plan.</li></ul></div>' +
+          '<div class="lb-doc"><p class="eyebrow">Model</p><h4>How the planner and the test compute results</h4>' +
+          '<div class="formula">Planned RTO(p)  = site activation + backup restore time\nPlanned RPO(p)  = backup interval\nCost(p)         = round(weight(p) × (site cost + backup cost))\nTested RTO(p)   = max(Planned RTO of p and of every process p depends on, directly or indirectly)\nPass            = Tested RTO ≤ RTO and Planned RPO ≤ RPO\nEffective RTO(p)= min(RTO of p and of every process that depends on p)\nOver-built      = meets Effective RTO and RPO, and a cheaper combination also does</div></div>' +
+          '<div class="b8-two"><div class="lb-doc"><p class="eyebrow">Catalog</p><h4>Recovery sites</h4><div class="table-wrap"><table class="data"><thead><tr><th>Site</th><th class="num">Activation</th><th class="num">Base cost ($k)</th></tr></thead><tbody>' + M.SITES.map(function (s) { return '<tr><td>' + esc(s.name) + '</td><td class="num">' + h(s.act) + '</td><td class="num">' + s.cost + '</td></tr>'; }).join('') + '</tbody></table></div></div>' +
+          '<div class="lb-doc"><p class="eyebrow">Catalog</p><h4>Backup methods</h4><div class="table-wrap"><table class="data"><thead><tr><th>Method</th><th class="num">RPO</th><th class="num">Restore</th><th class="num">Base cost ($k)</th></tr></thead><tbody>' + M.BACKUPS.map(function (b) { return '<tr><td>' + esc(b.name) + '</td><td class="num">' + h(b.rpo) + '</td><td class="num">' + h(b.restore) + '</td><td class="num">' + b.cost + '</td></tr>'; }).join('') + '</tbody></table></div></div></div>' +
+          '<div class="lb-doc"><h4>Cost weight by process</h4><p>Base costs are multiplied by each process’s footprint weight (servers, storage, and licenses): ' + PR.map(function (p) { return p.id + ' ' + p.w; }).join(', ') + '.</p></div>';
+      }
+
+      renderBIA(); renderPlan(); renderTest();
+    }
+  };
+
+  window.LAB_SELFTEST = function () {
+    var log = [], P = [];
+    var T = [1, 4, 8, 24, 48, 72, 168, 336], DL = [0.25, 1, 4, 24, 168];
+    var key = {}; LAB.checklist.forEach(function (it) { key[it.id] = typeof it.answer === 'function' ? it.answer() : it.answer; });
+    // Independent objective derivation from the displayed tables
+    var O = {};
+    PR.forEach(function (p) { var mtd = null; for (var i = p.down.length - 1; i >= 0; i--) if (p.down[i] >= 4 && (i === 0 || p.down[i - 1] < 4)) mtd = T[i]; var rpo = Math.max.apply(null, DL.filter(function (d, i) { return p.data[i] <= 2; })); O[p.id] = { mtd: mtd, rto: mtd - p.wrt, rpo: rpo }; });
+    log.push('objectives ' + PR.map(function (p) { return p.id + ' ' + O[p.id].mtd + '/' + O[p.id].rto + '/' + O[p.id].rpo; }).join(', '));
+    if (O.ORD.mtd !== key.mtd || O.ORD.rto !== key.rto || O.ERP.rpo !== key.rpo) P.push('objective key mismatch');
+    // Independent recovery simulation by iterating to a fixed point
+    var SA = {}, BK = {}; M.SITES.forEach(function (s) { SA[s.id] = s; }); M.BACKUPS.forEach(function (b) { BK[b.id] = b; });
+    function sim(plan) { var done = {}; PR.forEach(function (p) { done[p.id] = SA[plan[p.id][0]].act + BK[plan[p.id][1]].restore; }); for (var it = 0; it < 10; it++) PR.forEach(function (p) { p.deps.forEach(function (d) { if (done[d] > done[p.id]) done[p.id] = done[d]; }); }); return done; }
+    function ownT(plan, id) { return SA[plan[id][0]].act + BK[plan[id][1]].restore; }
+    var A = M.ASIS, dn = sim(A);
+    var u = PR.filter(function (p) { return ownT(A, p.id) > O[p.id].rto || BK[A[p.id][1]].rpo > O[p.id].rpo; }).map(function (p) { return p.id; });
+    var df = PR.filter(function (p) { return u.indexOf(p.id) < 0 && dn[p.id] > O[p.id].rto; }).map(function (p) { return p.id; });
+    function cst(p, s, b) { return Math.round(p.w * (SA[s].cost + BK[b].cost)); }
+    // effective RTO by propagating from dependents
+    var E = {}; PR.forEach(function (p) { E[p.id] = O[p.id].rto; }); for (var it = 0; it < 10; it++) PR.forEach(function (p) { p.deps.forEach(function (d) { E[d] = Math.min(E[d], E[p.id]); }); });
+    var ov = PR.filter(function (p) { var a = A[p.id], c = cst(p, a[0], a[1]); if (ownT(A, p.id) > E[p.id] || BK[a[1]].rpo > O[p.id].rpo) return false; return M.SITES.some(function (s) { return M.BACKUPS.some(function (b) { return s.act + b.restore <= E[p.id] && b.rpo <= O[p.id].rpo && cst(p, s.id, b.id) < c; }); }); }).map(function (p) { return p.id; });
+    [['under', u], ['dep', df], ['over', ov]].forEach(function (x) { if (x[1].slice().sort().join() !== key[x[0]].slice().sort().join()) P.push(x[0] + ': derived ' + x[1].join(' ') + ' vs key ' + key[x[0]].join(' ')); log.push(x[0] + ' ' + x[1].join(' ')); });
+    // min plan: verify it passes the simulation and that any single cheaper swap fails
+    var mp = K.minPlan(M.OBJ), mdone = sim(mp.plan);
+    var passAll = PR.every(function (p) { return mdone[p.id] <= O[p.id].rto && BK[mp.plan[p.id][1]].rpo <= O[p.id].rpo; });
+    if (!passAll) P.push('min plan does not pass the simulation');
+    PR.forEach(function (p) { var cur = cst(p, mp.plan[p.id][0], mp.plan[p.id][1]); M.SITES.forEach(function (s) { M.BACKUPS.forEach(function (b) { if (cst(p, s.id, b.id) >= cur) return; var trial = JSON.parse(JSON.stringify(mp.plan)); trial[p.id] = [s.id, b.id]; var d2 = sim(trial); if (PR.every(function (q) { return d2[q.id] <= O[q.id].rto && BK[trial[q.id][1]].rpo <= O[q.id].rpo; })) P.push('cheaper passing swap for ' + p.id + ': ' + s.id + '+' + b.id); }); }); });
+    var tot = PR.reduce(function (a, p) { return a + cst(p, mp.plan[p.id][0], mp.plan[p.id][1]); }, 0);
+    if (tot !== key.min) P.push('min cost ' + tot + ' vs key ' + key.min);
+    if (tot > M.BUDGET) P.push('min plan over budget');
+    var asisCost = K.planCost(A); if (asisCost <= M.BUDGET) P.push('current strategy should exceed budget');
+    var patched = JSON.parse(JSON.stringify(A)); u.concat(['IDN', 'ERP']).forEach(function (id) { if (mp.plan[id]) patched[id] = mp.plan[id]; });
+    log.push('min plan $' + tot + 'k: ' + PR.map(function (p) { return p.id + '=' + mp.plan[p.id].join('+'); }).join(' ') + '; current $' + asisCost + 'k; patch-only $' + K.planCost(patched) + 'k');
+    if (K.planCost(patched) <= M.BUDGET) P.push('patching without removing over-builds should exceed budget');
+    if (!(16 > O.ORD.mtd)) P.push('CFO proposal should exceed MTD');
+    return { log: log, problems: P };
+  };
+})();
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

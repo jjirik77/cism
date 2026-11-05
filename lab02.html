@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B2 Enterprise Risk Register Workshop | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+.b2-top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 1.1rem; margin-bottom: 1rem; }
+.b2-box { border: 1px solid var(--border); border-radius: 6px; background: #fff; padding: .9rem 1rem; min-width: 0; }
+.b2-box h4 { font: 700 .7rem Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--navy); margin: 0 0 .6rem; }
+.b2-box svg { width: 100%; max-width: 440px; height: auto; display: block; }
+.b2-seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 0 0 .6rem; }
+.b2-seg button { border: 0; background: #fff; color: var(--text-primary); font: 700 .7rem Arial, sans-serif; padding: .4rem .65rem; cursor: pointer; border-right: 1px solid var(--border); }
+.b2-seg button:last-child { border-right: 0; }
+.b2-seg button[aria-pressed=true] { background: var(--navy); color: #fff; }
+.b2-seg button:focus-visible, .b2-reg select:focus-visible, .b2-tx:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.b2-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+.b2-tile { background: var(--blue-pale); border: 1px solid var(--blue-pale-border); border-radius: 5px; padding: .55rem .65rem; min-width: 0; }
+.b2-tile .k { font: 700 .6rem Arial, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.b2-tile .v { font: 900 1.2rem 'Arial Narrow', Arial, sans-serif; color: var(--text-primary); font-variant-numeric: tabular-nums; margin-top: .15rem; }
+.b2-legend { font: .76rem/1.5 Arial, sans-serif; color: var(--text-secondary); margin: .7rem 0 0; padding: 0; list-style: none; }
+.b2-legend li { display: flex; gap: .45rem; align-items: center; margin-bottom: .2rem; }
+.b2-legend svg { flex: none; width: 26px; height: 16px; }
+.b2-unscored { font: .78rem/1.45 Arial, sans-serif; color: var(--text-secondary); margin: .5rem 0 0; }
+.b2-filter { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; margin: 0 0 .5rem; font: .8rem Arial, sans-serif; color: var(--text-secondary); }
+.b2-reg { font: .76rem/1.4 Arial, sans-serif; }
+.b2-reg td, .b2-reg th { vertical-align: top; }
+.b2-reg { min-width: 760px; }
+.b2-reg td.c { text-align: center; white-space: nowrap; }
+.b2-reg td.rk { min-width: 11rem; }
+.b2-reg td.ow { min-width: 12rem; }
+.b2-reg td.tr { min-width: 13rem; }
+.b2-reg .id { white-space: nowrap; }
+.b2-reg .ow select { display: block; margin: .3rem 0 .1rem; }
+.b2-reg select { font: .74rem Arial, sans-serif; padding: .2rem; border: 1px solid var(--border); border-radius: 3px; background: #fff; color: var(--text-primary); max-width: 11rem; }
+.b2-reg select.lv { width: 3.4rem; }
+.b2-reg .sub { display: block; color: var(--text-muted); font-size: .7rem; }
+.b2-reg .new { font: 700 .6rem Arial, sans-serif; letter-spacing: .05em; text-transform: uppercase; background: var(--amber); color: #3b2300; border-radius: 3px; padding: .05rem .3rem; margin-left: .25rem; }
+.b2-band { display: inline-block; font: 700 .64rem Arial, sans-serif; border-radius: 3px; padding: .1rem .35rem; border: 1px solid; white-space: nowrap; }
+.b2-band.w { color: #155e3a; border-color: #1a7a4c; background: var(--correct-bg); }
+.b2-band.a { color: #7a3d00; border-color: #b45309; background: #fdf0dc; }
+.b2-band.c { color: #9b1222; border-color: var(--wrong); background: var(--wrong-bg); }
+.b2-band.n { color: var(--text-muted); border-color: var(--border); background: #fff; }
+.b2-tx { border: 1px solid var(--navy); background: #fff; color: var(--navy); font: 700 .68rem Arial, sans-serif; padding: .25rem .5rem; border-radius: 3px; cursor: pointer; margin-top: .25rem; }
+.b2-tx[aria-pressed=true] { background: var(--navy); color: #fff; }
+.b2-moved { display: block; font-size: .68rem; color: #7a3d00; font-weight: 700; margin-top: .15rem; }
+.b2-forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: .8rem; }
+.b2-form { border: 1px solid var(--border); border-radius: 4px; background: #fff; padding: .7rem .8rem; font: .78rem/1.5 Arial, sans-serif; color: var(--text-secondary); min-width: 0; }
+.b2-form h5 { font: 700 .9rem Georgia, serif; color: var(--text-primary); margin: 0 0 .4rem; }
+.b2-form dl { display: grid; grid-template-columns: max-content 1fr; gap: .1rem .6rem; margin: 0; }
+.b2-form dt { font-weight: 700; color: var(--text-primary); }
+.b2-form dd { margin: 0; }
+.b2-blank { font-style: italic; color: var(--wrong); }
+@media (max-width: 900px) { .b2-top { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== Register data (fixed) =====================
+   Vireo Outdoor Co. enterprise risk register as of October 31, 2026.
+   Scores are likelihood x impact on 1 to 5 scales. New risks carry the
+   analyst's evidence; their keyed scores follow from the scoring guide.
+   All set and number answers are computed from these arrays. */
+(function () {
+  var ASOF = '2026-10-31';
+  var P = {
+    dana: { name: 'Dana Whitfield', title: 'VP E-commerce', dept: 'E-commerce', lvl: 'VP' },
+    marcus: { name: 'Marcus Oyelaran', title: 'Chief Financial Officer', dept: 'Finance', lvl: 'Executive' },
+    priya: { name: 'Priya Raman', title: 'VP Supply Chain', dept: 'Supply Chain', lvl: 'VP' },
+    tomas: { name: 'Tomás Echeverría', title: 'Director of Store Operations', dept: 'Retail Stores', lvl: 'Director' },
+    nadia: { name: 'Nadia Ferreira-Lund', title: 'Chief Operating Officer', dept: 'Operations', lvl: 'Executive' },
+    meiling: { name: 'Mei-Ling Zhou', title: 'Chief People Officer', dept: 'HR', lvl: 'Executive' },
+    kwame: { name: 'Kwame Asante', title: 'Chief Information Officer', dept: 'IT', lvl: 'Executive' },
+    rafael: { name: 'Rafael Duarte', title: 'IT Applications Manager', dept: 'IT', lvl: 'Manager' },
+    hannah: { name: 'Hannah Kowalczyk', title: 'IT Infrastructure Manager', dept: 'IT', lvl: 'Manager' },
+    sofia: { name: 'Sofia Lindgren', title: 'Chief Marketing Officer', dept: 'Marketing', lvl: 'Executive' },
+    jordan: { name: 'Jordan Pike', title: 'Director of Customer Care', dept: 'Customer Care', lvl: 'Director' },
+    liam: { name: 'Liam Novak', title: 'Former CISO (left August 2026)', dept: 'Security', lvl: 'Executive' }
+  };
+  var R = [
+    { id: 'RSK-0412', t: 'Payment card skimming on store point-of-sale terminals', asset: 'Store POS terminals', ad: 'Retail Stores', own: 'tomas', L: 2, I: 4, rev: '2026-06-12' },
+    { id: 'RSK-0377', t: 'Customer account takeover through credential stuffing', asset: 'Online store customer accounts', ad: 'E-commerce', own: 'rafael', L: 4, I: 3, rev: '2026-09-15', acc: 'AR-21', prop: { ty: 'Mitigate', d: 'Bot management and customer MFA', L: 2, I: 3 } },
+    { id: 'RSK-0539', t: 'Ransomware encrypts the order management database', asset: 'Order management system', ad: 'Supply Chain', own: 'priya', rev: '2026-10-20', isNew: true, key: { L: 3, I: 3 },
+      ev: { av: 2000000, ef: 0.4, aro: 0.25, cost: 90000, aro2: 0.125 }, prop: { ty: 'Mitigate', d: 'Immutable backups and EDR on OMS servers, $90,000 a year', L: 2, I: 3 } },
+    { id: 'RSK-0288', t: 'Payroll and benefits data exposed from the HR SaaS platform', asset: 'HR and payroll SaaS', ad: 'HR', own: 'hannah', L: 2, I: 3, rev: '2026-03-02' },
+    { id: 'RSK-0455', t: 'Wire fraud through business email compromise', asset: 'Accounts payable process', ad: 'Finance', own: 'marcus', L: 3, I: 4, rev: '2026-07-01', acc: 'AR-17', prop: { ty: 'Mitigate', d: 'Call-back verification and dual release on new payees', L: 2, I: 4 } },
+    { id: 'RSK-0301', t: 'Identity provider outage blocks staff sign-in', asset: 'Workforce identity platform', ad: 'IT', own: 'kwame', L: 2, I: 4, rev: '2026-07-30' },
+    { id: 'RSK-0546', t: 'AI shopping assistant leaks customer data through prompt injection', asset: 'AI shopping assistant', ad: 'E-commerce', own: 'dana', rev: '2026-10-20', isNew: true, key: { L: 4, I: 4 },
+      ev: { years: 1.5, loss: 3500000 }, prop: { ty: 'Mitigate', d: 'Output filtering, retrieval limits, and red-team gating', L: 2, I: 4 } },
+    { id: 'RSK-0198', t: 'Cooling failure in the headquarters server room', asset: 'HQ server room', ad: 'IT', own: 'hannah', L: 2, I: 2, rev: '2026-05-20' },
+    { id: 'RSK-0463', t: 'Departing sales staff take customer lists from the CRM', asset: 'CRM and wholesale accounts', ad: 'Marketing', own: 'sofia', L: 3, I: 3, rev: '2026-04-01' },
+    { id: 'RSK-0329', t: 'Supplier portal vulnerability exploited to alter purchase orders', asset: 'Supplier portal', ad: 'Supply Chain', own: 'rafael', L: 3, I: 3, rev: '2026-08-10' },
+    { id: 'RSK-0417', t: 'Privacy enforcement action over loyalty program consent', asset: 'Loyalty program', ad: 'Marketing', own: 'sofia', L: 3, I: 4, rev: '2026-08-28', acc: 'AR-19' },
+    { id: 'RSK-0551', t: 'Peak-season outage of the warehouse management SaaS', asset: 'Warehouse management SaaS', ad: 'Supply Chain', own: 'priya', rev: '2026-10-20', isNew: true, key: { L: 3, I: 4 },
+      ev: { years: 3, loss: 4200000 }, prop: { ty: 'Transfer and mitigate', d: 'Contractual SLA credits and a manual pick-list fallback', L: 3, I: 3 } },
+    { id: 'RSK-0362', t: 'Ransomware spreads from the store network to POS', asset: 'Store network', ad: 'Retail Stores', own: 'tomas', L: 3, I: 5, rev: '2026-09-05', acc: 'AR-20', prop: { ty: 'Mitigate', d: 'Store network segmentation (funded for Q1 2027)', L: 2, I: 5 } },
+    { id: 'RSK-0490', t: 'Social engineering of refund agents', asset: 'Refunds process', ad: 'Customer Care', own: 'jordan', L: 4, I: 2, rev: '2026-02-14', acc: 'AR-18' },
+    { id: 'RSK-0505', t: 'Misconfigured cloud storage exposes partner data in the data lake', asset: 'Cloud analytics data lake', ad: 'E-commerce', own: 'dana', L: 3, I: 4, rev: '2026-07-24', acc: 'AR-14', prop: { ty: 'Mitigate', d: 'Cloud security posture management with auto-remediation', L: 2, I: 4 } }
+  ];
+  var ACC = [
+    { id: 'AR-14', risk: 'RSK-0505', score: 12, by: 'dana', signed: '2025-08-20', exp: '', why: 'Data lake migration in progress; controls to follow.', comp: 'Quarterly manual bucket review.' },
+    { id: 'AR-17', risk: 'RSK-0455', score: 12, by: 'marcus', signed: '2026-01-15', exp: '2026-09-30', why: 'Payment platform replacement scheduled for Q3.', comp: 'Finance staff awareness briefing.' },
+    { id: 'AR-18', risk: 'RSK-0490', score: 8, by: 'jordan', signed: '2026-02-14', exp: '2027-01-31', why: 'Within appetite; refund limits already in place.', comp: 'Supervisor approval over $500.' },
+    { id: 'AR-19', risk: 'RSK-0417', score: 12, by: 'sofia', signed: '2026-05-05', exp: '2027-04-30', why: 'Consent redesign launches with the spring catalog.', comp: 'Legal review of every campaign; opt-out honored within 24 hours.' },
+    { id: 'AR-20', risk: 'RSK-0362', score: 15, by: 'liam', signed: '2026-06-01', exp: '2027-06-01', why: 'Segmentation funded for Q1 2027; accept until then.', comp: 'EDR on store back-office PCs.' },
+    { id: 'AR-21', risk: 'RSK-0377', score: 12, by: 'rafael', signed: '2026-02-10', exp: '2027-02-10', why: 'Bot management vendor selection under way.', comp: 'Rate limiting on the sign-in page.' }
+  ];
+  var DAY = 86400000;
+  function ms(d) { var p = d.split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]); }
+  function days(d) { return Math.round((ms(ASOF) - ms(d)) / DAY); }
+  function band(s) { return s == null ? 'n' : s >= 15 ? 'c' : s >= 10 ? 'a' : 'w'; }
+  function keyScore(r) { return r.isNew ? r.key.L * r.key.I : r.L * r.I; }
+  function lvlRank(p) { return { Manager: 1, Director: 2, VP: 3, Executive: 4 }[P[p].lvl]; }
+  var rBy = {}; R.forEach(function (r) { rBy[r.id] = r; });
+  function accValid(a) {
+    var r = rBy[a.risk], s = keyScore(r), why = [];
+    if (s >= 15) why.push('a score of 15 or more needs an Executive Risk Committee decision');
+    else if (s >= 10 && lvlRank(a.by) < 3) why.push('scores of 10 to 14 need a risk owner at VP level or above');
+    if (s < 15 && a.by !== r.own) why.push('not signed by the risk owner');
+    if (!a.exp) why.push('no expiry date');
+    else { if (ms(a.exp) - ms(a.signed) > 366 * DAY) why.push('term over 12 months'); if (ms(a.exp) < ms(ASOF)) why.push('expired'); }
+    return why;
+  }
+  var ev = rBy['RSK-0539'].ev, sle = ev.av * ev.ef;
+  window.B2DATA = {
+    ASOF: ASOF, P: P, R: R, ACC: ACC, rBy: rBy, days: days, band: band, keyScore: keyScore, accValid: accValid,
+    answers: {
+      itOwned: R.filter(function (r) { return P[r.own].dept === 'IT' && r.ad !== 'IT'; }).map(function (r) { return r.id; }),
+      ale: Math.round(sle * ev.aro - sle * ev.aro2 - ev.cost),
+      above: R.filter(function (r) { return keyScore(r) > 9; }).map(function (r) { return r.id; }),
+      badAcc: ACC.filter(function (a) { return accValid(a).length; }).map(function (a) { return a.id; }),
+      stale: R.filter(function (r) { return days(r.rev) > (keyScore(r) > 9 ? 90 : 180); }).map(function (r) { return r.id; })
+    }
+  };
+})();
+</script>
+
+<script>
+(function () {
+  var X = window.B2DATA, api0 = null;
+  function A(k) { return function () { return X.answers[k]; }; }
+  function scored() { var sc = (api0 && api0.note('sc')) || {}; return X.R.filter(function (r) { return r.isNew; }).every(function (r) { return sc[r.id] && sc[r.id].L && sc[r.id].I; }); }
+  window.LAB = {
+    id: 'B2',
+    title: 'Enterprise Risk Register Workshop',
+    accent: 'Risk Register',
+    domain: 'Domain 2 (20%)',
+    time: '60 min',
+    level: 'Intermediate',
+    lessonHref: 'lesson03.html#s5',
+    lessonLabel: 'Lesson 3, Monitoring and Reporting Risk',
+    lede: 'Risk management is a cycle, not a calculation. Score the new risks, watch the heat map and the appetite line move, test ownership, acceptances, and review dates against policy, and report to the steering committee what needs a decision.',
+    workbenchTitle: 'Register workbench',
+    ticket: {
+      number: 'RSC-2026-Q4-03',
+      priority: 'Normal priority',
+      from: 'Nadia Ferreira-Lund, Chief Operating Officer, chair of the Security and Risk Steering Committee',
+      to: 'Risk program manager, Information Security Office (you)',
+      subject: 'Quarterly risk report for the November 18 steering committee',
+      due: 'Draft by November 12',
+      body: '<p>Vireo Outdoor Co. runs 180 stores, a large online store, and two distribution centers. Since Liam Novak left in August, nobody has given the enterprise risk register a proper look, and the committee is uneasy about what it is not seeing.</p>' +
+        '<p>Before the meeting, please do three things. Score the three risks the analysts added in October. Check that every risk has the right owner, that every acceptance on file would stand up under our Risk Management Policy RMP-4, and that reviews are current. Then give me a one-page summary that tells the committee where we are above appetite and what we need them to decide.</p>' +
+        '<p>Do not change anything in the official register yet. Use the workbench copy to try owners and treatments; any change goes to the committee as a recommendation.</p>'
+    },
+    howTo: 'The <b>Risk register</b> tab holds a working copy of the register with a live 5x5 heat map. Score each <b>new</b> risk with its likelihood and impact menus using the <b>Scoring guide</b> and the <b>New risk evidence</b> tab. Reassign owners with the owner menus and apply proposed treatments with the <b>Apply</b> buttons; switch the heat map between current residual and the view with your treatments applied. Acceptance forms are in <b>Acceptance records</b>. Check each checklist item as you go. A hint is available for every item. After your first check you can reveal the debrief, but a revealed item earns no points.',
+    workIntro: 'The register is as of October 31, 2026. Scores are likelihood times impact. Checklist questions refer to the current residual scores, not to proposed treatments, unless an item says otherwise.',
+    checklist: [
+      { id: 'owners', type: 'set', points: 13, short: 'IT-owned risks', title: 'Risks owned by IT on behalf of the business',
+        task: 'RMP-4 assigns each risk to the business leader accountable for the asset or process. Which risks are owned by someone in IT although the asset or process belongs to a business function? Enter the risk IDs.',
+        label: 'Risk IDs', placeholder: 'e.g., RSK-0000',
+        answer: A('itOwned'),
+        hint: 'Compare the owner’s department with the department that owns the asset in each row. IT can legitimately own risks to IT’s own services.',
+        debrief: '<p>Three risks sit with IT managers on behalf of the business: <b>RSK-0377</b> (customer account takeover, owned by the IT Applications Manager for E-commerce), <b>RSK-0288</b> (payroll data in the HR platform, owned by the IT Infrastructure Manager), and <b>RSK-0329</b> (the supplier portal, owned by the IT Applications Manager for Supply Chain). RSK-0301 and RSK-0198 are owned by IT correctly, because the identity platform and the server room are IT’s own assets.</p><p>Ownership is not a clerical detail. The owner is the person with the authority and budget to treat the risk and the accountability to accept it. An IT manager can run the controls but cannot decide how much fraud or exposure E-commerce, HR, or Supply Chain will tolerate. The fix is to move each risk to the accountable business executive, with IT named as the control owner.</p>',
+        reviewNote: 'Risk owners are the business leaders accountable for the asset; IT is usually the control owner.' },
+      { id: 'newowner', type: 'choice', points: 10, short: 'Correct owner', title: 'Choose the right owner for RSK-0329',
+        task: 'Who should own RSK-0329, the supplier portal risk, once you correct the register? Try the change with the owner menu first.',
+        options: ['Kwame Asante, Chief Information Officer', 'Rafael Duarte, IT Applications Manager', 'The new CISO, once the role is filled', 'Priya Raman, VP Supply Chain'],
+        answer: 3,
+        hint: 'Ask who would bear the business loss if purchase orders were altered, and who decides how much of that loss is tolerable.',
+        debrief: '<p>Priya Raman, VP Supply Chain, owns the purchasing process the supplier portal supports. Altered purchase orders mean wrong stock, overpayments, and supplier disputes in her function, and she has the authority to fund controls or accept the residual. Rafael Duarte remains the person who operates the portal and its controls.</p><p>The CIO and the CISO are tempting but wrong. The CIO owns IT services, not the supply chain’s tolerance for fraud, and the security office advises on and monitors risk but does not own business risk. Putting the CISO in the owner column is the most common way a register drifts from governance into a security team to-do list.</p>',
+        reviewNote: 'Assign risk to the executive who owns the business process and its losses.' },
+      { id: 'ale', type: 'number', points: 10, short: 'Control value', title: 'Is the RSK-0539 control worth funding?',
+        task: 'Use the quantitative evidence for RSK-0539. What is the <b>net annual benefit</b> of the proposed control: the reduction in annualized loss expectancy minus the control’s annual cost? Enter dollars (negative if the control costs more than it saves).',
+        answer: A('ale'), tol: 1, unit: 'dollars per year',
+        hint: 'SLE = asset value x exposure factor. ALE = SLE x ARO. Compute ALE before and after the control, take the difference, and subtract the annual cost.',
+        debrief: '<p>SLE = $2,000,000 x 0.4 = $800,000. Once every four years gives an ARO of 0.25, so ALE = $200,000 a year. The control halves the ARO to 0.125, so ALE falls to $100,000. The reduction of $100,000 less the $90,000 cost leaves a net benefit of <b>$10,000 a year</b>. On the scoring guide this risk is likelihood 3 (once in 2 to 5 years) and impact 3 ($500,000 to $2 million), a score of 9, which is inside appetite.</p><p>The control pays for itself, narrowly. A security manager presents the numbers and the uncertainty in the estimates, and the risk owner, Priya Raman, decides. Being within appetite does not forbid a cost-effective treatment, and a positive return does not make it mandatory: the decision belongs to the business.</p>',
+        reviewNote: 'Compute SLE, ARO, and ALE before and after the control, then compare with the control cost.' },
+      { id: 'above', type: 'set', points: 14, short: 'Above appetite', title: 'Risks above appetite',
+        task: 'After scoring the three new risks, which risks have a <b>current residual score above appetite</b> (above 9)? Count accepted risks too: acceptance does not change the score. Enter the risk IDs.',
+        label: 'Risk IDs', placeholder: 'e.g., RSK-0000',
+        answer: A('above'),
+        locked: function () { return scored() ? false : 'Score all three new risks in the register first (likelihood and impact menus). The heat map then shows the full profile.'; },
+        hint: 'Use the scoring guide bands carefully: once every 18 months is likelihood 4, and a score of exactly 9 is within appetite. Then read the heat map cells above the appetite line in the current view.',
+        debrief: '<p>Seven risks are above appetite: RSK-0377, RSK-0455, RSK-0505, RSK-0417, and RSK-0551 at 12, RSK-0362 at 15, and the new AI assistant risk RSK-0546 at 16. Two of the three new risks land above the line, and the AI risk goes straight into the band only the Executive Risk Committee can accept. RSK-0539 scores exactly 9 and stays within appetite.</p><p>Acceptance does not move a risk on the heat map; it records that an authorized owner has chosen to carry it. The committee needs to see both facts: what is above appetite, and which of those positions are knowingly accepted and which are simply unmanaged.</p>',
+        reviewNote: 'Score new risks from the guide, then compare residual scores with the appetite threshold.' },
+      { id: 'acc', type: 'set', points: 15, short: 'Invalid acceptances', title: 'Acceptances that would not stand up',
+        task: 'Test each acceptance record against RMP-4 sections 3 and 4. Which acceptance records are <b>not valid</b> as of October 31, 2026? Enter the record IDs.',
+        label: 'Acceptance record IDs', placeholder: 'e.g., AR-00',
+        answer: A('badAcc'),
+        hint: 'For each record check four things: is the signer the risk owner, is the signer senior enough for the score band, is there an expiry no more than 12 months after signature, and has it expired?',
+        debrief: '<p>Four records fail. <b>AR-21</b> (RSK-0377, score 12) is signed by an IT applications manager, who is neither the accountable business owner nor at VP level. <b>AR-20</b> (RSK-0362, score 15) is signed by the former CISO, but a score of 15 can only be accepted by the Executive Risk Committee, and the security office never accepts business risk. <b>AR-14</b> (RSK-0505) has no expiry and is now more than a year old. <b>AR-17</b> (RSK-0455) expired on September 30, and the replacement platform it relied on has not arrived. AR-19 is valid, and AR-18 is valid because a risk within appetite may be accepted by its owner at any level.</p><p>An invalid acceptance means the organization is carrying risk nobody with authority has agreed to carry. The manager does not quietly renew or sign these. Each goes back to the right authority with current treatment options, and until then the risk is reported as above appetite and unaccepted.</p>',
+        reviewNote: 'Valid acceptance: right owner, right authority for the band, documented, and time-bound.' },
+      { id: 'stale', type: 'set', points: 10, short: 'Stale reviews', title: 'Risks with stale reviews',
+        task: 'RMP-4 section 5 sets the review cadence by band. Which risks are <b>overdue for review</b> as of October 31, 2026? Enter the risk IDs.',
+        label: 'Risk IDs', placeholder: 'e.g., RSK-0000',
+        answer: A('stale'),
+        hint: 'Above appetite means every 90 days; within appetite means every 180 days. Count the days from the last review to October 31, and use each risk’s current residual band.',
+        debrief: '<p>Five reviews are overdue. Above appetite (90 days): <b>RSK-0455</b> (122 days) and <b>RSK-0505</b> (99 days). Within appetite (180 days): <b>RSK-0288</b> (243 days), <b>RSK-0463</b> (213 days), and <b>RSK-0490</b> (259 days). RSK-0301 is 93 days old but within appetite, so it is not yet due.</p><p>Stale reviews are a monitoring failure: the scores may no longer be true. The two above-appetite cases also have defective acceptances, a pattern the committee should hear about, because it suggests the risks that most need attention were the ones nobody looked at after Liam Novak left.</p>',
+        reviewNote: 'Review cadence follows the risk band; stale reviews mean the register may be wrong.' },
+      { id: 'escalate', type: 'choice', points: 13, short: 'Residual above appetite', title: 'Decide on RSK-0362 after treatment',
+        task: 'Apply the proposed segmentation for RSK-0362 in the register. The projected residual is still above appetite. What should you do?',
+        options: ['Accept the residual of 10 in the security office, since segmentation is funded', 'Take the residual of 10 and further options to the COO for a formal decision', 'Lower the impact to 4, so the residual drops to 8 and sits within appetite', 'Close the risk in the register once the segmentation project is approved'],
+        answer: 1,
+        hint: 'Who may accept a score of 10 to 14 under RMP-4, and is the current owner senior enough? What must never happen to a score to make it fit?',
+        debrief: '<p>Segmentation takes likelihood from 3 to 2, but impact stays at 5, so the residual is 10, still above appetite. RMP-4 requires a VP or above to accept a score of 10 to 14, and the recorded owner is a director. The manager presents the residual and further options (for example, POS application allow-listing or offline card authorization) to Nadia Ferreira-Lund, the accountable executive, and records her formal, time-bound decision. Until segmentation lands in Q1 2027 the current score of 15 needs an Executive Risk Committee decision, since AR-20 is invalid.</p><p>The other options are classic failures. The security office does not accept business risk, re-rating impact to fit appetite falsifies the analysis, and a funded project is not a completed control. The same rule covers the policy exceptions the business will ask for at holiday launch: document the risk, get a time-bound acceptance from the right owner, and never an informal yes.</p>',
+        reviewNote: 'Residual above appetite: treat further or escalate to an authorized owner for a formal decision.' },
+      { id: 'report', type: 'text', points: 15, short: 'Quarterly risk report', title: 'Write the quarterly risk report summary', reportTitle: 'Quarterly risk report summary',
+        task: 'Write the one-page summary for the steering committee. Use risk IDs and scores, and keep it to decisions and facts.',
+        fields: [
+          { key: 'profile', label: 'Risk profile this quarter', min: 50, placeholder: 'How many risks, where they sit against appetite, and what is new.' },
+          { key: 'decisions', label: 'Above appetite: decisions requested from the committee', min: 50, placeholder: 'Which risks need a decision, by whom, and the options.' },
+          { key: 'hygiene', label: 'Register health: ownership, acceptances, and reviews', min: 40, placeholder: 'IT-owned risks, invalid acceptances, and overdue reviews.' },
+          { key: 'next', label: 'Actions for next quarter', min: 40, placeholder: 'Owner changes, renewals, reviews, and treatments to track.' }
+        ],
+        hint: 'Open with the picture, then the decisions. A committee member should know in one minute what is above appetite, what is unaccepted, and what they must decide.',
+        debrief: '<p><b>Model summary.</b> <b>Profile:</b> 15 risks as of October 31; three were added this quarter. Seven are above appetite, including two of the new risks: the AI shopping assistant data leak (RSK-0546, 16) and the peak-season warehouse SaaS outage (RSK-0551, 12). The order management ransomware risk (RSK-0539) scores 9; its proposed control returns a net $10,000 a year and is for the VP Supply Chain to decide. <b>Decisions:</b> the Executive Risk Committee must decide on RSK-0546 (16) and RSK-0362 (15): treat, or accept with an expiry. After funded segmentation, RSK-0362 will still be 10 and needs the COO’s decision. RSK-0377, RSK-0455, RSK-0505, and RSK-0551 need treatment approval or a valid acceptance by their VP-level owners. <b>Register health:</b> three risks are owned by IT managers on behalf of the business (RSK-0377, RSK-0288, RSK-0329); four of six acceptances are invalid (AR-21 wrong signer, AR-20 wrong authority, AR-14 no expiry, AR-17 expired); five reviews are overdue (RSK-0455, RSK-0505, RSK-0288, RSK-0463, RSK-0490). <b>Next quarter:</b> move the three risks to their business owners, re-paper or treat the four invalid acceptances before the next meeting, complete overdue reviews within 30 days, add a KRI on prompt-injection findings for the AI assistant, and report progress on segmentation and bot management.</p><p>Your wording will differ. Check that each above-appetite risk has a named decision and decision-maker, and that the register problems are stated as governance issues, not clerical ones.</p>',
+        reviewNote: 'A risk report states the profile against appetite, the decisions needed, and the health of the process.' }
+    ],
+
+    workbench: function (root, api) {
+      api0 = api;
+      var esc = api.esc;
+      root.innerHTML = '<div class="lb-tool"><div class="lb-tabs" role="tablist" aria-label="Workbench tools">' +
+        '<button role="tab" id="tb-rg" aria-controls="pn-rg" aria-selected="true">Risk register</button>' +
+        '<button role="tab" id="tb-ev" aria-controls="pn-ev" aria-selected="false" tabindex="-1">New risk evidence</button>' +
+        '<button role="tab" id="tb-ac" aria-controls="pn-ac" aria-selected="false" tabindex="-1">Acceptance records</button>' +
+        '<button role="tab" id="tb-po" aria-controls="pn-po" aria-selected="false" tabindex="-1">RMP-4 and scoring guide</button></div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-rg" aria-labelledby="tb-rg"></div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-ev" aria-labelledby="tb-ev" hidden>' + DOC_EV() + '</div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-ac" aria-labelledby="tb-ac" hidden>' + DOC_AC() + '</div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-po" aria-labelledby="tb-po" hidden>' + DOC_PO() + '</div></div>';
+      var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+      function sel(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+      tabs.forEach(function (t, i) { t.addEventListener('click', function () { sel(t); }); t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; sel(n); n.focus(); } }); });
+      if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) sel(tt); }
+
+      var pn = document.getElementById('pn-rg');
+      var BANDS = { w: 'Within appetite', a: 'Above appetite', c: 'ERC only', n: 'Not scored' };
+      function sc() { return api.note('sc') || {}; }
+      function own() { return api.note('own') || {}; }
+      function tx() { return api.note('tx') || {}; }
+      function li(r) { if (!r.isNew) return { L: r.L, I: r.I }; var s = sc()[r.id] || {}; return { L: s.L || null, I: s.I || null }; }
+      function cur(r) { var v = li(r); return v.L && v.I ? v.L * v.I : null; }
+      function view(r, treated) { var v = li(r); if (treated && r.prop && tx()[r.id]) v = { L: r.prop.L, I: r.prop.I }; return v.L && v.I ? v : null; }
+      function setNote(k, id, val) { var o = Object.assign({}, api.note(k) || {}); if (val === null) delete o[id]; else o[id] = val; api.note(k, o); }
+
+      function heat(treated) {
+        var C = 62, ox = 46, oy = 10, s = '<svg viewBox="0 0 ' + (ox + 5 * C + 10) + ' ' + (oy + 5 * C + 50) + '" role="img" aria-labelledby="b2-ht b2-hd"><title id="b2-ht">Risk heat map, ' + (treated ? 'with applied treatments' : 'current residual') + '</title>';
+        var cells = {}, desc = [];
+        X.R.forEach(function (r) { var v = view(r, treated); if (!v) return; var k = v.L + ',' + v.I; (cells[k] = cells[k] || []).push(r.id.slice(4)); });
+        s += '<defs><pattern id="b2-ha" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#fdf0dc"/><line x1="0" y1="0" x2="0" y2="8" stroke="#f3c98b" stroke-width="3"/></pattern>' +
+          '<pattern id="b2-hc" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#fbe8ea"/><path d="M0 0L8 8M8 0L0 8" stroke="#f1b3ba" stroke-width="1.5"/></pattern></defs>';
+        for (var L = 1; L <= 5; L++) for (var I = 1; I <= 5; I++) {
+          var x = ox + (L - 1) * C, y = oy + (5 - I) * C, scv = L * I, b = band(scv), ids = cells[L + ',' + I] || [];
+          s += '<rect x="' + x + '" y="' + y + '" width="' + C + '" height="' + C + '" fill="' + (b === 'w' ? '#e6f5ec' : b === 'a' ? 'url(#b2-ha)' : 'url(#b2-hc)') + '" stroke="#c2d4d6"/>';
+          s += '<text x="' + (x + 4) + '" y="' + (y + 11) + '" font-family="Arial" font-size="9" fill="#5c7d83">' + scv + '</text>';
+          ids.forEach(function (id, k) { var cx = x + 6 + (k % 2) * 28, cy = y + 18 + Math.floor(k / 2) * 15; s += '<rect x="' + cx + '" y="' + cy + '" width="26" height="13" rx="2" fill="#0f3b4c"/><text x="' + (cx + 13) + '" y="' + (cy + 10) + '" text-anchor="middle" font-family="Arial" font-size="9" font-weight="700" fill="#fff">' + id + '</text>'; });
+          if (ids.length) desc.push('L' + L + ' I' + I + ' score ' + scv + ': RSK-' + ids.join(', RSK-'));
+        }
+        function band(v) { return v >= 15 ? 'c' : v >= 10 ? 'a' : 'w'; }
+        // appetite line: edges between a cell scoring 9 or less and one scoring 10 or more
+        var path = '';
+        for (L = 1; L <= 5; L++) for (I = 1; I <= 5; I++) {
+          var in1 = L * I <= 9, xx = ox + (L - 1) * C, yy = oy + (5 - I) * C;
+          if (L < 5 && in1 !== ((L + 1) * I <= 9)) path += 'M' + (xx + C) + ' ' + yy + 'V' + (yy + C);
+          if (I < 5 && in1 !== (L * (I + 1) <= 9)) path += 'M' + xx + ' ' + yy + 'H' + (xx + C);
+        }
+        s += '<path d="' + path + '" stroke="#b45309" stroke-width="4" fill="none" stroke-linecap="square"/>';
+        for (var k = 1; k <= 5; k++) {
+          s += '<text x="' + (ox + (k - 0.5) * C) + '" y="' + (oy + 5 * C + 14) + '" text-anchor="middle" font-family="Arial" font-size="11" fill="#0b2530">' + k + '</text>';
+          s += '<text x="' + (ox - 8) + '" y="' + (oy + (5 - k + 0.5) * C + 4) + '" text-anchor="end" font-family="Arial" font-size="11" fill="#0b2530">' + k + '</text>';
+        }
+        s += '<text x="' + (ox + 2.5 * C) + '" y="' + (oy + 5 * C + 34) + '" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#0b2530">Likelihood</text>';
+        s += '<text transform="translate(12 ' + (oy + 2.5 * C) + ') rotate(-90)" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#0b2530">Impact</text>';
+        return s.replace('</title>', '</title><desc id="b2-hd">' + esc(desc.join('; ') || 'No risks plotted') + '</desc>') + '</svg>';
+      }
+
+      function draw() {
+        var af = document.activeElement, focusId = af && af.id;
+        var treated = api.note('hm') === 't', filt = api.note('f') || 'all';
+        var unscored = X.R.filter(function (r) { return cur(r) == null; });
+        var nAbove = X.R.filter(function (r) { var v = cur(r); return v != null && v > 9; }).length;
+        var nErc = X.R.filter(function (r) { var v = cur(r); return v != null && v >= 15; }).length;
+        var nAboveT = X.R.filter(function (r) { var v = view(r, true); return v && v.L * v.I > 9; }).length;
+        var h = '<div class="b2-top"><div class="b2-box"><h4>Heat map</h4><div class="b2-seg" role="group" aria-label="Heat map view">' +
+          '<button type="button" id="b2-hm-c" data-hm="c" aria-pressed="' + !treated + '">Current residual</button><button type="button" id="b2-hm-t" data-hm="t" aria-pressed="' + treated + '">With applied treatments</button></div>' + heat(treated) +
+          (unscored.length ? '<p class="b2-unscored"><b>Not plotted, not yet scored:</b> ' + unscored.map(function (r) { return r.id; }).join(', ') + '.</p>' : '') + '</div>' +
+          '<div class="b2-box"><h4>Register summary</h4><div class="b2-tiles">' +
+          '<div class="b2-tile"><div class="k">Risks in register</div><div class="v">' + X.R.length + '</div></div>' +
+          '<div class="b2-tile"><div class="k">Not yet scored</div><div class="v">' + unscored.length + '</div></div>' +
+          '<div class="b2-tile"><div class="k">Above appetite, current</div><div class="v">' + nAbove + '</div></div>' +
+          '<div class="b2-tile"><div class="k">ERC band (15+), current</div><div class="v">' + nErc + '</div></div>' +
+          '<div class="b2-tile"><div class="k">Above appetite, with treatments</div><div class="v">' + nAboveT + '</div></div>' +
+          '<div class="b2-tile"><div class="k">Treatments applied</div><div class="v">' + Object.keys(tx()).length + '</div></div></div>' +
+          '<ul class="b2-legend">' +
+          '<li><svg viewBox="0 0 26 16" aria-hidden="true"><rect width="26" height="16" fill="#e6f5ec" stroke="#c2d4d6"/></svg>Plain: score 1 to 9, within appetite</li>' +
+          '<li><svg viewBox="0 0 26 16" aria-hidden="true"><rect width="26" height="16" fill="url(#b2-ha)" stroke="#c2d4d6"/></svg>Diagonal hatch: 10 to 14, above appetite</li>' +
+          '<li><svg viewBox="0 0 26 16" aria-hidden="true"><rect width="26" height="16" fill="url(#b2-hc)" stroke="#c2d4d6"/></svg>Cross-hatch: 15 to 25, Executive Risk Committee only</li>' +
+          '<li><svg viewBox="0 0 26 16" aria-hidden="true"><line x1="0" y1="8" x2="26" y2="8" stroke="#b45309" stroke-width="4"/></svg>Thick line: the appetite line (score 9)</li>' +
+          '<li><svg viewBox="0 0 26 16" aria-hidden="true"><rect x="0" y="2" width="26" height="12" rx="2" fill="#0f3b4c"/></svg>Chip: a risk, by the last four digits of its ID</li></ul></div></div>';
+
+        var rows = X.R.filter(function (r) {
+          var v = cur(r);
+          if (filt === 'above') return v != null && v > 9;
+          if (filt === 'new') return r.isNew;
+          if (filt === 'acc') return !!r.acc;
+          return true;
+        });
+        h += '<div class="b2-filter"><div class="b2-seg" role="group" aria-label="Filter the register" style="margin:0">' +
+          [['all', 'All risks'], ['above', 'Above appetite'], ['new', 'New this quarter'], ['acc', 'With acceptance']].map(function (f) { return '<button type="button" id="b2-f-' + f[0] + '" data-f="' + f[0] + '" aria-pressed="' + (filt === f[0]) + '">' + f[1] + '</button>'; }).join('') +
+          '</div><span>' + rows.length + ' of ' + X.R.length + ' shown. As of October 31, 2026.</span></div>';
+        h += '<div class="table-wrap"><table class="data b2-reg"><caption class="sr-only">Enterprise risk register working copy</caption><thead><tr><th scope="col">Risk</th><th scope="col">Asset and risk owner</th><th scope="col">L x I = score</th><th scope="col">Proposed treatment</th><th scope="col">Acceptance and last review</th></tr></thead><tbody>' +
+          rows.map(function (r) {
+            var v = li(r), s = cur(r), b = s == null ? 'n' : X.band(s), o = own()[r.id] || r.own;
+            function lv(k) { return '<select class="lv" id="b2-' + k + '-' + r.id + '" data-sc="' + k + '" data-r="' + r.id + '" aria-label="' + (k === 'L' ? 'Likelihood' : 'Impact') + ' for ' + r.id + '"><option value="">-</option>' + [1, 2, 3, 4, 5].map(function (n) { return '<option' + (v[k] === n ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select>'; }
+            var p = r.prop, on = p && tx()[r.id];
+            return '<tr><td class="rk"><b class="id">' + r.id + '</b>' + (r.isNew ? '<span class="new">New</span>' : '') + '<span class="sub">' + esc(r.t) + '</span></td>' +
+              '<td class="ow"><span class="sub" style="color:var(--text-primary)">' + esc(r.asset) + ' (' + esc(r.ad) + ')</span><select id="b2-o-' + r.id + '" data-own="' + r.id + '" aria-label="Risk owner for ' + r.id + '">' + Object.keys(X.P).map(function (k) { return '<option value="' + k + '"' + (k === o ? ' selected' : '') + '>' + esc(X.P[k].name) + '</option>'; }).join('') + '</select><span class="sub">' + esc(X.P[o].title) + ', ' + esc(X.P[o].dept) + '</span>' + (o !== r.own ? '<span class="b2-moved">Reassigned in workbench from ' + esc(X.P[r.own].name) + '</span>' : '') + '</td>' +
+              '<td class="c">' + (r.isNew ? lv('L') + ' x ' + lv('I') : v.L + ' x ' + v.I) + ' = <b>' + (s == null ? '-' : s) + '</b><br><span class="b2-band ' + b + '">' + BANDS[b] + '</span></td>' +
+              '<td class="tr">' + (p ? esc(p.ty) + ': ' + esc(p.d) + '<span class="sub">Projected L' + p.L + ' x I' + p.I + ' = ' + p.L * p.I + '</span><button type="button" class="b2-tx" id="b2-t-' + r.id + '" data-tx="' + r.id + '" aria-pressed="' + !!on + '">' + (on ? 'Applied' : 'Apply') + '<span class="sr-only"> treatment for ' + r.id + '</span></button>' : '<span class="sub">None proposed</span>') + '</td>' +
+              '<td class="c">' + (r.acc ? '<b>' + r.acc + '</b>' : 'No acceptance') + '<span class="sub">Reviewed ' + r.rev + '</span></td></tr>';
+          }).join('') + '</tbody></table></div>';
+        pn.innerHTML = h;
+        pn.querySelectorAll('[data-hm]').forEach(function (b) { b.addEventListener('click', function () { api.note('hm', b.dataset.hm); draw(); }); });
+        pn.querySelectorAll('[data-f]').forEach(function (b) { b.addEventListener('click', function () { api.note('f', b.dataset.f); draw(); }); });
+        pn.querySelectorAll('[data-sc]').forEach(function (s) { s.addEventListener('change', function () { var o = Object.assign({}, sc()[s.dataset.r] || {}); o[s.dataset.sc] = +s.value || null; setNote('sc', s.dataset.r, o); var was = scoredNow; draw(); scoredNow = scored(); if (was !== scoredNow) api.refresh(); }); });
+        pn.querySelectorAll('[data-own]').forEach(function (s) { s.addEventListener('change', function () { var r = X.rBy[s.dataset.own]; setNote('own', r.id, s.value === r.own ? null : s.value); draw(); }); });
+        pn.querySelectorAll('[data-tx]').forEach(function (b) { b.addEventListener('click', function () { setNote('tx', b.dataset.tx, tx()[b.dataset.tx] ? null : true); draw(); }); });
+        if (focusId) { var f = document.getElementById(focusId); if (f) f.focus(); }
+      }
+      var scoredNow = scored();
+      draw();
+
+      function money(n) { return '$' + n.toLocaleString('en-US'); }
+      function DOC_EV() {
+        var a = X.rBy['RSK-0539'].ev, b = X.rBy['RSK-0546'], c = X.rBy['RSK-0551'];
+        return '<div class="lb-doc"><p class="eyebrow">Analyst worksheet, October 20, 2026</p><h4>RSK-0539: Ransomware encrypts the order management database</h4><ul>' +
+          '<li>Asset value of the order management system and its data: <b>' + money(a.av) + '</b>.</li>' +
+          '<li>A successful attack would impair an estimated <b>' + a.ef * 100 + ' percent</b> of that value (exposure factor ' + a.ef + '), after existing nightly backups.</li>' +
+          '<li>Expected frequency with current controls: about <b>once every four years</b>, based on sector incident data and our own near miss in 2025.</li>' +
+          '<li>Proposed control: immutable backups and EDR on the OMS servers at <b>' + money(a.cost) + ' a year</b>. The vendor and our analysts expect it to <b>halve</b> the expected frequency.</li></ul></div>' +
+          '<div class="lb-doc"><p class="eyebrow">Analyst worksheet, October 20, 2026</p><h4>' + b.id + ': ' + esc(b.t) + '</h4><ul>' +
+          '<li>The assistant answers shoppers using order history and loyalty data. In the 14-month pilot, two confirmed incidents exposed other customers’ order details, and the October red team reproduced the attack in under an hour.</li>' +
+          '<li>With current controls the analysts expect a reportable leak about <b>once every ' + b.ev.years * 12 + ' months</b>.</li>' +
+          '<li>Estimated cost of one reportable leak, including notification, regulator response, and customer remediation: <b>' + money(b.ev.loss) + '</b>.</li></ul></div>' +
+          '<div class="lb-doc"><p class="eyebrow">Analyst worksheet, October 20, 2026</p><h4>' + c.id + ': ' + esc(c.t) + '</h4><ul>' +
+          '<li>The provider has had three multi-day outages in the last nine years, roughly <b>once every ' + c.ev.years + ' years</b>. Its contract has no peak-season commitment.</li>' +
+          '<li>A 48-hour outage between Black Friday and December 20 would cost an estimated <b>' + money(c.ev.loss) + '</b> in lost and late orders.</li></ul></div>';
+      }
+      function DOC_AC() {
+        return '<p class="lead-p">Signed acceptance records on file in the risk office. Scores are the residual scores at the time of signature.</p><div class="b2-forms">' + X.ACC.map(function (a) {
+          var p = X.P[a.by];
+          return '<article class="b2-form" aria-label="Acceptance record ' + a.id + '"><h5>' + a.id + ': ' + a.risk + '</h5><dl>' +
+            '<dt>Risk</dt><dd>' + esc(X.rBy[a.risk].t) + '</dd><dt>Score accepted</dt><dd>' + a.score + '</dd>' +
+            '<dt>Accepted by</dt><dd>' + esc(p.name) + ', ' + esc(p.title) + '</dd><dt>Signed</dt><dd>' + a.signed + '</dd>' +
+            '<dt>Expires</dt><dd>' + (a.exp || '<span class="b2-blank">(blank)</span>') + '</dd><dt>Rationale</dt><dd>' + esc(a.why) + '</dd><dt>Compensating</dt><dd>' + esc(a.comp) + '</dd></dl></article>';
+        }).join('') + '</div>';
+      }
+      function DOC_PO() {
+        return '<div class="lb-doc"><p class="eyebrow">Vireo Outdoor Co. internal policy</p><h4>Risk Management Policy RMP-4 (excerpt)</h4><ol class="lead-p" style="padding-left:1.3rem">' +
+          '<li><b>Ownership.</b> Every risk has one owner: the business leader accountable for the asset or process at risk. IT owns risks to IT’s own services and facilities. IT and security staff may be named as control owners for any risk.</li>' +
+          '<li><b>Appetite.</b> The board’s appetite is a residual score of <b>9 or less</b>. Scores of 10 to 14 are above appetite. Scores of 15 to 25 are critical.</li>' +
+          '<li><b>Authority to accept.</b> Within appetite: the risk owner, at any level. Scores 10 to 14: the risk owner, who must be at VP level or above (raise to a VP or executive if the owner is junior). Scores 15 to 25: only the Executive Risk Committee (ERC), chaired by the CEO. The Information Security Office advises and records; it does not accept business risk.</li>' +
+          '<li><b>Form of acceptance.</b> A signed record with rationale, compensating controls, and an expiry date no more than 12 months after signature. An expired acceptance lapses, and the risk is reported as unaccepted.</li>' +
+          '<li><b>Review cadence.</b> Risks above appetite are reviewed at least every <b>90 days</b>; risks within appetite at least every <b>180 days</b>. The cadence follows the current residual score.</li></ol></div>' +
+          '<div class="lb-doc"><p class="eyebrow">Scoring guide</p><h4>Likelihood and impact scales</h4><div class="table-wrap"><table class="data"><thead><tr><th scope="col">Rating</th><th scope="col">Likelihood: expected frequency</th><th scope="col">Impact: cost of one event</th></tr></thead><tbody>' +
+          '<tr><td>1</td><td>Less than once in 20 years</td><td>Less than $100,000</td></tr>' +
+          '<tr><td>2</td><td>Once in 5 to 20 years</td><td>$100,000 to $500,000</td></tr>' +
+          '<tr><td>3</td><td>Once in 2 to 5 years</td><td>$500,000 to $2 million</td></tr>' +
+          '<tr><td>4</td><td>Once in 1 to 2 years</td><td>$2 million to $10 million</td></tr>' +
+          '<tr><td>5</td><td>More than once a year</td><td>More than $10 million, or loss of a license to operate</td></tr></tbody></table></div>' +
+          '<p class="lead-p" style="margin-top:.6rem">Score = likelihood x impact. For a quantified risk, rate impact on the single loss expectancy (asset value x exposure factor) and likelihood on the annual rate of occurrence.</p></div>';
+      }
+    }
+  };
+
+  window.LAB_TEST_UNLOCK = function () { var o = {}; X.R.forEach(function (r) { if (r.isNew) o[r.id] = { L: r.key.L, I: r.key.I }; }); window.LAB_API.note('sc', o); };
+
+  window.LAB_SELFTEST = function () {
+    var log = [], P = [], R = X.R;
+    function lBand(years) { var p = 1 / years; return p > 1 ? 5 : years <= 2 ? 4 : years <= 5 ? 3 : years <= 20 ? 2 : 1; }
+    function iBand(d) { return d < 100000 ? 1 : d < 500000 ? 2 : d < 2000000 ? 3 : d < 10000000 ? 4 : 5; }
+    // New risk scores re-derived from the evidence via the scale bands
+    R.filter(function (r) { return r.isNew; }).forEach(function (r) {
+      var L = r.ev.aro ? lBand(1 / r.ev.aro) : lBand(r.ev.years), I = iBand(r.ev.av ? r.ev.av * r.ev.ef : r.ev.loss);
+      if (L !== r.key.L || I !== r.key.I) P.push(r.id + ' key L' + r.key.L + ' I' + r.key.I + ' vs derived L' + L + ' I' + I);
+      if ((r.ev.years && (r.ev.years === 1 || r.ev.years === 2 || r.ev.years === 5)) ) P.push(r.id + ' frequency on a band boundary');
+    });
+    function score(r) { return r.isNew ? r.key.L * r.key.I : r.L * r.I; }
+    var it = R.filter(function (r) { return X.P[r.own].dept === 'IT' && r.ad !== 'IT'; }).map(function (r) { return r.id; });
+    if (it.join() !== X.answers.itOwned.join()) P.push('itOwned ' + it.join(' '));
+    var ab = R.filter(function (r) { return score(r) >= 10; }).map(function (r) { return r.id; });
+    if (ab.join() !== X.answers.above.join()) P.push('above ' + ab.join(' '));
+    var asof = new Date('2026-10-31T00:00:00Z');
+    function d(s) { return new Date(s + 'T00:00:00Z'); }
+    var bad = X.ACC.filter(function (a) {
+      var r = X.rBy[a.risk], s = score(r), p = X.P[a.by];
+      if (s !== a.score) P.push(a.id + ' score on form ' + a.score + ' vs register ' + s);
+      if (s >= 15) return true;
+      if (s >= 10 && !(p.lvl === 'VP' || p.lvl === 'Executive')) return true;
+      if (a.by !== r.own) return true;
+      if (!a.exp) return true;
+      var e = d(a.exp), lim = d(a.signed); lim.setUTCFullYear(lim.getUTCFullYear() + 1);
+      return e > lim || e < asof;
+    }).map(function (a) { return a.id; });
+    if (bad.join() !== X.answers.badAcc.join()) P.push('badAcc ' + bad.join(' '));
+    var st = R.filter(function (r) { var dd = (asof - d(r.rev)) / 86400000; return dd > (score(r) >= 10 ? 90 : 180); }).map(function (r) { return r.id; });
+    if (st.join() !== X.answers.stale.join()) P.push('stale ' + st.join(' '));
+    R.forEach(function (r) { var dd = (asof - d(r.rev)) / 86400000, lim = score(r) >= 10 ? 90 : 180; if (Math.abs(dd - lim) < 2) P.push(r.id + ' review on the cadence boundary'); });
+    var e = X.rBy['RSK-0539'].ev, ale = e.av * e.ef * e.aro - e.av * e.ef * e.aro2 - e.cost;
+    if (Math.abs(ale - X.answers.ale) > 0.5) P.push('ale ' + ale);
+    if (score(X.rBy['RSK-0362']) !== 15 || X.rBy['RSK-0362'].prop.L * X.rBy['RSK-0362'].prop.I !== 10) P.push('RSK-0362 scores changed');
+    if (X.rBy['RSK-0329'].ad !== X.P.priya.dept) P.push('RSK-0329 owner key mismatch');
+    log.push('itOwned ' + it.join(' '), 'above ' + ab.join(' '), 'badAcc ' + bad.join(' '), 'stale ' + st.join(' '), 'ale ' + ale, 'risks ' + R.length + ', acceptances ' + X.ACC.length);
+    return { log: log, problems: P };
+  };
+})();
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

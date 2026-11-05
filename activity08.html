@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A8 Incident Classification and Response Leadership | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A8',
+  title: 'Incident Classification and Response Leadership',
+  accent: 'Response Leadership',
+  domain: 'Domain 4',
+  time: '40 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson06.html#s1',
+  lessonLabel: 'Lesson 6, Events, Incidents & the Program',
+  lede: 'The incident manager does not run the forensic tools. The manager decides whether an event is an incident, how severe it is, who must know and when, and in what order the team acts. Practice triaging alerts against a severity matrix, choosing the escalation path, and sequencing a ransomware response while the business pushes for speed.',
+  concepts: [
+    { key: 'triage', name: 'Event or incident, and severity', review: 'Lesson 6, Classification & Prioritization' },
+    { key: 'escalate', name: 'Escalation and notification', review: 'Lesson 6, Communication, Notification & Review' },
+    { key: 'lead', name: 'Directing the response', review: 'Lesson 6, Events, Incidents & the Program' },
+    { key: 'sequence', name: 'Containment before eradication', review: 'Lesson 6, Containment, Eradication & Recovery' }
+  ],
+  stations: [
+    {
+      type: 'sort', short: 'Event or incident?', title: 'Triage against the severity matrix', concept: 'triage',
+      instr: 'Solano Freight Group\'s incident management plan uses the severity matrix below. Read each report, then classify it as an <b>event</b> or as an incident at the matrix level it meets. When a case meets more than one level, choose the highest.',
+      hint: 'First ask whether security was actually harmed or threatened. A blocked attempt or a harmless anomaly is an event. Then rate by business impact: data, operations, money, and regulatory exposure. "Possibly exposed" and "confirmed exposed" are different levels in this matrix.',
+      table: {
+        caption: 'Solano Freight Group severity matrix',
+        head: ['Level', 'Criteria (any one is enough)'],
+        rows: [
+          ['Event', 'Observable occurrence with no harm or threat to security confirmed. Log it and monitor.'],
+          ['Sev 3, Low', 'Confirmed incident limited to one user or asset. No sensitive data involved. No business disruption.'],
+          ['Sev 2, High', 'Sensitive or regulated data possibly exposed, an important service degraded, or a possible financial loss under $50,000.'],
+          ['Sev 1, Critical', 'Regulated data confirmed exposed, a critical service down or malware spreading, or fraud of $50,000 or more attempted or achieved.']
+        ]
+      },
+      buckets: ['Event', 'Sev 3, Low', 'Sev 2, High', 'Sev 1, Critical'],
+      review: { href: 'lesson06.html#s2', label: 'Lesson 6, Classification & Prioritization' },
+      items: [
+        { text: 'A dispatcher mistyped her VPN password once, then logged in normally from her usual laptop.', answer: 0, why: 'A single failed login with a normal follow-up is an observable occurrence with no threat. It is logged as an event.' },
+        { text: 'The email gateway blocked a known phishing campaign. Logs confirm no message reached a mailbox.', answer: 0, why: 'The control worked and nothing was harmed. A blocked attempt is an event to log and watch for trends.' },
+        { text: 'An internet scan probed the perimeter firewall overnight. Every connection was dropped.', answer: 0, why: 'Scanning is constant background activity. With no access gained, it stays an event.' },
+        { text: 'A warehouse clerk reported entering his password on a phishing page. The account was reset within 20 minutes, and logs show no use by the attacker.', answer: 1, why: 'Credentials were compromised, so this is an incident, but it was limited to one user with no data or disruption. It meets Sev 3.' },
+        { text: 'A project coordinator pasted a non-sensitive internal project timeline into a public generative AI chatbot, against the acceptable use policy.', answer: 1, why: 'A policy violation by one user with no sensitive data is a low-severity incident. It is handled, recorded, and tracked for trends.' },
+        { text: 'An accounts payable clerk joined a video call with what looked and sounded like the CFO and wired $480,000 to a new supplier account. The CFO was on a flight at the time.', answer: 3, why: 'Deepfake-enabled payment fraud of $480,000 is far above the $50,000 line. It is Sev 1 and needs immediate escalation so the bank can try to recall the funds.' },
+        { text: 'A caller using a cloned voice of the COO talked the help desk into an MFA reset. The attacker then signed in to the COO\'s mailbox, which holds acquisition documents.', answer: 2, why: 'Sensitive data was possibly exposed through a deepfake social engineering attack. It meets Sev 2 while the team confirms what was read.' },
+        { text: 'Testers confirm that a prompt injection made the customer support AI chatbot reveal names, addresses, and order histories for 310 customers.', answer: 3, why: 'Regulated personal data is confirmed exposed. AI misuse is classified by impact like any other incident, and this meets Sev 1.' },
+        { text: 'Ransomware is encrypting file servers at two distribution centers, and new hosts are being hit every few minutes.', answer: 3, why: 'Active spread and loss of critical operations meet Sev 1. Containment has to start at once.' },
+        { text: 'An engineering team\'s AI coding plug-in has been sending source code snippets to an unapproved third-party model API. No customer data was involved.', answer: 2, why: 'Proprietary code was possibly exposed to an unvetted party. That fits Sev 2, and the team must also stop the data flow.' },
+        { text: 'The payroll SaaS provider reports a breach of its environment. Solano employee Social Security numbers may be included, and the provider is still investigating.', answer: 2, why: 'Regulated data is possibly, not yet confirmed, exposed. It is Sev 2 now and moves to Sev 1 if the provider confirms the exposure.' },
+        { text: 'A traffic flood slowed the customer shipment-tracking portal for 40 minutes. The portal stayed online.', answer: 2, why: 'An important customer service was degraded but not down. That meets the Sev 2 criteria.' }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Escalation path', title: 'Who is informed, and when', concept: 'escalate',
+      instr: 'You are Solano Freight Group\'s information security manager, Daniela Ruiz-Whitfield. For each incident, choose the <b>BEST</b> action from the manager\'s chair. Remember that the manager coordinates and decides, and specialists carry out the technical work.',
+      hint: 'Escalation criteria are set in the plan before anything happens, and critical incidents (fraud, major breach, regulatory exposure) escalate at once. Legal and privacy deadlines start when the organization becomes aware, not when the investigation ends. Business decisions such as paying a ransom belong to senior management.',
+      review: { href: 'lesson06.html#s5', label: 'Lesson 6, Communication, Notification & Review' },
+      items: [
+        {
+          title: 'Case 1: The deepfake wire', text: 'The $480,000 wire went out 90 minutes ago. The SOC lead wants two days to analyze the video recording for deepfake artifacts before anyone outside security is told.',
+          parts: [
+            { q: 'What should Daniela do FIRST?', options: ['Wait for the SOC analysis so the escalation is based on facts', 'Escalate to the CFO and legal, and start a bank recall of the wire', 'Ask internal audit to review the accounts payable approval controls now', 'Email all staff a warning about deepfake video calls'], answer: 1, why: 'Fraud above the threshold escalates immediately, and a wire recall has the best chance in the first hours. Forensic analysis and control review can follow.' }
+          ]
+        },
+        {
+          title: 'Case 2: The chatbot exposure', text: 'The confirmed chatbot exposure includes about 40 customers who live in the EU. Legal counsel is at a conference until Monday, four days away.',
+          parts: [
+            { q: 'When does the GDPR notification clock start?', options: ['When legal counsel returns and reviews the facts', 'When the forensic investigation is complete', 'When the organization first became aware', 'When the first customer complains to a regulator'], answer: 2, why: 'The 72-hour window for notifying the supervisory authority runs from the organization becoming aware. Waiting for counsel or for the investigation can miss the deadline.' },
+            { q: 'What is the BEST next step?', options: ['Engage the privacy officer and outside counsel now', 'Pause notification planning until counsel is back on Monday', 'Have the AI team patch the prompt filter and then close the case', 'Notify all customers of the chatbot by email the same afternoon'], answer: 0, why: 'The plan should name backups for every notification role so the deadline is never missed. The patch is needed, but it does not satisfy the legal duty.' }
+          ]
+        },
+        {
+          title: 'Case 3: Ransomware with extortion', text: 'The attackers behind the ransomware post a sample of stolen shipping contracts to a leak site and demand $2 million. The CEO, Marcus Obi, asks Daniela to "just pay it quietly."',
+          parts: [
+            { q: 'Who should decide whether to pay?', options: ['Daniela, as the manager leading the response', 'Senior management, advised by legal counsel', 'The cyber insurer, since it may cover the cost', 'The IT director, who owns the encrypted servers'], answer: 1, why: 'Paying is a business decision with legal, sanctions, and reputational risk. The security manager informs the decision, and senior management makes it with counsel.' },
+            { q: 'What should Daniela ensure happens alongside that decision?', options: ['The payment is kept off the record to limit any reputational harm', 'Restores wait until the payment decision is final', 'The SOC negotiates directly with the attackers to buy time', 'The calls to counsel, law enforcement, and the insurer are made'], answer: 3, why: 'The plan defines who is notified and when, and those calls protect the organization whatever is decided. Concealment and ad hoc negotiation are not acceptable responses.' }
+          ]
+        },
+        {
+          title: 'Case 4: The payroll provider breach', text: 'The payroll SaaS provider has sent a short notice and is not answering follow-up questions. HR wants to email all employees today.',
+          parts: [
+            { q: 'What is the BEST first step?', options: ['Terminate the provider\'s contract and move payroll in-house', 'Let HR email employees now, before the facts are known', 'Invoke the contract\'s breach clause and have legal assess duties', 'Ask the provider for its latest SOC 2 report and wait for its reply'], answer: 2, why: 'The contract should require timely details, and legal decides what notice the organization owes. Accountability for employee data stays with Solano even when a vendor holds it.' }
+          ]
+        },
+        {
+          title: 'Case 5: The low-severity AI misuse', text: 'The coordinator who pasted the project timeline into a public chatbot is the third such case this month. A director suggests reporting it to the board risk committee.',
+          parts: [
+            { q: 'What is the BEST response?', options: ['Report each case to the board risk committee as it occurs', 'Block every generative AI site at the web proxy at once', 'Suspend the coordinator pending an HR investigation', 'Treat as Sev 3, tell the manager, and track the trend'], answer: 3, why: 'Sev 3 incidents are handled at the team level so the board is not flooded. The rising trend is a KRI that may justify an approved AI tool or more targeted training.' }
+          ]
+        },
+        {
+          title: 'Case 6: The pull to re-image (former Lab 8)', text: 'During the ransomware outbreak, responders want to power off and re-image an infected file server at once. The CEO calls Daniela for a decision.',
+          parts: [
+            { q: 'What should Daniela direct?', concept: 'lead', options: ['Power off and re-image now, since speed limits the damage', 'Isolate the server from the network and preserve memory first', 'Let the responders decide, since the technical call is theirs', 'Leave the server running and online so the attacker is watched'], answer: 1, why: 'Network isolation stops the spread and keeps volatile evidence intact. Powering off destroys memory evidence and may breach legal-hold duties.' },
+            { q: 'What is Daniela\'s role while the specialists work?', concept: 'lead', options: ['Coordinate the team, decisions, and stakeholder updates', 'Run the containment commands herself to be certain they are done', 'Step back until the technical team reports that it is resolved', 'Draft the post-incident report while the event is fresh'], answer: 0, why: 'The manager directs and coordinates under the plan, including executive communication and the notification branch. Specialists execute the technical steps.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'order', short: 'Lead the response', title: 'Lead the ransomware response',
+      instr: 'Put the manager-directed steps of Solano\'s ransomware response in order, from the first report to the close of the incident. Then order the response phases of the lifecycle the plan follows.',
+      hint: 'Validate and classify before you escalate, and escalate before the team acts at scale. Stop the spread before anything is removed or rebuilt, and protect evidence before anything is wiped. Restore only from backups known to be clean, and close the loop with lessons learned.',
+      review: { href: 'lesson06.html#s4', label: 'Lesson 6, Containment, Eradication & Recovery' },
+      groups: [
+        {
+          title: 'The manager\'s response sequence', concept: 'sequence', topLabel: 'First step', bottomLabel: 'Last step',
+          items: [
+            { text: 'Eradicate: remove the malware, close the entry point, and reset compromised credentials', rank: 4, why: 'Eradication follows containment and evidence capture. Removing the cause first can tip off the attacker and destroy evidence.' },
+            { text: 'Validate the report, scope the affected systems, and classify severity against the matrix', rank: 0, why: 'Detection and analysis confirms what is happening and sets the severity that drives everything else.' },
+            { text: 'Recover: restore from known-good, immutable backups, validate, and monitor closely', rank: 5, why: 'Recovery comes after the cause is removed, from backups that are known to be clean, with close monitoring.' },
+            { text: 'Contain: isolate affected segments and disable the accounts the attacker is using', rank: 2, accept: [2, 3], why: 'Containment stops the spread. Network isolation and evidence capture happen close together, so either order of these two steps is accepted.' },
+            { text: 'Hold a lessons-learned review and update the plan, controls, and training', rank: 6, why: 'Post-incident activity closes the loop so the same weakness is not exploited again.' },
+            { text: 'Activate the incident management plan, convene the team, and escalate per the plan', rank: 1, why: 'A Sev 1 classification triggers the plan, the cross-functional team, and immediate escalation to leadership.' },
+            { text: 'Preserve evidence: capture memory and logs with chain of custody before any rebuild', rank: 3, accept: [2, 3], why: 'Volatile evidence must be captured before systems are wiped. Either order of containment and evidence capture is accepted, as long as both come before eradication.' }
+          ]
+        },
+        {
+          title: 'Lifecycle phases', concept: 'sequence', topLabel: 'First phase', bottomLabel: 'Last phase',
+          items: [
+            { text: 'Containment, eradication, and recovery', rank: 2, why: 'Once the incident is understood, the team stops the spread, removes the cause, and restores service, in that order.' },
+            { text: 'Post-incident activity', rank: 3, why: 'Lessons learned and improvements close the loop and feed back into preparation.' },
+            { text: 'Preparation', rank: 0, why: 'Plans, roles, tools, training, and retainers are set up before an incident. It is the most important phase.' },
+            { text: 'Detection and analysis', rank: 1, why: 'The team validates, scopes, and classifies the incident before it acts at scale.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'shift', label: 'Think of an organization you know. Who would decide tonight whether a deepfake payment request is an incident, and who would call the bank? Is that written down?' },
+        { key: 'next', label: 'Which concept from this activity will you review before the next lesson, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

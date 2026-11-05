@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B1 Security Strategy and Board Briefing | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+.b1-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 1.1rem; margin-bottom: 1.1rem; }
+.b1-box { border: 1px solid var(--border); border-radius: 6px; background: #fff; padding: .9rem 1rem; min-width: 0; }
+.b1-box h4 { font: 700 .7rem Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--navy); margin: 0 0 .6rem; }
+.b1-meter { margin: 0 0 .75rem; font: .8rem Arial, sans-serif; color: var(--text-primary); }
+.b1-meter .r { display: flex; justify-content: space-between; gap: .5rem; margin-bottom: .25rem; }
+.b1-meter .r b { font-variant-numeric: tabular-nums; }
+.b1-bar { position: relative; height: 12px; background: var(--section-alt); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.b1-bar > i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold); border-radius: 6px 0 0 6px; }
+.b1-meter.over .b1-bar > i { background: repeating-linear-gradient(45deg, var(--wrong) 0 6px, #e0606e 6px 12px); }
+.b1-meter.over .r span:last-child { color: var(--wrong); font-weight: 700; }
+.b1-gap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin-top: .9rem; }
+.b1-tile { background: var(--blue-pale); border: 1px solid var(--blue-pale-border); border-radius: 5px; padding: .55rem .6rem; min-width: 0; }
+.b1-tile .k { font: 700 .6rem Arial, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.b1-tile .v { font: 900 1.15rem 'Arial Narrow', Arial, sans-serif; color: var(--text-primary); font-variant-numeric: tabular-nums; margin-top: .15rem; }
+.b1-checks { margin: .8rem 0 0; padding: 0; list-style: none; font: .78rem/1.45 Arial, sans-serif; color: var(--text-secondary); }
+.b1-checks li { padding: .2rem 0 .2rem 1.3rem; position: relative; }
+.b1-checks li::before { content: "\2139"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+.b1-checks li.warn::before { content: "\26A0"; color: var(--wrong); }
+.b1-radar-wrap { display: flex; flex-wrap: wrap; gap: .8rem; align-items: flex-start; }
+.b1-radar-wrap svg { flex: 1 1 260px; max-width: 360px; height: auto; }
+.b1-legend { flex: 1 1 170px; font: .76rem/1.5 Arial, sans-serif; color: var(--text-secondary); }
+.b1-legend .row { display: flex; align-items: center; gap: .45rem; margin-bottom: .2rem; }
+.b1-legend svg { flex: none; width: 34px; height: 12px; }
+.b1-seg { display: inline-flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 0 0 .6rem; }
+.b1-seg button { border: 0; background: #fff; color: var(--text-primary); font: 700 .7rem Arial, sans-serif; padding: .4rem .65rem; cursor: pointer; border-right: 1px solid var(--border); }
+.b1-seg button:last-child { border-right: 0; }
+.b1-seg button[aria-pressed=true] { background: var(--navy); color: #fff; }
+.b1-seg button:focus-visible, .b1-card select:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.b1-mtab { width: 100%; border-collapse: collapse; font: .74rem Arial, sans-serif; margin-top: .5rem; }
+.b1-mtab th, .b1-mtab td { border-bottom: 1px solid var(--border); padding: .25rem .35rem; text-align: right; font-variant-numeric: tabular-nums; }
+.b1-mtab th:first-child, .b1-mtab td:first-child { text-align: left; }
+.b1-board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .7rem; }
+.b1-col { background: var(--section-alt); border: 1px solid var(--border); border-radius: 6px; padding: .6rem; min-width: 0; min-height: 120px; }
+.b1-col.drop { outline: 3px dashed var(--gold); outline-offset: -3px; }
+.b1-col h5 { font: 700 .74rem Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--navy); margin: 0 0 .5rem; display: flex; justify-content: space-between; gap: .4rem; }
+.b1-col h5 span { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-muted); }
+.b1-card { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--navy); border-radius: 4px; padding: .5rem .55rem; margin-bottom: .5rem; font: .76rem/1.4 Arial, sans-serif; color: var(--text-secondary); cursor: grab; }
+.b1-card.ob { border-left-color: var(--amber); }
+.b1-card .nm { font-weight: 700; color: var(--text-primary); margin-bottom: .25rem; }
+.b1-card .nm code { font: 700 .74rem 'Courier New', monospace; color: var(--navy); margin-right: .25rem; }
+.b1-chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-bottom: .35rem; }
+.b1-chip { font: 700 .66rem Arial, sans-serif; background: var(--section-alt); border: 1px solid var(--border); color: var(--text-primary); border-radius: 3px; padding: .05rem .3rem; white-space: nowrap; }
+.b1-card .drv { font-size: .72rem; margin-bottom: .35rem; }
+.b1-card label { font: 700 .66rem Arial, sans-serif; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); display: block; margin-bottom: .15rem; }
+.b1-card select { width: 100%; font: .76rem Arial, sans-serif; padding: .25rem; border: 1px solid var(--border); border-radius: 3px; background: #fff; color: var(--text-primary); }
+.b1-empty { font: italic .74rem Arial, sans-serif; color: var(--text-muted); margin: .2rem 0; }
+.b1-bar-tools { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: space-between; align-items: center; margin: 0 0 .7rem; font: .8rem Arial, sans-serif; color: var(--text-secondary); }
+.b1-bar-tools span { flex: 1 1 240px; min-width: 0; }
+.b1-btn { border: 1px solid var(--navy); background: #fff; color: var(--navy); font: 700 .72rem Arial, sans-serif; padding: .4rem .75rem; border-radius: 3px; cursor: pointer; }
+.b1-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.b1-doc-table td, .b1-doc-table th { vertical-align: top; }
+@media (max-width: 1100px) { .b1-board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 860px) { .b1-top { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .b1-board { grid-template-columns: minmax(0, 1fr); } .b1-gap { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== Scenario data (fixed) =====================
+   Halyard Cold Chain Logistics, three-year security strategy for 2027 to 2029.
+   Every set and number answer is computed from these arrays by the helpers
+   below; LAB_SELFTEST re-derives them independently by brute force. */
+(function () {
+  var FN = [
+    { k: 'GV', name: 'Govern', cur: 1.5, tgt: 3.0 },
+    { k: 'ID', name: 'Identify', cur: 2.0, tgt: 3.0 },
+    { k: 'PR', name: 'Protect', cur: 2.5, tgt: 3.5 },
+    { k: 'DE', name: 'Detect', cur: 1.5, tgt: 3.5 },
+    { k: 'RS', name: 'Respond', cur: 1.0, tgt: 3.0 },
+    { k: 'RC', name: 'Recover', cur: 2.0, tgt: 3.5 }
+  ];
+  var BP = {
+    'BP-1': 'Win pharmaceutical cold-chain contracts',
+    'BP-2': 'Customer portal and shipment API with card payments',
+    'BP-3': 'Acquire and integrate Tidewell Carriers',
+    'BP-4': 'Keep every depot running through cyber events'
+  };
+  // cost and risk reduction in $K; up = maturity uplift to one CSF function
+  var INIT = [
+    { c: 'SI-01', name: 'Incident response plan, retainer, and executive tabletops', cost: 150, fn: 'RS', up: 1.5, rr: 260, drv: 'BP-4', note: 'Plan, playbooks for ransomware with extortion, a forensics retainer, and two executive tabletops a year.' },
+    { c: 'SI-02', name: 'Tidewell acquisition security due diligence and identity integration', cost: 230, fn: 'ID', up: 0.5, rr: 150, drv: 'BP-3', note: 'Pre-close security review of Tidewell, then moving 900 drivers to the Halyard identity platform.' },
+    { c: 'SI-03', name: 'Security governance charter, steering committee, and risk appetite statement', cost: 70, fn: 'GV', up: 1.0, rr: 40, drv: 'BP-1', note: 'Board-approved charter, a business-led steering committee, and an appetite statement customers can review.' },
+    { c: 'SI-04', name: 'Blockchain shipment ledger hardening', cost: 190, fn: 'PR', up: 0.5, rr: 70, drv: 'BP-5', note: 'Key management and smart-contract review for the provenance ledger built for the retail marketplace.' },
+    { c: 'SI-05', name: 'Asset and data inventory (CMDB and data map)', cost: 140, fn: 'ID', up: 1.0, rr: 90, drv: 'BP-1', note: 'Authoritative inventory of systems, temperature-data flows, and data owners.' },
+    { c: 'SI-06', name: 'API gateway and application security testing for the portal', cost: 190, fn: 'PR', up: 0.5, rr: 200, drv: 'BP-2', note: 'Gateway with authentication and rate limits, plus testing in the portal release pipeline.' },
+    { c: 'SI-07', name: '24x7 managed detection and response (MDR)', cost: 350, fn: 'DE', up: 1.5, rr: 520, drv: 'BP-4', note: 'Round-the-clock monitoring of endpoints, identity, and cloud with containment authority.' },
+    { c: 'SI-08', name: 'Deception grid across all depots', cost: 170, fn: 'DE', up: 0.5, rr: 80, drv: 'Security team proposal', note: 'Decoy hosts and credentials in every depot network. Proposed by the SOC; no business sponsor.' },
+    { c: 'SI-09', name: 'Phishing-resistant MFA and privileged access management', cost: 270, fn: 'PR', up: 1.0, rr: 410, drv: 'BP-3', note: 'Passkeys for all staff and vaulted administrator access, sized for the combined workforce.' },
+    { c: 'SI-10', name: 'Warm-standby recovery site for the warehouse management system', cost: 380, fn: 'RC', up: 1.0, rr: 300, drv: 'BP-4', note: 'Second-region standby for the WMS. Requires SI-14 in the same or an earlier year.', pre: 'SI-14' },
+    { c: 'SI-11', name: 'Cardholder data segmentation and PCI DSS v4.0 assessment', cost: 260, fn: 'PR', up: 0.5, rr: 180, drv: 'BP-2', ob: 'OB-2', note: 'Segment the payment environment, remediate gaps, and complete the assessor review.' },
+    { c: 'SI-12', name: 'SOC 2 Type II readiness and first audit', cost: 240, fn: 'GV', up: 0.5, rr: 60, drv: 'BP-1', note: 'Readiness work, a six-month observation period, and the first Type II report. Requires SI-03 in the same or an earlier year.', pre: 'SI-03' },
+    { c: 'SI-13', name: 'Generative AI threat-intelligence assistant for the SOC', cost: 140, fn: 'DE', up: 0.5, rr: 60, drv: 'Vendor offer', note: 'Offered after a conference demonstration. The vendor quotes a first-year discount.' },
+    { c: 'SI-14', name: 'Immutable backups and WMS recovery runbooks', cost: 240, fn: 'RC', up: 1.0, rr: 340, drv: 'BP-4', note: 'Offline, immutable copies of WMS and routing data, with tested restore runbooks per depot.' }
+  ];
+  var BUDGET = [1200, 1300, 1100];
+  var METRICS = [
+    { id: 'MC-1', name: 'Malicious emails blocked per month', src: 'Email gateway console', t: 'activity' },
+    { id: 'MC-2', name: 'Pharmaceutical contracts signed where a security attestation was required, against the revenue plan', src: 'Sales pipeline and contract system', t: 'KGI', bp: 'BP-1' },
+    { id: 'MC-3', name: 'Percentage of staff who completed awareness training', src: 'Learning platform', t: 'KPI' },
+    { id: 'MC-4', name: 'Percentage of roadmap initiatives delivered on time and on budget', src: 'Program office', t: 'KPI' },
+    { id: 'MC-5', name: 'Mean time to patch critical vulnerabilities', src: 'Vulnerability scanner', t: 'KPI' },
+    { id: 'MC-6', name: 'Portal card payments live on April 1, 2028, with no compliance-related delay or restriction', src: 'Portal program and acquiring bank', t: 'KGI', bp: 'BP-2' },
+    { id: 'MC-7', name: 'Number of overdue high-risk findings, trend over four quarters', src: 'Risk register', t: 'KRI' },
+    { id: 'MC-8', name: 'Number of detection rules deployed in the SIEM', src: 'SIEM content library', t: 'activity' },
+    { id: 'MC-9', name: 'Depot operating hours lost to cyber incidents, against the 4-hour tolerance', src: 'Operations control center', t: 'KGI', bp: 'BP-4' },
+    { id: 'MC-10', name: 'Percentage of privileged accounts using phishing-resistant MFA', src: 'Identity platform', t: 'KPI' }
+  ];
+  var fnBy = {}; FN.forEach(function (f) { fnBy[f.k] = f; });
+  var by = {}; INIT.forEach(function (i) { by[i.c] = i; });
+  function eligible(i) { return !!BP[i.drv]; }
+  // Gap closed: uplift toward target, per function, capped at the target.
+  function upl(codes) { var u = {}; FN.forEach(function (f) { u[f.k] = 0; }); codes.forEach(function (c) { u[by[c].fn] += by[c].up; }); return u; }
+  function gapClosed(codes) { var u = upl(codes); return FN.reduce(function (s, f) { return s + Math.min(u[f.k], f.tgt - f.cur); }, 0); }
+  function cost(codes) { return codes.reduce(function (s, c) { return s + by[c].cost; }, 0); }
+  function rr(codes) { return codes.reduce(function (s, c) { return s + by[c].rr; }, 0); }
+  function depsOk(codes) { return codes.every(function (c) { return !by[c].pre || codes.indexOf(by[c].pre) >= 0; }); }
+  // Year 1 key: mandatory obligation first, then the eligible set that closes the most gap within budget.
+  function bestY1() {
+    var mand = INIT.filter(function (i) { return i.ob; }).map(function (i) { return i.c; });
+    var pool = INIT.filter(function (i) { return eligible(i) && !i.ob; }).map(function (i) { return i.c; });
+    var best = null, second = -1;
+    for (var m = 0; m < (1 << pool.length); m++) {
+      var s = mand.slice(); pool.forEach(function (c, k) { if (m & (1 << k)) s.push(c); });
+      if (cost(s) > BUDGET[0] || !depsOk(s)) continue;
+      var g = Math.round(gapClosed(s) * 100) / 100, r = rr(s);
+      if (!best || g > best.g || (g === best.g && r > best.r)) { if (best) second = Math.max(second, best.g); best = { s: s, g: g, r: r }; }
+      else second = Math.max(second, g);
+    }
+    best.second = second; best.s.sort(); return best;
+  }
+  var B = bestY1();
+  function remaining(codes) { var u = upl(codes); return FN.map(function (f) { return { k: f.k, name: f.name, rem: Math.round((f.tgt - f.cur - Math.min(u[f.k], f.tgt - f.cur)) * 100) / 100 }; }); }
+  var rem = remaining(B.s).sort(function (a, b) { return b.rem - a.rem; });
+  window.B1DATA = {
+    FN: FN, BP: BP, INIT: INIT, BUDGET: BUDGET, METRICS: METRICS, by: by, fnBy: fnBy,
+    eligible: eligible, upl: upl, gapClosed: gapClosed, cost: cost, rr: rr, depsOk: depsOk,
+    best: B, remainingAfterY1: rem,
+    answers: {
+      nodriver: INIT.filter(function (i) { return !eligible(i); }).map(function (i) { return i.c; }),
+      y1: B.s.slice(),
+      y1gap: B.g,
+      y2lead: rem[0].name,
+      kgi: METRICS.filter(function (m) { return m.t === 'KGI'; }).map(function (m) { return m.id; })
+    }
+  };
+})();
+</script>
+
+<script>
+(function () {
+  var X = window.B1DATA;
+  function A(k) { return function () { return X.answers[k]; }; }
+  var Y2OPTS = ['Govern, because the board charter is the foundation for everything else', 'Respond, because ransomware response still depends on outside help', 'Detect, because one more detection tool would complete the coverage', 'Recover, because depot recovery is the widest gap the plan leaves open'];
+  function y2idx() { for (var i = 0; i < Y2OPTS.length; i++) if (Y2OPTS[i].indexOf(X.answers.y2lead + ',') === 0) return i; return -1; }
+  window.LAB = {
+    id: 'B1',
+    title: 'Security Strategy and Board Briefing',
+    accent: 'Board Briefing',
+    domain: 'Domain 1 (17%)',
+    time: '60 min',
+    level: 'Intermediate',
+    lessonHref: 'lesson01.html#s3',
+    lessonLabel: 'Lesson 1, Developing the Security Strategy',
+    lede: 'A strategy is a plan to move the business, not a shopping list. Read the business plan and the maturity assessment, schedule a funded three-year roadmap, watch the maturity radar move, and brief the board on the decision you need.',
+    workbenchTitle: 'Strategy workbench',
+    ticket: {
+      number: 'EXE-2026-0112',
+      priority: 'High priority',
+      from: 'Marisol Achterberg, Chief Executive Officer',
+      to: 'Chief Information Security Officer (you)',
+      subject: 'Three-year security strategy for the December board meeting',
+      due: 'Board pre-read due December 4, 2026',
+      body: '<p>Welcome to Halyard Cold Chain Logistics. You have been here 60 days, and the board expects your security strategy at its December meeting. The board approved our 2027 to 2029 business plan in September: pharmaceutical cold chain, a customer portal with card payments, the Tidewell Carriers acquisition, and a hard commitment to keep depots running.</p>' +
+        '<p>Your team and several vendors have proposed 14 initiatives. We cannot fund them all. Devon Okafor has set the security envelope for each year and the planning rules, and the assessor’s maturity report shows where we stand against the targets the steering group agreed.</p>' +
+        '<p>Build the roadmap, then send me a one-page brief the board can act on. Tell them what the money buys for the business, how we will know it worked, and exactly what you are asking them to decide. Keep the tool talk out of it.</p>'
+    },
+    howTo: 'The <b>Roadmap builder</b> tab is your working board. Use the <b>Schedule</b> menu on each card, or drag a card, to place an initiative in Year 1, 2, or 3, or leave it unscheduled. The budget meters, the gap tiles, and the maturity radar update as you work; use the radar buttons to project through Year 1, 2, or 3. The other tabs hold the <b>business plan</b>, the <b>maturity assessment</b>, the CFO’s <b>budget and planning rules</b> with the obligations register, and the <b>metrics catalog</b>. Check each checklist item as you go. A hint is available for every item. After your first check you can reveal the debrief, but a revealed item earns no points.',
+    workIntro: 'Read the documents first, then build the roadmap. The tool computes cost, gap closed, and projected maturity from the cards you schedule. Record your decisions in the checklist below.',
+    checklist: [
+      { id: 'nodriver', type: 'set', points: 12, short: 'No business driver', title: 'Initiatives with no business driver',
+        task: 'Planning rule 3 funds only initiatives that trace to an <b>active objective</b> in the business plan. Which candidate initiatives have no valid business driver? Enter their codes.',
+        label: 'Initiative codes', placeholder: 'e.g., SI-00, SI-99',
+        answer: A('nodriver'),
+        hint: 'Compare the driver on each card with the objectives in the business plan. Check the status of every objective, and remember that a team or a vendor is not a business objective.',
+        debrief: '<p>Three proposals fail the test. <b>SI-04</b> cites BP-5, the retail marketplace the board withdrew in March 2026, so it protects a business line that no longer exists. <b>SI-08</b>, the deception grid, is a security team idea with no business sponsor, and <b>SI-13</b>, the AI threat-intelligence assistant, arrived as a vendor offer. Each may be technically interesting, and SI-13 is even cheap, but none moves an objective the board approved.</p><p>The CISM view is that the strategy derives from business objectives, not from tools or trends. Leaving these out is not a judgment that they are bad ideas. It is a statement that security money follows business value, and it keeps the roadmap defensible when the board asks why each line is there. If the SOC wants deception later, it should find a sponsor and tie it to BP-4.</p>',
+        reviewNote: 'Trace every initiative to an active business objective before funding it.' },
+      { id: 'mandatory', type: 'choice', points: 12, short: 'Mandatory initiative', title: 'Schedule the mandatory obligation',
+        task: 'Obligation OB-2 in the obligations register maps to SI-11. In which year must SI-11 be scheduled, and why?',
+        options: ['Year 2, because the OB-2 compliance date falls inside the second plan year', 'Year 1, because the work takes three quarters and must finish before go-live', 'Year 3, once the portal has shown revenue that justifies the spend', 'Leave it out, because the payment processor carries the compliance duty'],
+        answer: 1,
+        hint: 'Compare the compliance date with the lead time in the register, and check when the business plan needs the portal to take card payments.',
+        debrief: '<p>OB-2 is due on April 1, 2028, the day the portal starts taking cards, which is early in Year 2. The register gives a lead time of three quarters for segmentation, remediation, and the assessor’s review. Starting in Year 2 would finish around the end of 2028, months after go-live, so the portal would either launch out of compliance or launch late. SI-11 must start and be funded in Year 1.</p><p>A manager reads deadlines as finish dates and plans back from them. Mandatory obligations are funded first (rule 2), and the processor cannot absorb Halyard’s own duty for the environment it builds. Placing SI-11 in Year 1 also explains to the board why some Year 1 money is not discretionary.</p>',
+        reviewNote: 'Plan mandatory work back from the compliance date, using the lead time.' },
+      { id: 'y1', type: 'set', points: 16, short: 'Year 1 plan', title: 'Build the Year 1 plan',
+        task: 'Apply planning rules 1 to 5. List every initiative in your Year 1 plan: the mandatory initiative plus the business-driven initiatives that close the <b>most maturity gap</b> within the Year 1 envelope. Uplift above a function’s target does not count.',
+        label: 'Year 1 initiative codes', placeholder: 'e.g., SI-00, SI-99',
+        answer: A('y1'),
+        hint: 'Schedule SI-11 first, then compare gap closed per dollar. Watch for functions where two initiatives together overshoot the target: the extra uplift is wasted. The Year 1 gap tile counts capped uplift for you. More than one plan can look good; only one closes the most gap.',
+        debrief: function () { return '<p>The plan that closes the most gap is <b>' + X.answers.y1.join(', ') + '</b>, costing $' + X.cost(X.answers.y1) + 'K of the $' + X.BUDGET[0] + 'K envelope and closing ' + X.answers.y1gap.toFixed(1) + ' of the 9.0 points of gap. The cheap, high-yield items come first: the governance charter (SI-03), incident response (SI-01), and the inventory (SI-05). MDR (SI-07) is expensive but closes 1.5 points in Detect, one of the two widest gaps. The API gateway (SI-06) completes Protect alongside the mandatory SI-11. The tempting alternative is phishing-resistant MFA (SI-09): it has a large risk reduction, but with SI-11 already in Year 1 only half of its Protect uplift counts, so it closes less gap for more money. The next best plan closes ' + X.best.second.toFixed(1) + ' points.</p><p>The lesson is that a strategy closes the widest gaps between current and target state, measured against what the business needs, and does not over-invest in a function that is nearly where it needs to be. Ranking by risk reduction alone (SI-07, SI-09, SI-14 first) closes only 4.5 points. The deferred items, SI-09 and SI-14, do not disappear: they lead Years 2 and 3, and their risk until then is something the board must knowingly accept.</p>'; }(),
+        reviewNote: 'Fund mandatory work first, then close the widest maturity gaps per dollar, capped at the target.' },
+      { id: 'y1gap', type: 'number', points: 10, short: 'Year 1 gap closed', title: 'Maturity gap closed in Year 1',
+        task: 'With the Year 1 plan from the previous item, how many points of maturity gap does Year 1 close across the six CSF functions? Count uplift only up to each target.',
+        answer: A('y1gap'), tol: 0.05, unit: 'points of 9.0',
+        hint: 'Set the radar to “Through Year 1” and read the Year 1 gap tile, or add the capped uplift by function in the table under the radar.',
+        debrief: function () { return '<p>The Year 1 plan closes <b>' + X.answers.y1gap.toFixed(1) + ' points</b>: Govern 1.0, Identify 1.0, Protect 1.0 (SI-11 and SI-06), Detect 1.5, and Respond 1.5. Recover gets nothing in Year 1. That is two thirds of the total gap of 9.0 in the first year, which is a strong story for the board, and it is honest because uplift beyond a target is not counted.</p><p>A maturity number is only useful if the board knows what the target was and who set it. Here the steering group set the targets from the business plan, so “gap closed” is a measure of progress toward the business’s own expectations, not a security vanity score.</p>'; }(),
+        reviewNote: 'Measure progress as gap closed toward agreed targets, not raw uplift.' },
+      { id: 'y2lead', type: 'choice', points: 10, short: 'Year 2 priority', title: 'Choose the Year 2 lead function',
+        task: 'After your Year 1 plan, which CSF function has the largest remaining gap and should lead Year 2 under planning rule 6?',
+        options: Y2OPTS,
+        answer: y2idx,
+        hint: 'Read the “Remaining after Year 1” column in the table under the radar with only your Year 1 plan scheduled.',
+        debrief: '<p>After Year 1, Recover still has its full 1.5-point gap, while Govern, Detect, and Respond have 0.5 each and Identify and Protect are at target. Year 2 should lead with the immutable backups (SI-14) and then the warm-standby site (SI-10), which depends on it. Both trace to BP-4, the board’s 4-hour depot tolerance.</p><p>Deferring recovery was the cost of closing more gap in Year 1, and that trade-off belongs in the board brief. A good manager states the exposure plainly: until SI-14 lands, a ransomware event could stop depots for longer than the tolerance. Year 2 is also when SI-02 fits, because the Tidewell deal closes in June 2028, and when SI-12 must start for the Q4 2028 SOC 2 report.</p>',
+        reviewNote: 'Sequence later years by the largest remaining gap and the business calendar.' },
+      { id: 'kgi', type: 'set', points: 12, short: 'Board KGIs', title: 'Select the three KGIs for the board brief',
+        task: 'The board brief carries three key goal indicators. Which three metrics in the catalog measure whether the <b>business goals</b> the strategy supports were achieved? Enter their IDs.',
+        label: 'Metric IDs', placeholder: 'e.g., MC-0',
+        answer: A('kgi'),
+        hint: 'A KGI tells the board whether a goal was met. A KPI tells management how well a process performs. A KRI warns that risk is rising. Look for metrics expressed in the business plan’s own terms.',
+        debrief: '<p>The three KGIs are <b>MC-2</b> (pharmaceutical contracts won where an attestation was required, for BP-1), <b>MC-6</b> (portal card payments live on schedule with no compliance restriction, for BP-2), and <b>MC-9</b> (depot hours lost to cyber incidents against the 4-hour tolerance, for BP-4). Each is stated in business outcomes the board already tracks.</p><p>MC-4 is the trap: roadmap delivery on time and on budget is a KPI of the security program, not a business goal. MC-3, MC-5, and MC-10 are KPIs, MC-7 is a KRI, and MC-1 and MC-8 are activity counts. KPIs and KRIs belong on the steering committee dashboard; the board needs to see whether security is helping the business reach its goals.</p>',
+        reviewNote: 'KGIs measure business goal achievement; keep KPIs and activity counts for management.' },
+      { id: 'ask', type: 'choice', points: 13, short: 'Board decision', title: 'State the decision the board must make',
+        task: 'What is the decision your brief should ask the board to make?',
+        options: ['Select the managed detection vendor and approve the SOC staffing model', 'Note the threat briefing and the count of attacks blocked this year', 'Approve the strategy and Year 1 funding, and accept the deferred-work risk', 'Delegate risk acceptance for the plan period to the security office'],
+        answer: 2,
+        hint: 'Boards set direction, approve resources, and own the organization’s risk appetite. Which option asks for a decision only the board can make?',
+        debrief: '<p>The board should approve the three-year strategy and the Year 1 funding, and explicitly accept the residual risk of what the plan defers, mainly the Recover gap until SI-14 and SI-10 land and the unfunded Year 1 MFA work. That is a direction, resources, and risk decision, which is the board’s job in information security governance.</p><p>Vendor selection and SOC staffing are management decisions that would pull the board into operations. “Note the briefing” asks for nothing, so the board leaves without owning anything. Delegating risk acceptance to the security office reverses accountability: the business owns risk, and the CISO advises, aligns, and reports.</p>',
+        reviewNote: 'Ask the board for strategy approval, funding, and acceptance of residual risk.' },
+      { id: 'brief', type: 'text', points: 15, short: 'Board brief', title: 'Write the one-page board brief', reportTitle: 'One-page board brief',
+        task: 'Write the brief the CEO will put in the board pre-read. Business language only: no product names, no tool counts.',
+        fields: [
+          { key: 'context', label: 'Why this strategy: the business objectives it serves', min: 50, placeholder: 'Tie the strategy to the business plan objectives and the maturity gap.' },
+          { key: 'plan', label: 'What Year 1 buys, and what comes in Years 2 and 3', min: 50, placeholder: 'Year 1 plan and cost, gap closed, and the sequence that follows.' },
+          { key: 'kgis', label: 'How the board will know it worked: three KGIs with targets', min: 40, placeholder: 'Three KGIs in business terms, each with a target.' },
+          { key: 'ask', label: 'The decision requested and the risk the board accepts', min: 40, placeholder: 'Approval, funding, and the residual risk of deferred work.' }
+        ],
+        hint: 'Write for a director with five minutes. Lead with the business, give numbers the board can hold you to, and end with one clear request.',
+        debrief: function () { return '<p><b>Model brief.</b> <b>Why:</b> Halyard’s 2027 to 2029 plan depends on customers trusting us with regulated shipments and payments: pharmaceutical contracts require a SOC 2 Type II report, the portal must take cards lawfully from April 1, 2028, Tidewell must join us safely, and no cyber event may stop a depot for more than four hours. An independent assessment puts us 9.0 maturity points short of the targets the steering group set, with the widest gaps in Detect and Respond. <b>What it buys:</b> Year 1 ($' + X.cost(X.answers.y1) + 'K of a $' + X.BUDGET[0] + 'K envelope) funds the mandatory payment-environment work, board-level governance and a risk appetite, an asset and data inventory, round-the-clock detection, incident response readiness, and portal API protection. It closes ' + X.answers.y1gap.toFixed(1) + ' of the 9.0 points. Year 2 leads with recovery (immutable backups, then a standby site), the Tidewell integration, and SOC 2 readiness; Year 3 completes access management and the remaining gaps. Three proposals with no business driver are not funded. <b>KGIs:</b> pharmaceutical contracts signed where an attestation was required, on the revenue plan; portal card payments live on April 1, 2028, with no compliance restriction; depot hours lost to cyber incidents held under the 4-hour tolerance. <b>Decision:</b> approve the strategy and the Year 1 funding, and accept that until recovery work lands in Year 2 a ransomware event could exceed the depot tolerance, which we will report quarterly as a key risk.</p><p>Your wording will differ. Check that every element speaks in business terms, carries numbers, and ends in a decision only the board can make.</p>'; }(),
+        reviewNote: 'A board brief links strategy to objectives, quantifies the plan, names KGIs, and asks for a decision.' }
+    ],
+
+    workbench: function (root, api) {
+      var esc = api.esc;
+      root.innerHTML = '<div class="lb-tool"><div class="lb-tabs" role="tablist" aria-label="Workbench tools">' +
+        '<button role="tab" id="tb-rm" aria-controls="pn-rm" aria-selected="true">Roadmap builder</button>' +
+        '<button role="tab" id="tb-bp" aria-controls="pn-bp" aria-selected="false" tabindex="-1">Business plan</button>' +
+        '<button role="tab" id="tb-ma" aria-controls="pn-ma" aria-selected="false" tabindex="-1">Maturity assessment</button>' +
+        '<button role="tab" id="tb-bu" aria-controls="pn-bu" aria-selected="false" tabindex="-1">Budget and rules</button>' +
+        '<button role="tab" id="tb-mc" aria-controls="pn-mc" aria-selected="false" tabindex="-1">Metrics catalog</button></div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-rm" aria-labelledby="tb-rm"></div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-bp" aria-labelledby="tb-bp" hidden>' + DOC_BP() + '</div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-ma" aria-labelledby="tb-ma" hidden>' + DOC_MA() + '</div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-bu" aria-labelledby="tb-bu" hidden>' + DOC_BU() + '</div>' +
+        '<div class="lb-panel" role="tabpanel" id="pn-mc" aria-labelledby="tb-mc" hidden>' + DOC_MC() + '</div></div>';
+      var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+      function sel(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+      tabs.forEach(function (t, i) { t.addEventListener('click', function () { sel(t); }); t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; sel(n); n.focus(); } }); });
+      if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) sel(tt); }
+
+      var pn = document.getElementById('pn-rm');
+      var COLS = [{ y: 0, t: 'Not scheduled' }, { y: 1, t: 'Year 1 (2027)' }, { y: 2, t: 'Year 2 (2028)' }, { y: 3, t: 'Year 3 (2029)' }];
+      function plan() { return api.note('plan') || {}; }
+      function yearOf(c) { return +(plan()[c] || 0); }
+      function setYear(c, y) { var p = Object.assign({}, plan()); if (+y) p[c] = +y; else delete p[c]; api.note('plan', p); draw(); }
+      function inYears(maxY) { return X.INIT.filter(function (i) { var y = yearOf(i.c); return y && y <= maxY; }).map(function (i) { return i.c; }); }
+      function inYear(y) { return X.INIT.filter(function (i) { return yearOf(i.c) === y; }).map(function (i) { return i.c; }); }
+      function money(k) { return '$' + k.toLocaleString('en-US') + 'K'; }
+
+      function radar(view) {
+        var cx = 175, cy = 165, R = 120, n = X.FN.length, u = X.upl(inYears(view));
+        function pt(i, v) { var a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * R * v / 5, cy + Math.sin(a) * R * v / 5]; }
+        function poly(vals) { return vals.map(function (v, i) { return pt(i, v).map(function (z) { return z.toFixed(1); }).join(','); }).join(' '); }
+        var cur = X.FN.map(function (f) { return f.cur; }), tgt = X.FN.map(function (f) { return f.tgt; }), pro = X.FN.map(function (f) { return Math.min(5, f.cur + u[f.k]); });
+        var s = '<svg viewBox="0 0 350 330" role="img" aria-labelledby="b1-rt b1-rd"><title id="b1-rt">Maturity radar</title><desc id="b1-rd">' +
+          esc(X.FN.map(function (f, i) { return f.name + ': current ' + f.cur.toFixed(1) + ', projected ' + pro[i].toFixed(1) + ', target ' + f.tgt.toFixed(1); }).join('; ')) + '</desc>';
+        for (var r = 1; r <= 5; r++) s += '<polygon points="' + poly(X.FN.map(function () { return r; })) + '" fill="none" stroke="#c2d4d6" stroke-width="1"/>';
+        X.FN.forEach(function (f, i) { var p = pt(i, 5), l = pt(i, 5.75); s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '" stroke="#c2d4d6"/><text x="' + l[0].toFixed(1) + '" y="' + (l[1] + 4).toFixed(1) + '" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#0b2530">' + f.name + '</text>'; });
+        [1, 2, 3, 4, 5].forEach(function (r) { var p = pt(0, r); s += '<text x="' + (p[0] + 4) + '" y="' + (p[1] + 3) + '" font-family="Arial" font-size="8" fill="#5c7d83">' + r + '</text>'; });
+        s += '<polygon points="' + poly(cur) + '" fill="rgba(15,59,76,.10)" stroke="#0f3b4c" stroke-width="2" stroke-dasharray="2 3"/>';
+        s += '<polygon points="' + poly(pro) + '" fill="rgba(20,184,166,.28)" stroke="#0d8c7e" stroke-width="2.5"/>';
+        s += '<polygon points="' + poly(tgt) + '" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="8 4"/>';
+        pro.forEach(function (v, i) { var p = pt(i, v); s += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.5" fill="#0d8c7e"/>'; });
+        tgt.forEach(function (v, i) { var p = pt(i, v); s += '<rect x="' + (p[0] - 3).toFixed(1) + '" y="' + (p[1] - 3).toFixed(1) + '" width="6" height="6" fill="#fff" stroke="#b45309" stroke-width="1.5"/>'; });
+        return s + '</svg>';
+      }
+
+      function draw() {
+        var view = +(api.note('view') || 1), af = document.activeElement, focusId = af && af.id;
+        var ys = [1, 2, 3].map(function (y) { var cs = inYear(y), c = X.cost(cs); return { y: y, c: c, b: X.BUDGET[y - 1] }; });
+        var g1 = X.gapClosed(inYears(1)), g3 = X.gapClosed(inYears(3)), uv = X.upl(inYears(view));
+        var checks = [];
+        ys.forEach(function (o) { if (o.c > o.b) checks.push({ w: 1, t: 'Year ' + o.y + ' is over its envelope by ' + money(o.c - o.b) + '. Rule 1 does not allow carryover or overruns.' }); });
+        X.INIT.forEach(function (i) { var y = yearOf(i.c); if (y && i.pre && (!yearOf(i.pre) || yearOf(i.pre) > y)) checks.push({ w: 1, t: i.c + ' needs ' + i.pre + ' in the same or an earlier year (rule 4).' }); });
+        var over = X.FN.filter(function (f) { return f.cur + uv[f.k] > f.tgt + 1e-9; });
+        if (over.length) checks.push({ w: 0, t: 'Projected maturity exceeds the target in ' + over.map(function (f) { return f.name; }).join(', ') + ' through Year ' + view + '. Uplift above the target does not close any gap.' });
+        if (!checks.length) checks.push({ w: 0, t: 'No budget or prerequisite conflicts in the current plan.' });
+
+        var h = '<div class="b1-top"><div class="b1-box"><h4>Budget by year</h4>' + ys.map(function (o) {
+          var pct = Math.min(100, 100 * o.c / o.b), ov = o.c > o.b;
+          return '<div class="b1-meter' + (ov ? ' over' : '') + '"><div class="r"><span>Year ' + o.y + ' (' + (2026 + o.y) + ')</span><span><b>' + money(o.c) + '</b> of ' + money(o.b) + (ov ? ', over by ' + money(o.c - o.b) : ', ' + money(o.b - o.c) + ' left') + '</span></div>' +
+            '<div class="b1-bar" role="meter" aria-valuemin="0" aria-valuemax="' + o.b + '" aria-valuenow="' + o.c + '" aria-label="Year ' + o.y + ' spend ' + o.c + ' of ' + o.b + ' thousand dollars' + (ov ? ', over budget' : '') + '"><i style="width:' + pct.toFixed(1) + '%"></i></div></div>';
+        }).join('') +
+          '<div class="b1-gap"><div class="b1-tile"><div class="k">Gap closed in Year 1</div><div class="v">' + g1.toFixed(1) + ' / 9.0</div></div><div class="b1-tile"><div class="k">Gap closed by Year 3</div><div class="v">' + g3.toFixed(1) + ' / 9.0</div></div><div class="b1-tile"><div class="k">Risk reduction, Year 1</div><div class="v">' + money(X.rr(inYear(1))) + '/yr</div></div></div>' +
+          '<ul class="b1-checks" aria-live="polite">' + checks.map(function (c) { return '<li class="' + (c.w ? 'warn' : '') + '">' + (c.w ? '<span class="sr-only">Warning: </span>' : '') + esc(c.t) + '</li>'; }).join('') + '</ul></div>' +
+          '<div class="b1-box"><h4>Maturity radar (CSF 2.0 functions, 0 to 5)</h4><div class="b1-seg" role="group" aria-label="Project maturity through">' + [1, 2, 3].map(function (y) { return '<button type="button" id="b1-v' + y + '" data-view="' + y + '" aria-pressed="' + (view === y) + '">Through Year ' + y + '</button>'; }).join('') + '</div>' +
+          '<div class="b1-radar-wrap">' + radar(view) + '<div class="b1-legend">' +
+          '<div class="row"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke="#0f3b4c" stroke-width="2" stroke-dasharray="2 3"/></svg>Current (dotted)</div>' +
+          '<div class="row"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke="#0d8c7e" stroke-width="2.5"/><circle cx="17" cy="6" r="3.5" fill="#0d8c7e"/></svg>Projected (solid, dots)</div>' +
+          '<div class="row"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke="#b45309" stroke-width="2" stroke-dasharray="8 4"/><rect x="14" y="3" width="6" height="6" fill="#fff" stroke="#b45309" stroke-width="1.5"/></svg>Target (dashed, squares)</div>' +
+          '<table class="b1-mtab"><caption class="sr-only">Maturity by function through Year ' + view + '</caption><thead><tr><th scope="col">Function</th><th scope="col">Now</th><th scope="col">Proj.</th><th scope="col">Target</th><th scope="col">Remaining after Year ' + view + '</th></tr></thead><tbody>' +
+          X.FN.map(function (f) { var p = f.cur + uv[f.k]; return '<tr><td>' + f.name + '</td><td>' + f.cur.toFixed(1) + '</td><td>' + Math.min(5, p).toFixed(1) + '</td><td>' + f.tgt.toFixed(1) + '</td><td>' + Math.max(0, f.tgt - p).toFixed(1) + '</td></tr>'; }).join('') +
+          '</tbody></table></div></div></div></div>';
+
+        h += '<div class="b1-bar-tools"><span>Schedule each initiative with its menu or drag it to a column. Amber edge: linked to an obligation in the register.</span><button type="button" class="b1-btn" id="b1-clear">Clear the roadmap</button></div>';
+        h += '<div class="b1-board">' + COLS.map(function (col) {
+          var list = X.INIT.filter(function (i) { return yearOf(i.c) === col.y; });
+          var c = X.cost(list.map(function (i) { return i.c; }));
+          return '<section class="b1-col" data-col="' + col.y + '" aria-label="' + esc(col.t) + '"><h5>' + esc(col.t) + '<span>' + list.length + ' items' + (col.y ? ', ' + money(c) : '') + '</span></h5>' +
+            (list.length ? list.map(card).join('') : '<p class="b1-empty">' + (col.y ? 'Nothing scheduled.' : 'All initiatives are scheduled.') + '</p>') + '</section>';
+        }).join('') + '</div>';
+        pn.innerHTML = h;
+
+        pn.querySelectorAll('select[data-c]').forEach(function (s) { s.addEventListener('change', function () { setYear(s.dataset.c, s.value); }); });
+        pn.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { api.note('view', +b.dataset.view); draw(); }); });
+        pn.querySelector('#b1-clear').addEventListener('click', function () { if (confirm('Move every initiative back to Not scheduled?')) { api.note('plan', {}); draw(); } });
+        pn.querySelectorAll('.b1-card').forEach(function (cd) { cd.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', cd.dataset.card); e.dataTransfer.effectAllowed = 'move'; }); });
+        pn.querySelectorAll('.b1-col').forEach(function (col) {
+          col.addEventListener('dragover', function (e) { e.preventDefault(); col.classList.add('drop'); });
+          col.addEventListener('dragleave', function () { col.classList.remove('drop'); });
+          col.addEventListener('drop', function (e) { e.preventDefault(); var c = e.dataTransfer.getData('text/plain'); if (X.by[c]) setYear(c, col.dataset.col); });
+        });
+        if (focusId) { var f = document.getElementById(focusId); if (f) f.focus(); }
+      }
+      function card(i) {
+        var y = yearOf(i.c), drv = X.BP[i.drv] ? i.drv + ', ' + X.BP[i.drv] : i.drv;
+        return '<article class="b1-card' + (i.ob ? ' ob' : '') + '" draggable="true" data-card="' + i.c + '"><div class="nm"><code>' + i.c + '</code>' + esc(i.name) + '</div>' +
+          '<div class="b1-chips"><span class="b1-chip">' + money(i.cost) + '</span><span class="b1-chip">' + X.fnBy[i.fn].name + ' +' + i.up.toFixed(1) + '</span><span class="b1-chip">Risk reduction ' + money(i.rr) + '/yr</span>' + (i.ob ? '<span class="b1-chip">Obligation ' + i.ob + '</span>' : '') + (i.pre ? '<span class="b1-chip">Needs ' + i.pre + '</span>' : '') + '</div>' +
+          '<div class="drv"><b>Driver:</b> ' + esc(drv) + '. ' + esc(i.note) + '</div>' +
+          '<label for="b1-s-' + i.c + '">Schedule ' + i.c + '</label><select id="b1-s-' + i.c + '" data-c="' + i.c + '">' + COLS.map(function (col) { return '<option value="' + col.y + '"' + (col.y === y ? ' selected' : '') + '>' + esc(col.t) + '</option>'; }).join('') + '</select></article>';
+      }
+      draw();
+
+      function DOC_BP() {
+        return '<div class="lb-doc"><p class="eyebrow">Board-approved, September 2026</p><h4>Halyard Cold Chain Logistics: Business Plan 2027 to 2029 (summary)</h4>' +
+          '<p class="lead-p">Halyard moves temperature-controlled food and medical freight for 640 customers from 58 depots. Revenue was $410M in 2025. The plan grows revenue to $560M by 2029 through four objectives.</p>' +
+          '<div class="table-wrap"><table class="data b1-doc-table"><thead><tr><th scope="col">Objective</th><th scope="col">What the business commits to</th><th scope="col">Timing</th><th scope="col">Status</th></tr></thead><tbody>' +
+          '<tr><td><b>BP-1</b> Pharmaceutical cold chain</td><td>Win $48M a year of pharmaceutical distribution contracts. Customers require an independent SOC 2 Type II report and evidence of temperature-data integrity before they sign.</td><td>Report needed by Q4 2028; first contracts start January 2029</td><td>Active</td></tr>' +
+          '<tr><td><b>BP-2</b> Customer portal and shipment API</td><td>Self-service booking, tracking, and an API for large shippers, with online card payments for small customers.</td><td>Card payments go live April 1, 2028</td><td>Active</td></tr>' +
+          '<tr><td><b>BP-3</b> Acquire Tidewell Carriers</td><td>Add 900 drivers and 31 depots; move Tidewell onto Halyard identity and the warehouse management system (WMS) within 12 months of closing.</td><td>Closing expected June 2028</td><td>Active</td></tr>' +
+          '<tr><td><b>BP-4</b> Operational resilience</td><td>On-time delivery of 98.5 percent. The board’s tolerance: no cyber incident may stop a depot for more than 4 hours.</td><td>Every year</td><td>Active</td></tr>' +
+          '<tr><td><b>BP-5</b> Retail marketplace</td><td>Direct-to-consumer marketplace with blockchain provenance.</td><td>Was planned for 2027</td><td><b>Withdrawn by the board, March 2026</b></td></tr>' +
+          '</tbody></table></div><p class="lead-p" style="margin-top:.7rem">The CEO’s note to the leadership team: “Every dollar in this plan should be traceable to BP-1 through BP-4.”</p></div>';
+      }
+      function DOC_MA() {
+        return '<div class="lb-doc"><p class="eyebrow">Independent assessment, October 2026</p><h4>Security maturity assessment against NIST CSF 2.0 (Corvid Assurance)</h4>' +
+          '<p class="lead-p">Scale 0 to 5 per CSF function. Targets were agreed by the security steering group in October from the business plan. Total gap: 9.0 points.</p>' +
+          '<div class="table-wrap"><table class="data"><thead><tr><th scope="col">Function</th><th scope="col">Current</th><th scope="col">Target</th><th scope="col">Gap</th><th scope="col">Key observation</th></tr></thead><tbody>' +
+          X.FN.map(function (f) { var obs = { GV: 'No security charter or risk appetite; security reports to IT with no board line.', ID: 'No authoritative inventory; data owners for temperature records not named.', PR: 'MFA by SMS for most staff; card data flows across the flat depot network.', DE: 'Business-hours monitoring only; alerts after 6 p.m. wait until morning.', RS: 'No tested incident plan or retainer; a 2025 phishing incident took 9 days to contain.', RC: 'Backups are online and reachable from the domain; WMS restore untested.' }[f.k];
+            return '<tr><td><b>' + f.name + '</b> (' + f.k + ')</td><td>' + f.cur.toFixed(1) + '</td><td>' + f.tgt.toFixed(1) + '</td><td>' + (f.tgt - f.cur).toFixed(1) + '</td><td>' + esc(obs) + '</td></tr>'; }).join('') +
+          '</tbody></table></div><p class="lead-p" style="margin-top:.7rem">The assessor estimated the uplift each candidate initiative would deliver once complete; the cards in the roadmap builder show it. Maturity above the target is not required by the business.</p></div>';
+      }
+      function DOC_BU() {
+        return '<div class="lb-doc"><p class="eyebrow">From Devon Okafor, Chief Financial Officer</p><h4>Security capital envelope and planning rules, 2027 to 2029</h4><ol class="lead-p" style="padding-left:1.3rem">' +
+          '<li><b>Envelope.</b> One-time project funding of <b>' + money(X.BUDGET[0]) + '</b> in 2027, <b>' + money(X.BUDGET[1]) + '</b> in 2028, and <b>' + money(X.BUDGET[2]) + '</b> in 2029. Each initiative’s cost falls in the year it is scheduled. No overruns and no carryover.</li>' +
+          '<li><b>Obligations first.</b> Initiatives tied to an obligation in the register are funded first and scheduled so they finish before the compliance date.</li>' +
+          '<li><b>Business driver.</b> Every funded initiative must trace to an active objective in the business plan (BP-1 to BP-4).</li>' +
+          '<li><b>Prerequisites.</b> An initiative cannot be scheduled before its prerequisite; the same year is acceptable.</li>' +
+          '<li><b>Year 1 priority.</b> After rule 2, Year 1 funds the business-driven initiatives that close the <b>most maturity gap</b> within the envelope. Gap closed is the uplift toward each function’s target; uplift above a target does not count. If two plans close the same gap, prefer the larger annual risk reduction.</li>' +
+          '<li><b>Years 2 and 3.</b> Schedule the remaining business-driven work in order of the largest remaining gap, respecting the timing in the business plan.</li></ol></div>' +
+          '<div class="lb-doc"><p class="eyebrow">Legal and compliance</p><h4>Halyard obligations register (security items)</h4><div class="table-wrap"><table class="data b1-doc-table"><thead><tr><th scope="col">ID</th><th scope="col">Obligation (Halyard’s own summary)</th><th scope="col">Compliance date</th><th scope="col">Lead time</th><th scope="col">Status</th></tr></thead><tbody>' +
+          '<tr><td>OB-1</td><td>Customer contracts require annual penetration testing of customer-facing systems.</td><td>Annual</td><td>Six weeks</td><td>Met; funded from the operations budget</td></tr>' +
+          '<tr><td>OB-2</td><td>Our acquiring bank agreement requires PCI DSS v4.0 compliance of the cardholder data environment before Halyard accepts card payments. Maps to <b>SI-11</b>.</td><td>April 1, 2028 (portal card go-live)</td><td>Three quarters: segmentation, remediation, assessor review</td><td>Not started</td></tr>' +
+          '<tr><td>OB-3</td><td>Pharmaceutical quality agreements require temperature records to be retained for five years.</td><td>Ongoing</td><td>Not applicable</td><td>Met by the quality system</td></tr>' +
+          '</tbody></table></div><p class="lead-p" style="margin-top:.6rem">This register is Halyard’s internal summary of its commitments. It is not legal advice.</p></div>';
+      }
+      function DOC_MC() {
+        return '<div class="lb-doc"><p class="eyebrow">Security metrics catalog</p><h4>Candidate metrics for reporting</h4><p class="lead-p">The team collected these candidates. The board brief carries three key goal indicators (KGIs); the rest can go to the steering committee dashboard.</p>' +
+          '<div class="table-wrap"><table class="data"><thead><tr><th scope="col">ID</th><th scope="col">Metric</th><th scope="col">Data source</th></tr></thead><tbody>' +
+          X.METRICS.map(function (m) { return '<tr><td><b>' + m.id + '</b></td><td>' + esc(m.name) + '</td><td>' + esc(m.src) + '</td></tr>'; }).join('') +
+          '</tbody></table></div></div>';
+      }
+    }
+  };
+
+  window.LAB_SELFTEST = function () {
+    var log = [], P = [], I = X.INIT;
+    // Independent brute force over all eligible subsets, recomputing capped gap from raw data.
+    var active = Object.keys(X.BP);
+    var nod = I.filter(function (i) { return active.indexOf(i.drv) < 0; }).map(function (i) { return i.c; });
+    if (nod.join() !== X.answers.nodriver.join()) P.push('nodriver derived ' + nod.join(' '));
+    var mand = I.filter(function (i) { return i.ob; });
+    if (mand.length !== 1 || mand[0].c !== 'SI-11') P.push('mandatory should be SI-11 only');
+    var pool = I.filter(function (i) { return active.indexOf(i.drv) >= 0 && !i.ob; });
+    var res = [];
+    for (var m = 0; m < (1 << pool.length); m++) {
+      var s = [mand[0]]; pool.forEach(function (i, k) { if (m & (1 << k)) s.push(i); });
+      var c = s.reduce(function (a, i) { return a + i.cost; }, 0); if (c > X.BUDGET[0]) continue;
+      var codes = s.map(function (i) { return i.c; });
+      if (s.some(function (i) { return i.pre && codes.indexOf(i.pre) < 0; })) continue;
+      var g = 0; X.FN.forEach(function (f) { var u = s.filter(function (i) { return i.fn === f.k; }).reduce(function (a, i) { return a + i.up; }, 0); g += Math.min(u, f.tgt - f.cur); });
+      res.push({ codes: codes.sort(), g: Math.round(g * 100) / 100, c: c });
+    }
+    res.sort(function (a, b) { return b.g - a.g; });
+    if (res[0].codes.join() !== X.answers.y1.join()) P.push('y1 derived ' + res[0].codes.join(' '));
+    if (res[0].g === res[1].g) P.push('y1 optimum not unique on gap: ' + res[1].codes.join(' '));
+    if (Math.abs(res[0].g - X.answers.y1gap) > 1e-9) P.push('y1gap derived ' + res[0].g);
+    var tot = X.FN.reduce(function (a, f) { return a + f.tgt - f.cur; }, 0); if (Math.abs(tot - 9) > 1e-9) P.push('total gap ' + tot);
+    // Remaining gap leader must be unique
+    var rem = X.FN.map(function (f) { var u = I.filter(function (i) { return res[0].codes.indexOf(i.c) >= 0 && i.fn === f.k; }).reduce(function (a, i) { return a + i.up; }, 0); return { n: f.name, r: f.tgt - f.cur - Math.min(u, f.tgt - f.cur) }; }).sort(function (a, b) { return b.r - a.r; });
+    if (rem[0].r === rem[1].r) P.push('remaining gap leader tie');
+    var y2 = LAB.checklist.filter(function (it) { return it.id === 'y2lead'; })[0];
+    if (y2.options[y2.answer()].indexOf(rem[0].n) !== 0) P.push('y2lead option mismatch');
+    // Uncapped and risk-ranked plans must differ from the key (traps work)
+    var greedy = [mand[0]], gc = mand[0].cost;
+    pool.slice().sort(function (a, b) { return b.rr - a.rr; }).forEach(function (i) { if (gc + i.cost <= X.BUDGET[0] && (!i.pre || greedy.some(function (x) { return x.c === i.pre; }))) { greedy.push(i); gc += i.cost; } });
+    var gcodes = greedy.map(function (i) { return i.c; }).sort();
+    if (gcodes.join() === X.answers.y1.join()) P.push('risk-ranked plan equals the key');
+    var kg = X.METRICS.filter(function (mm) { return mm.t === 'KGI'; });
+    if (kg.length !== 3 || kg.map(function (mm) { return mm.bp; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).length !== 3) P.push('KGIs not three distinct objectives');
+    log.push('nodriver ' + nod.join(' '), 'y1 ' + res[0].codes.join(' ') + ' gap ' + res[0].g + ' cost ' + res[0].c + ' (next ' + res[1].g + ': ' + res[1].codes.join(' ') + ')', 'risk-ranked ' + gcodes.join(' ') + ' gap ' + X.gapClosed(gcodes), 'remaining leader ' + rem[0].n + ' ' + rem[0].r, 'kgi ' + kg.map(function (mm) { return mm.id; }).join(' '), 'plans evaluated ' + res.length);
+    return { log: log, problems: P };
+  };
+})();
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

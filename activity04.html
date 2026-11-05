@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A4 Risk Analysis and Treatment Decisions | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A4',
+  title: 'Risk Analysis and Treatment Decisions',
+  accent: 'Treatment Decisions',
+  domain: 'Domain 2 (20%)',
+  time: '45 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson03.html#s2',
+  lessonLabel: 'Lesson 3, Analyzing Risk',
+  lede: 'The security manager quantifies risk to support a decision, then makes sure the right person owns the outcome. Practice the SLE, ALE, and control-value math, choose a treatment against appetite and cost, and then review acceptance requests the way a risk committee would. The numbers matter, but the exam tests the governance around them.',
+  concepts: [
+    { key: 'quant', name: 'Quantitative analysis (SLE, ALE)', review: 'Lesson 3, Analyzing Risk' },
+    { key: 'value', name: 'Control cost versus benefit', review: 'Lesson 3, Analyzing Risk' },
+    { key: 'treat', name: 'Choosing the treatment', review: 'Lesson 3, Treating Risk' },
+    { key: 'accept', name: 'Formal acceptance and residual risk', review: 'Lesson 3, Acceptance & Residual Risk' }
+  ],
+  stations: [
+    {
+      type: 'calc', short: 'Calculate', title: 'Price the risk and the control',
+      instr: 'Tamarind Health Network is weighing four risks. Use the formulas below and the table to answer each item. Enter whole dollars with no commas or symbols. A negative control value means the control costs more than the risk it removes.<br><br><b>SLE</b> = Asset value (AV) &times; Exposure factor (EF)<br><b>ALE</b> = SLE &times; Annualized rate of occurrence (ARO)<br><b>Annual control value</b> = (ALE before &minus; ALE after) &minus; Annual control cost',
+      hint: 'Work left to right. SLE is the loss from one event. ALE multiplies that by how often the event happens per year, so once every four years is an ARO of 0.25. The control changes the ARO, not the SLE, in these scenarios. Subtract the control cost last.',
+      table: {
+        caption: 'Tamarind Health Network risk inputs (ARO after = with the proposed control)',
+        head: ['Risk', 'Asset value (AV)', 'EF', 'ARO before', 'ARO after', 'Annual control cost'],
+        rows: [
+          ['R1 Ransomware on the patient database (former Lab 3)', '$2,000,000', '0.4', '0.25', '0.125', '$90,000'],
+          ['R2 Payment fraud through business email compromise', '$1,500,000', '0.2', '0.5', '0.1', '$25,000'],
+          ['R3 Staff pasting patient data into public AI chatbots', '$4,000,000', '0.05', '2', '0.5', '$150,000'],
+          ['R4 Flood at the records warehouse', '$600,000', '0.5', '0.02', '0.01', '$20,000']
+        ]
+      },
+      review: { href: 'lesson03.html#s2', label: 'Lesson 3, Analyzing Risk' },
+      items: [
+        { title: 'R1 Ransomware', label: 'SLE', answer: 800000, unit: 'USD', concept: 'quant', why: 'SLE = $2,000,000 × 0.4 = $800,000. That is the loss from one ransomware event, regardless of how often it occurs.' },
+        { title: 'R1 Ransomware', label: 'ALE before the control', answer: 200000, unit: 'USD per year', concept: 'quant', why: 'ALE = $800,000 × 0.25 = $200,000 per year. An event expected once every four years still carries a real annual cost.' },
+        { title: 'R1 Ransomware', label: 'Annual control value', answer: 10000, unit: 'USD per year', concept: 'value', why: 'The control halves the ARO, so ALE falls to $100,000. The $100,000 reduction minus the $90,000 cost leaves $10,000. The control is justified, but only narrowly, and the risk owner still makes the call.' },
+        { title: 'R2 Email fraud', label: 'SLE', answer: 300000, unit: 'USD', concept: 'quant', why: 'SLE = $1,500,000 × 0.2 = $300,000 for a single fraudulent payment.' },
+        { title: 'R2 Email fraud', label: 'ALE before the control', answer: 150000, unit: 'USD per year', concept: 'quant', why: 'ALE = $300,000 × 0.5 = $150,000 per year, since the event is expected about every two years.' },
+        { title: 'R2 Email fraud', label: 'ALE after the control', answer: 30000, unit: 'USD per year', concept: 'quant', why: 'With call-back verification and MFA, the ARO drops to 0.1, so ALE = $300,000 × 0.1 = $30,000 per year.' },
+        { title: 'R2 Email fraud', label: 'Annual control value', answer: 95000, unit: 'USD per year', concept: 'value', why: 'The control removes $120,000 of ALE for $25,000 a year, a net value of $95,000. This is an easy business case to bring to the risk owner.' },
+        { title: 'R3 AI data leakage', label: 'ALE before the control', answer: 400000, unit: 'USD per year', concept: 'quant', why: 'SLE = $4,000,000 × 0.05 = $200,000, and the event is expected twice a year, so ALE = $400,000. An ARO above 1 means more than one event per year.' },
+        { title: 'R3 AI data leakage', label: 'Annual control value', answer: 150000, unit: 'USD per year', concept: 'value', why: 'An approved AI tool with a data loss prevention gateway cuts ALE to $100,000. The $300,000 reduction minus $150,000 in cost leaves $150,000 of annual value.' },
+        { title: 'R4 Warehouse flood', label: 'ALE before the control', answer: 6000, unit: 'USD per year', concept: 'quant', why: 'SLE = $600,000 × 0.5 = $300,000, but a flood is expected once in 50 years, so ALE = $300,000 × 0.02 = $6,000 per year.' },
+        { title: 'R4 Warehouse flood', label: 'Annual control value', answer: -17000, unit: 'USD per year', concept: 'value', why: 'The barrier removes only $3,000 of ALE for $20,000 a year, a net loss of $17,000. A control should not cost more than the risk it reduces.' }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Choose the treatment', title: 'Choose the treatment',
+      instr: 'Tamarind’s board has set its risk appetite: residual exposure of up to <b>$250,000 a year</b> for any single risk, and <b>$100,000 a year</b> for any risk that touches patient safety. For each case, choose the treatment the security manager should <b>recommend</b>, or the <b>BEST</b> next step. Use your results from the first station.',
+      hint: 'Mitigate when a control reduces the risk for less than it costs. Transfer when the event is rare but severe and a third party can carry the financial impact. Avoid when no control brings the risk within appetite and the activity is not worth it. Accept when the risk is already within appetite. The manager recommends; the risk owner decides.',
+      review: { href: 'lesson03.html#s3', label: 'Lesson 3, Treating Risk' },
+      items: [
+        {
+          title: 'Case 1: The warehouse flood (R4)', text: 'The flood risk has an ALE of $6,000, and the proposed barrier costs $20,000 a year. The building is already covered by property insurance. The records director, Omar Haddad, owns the risk.',
+          parts: [
+            { q: 'Which treatment should the security manager recommend?', concept: 'treat', options: ['Mitigate', 'Transfer', 'Avoid', 'Accept'], answer: 3, why: 'The risk is far inside appetite and the control would cost more than it saves. Formal acceptance by the risk owner is the sound business choice.' }
+          ]
+        },
+        {
+          title: 'Case 2: Ransomware on the patient database (R1)', text: 'The control for R1 is justified by the numbers, and leadership has asked the CISO, Priya Raman, to pick the treatment and close the item this week.',
+          parts: [
+            { q: 'Which treatment should the security manager recommend?', concept: 'treat', options: ['Mitigate', 'Transfer', 'Avoid', 'Accept'], answer: 0, why: 'An ALE of $200,000 exceeds the $100,000 patient-safety limit, and the control removes more than it costs while bringing ALE to that limit. Mitigation is the recommendation.' },
+            { q: 'Who should make the final treatment decision?', concept: 'accept', options: ['The CISO, since the control sits in her security budget', 'The patient-services executive who owns the database', 'Internal audit, since it reviews the risk register', 'The IT director, since IT will run the control'], answer: 1, why: 'Security recommends and the business decides. The risk owner is accountable for the outcome, so the treatment decision belongs to the executive who owns the asset.' }
+          ]
+        },
+        {
+          title: 'Case 3: AI symptom checker pilot', text: 'Marketing proposes a public AI symptom checker. The only available vendor will not sign a business associate agreement and reserves the right to train on patient input. The pilot would bring in modest revenue. No control the team can identify brings the residual risk below appetite.',
+          parts: [
+            { q: 'Which treatment should the security manager recommend?', concept: 'treat', options: ['Mitigate', 'Transfer', 'Avoid', 'Accept'], answer: 2, why: 'When no affordable control brings the risk within appetite and the activity adds little value, the manager recommends not doing it. Avoidance removes the risk at its source.' }
+          ]
+        },
+        {
+          title: 'Case 4: Regional cloud outage', text: 'A prolonged outage of Tamarind’s cloud region would cost about $5 million in lost revenue, with an ARO of 0.08. A multi-region design costs $1.2 million a year. Business interruption coverage for the same event costs $80,000 a year.',
+          parts: [
+            { q: 'Which treatment should the security manager recommend?', concept: 'treat', options: ['Mitigate', 'Transfer', 'Avoid', 'Accept'], answer: 1, why: 'The ALE is $400,000, above appetite, but a $1.2 million control fails the cost test. A rare but severe event whose financial impact can be insured cheaply is a classic case for transfer.' },
+            { q: 'After the policy is bound, the CFO says the outage is now the insurer’s problem. What is the BEST response?', concept: 'treat', options: ['Agree, and close the risk in the register as treated', 'Agree, and move the risk to the insurer’s risk register', 'Explain that the insurer now shares the regulatory duty', 'Explain that Tamarind still owns the risk'], answer: 3, why: 'Insurance transfers financial impact, not accountability. Tamarind still faces patient harm, regulators, and reputational damage, so the risk stays on its register with the residual tracked.' }
+          ]
+        },
+        {
+          title: 'Case 5: A new threat with no data', text: 'The threat team warns of a new attack that uses cloned clinician voices to request prescription changes by phone. There is no loss history and no reliable frequency estimate. The executive committee wants the risk on next month’s agenda.',
+          parts: [
+            { q: 'Which analysis approach is BEST for now?', concept: 'quant', options: ['Quantitative, using industry-average ALE as a stand-in', 'Qualitative, rating likelihood and impact', 'Quantitative, after a year of collecting incident data', 'No analysis until a peer organization reports a loss'], answer: 1, why: 'Without reliable numbers, a quantitative figure would only look precise. A qualitative rating lets leadership prioritize now, and the team can quantify later as data builds.' }
+          ]
+        },
+        {
+          title: 'Case 6: Residual above appetite', text: 'After a year of mitigation on a legacy pharmacy system, residual exposure is still $340,000 a year, above the board’s appetite. The system owner, Daniel Okafor, asks the security team to mark the item accepted so the dashboard turns green.',
+          parts: [
+            { q: 'What should the security manager do FIRST?', concept: 'accept', options: ['Mark it accepted, since mitigation has already been tried', 'Lower the asset’s value so residual falls below appetite', 'Recommend further treatment and escalate the decision', 'Remove the item from the register until the system retires'], answer: 2, why: 'Residual risk above appetite must be treated further, transferred, avoided, or escalated to the authority that can accept it. The security team never accepts it quietly or adjusts the numbers to fit.' },
+            { q: 'Daniel also asks for a six-month exception to the patching standard so a vendor upgrade can finish. What is the right path?', concept: 'accept', options: ['Approve it verbally, since the vendor upgrade is in progress', 'Document the risk and route it for time-bound acceptance', 'Refuse it, since the patching standard allows no exceptions', 'Remove the patching requirement for legacy systems'], answer: 1, why: 'An exception is a risk acceptance with an owner and an expiry. The manager neither refuses outright nor allows it informally, but documents the residual risk and routes it to the right authority.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'sort', short: 'Acceptance check', title: 'Review the acceptance requests', concept: 'accept',
+      instr: 'You chair the pre-review for Tamarind’s risk committee. Apply the acceptance rules in the table to each request and place it in the bucket that describes it. Each request has one issue at most.',
+      hint: 'Check three things in order. Is the residual inside the band the signer may accept? Is the signer the accountable business owner, not security or IT? Does the request carry a firm expiry or review date? If residual is above $400,000, no one below the board can accept it.',
+      buckets: ['Ready to approve', 'Wrong signer', 'Missing expiry or review', 'Outside tolerance'],
+      table: {
+        caption: 'Tamarind Health Network acceptance rules',
+        head: ['Residual exposure per year', 'Who may accept', 'Maximum term'],
+        rows: [
+          ['Up to $250,000 (within appetite)', 'The business risk owner', '12 months, then review'],
+          ['$250,001 to $400,000 (within tolerance)', 'The executive risk committee', '6 months, then review'],
+          ['Above $400,000 (outside tolerance)', 'No one; treat further or take to the board', 'Not applicable']
+        ]
+      },
+      review: { href: 'lesson03.html#s4', label: 'Lesson 3, Acceptance & Residual Risk' },
+      items: [
+        { text: 'Residual risk on a legacy lab system is $180,000. The lab services director signed with a rationale, and the expiry reads "until further notice."', answer: 2, why: 'The signer and amount are right, but acceptance without an expiry becomes permanent by default. It needs a review date within 12 months.' },
+        { text: 'An exception lets a new patient portal launch before its penetration test. Residual is $60,000. The CISO approved it so the launch would not slip, with a 90-day expiry.', answer: 1, why: 'The CISO recommends but does not accept business risk. The portal’s business owner must sign.' },
+        { text: 'Residual on the billing platform is $350,000. The executive risk committee accepted it with a rationale, a six-month expiry, and a register entry.', answer: 0, why: 'The amount falls in the tolerance band, the committee is the right authority, and the term is within six months.' },
+        { text: 'Residual exposure on a medical-device network is $520,000. The executive risk committee accepted it for six months.', answer: 3, why: 'At $520,000 the risk sits above tolerance. The committee cannot accept it, so it must be treated further or taken to the board.' },
+        { text: 'The HR system carries $75,000 of residual risk. The IT director signed the acceptance because IT hosts the system, with a 12-month review date.', answer: 1, why: 'IT is the custodian, not the owner. The HR executive who owns the system and its data must accept the risk.' },
+        { text: 'An engineering team’s AI coding assistant leaves $120,000 of residual risk. The CTO, who owns the engineering platforms, signed with a rationale and a six-month expiry.', answer: 0, why: 'The CTO owns the affected systems, the amount is within appetite, and the term is well under 12 months.' },
+        { text: 'Residual on the imaging archive is $310,000. The radiology vice president signed it with a six-month expiry.', answer: 1, why: 'Between $250,001 and $400,000, only the executive risk committee may accept. A single business owner is the wrong authority at this level.' },
+        { text: 'A clinic’s unsupported workstation carries $40,000 of residual risk. The clinic manager signed, listed compensating controls, and wrote that review will happen "when budget allows."', answer: 2, why: 'A review tied to budget is not a review date. The acceptance needs a firm expiry so it does not become permanent.' },
+        { text: 'Residual on a supplier data feed is $450,000. The CFO signed the acceptance alone with a three-month expiry.', answer: 3, why: 'No executive can accept residual above tolerance, whatever the term. The risk needs more treatment or a board decision.' },
+        { text: 'Residual for a cloud scheduling tool is $95,000. The outpatient operations director signed with a rationale, a 12-month review date, and a register entry.', answer: 0, why: 'Right owner, within appetite, documented, and time-bound. This acceptance can go forward.' }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'owner', label: 'Think of a risk in your own organization that has been accepted. Who signed, and when will it be reviewed? If you cannot answer, what does that tell a security manager?' },
+        { key: 'next', label: 'Which concept from this activity will you review before the next lesson, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

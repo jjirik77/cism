@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>B7 Breach Notification Decision Clock | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+/* B7: breach notification decision clock (light theme, lab-scoped) */
+.n7-note { font: .8rem/1.5 Arial, sans-serif; color: var(--text-muted); margin: .3rem 0 1rem; }
+.n7-disc { border: 1px dashed var(--amber); background: #fff8eb; border-radius: 4px; padding: .6rem .8rem; font: .82rem/1.5 Arial, sans-serif; color: var(--text-secondary); margin-bottom: 1rem; }
+.n7-mx td { font-size: .8rem; vertical-align: top; }
+.n7-mx td:first-child { font-weight: 700; white-space: nowrap; color: var(--text-primary); }
+.n7-mx td b { color: var(--text-primary); }
+.n7-h4 { font: 700 1rem Georgia, serif; color: var(--text-primary); margin: 1.3rem 0 .5rem; }
+.n7-rules { margin: 0 0 1rem; padding-left: 1.2rem; font: .86rem/1.6 Arial, sans-serif; color: var(--text-secondary); }
+.n7-rules b { color: var(--text-primary); }
+.n7-facts { list-style: none; margin: 0 0 1rem; padding: 0; border: 1px solid var(--border); border-radius: 4px; }
+.n7-fact { display: grid; grid-template-columns: 52px 150px minmax(0, 1fr) 150px; gap: .4rem .8rem; align-items: start; padding: .6rem .75rem; border-top: 1px solid var(--border); font: .84rem/1.5 Arial, sans-serif; color: var(--text-secondary); }
+.n7-fact:first-child { border-top: 0; }
+.n7-fact.aw { background: var(--gold-pale); box-shadow: inset 4px 0 0 var(--gold); }
+.n7-fact .fid { font: 900 .8rem 'Arial Narrow', Arial, sans-serif; color: var(--navy); }
+.n7-fact .ftime { font: 700 .8rem 'Courier New', monospace; color: var(--text-primary); }
+.n7-fact .fkind { display: block; font: 700 .64rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-top: .15rem; }
+.n7-fact label { font: 700 .76rem Arial, sans-serif; color: var(--navy); display: flex; gap: .35rem; align-items: center; cursor: pointer; }
+.n7-fact.hid { color: var(--text-muted); font-style: italic; background: var(--section-alt); }
+.n7-trig td select, .n7-board select { font: .8rem Arial, sans-serif; padding: .3rem .35rem; border: 1px solid var(--border); border-radius: 3px; background: #fff; color: var(--text-primary); max-width: 17rem; }
+.n7-trig td, .n7-board td { font-size: .8rem; vertical-align: middle; }
+.n7-clockbar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .7rem; margin: .4rem 0 .6rem; }
+.n7-clockbar .n7-nowlab { font: 700 .86rem 'Courier New', monospace; color: var(--text-primary); background: #fff8eb; border: 1px solid var(--amber); border-radius: 3px; padding: .25rem .5rem; }
+.n7-clockbar input[type=range] { flex: 1 1 240px; accent-color: var(--amber); }
+.n7-clockbar .btn { padding: .4rem .7rem; font-size: .72rem; }
+.n7-seg { display: inline-flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.n7-seg button { border: 0; background: #fff; padding: .4rem .7rem; font: 700 .72rem Arial, sans-serif; color: var(--text-secondary); cursor: pointer; }
+.n7-seg button[aria-pressed=true] { background: var(--navy); color: #fff; }
+.n7-svgwrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; background: #fbfdfd; }
+.n7-svgwrap svg { display: block; min-width: 760px; width: 100%; height: auto; font-family: Arial, sans-serif; }
+.n7-st { display: inline-block; font: 700 .68rem Arial, sans-serif; letter-spacing: .04em; text-transform: uppercase; border-radius: 3px; padding: .12rem .4rem; border: 1px solid var(--border); color: var(--text-secondary); background: #fff; white-space: nowrap; }
+.n7-st.late { color: var(--wrong); border-color: var(--wrong); background: var(--wrong-bg); }
+.n7-st.soon { color: #8a5300; border-color: var(--amber); background: #fff8eb; }
+.n7-st.ok { color: var(--correct); border-color: var(--correct); background: var(--correct-bg); }
+.n7-st.off { color: var(--text-muted); font-style: italic; }
+.n7-board .n7-mv { display: inline-flex; gap: .2rem; }
+.n7-board .n7-mv button, .n7-board .n7-sent { border: 1px solid var(--border); background: #fff; border-radius: 3px; padding: .22rem .45rem; font: 700 .74rem Arial, sans-serif; color: var(--navy); cursor: pointer; }
+.n7-board .n7-mv button:disabled { color: var(--text-muted); cursor: default; opacity: .5; }
+.n7-board .n7-sent[aria-pressed=true] { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+.n7-board td:nth-child(3) { white-space: nowrap; }
+.n7-board td.pos { font: 900 .9rem 'Arial Narrow', Arial, sans-serif; color: var(--gold); width: 2rem; }
+.n7-result { margin-top: .8rem; font: .86rem/1.55 Arial, sans-serif; }
+.n7-result ul { margin: .3rem 0 0; padding-left: 1.2rem; }
+.n7-mb { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.n7-para { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .6rem; align-items: start; border: 1px solid var(--border); border-left: 4px solid var(--navy-light); border-radius: 0 4px 4px 0; padding: .55rem .7rem; margin-bottom: .5rem; background: #fff; font: .84rem/1.55 Arial, sans-serif; color: var(--text-secondary); }
+.n7-para.off { opacity: .55; text-decoration: line-through; border-left-color: var(--border); }
+.n7-para.added { border-left-color: var(--gold); background: var(--gold-pale); }
+.n7-para .pid { font: 900 .72rem 'Arial Narrow', Arial, sans-serif; color: var(--navy); margin-right: .35rem; }
+.n7-para button, .n7-lib button { border: 1px solid var(--border); background: #fff; border-radius: 3px; padding: .25rem .5rem; font: 700 .72rem Arial, sans-serif; color: var(--navy); cursor: pointer; white-space: nowrap; }
+.n7-lib { list-style: none; margin: 0; padding: 0; }
+.n7-lib li { border: 1px solid var(--border); border-radius: 4px; padding: .5rem .65rem; margin-bottom: .45rem; font: .8rem/1.5 Arial, sans-serif; color: var(--text-secondary); background: #fff; }
+.n7-lib li b { color: var(--text-primary); display: block; margin-bottom: .15rem; }
+.n7-lib li .n7-row { display: flex; justify-content: flex-end; margin-top: .3rem; }
+.n7-meter { border: 1px solid var(--border); border-radius: 4px; padding: .7rem .8rem; background: var(--blue-pale); margin-top: .6rem; font: .84rem/1.55 Arial, sans-serif; color: var(--text-secondary); }
+.n7-meter b { color: var(--text-primary); }
+.n7-els { margin: .3rem 0 0; padding-left: 1.2rem; font: .82rem/1.55 Arial, sans-serif; color: var(--text-secondary); }
+@media (max-width: 820px) {
+  .n7-fact { grid-template-columns: 44px minmax(0, 1fr); }
+  .n7-fact .fbody, .n7-fact .fpick { grid-column: 1 / -1; }
+  .n7-mb { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This lab needs JavaScript enabled.</p></noscript></div>
+
+<script>
+/* ===================== Scenario data (fixed arrays) =====================
+   Tidewater Commerce Group: confirmed exfiltration of customer and order records.
+   Times are minutes after Monday, October 12, 2026, 00:00 (company time).
+   Every answer key below is computed from these arrays, and LAB_SELFTEST
+   re-derives it from the fact flags independently. */
+(function () {
+  var DAY = 1440;
+  function t(d, h, m) { return d * DAY + h * 60 + (m || 0); }
+  var WD = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  function p2(n) { return (n < 10 ? '0' : '') + n; }
+  function md(d) { var x = 12 + d; return x <= 31 ? 'Oct ' + x : 'Nov ' + (x - 31); }
+  function fmt(m) { var d = Math.floor(m / DAY), r = m - d * DAY; return WD[d % 7] + ' ' + md(d) + ', ' + p2(Math.floor(r / 60)) + ':' + p2(r % 60); }
+  function hm(m) { var d = Math.floor(m / DAY), r = m - d * DAY; return p2(Math.floor(r / 60)) + ':' + p2(r % 60); }
+  function hrs(x) { return Math.round(x / 6) / 10; }
+
+  // pd: personal data status the fact establishes; card / ca: data-category and jurisdiction scope flags
+  var FACTS = [
+    { id: 'F1', at: t(0, 22, 40), kind: 'Alert', pd: null, text: 'SIEM alert: a 4.2 GB outbound transfer from the order-history database replica to an unfamiliar cloud storage bucket. A Tier 1 analyst opens a priority 3 ticket.' },
+    { id: 'F2', at: t(1, 8, 15), kind: 'Escalation', pd: 'suspected', text: 'The SOC lead escalates: the transfer used the service account of a retired marketing-analytics integration. The incident response plan is activated for a suspected incident, and the retained forensic firm (on the insurer’s panel) begins analysis.' },
+    { id: 'F3', at: t(1, 16, 30), kind: 'Confirmation', pd: 'confirmed', clients: true, ca: 'possible', text: 'The forensic firm confirms the bucket received a compressed export of about 412,000 order records: names, email addresses, shipping addresses, phone numbers, and order history. The export includes records Tidewater processes for two fulfillment clients: about 41,800 for Cedarline Pet Supply and 19,600 for Bellwether Home Goods. Storefront country codes suggest about 39,000 EU and 9,000 UK customers, plus a few hundred Canadian addresses still to be verified. The incident commander declares a personal data breach.' },
+    { id: 'F4', at: t(2, 9, 0), kind: 'Containment', pd: null, text: 'The service account is disabled and bucket access is revoked through the cloud provider. No transfers occurred after Oct 13, 02:10. Containment is confirmed.' },
+    { id: 'F5', at: t(3, 12, 0), kind: 'Scope finding', pd: null, ca: false, text: 'Jurisdiction analysis is complete: 186,200 U.S. residents in 41 states, 38,700 EU residents, 9,450 UK residents, and no Canadian residents. The Canadian addresses flagged on Oct 13 were test records, and the Canadian storefront runs on a separate platform that was not affected.' },
+    { id: 'F6', at: t(4, 10, 0), kind: 'Scope finding', pd: null, card: true, text: 'The export also held a legacy checkout table left from a 2023 platform migration: 3,940 full card numbers with expiration dates, stored outside the tokenized payment flow.' },
+    { id: 'F7', at: t(14, 17, 0), kind: 'Final report', pd: null, text: 'The forensic firm delivers its final investigation report: root cause, full attack timeline, and confirmed record counts.' }
+  ];
+  // key: the true clock start ('AW' = moment of awareness, a fact ID, or null = not triggered)
+  var OBL = [
+    { id: 'O1', name: 'EU lead supervisory authority', short: 'EU authority', trigger: 'Personal data of EU residents compromised (Tidewater is the controller for its storefront customers)', starts: 'Moment of awareness', hours: 72, deadline: '72 hours', owner: 'DPO', ownerName: 'Aoife Brennan', content: 'Template R-1, elements E1 to E8. A phased notice is allowed when facts are incomplete.', key: 'AW' },
+    { id: 'O2', name: 'UK supervisory authority (ICO)', short: 'UK ICO', trigger: 'Personal data of UK residents compromised', starts: 'Moment of awareness', hours: 72, deadline: '72 hours', owner: 'DPO', ownerName: 'Aoife Brennan', content: 'Template R-1, elements E1 to E8. A phased notice is allowed.', key: 'AW' },
+    { id: 'O3', name: 'Cyber insurer, Halcyon Mutual Specialty', short: 'Cyber insurer', trigger: 'Any confirmed breach (policy CY-448812, condition 7.2)', starts: 'Moment of awareness', hours: 12, deadline: '12 hours, and before any other external party (rule S1)', owner: 'Risk and Insurance Manager', ownerName: 'Priya Raman', content: 'Policy number, awareness time, description, estimated records, vendors already engaged; request the breach coach.', key: 'AW' },
+    { id: 'O4', name: 'Acquiring bank, Meridian Merchant Services', short: 'Acquiring bank', trigger: 'Cardholder data suspected or confirmed compromised (reported to the card brands through the acquirer)', starts: 'Awareness that cardholder data is involved', hours: 24, deadline: '24 hours', owner: 'Payments Lead', ownerName: 'Marcus Delgado', content: 'Merchant ID, card count, exposure dates, containment status; agree on a PCI forensic investigator.', key: 'F6' },
+    { id: 'O5', name: 'Cedarline Pet Supply (fulfillment client)', short: 'Cedarline', trigger: 'Client data compromised (DPA section 9.2). Tidewater is the processor.', starts: 'Moment of awareness', hours: 24, deadline: '24 hours', owner: 'Client Services VP', ownerName: 'Daniel Okafor', content: 'What happened, client data categories and record count, awareness time, measures taken, named contact, next update time.', key: 'AW' },
+    { id: 'O6', name: 'Bellwether Home Goods (fulfillment client)', short: 'Bellwether', trigger: 'Client data compromised (DPA section 11.4). Tidewater is the processor.', starts: 'Moment of awareness', hours: 48, deadline: '48 hours', owner: 'Client Services VP', ownerName: 'Daniel Okafor', content: 'Same content as the Cedarline notice.', key: 'AW' },
+    { id: 'O7', name: 'U.S. state attorneys general (Appendix B states)', short: 'State AGs', trigger: 'Residents of an Appendix B state affected', starts: 'Moment of awareness', hours: 720, deadline: '30 days, at or before individual notice (rule S3)', owner: 'General Counsel', ownerName: 'Lucía Fernández (backup: Kwame Mensah)', content: 'State form, resident count per state, planned date of individual notice.', key: 'AW' },
+    { id: 'O8', name: 'Affected individuals (Tidewater storefront customers)', short: 'Customers', trigger: 'Breach likely to result in high risk to individuals', starts: 'Moment of awareness', hours: 720, deadline: '30 days, and only after rule S2 is met', owner: 'Communications Director', ownerName: 'Grace Liu, with Legal approval', content: 'Plain-language description, data involved, steps taken, what customers should do, contact line, support offered.', key: 'AW' },
+    { id: 'O9', name: 'Canadian privacy commissioner', short: 'Canada', trigger: 'Personal information of Canadian residents compromised with a real risk of significant harm', starts: 'Awareness that Canadian residents are affected', hours: 72, deadline: '72 hours (company standard)', owner: 'DPO', ownerName: 'Aoife Brennan', content: 'Template R-1, adapted.', key: null }
+  ];
+  var ROLES = ['CISO (you)', 'DPO', 'General Counsel', 'Risk and Insurance Manager', 'Payments Lead', 'Client Services VP', 'Communications Director'];
+  var ELEMENTS = [
+    ['E1', 'Nature of the breach: what happened and how it was discovered'],
+    ['E2', 'Date and time of awareness, and when the breach occurred'],
+    ['E3', 'Categories and approximate number of data subjects'],
+    ['E4', 'Categories and approximate number of personal data records'],
+    ['E5', 'Name and contact details of the Data Protection Officer'],
+    ['E6', 'Likely consequences for the people affected'],
+    ['E7', 'Measures taken or proposed, including mitigation'],
+    ['E8', 'Statement that the notice is initial and further information will follow in phases']
+  ];
+  var DRAFT = [
+    { id: 'P1', tags: [], text: 'Subject: Initial personal data breach notification, Tidewater Commerce Group Ltd., incident reference LCG-IR-2026-031.' },
+    { id: 'P2', tags: ['E1', 'E2'], text: 'Between 12 and 13 October 2026, an unauthorized party used a dormant service account to export customer records from an order database replica to external cloud storage. Our monitoring detected the transfer, and the breach was confirmed on 13 October 2026 at 16:30, which we record as our moment of awareness.' },
+    { id: 'P3', tags: ['E4'], text: 'The export contained approximately 412,000 order records, including names, email addresses, shipping addresses, phone numbers, and order history.' },
+    { id: 'P4', tags: ['E7'], text: 'We have disabled the account, revoked access to the storage location, and engaged an independent forensic firm. We are reviewing all integration service accounts.' },
+    { id: 'P5', tags: [], issue: 'Gives an assurance the investigation has not established. Matrix rule C2: never state that a data category was not affected until the investigation rules it out.', text: 'At this stage we have no indication that payment card data was involved, and we expect the investigation to confirm that the impact is limited.' },
+    { id: 'P6', tags: [], issue: 'Routes the regulator to media relations. Matrix rule C3: regulator notices name the DPO as the point of contact.', text: 'For questions about this notification, please contact our media relations team at press@larkspur.example.' }
+  ];
+  var LIB = [
+    { id: 'K1', title: 'Affected people', tags: ['E3'], text: 'The breach affects customers of our online store. Based on storefront country codes, we estimate about 39,000 EU residents are affected. We will confirm the figure in a follow-up notice.' },
+    { id: 'K2', title: 'Card data statement', tags: [], issue: 'Unverified negative assurance (rule C2).', text: 'We are confident that no payment card data was involved in this incident.' },
+    { id: 'K3', title: 'Privacy contact', tags: ['E5'], text: 'Data Protection Officer: Aoife Brennan, dpo@tidewater.example, +353 1 555 0142.' },
+    { id: 'K4', title: 'Root cause statement', tags: [], issue: 'Assigns blame before the facts are established and before the insurer’s breach coach has reviewed external statements (rule C4).', text: 'The breach was caused by our former analytics vendor, which failed to retire the service account it used.' },
+    { id: 'K5', title: 'Impact on individuals', tags: ['E6'], text: 'Likely consequences include targeted phishing and fraud attempts that use names, contact details, and order history. We assess the risk to individuals as high and are preparing a notice to them.' },
+    { id: 'K6', title: 'Apology', tags: [], text: 'We sincerely regret this incident and the concern it may cause.' },
+    { id: 'K7', title: 'Phased reporting', tags: ['E8'], text: 'This is an initial notification. Our investigation continues, and we will provide further information in phases as it becomes available.' }
+  ];
+
+  var TICKET_NOW = t(1, 18, 0);
+  function fact(id) { for (var i = 0; i < FACTS.length; i++) if (FACTS[i].id === id) return FACTS[i]; return null; }
+  function obl(id) { for (var i = 0; i < OBL.length; i++) if (OBL[i].id === id) return OBL[i]; return null; }
+  // Answer key, computed from the arrays
+  var AW_FACT = FACTS.filter(function (f) { return f.pd === 'confirmed'; })[0].id;
+  var AW = fact(AW_FACT).at;
+  function startOf(o, aw) { if (o.key === null) return null; return o.key === 'AW' ? aw : fact(o.key).at; }
+  function dueOf(o, aw) { var s = startOf(o, aw); return s === null ? null : s + o.hours * 60; }
+  function keyOrder() {
+    // Deadline order, then rules: S1 insurer first; S3 AGs before individuals; S2 individuals after O1, O2, O3
+    var trig = OBL.filter(function (o) { return o.key !== null; });
+    trig.sort(function (a, b) { var r = function (o) { return o.id === 'O3' ? 0 : o.id === 'O8' ? 2 : 1; }; return r(a) - r(b) || dueOf(a, AW) - dueOf(b, AW) || (a.id < b.id ? -1 : 1); });
+    return trig.map(function (o) { return o.id; });
+  }
+  window.B7DATA = {
+    DAY: DAY, FACTS: FACTS, OBL: OBL, ROLES: ROLES, ELEMENTS: ELEMENTS, DRAFT: DRAFT, LIB: LIB, TICKET_NOW: TICKET_NOW,
+    fmt: fmt, hm: hm, md: md, hrs: hrs, fact: fact, obl: obl, startOf: startOf, dueOf: dueOf,
+    answers: {
+      awFact: AW_FACT,
+      firstHours: hrs(Math.min.apply(null, OBL.filter(function (o) { return o.key !== null; }).map(function (o) { return dueOf(o, AW); }).filter(function (d) { return d > TICKET_NOW; })) - TICKET_NOW),
+      due72: OBL.filter(function (o) { var d = dueOf(o, AW); return d !== null && d <= AW + 72 * 60; }).map(function (o) { return o.id; }),
+      first3: keyOrder().slice(0, 3),
+      cardFact: OBL.filter(function (o) { return o.id === 'O4'; })[0].key,
+      missing: ELEMENTS.map(function (e) { return e[0]; }).filter(function (e) { return !DRAFT.some(function (p) { return p.tags.indexOf(e) >= 0; }); })
+    }
+  };
+})();
+</script>
+<script>
+(function () {
+  var D = window.B7DATA;
+  var AW_OPTS = ['F1', 'F2', 'F3', 'F7'];
+  var AW_WHY = { F1: 'when the SIEM alert fired', F2: 'when the IR plan was activated', F3: 'when the breach was confirmed', F7: 'when the final report arrived' };
+  var ORDER_OPTS = [['O1', 'O2', 'O3'], ['O5', 'O3', 'O4'], ['O8', 'O3', 'O1'], ['O3', 'O5', 'O6']];
+  var ORDER_TXT = ['The EU authority, the UK ICO, then the insurer', 'Cedarline, the insurer, then the acquiring bank', 'Affected customers, the insurer, then the EU authority', 'The insurer, Cedarline, then Bellwether Home Goods'];
+  var CARD_OPTS = [['F3', 'AW'], ['F6', 'F6'], ['F7', 'F7'], ['PFI', null]];
+  function cardTxt(o) {
+    if (o[0] === 'PFI') return 'Only once a PCI forensic investigator confirms the compromise';
+    var s = D.fact(o[0]).at; return 'Starts ' + D.fmt(s) + ', due ' + D.fmt(s + 24 * 60);
+  }
+  function sameArr(a, b) { return a.length === b.length && a.every(function (x, i) { return x === b[i]; }); }
+
+window.LAB = {
+  id: 'B7',
+  title: 'Breach Notification Decision Clock',
+  accent: 'Decision Clock',
+  domain: 'Domain 4',
+  time: '45 min',
+  level: 'Intermediate to Advanced',
+  lessonHref: 'lesson06.html#s5',
+  lessonLabel: 'Lesson 6, Communication, Notification & Review',
+  lede: 'Notification deadlines start when the organization becomes aware, not when the investigation ends. Set the moment of awareness, watch every obligation land on a live clock, sequence the first notices with the right owners, and fix a draft regulator notice before it goes out.',
+  workbenchTitle: 'Decision clock',
+  ticket: {
+    number: 'IR-2026-031',
+    priority: 'Severity 1, critical',
+    from: 'Renata Oyelaran, Chief Operating Officer and incident executive sponsor',
+    to: 'Chief Information Security Officer (you)',
+    subject: 'Confirmed exfiltration: notification plan needed tonight',
+    due: 'Initial notification plan to the executive team by 20:00 today',
+    body: '<p>It is <b>Tuesday, October 13, 2026, 18:00</b>. At 16:30 the incident commander declared a personal data breach at Tidewater Commerce Group. An attacker used a forgotten service account to export customer and order records, including records we process for two fulfillment clients under contract.</p>' +
+      '<p>I am getting pressure from two directions. Victor Hale, SVP of Sales, wants us to say nothing to anyone until the forensic firm delivers its final report, so we only notify once. Grace Liu, our Communications Director, wants to email every customer tonight to get ahead of the story. Our General Counsel, Lucía Fernández, is on a flight to Singapore until Wednesday 09:00. Kwame Mensah, Associate General Counsel, is covering.</p>' +
+      '<p>We do not need to improvise the law tonight. Legal and the audit committee approved our <b>notification obligations matrix (NM-3)</b> in March for exactly this situation. Use it to set the clock, decide who notifies whom and in what order, and check the draft regulator notice Communications prepared from our template.</p>' +
+      '<p>Bring me the plan and the first stakeholder message. Keep the technical response separate: the IR team owns containment. You own the notification decisions and the coordination.</p>'
+  },
+  howTo: 'Read the <b>Notification matrix</b> first. On the <b>Decision clock</b> tab, set the moment of awareness from the incident log, set when each obligation’s clock starts, and advance the <b>now</b> marker to reveal later facts and watch deadlines approach. Use the <b>Coordination board</b> to order the notices and assign owners, and the <b>Message builder</b> to repair the draft notice. Check each checklist item as you go. A revealed debrief earns no points. Team mode: one person drives the clock while the team argues the sequence.',
+  workIntro: 'All times are Tidewater company time. The matrix below is a fictional training document. The tools recalculate from your selections; the checklist is graded against the matrix and the incident log.',
+  checklist: [
+    { id: 'aware', type: 'choice', points: 12, short: 'Moment of awareness', title: 'Set the moment of awareness',
+      task: 'Using the matrix definition and the incident log, when did Tidewater become aware of the breach, so that the notification clocks start?',
+      options: AW_OPTS.map(function (id) { return D.fmt(D.fact(id).at) + ', ' + AW_WHY[id]; }),
+      answer: function () { return AW_OPTS.indexOf(D.answers.awFact); },
+      hint: 'NM-3 says a suspicion under investigation does not start the clock, and a completed investigation is not required. Find the first entry that gives a reasonable degree of certainty that personal data was compromised.',
+      debrief: '<p>The alert on Monday night was an event, and the 08:15 escalation was a suspicion under investigation. At 16:30 on Tuesday the forensic firm confirmed that personal data left the company and the incident commander declared a breach. That is the reasonable degree of certainty NM-3 requires, so every awareness-based clock starts at Tue Oct 13, 16:30.</p><p>The SVP’s proposal to wait for the final report would move the start to Oct 26 and miss every regulatory and contractual deadline by days. The manager’s answer is phased notice: notify on time with what is known, say the investigation continues, and supplement later. Awareness is an organizational fact recorded in the incident log, not a date the business gets to choose.</p>',
+      reviewNote: 'The clock starts at a reasonable degree of certainty, not at the first alert and not at the final report.' },
+    { id: 'first', type: 'number', points: 10, short: 'Hours to first deadline', title: 'Hours until the first deadline',
+      task: 'With the clock set correctly, the now marker at the ticket time (Tue Oct 13, 18:00), and each obligation started at its correct trigger, how many <b>hours</b> remain until the first notification deadline?',
+      answer: function () { return D.answers.firstHours; }, tol: 0.05, unit: 'hours',
+      hint: 'Sort the triggered obligations by due time on the clock. The shortest window in NM-3 is not a regulator.',
+      debrief: '<p>The cyber insurer’s 12-hour notice condition falls due at Wed Oct 14, 04:30, which is 10.5 hours after the ticket time. It arrives before either client contract and well before the 72-hour regulator deadlines, and it lands in the middle of the night.</p><p>That is why the matrix names a Risk and Insurance Manager with a backup and why the plan goes to the executive team at 20:00, not in the morning. Late notice to the insurer can put coverage at risk, and the insurer’s breach coach and panel counsel shape every external statement that follows.</p>',
+      reviewNote: 'Read the deadline column for every triggered row; the insurer’s window is the shortest.' },
+    { id: 'card', type: 'choice', points: 10, short: 'Later scope finding', title: 'Clock for the acquiring bank',
+      task: 'The acquiring bank obligation (O4) depends on cardholder data. When does its clock start, and when is the notice due?',
+      options: CARD_OPTS.map(cardTxt),
+      answer: function () { for (var i = 0; i < CARD_OPTS.length; i++) if (CARD_OPTS[i][1] === D.answers.cardFact) return i; return -1; },
+      hint: 'Row O4 starts at awareness that cardholder data is involved. Advance the now marker and find the entry that first shows card numbers in the export.',
+      debrief: '<p>On Tuesday the export looked like contact data and order history only. Card numbers surfaced on Fri Oct 16 at 10:00, when the scope work found a legacy checkout table outside the tokenized flow. The acquirer’s 24-hour clock starts there, so the notice is due Sat Oct 17, 10:00.</p><p>A scope finding can start a new clock days after awareness. The manager keeps the matrix open for the whole investigation and has the incident commander flag every new data category or jurisdiction to the notification lead. Waiting for a PCI forensic investigator is the wrong trigger: the acquirer is told on suspicion and the investigator is appointed with it.</p>',
+      reviewNote: 'Category-based obligations start when the company learns that category is involved.' },
+    { id: 'due72', type: 'set', points: 15, short: 'Due within 72 hours', title: 'Obligations due within 72 hours of awareness',
+      task: 'Which obligations fall due <b>within 72 hours of the moment of awareness</b> (on or before Fri Oct 16, 16:30)? Enter the obligation IDs from the matrix. Leave out anything that is not triggered.',
+      label: 'Obligation IDs (O1 to O9)', placeholder: 'e.g., O1, O2',
+      answer: function () { return D.answers.due72; },
+      hint: 'Set the zoom to the first five days and read the diamonds left of the 72-hour mark. Check two rows carefully: the one that starts at a later scope finding, and the one whose jurisdiction the scope work rules out.',
+      debrief: '<p>Five notices are due inside the first 72 hours: the insurer (O3, 12 hours), Cedarline (O5, 24 hours), Bellwether (O6, 48 hours), and both supervisory authorities (O1 and O2, 72 hours). Two client contracts are shorter than the regulatory window. A plan built only around the 72-hour rule would breach both contracts.</p><p>The acquiring bank (O4) is due Saturday at 10:00 because its clock started with the Friday finding. The Canadian commissioner (O9) is not triggered at all, because the Thursday scope finding showed no Canadian residents were affected. A manager who started every row at awareness would over-notify Canada and plan the acquirer on the wrong date.</p>',
+      reviewNote: 'Include contractual deadlines, exclude rows that are not triggered, and start category-based rows at their own trigger.' },
+    { id: 'order', type: 'choice', points: 12, short: 'First three notices', title: 'Order of the first three notifications',
+      task: 'Apply the deadlines and the sequencing rules in NM-3. Which are the first three external notifications, in order?',
+      options: ORDER_TXT,
+      answer: function () { for (var i = 0; i < ORDER_OPTS.length; i++) if (sameArr(ORDER_OPTS[i], D.answers.first3)) return i; return -1; },
+      hint: 'Rule S1 puts one party ahead of every other external party. After that, rule S4 says to work the queue in deadline order.',
+      debrief: '<p>The insurer goes first under rule S1, before anyone outside the company hears about the breach. Cedarline follows at 24 hours and Bellwether at 48 hours, both under their data processing agreements. The two supervisory authorities come next at 72 hours. Customers come last under rule S2.</p><p>The order is not a ranking of importance. Regulators are not less important than clients. The matrix sequences notices so that each one meets its own deadline and so that the insurer’s counsel can review statements before they reach anyone who could rely on them. Because Tidewater is the processor for the client data, the clients then decide on their own regulator and customer notices.</p>',
+      reviewNote: 'Rule S1 first, then deadline order; customers last under rule S2.' },
+    { id: 'cust', type: 'choice', points: 10, short: 'Customer email tonight', title: 'Respond to the customer email request',
+      task: 'Grace Liu wants to email all affected customers tonight. Under NM-3, what is the best decision?',
+      options: ['Hold it: draft it now and send once the S2 conditions are met', 'Approve it: early notice to customers shows transparency', 'Approve it for EU and UK customers only, where GDPR applies', 'Hold it until the final forensic report confirms the scope'],
+      answer: 0,
+      hint: 'Rule S2 names three things that must happen before individual notice. None of them is the final report.',
+      debrief: '<p>Rule S2 requires notice to the supervisory authorities and the insurer, and consultation with law enforcement, before customers are told. A customer email tonight would reach 234,000 people before the insurer, the clients, or any regulator, and it would go out before the scope is known: it would not mention card data, which surfaces on Friday.</p><p>Holding the email is not hiding the breach. The manager has Communications draft the customer notice, FAQ, and call-center script now, so they can go out without undue delay once rule S2 is met and well inside 30 days. Waiting for the final report is wrong for the same reason it is wrong for regulators.</p>',
+      reviewNote: 'Individual notice follows rule S2; prepare it early, send it in sequence.' },
+    { id: 'missing', type: 'set', points: 14, short: 'Draft notice gaps', title: 'Missing elements in the draft regulator notice',
+      task: 'Compare the Communications draft (paragraphs P1 to P6) with template R-1. Which required elements does the <b>original draft</b> fail to provide? Enter the element IDs.',
+      label: 'Element IDs (E1 to E8)', placeholder: 'e.g., E1, E2',
+      answer: function () { return D.answers.missing; },
+      hint: 'Check each paragraph against E1 to E8. A record count is not the same as a count of people, and a press address is not a privacy contact.',
+      debrief: '<p>The draft covers what happened and when (E1, E2), the records involved (E4), and the measures taken (E7). It never says how many people are affected or who they are (E3), never names the DPO (E5), says nothing about likely consequences (E6), and does not say that this is an initial notice with more to follow (E8). It also contains two content problems: P5 gives a card-data assurance that Friday’s finding will contradict, and P6 sends the regulator to media relations.</p><p>The manager does not write the notice. The manager makes sure the owner uses the approved template and that nothing in it gets ahead of the facts. A notice that is on time but incomplete, or that later proves wrong, damages the relationship with the regulator more than a short, honest initial notice that promises phased updates.</p>',
+      reviewNote: 'Check each template element against the draft; counts of people and the DPO contact are separate elements.' },
+    { id: 'plan', type: 'text', points: 17, short: 'Plan and message', title: 'Write the initial notification plan and stakeholder message', reportTitle: 'Initial notification plan and stakeholder message',
+      task: 'Write the plan for the 20:00 executive briefing and the first stakeholder message. Use the times from your clock.',
+      fields: [
+        { key: 'clock', label: 'Clock decision: the moment of awareness and your answer to the proposal to wait', min: 40, placeholder: 'State the awareness time, why, and how phased notice answers the SVP.' },
+        { key: 'plan', label: 'Initial notification plan: first notices in order, with owners and due times', min: 80, placeholder: 'List each notice due in the first 72 hours, its owner, and its deadline; note O4, O8, and O9.' },
+        { key: 'msg', label: 'Stakeholder message: the initial notice to Cedarline Pet Supply', min: 80, placeholder: 'Write the notice the Client Services VP will send under DPA section 9.2.' }
+      ],
+      hint: 'Lead with the awareness time. Order the notices by rule S1 and then by deadline, name the owner of each, and say what triggers the acquirer and why Canada is excluded. The Cedarline notice needs the content listed in row O5.',
+      debrief: '<p><b>Model plan.</b> <b>Clock:</b> Awareness is Tue Oct 13, 16:30, when the forensic firm confirmed exfiltration of personal data and the incident commander declared a breach. We will not wait for the final report; we will send phased notices on time and supplement them as facts develop. <b>Plan:</b> (1) Insurer, Priya Raman, by Wed 04:30, before any other external party; request the breach coach. (2) Cedarline, Daniel Okafor, by Wed 16:30. (3) Bellwether, Daniel Okafor, by Thu 16:30. (4) EU lead authority and UK ICO, Aoife Brennan, by Fri 16:30, using template R-1. Law enforcement is consulted by the CISO this week. State attorneys general (Lucía Fernández or Kwame Mensah) and customers (Grace Liu, with Legal approval) follow within 30 days, customers only after rule S2 is met. The acquirer clock starts only if cardholder data is found, with 24 hours from that finding. Canada is pending the jurisdiction analysis and drops if no Canadian residents are affected.</p><p><b>Model message.</b> “Under section 9.2 of our data processing agreement, Tidewater is notifying Cedarline Pet Supply of a personal data breach affecting records we process for you. On Oct 12 and 13 an unauthorized party used a retired integration account to export order records to external storage. We became aware on Oct 13 at 16:30. The export includes names, email addresses, shipping addresses, phone numbers, and order history for Cedarline customers; we estimate about 41,800 records and will confirm the count. We have disabled the account, cut off the storage location, and engaged an independent forensic firm. This is an initial notice. Daniel Okafor is your contact, and our next update will reach you by Thu Oct 15, 12:00. We will support your own notification decisions.”</p>',
+      reviewNote: 'The plan states the awareness time, orders notices by rule and deadline with owners, and the message meets the contract content list.' }
+  ],
+
+  /* ===================== Workbench ===================== */
+  workbench: function (root, api) {
+    var esc = api.esc, F = D.FACTS, O = D.OBL;
+    function st() {
+      return {
+        aw: api.note('aw') || null, trig: api.note('trig') || {}, now: api.note('now') == null ? D.TICKET_NOW : api.note('now'),
+        zoom: api.note('zoom') || 'short', own: api.note('own') || {}, ord: api.note('ord') || O.map(function (o) { return o.id; }),
+        sent: api.note('sent') || {}, keep: api.note('keep') || {}, add: api.note('add') || []
+      };
+    }
+    function awAt() { var s = st(); return s.aw ? D.fact(s.aw).at : null; }
+    function trigOf(o) { var t = st().trig[o.id]; return t === undefined ? 'AW' : t; }
+    function startL(o) { var t = trigOf(o); if (t === 'NONE') return null; if (t === 'AW') return awAt(); return D.fact(t).at; }
+    function dueL(o) { var s = startL(o); return s === null ? null : s + o.hours * 60; }
+    function revealed(f) { return f.at <= st().now; }
+
+    root.innerHTML = '<div class="lb-tool">' +
+      '<div class="lb-tabs" role="tablist" aria-label="Workbench tools">' +
+        '<button role="tab" id="n7-tb-mx" aria-controls="n7-pn-mx" aria-selected="true">Notification matrix</button>' +
+        '<button role="tab" id="n7-tb-clk" aria-controls="n7-pn-clk" aria-selected="false" tabindex="-1">Decision clock</button>' +
+        '<button role="tab" id="n7-tb-brd" aria-controls="n7-pn-brd" aria-selected="false" tabindex="-1">Coordination board</button>' +
+        '<button role="tab" id="n7-tb-msg" aria-controls="n7-pn-msg" aria-selected="false" tabindex="-1">Message builder</button></div>' +
+      '<div class="lb-panel" role="tabpanel" id="n7-pn-mx" aria-labelledby="n7-tb-mx">' + MATRIX() + '</div>' +
+      '<div class="lb-panel" role="tabpanel" id="n7-pn-clk" aria-labelledby="n7-tb-clk" hidden></div>' +
+      '<div class="lb-panel" role="tabpanel" id="n7-pn-brd" aria-labelledby="n7-tb-brd" hidden></div>' +
+      '<div class="lb-panel" role="tabpanel" id="n7-pn-msg" aria-labelledby="n7-tb-msg" hidden></div></div>';
+    var tabs = [].slice.call(root.querySelectorAll('[role=tab]'));
+    function sel(t) { tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); api.note('tab', t.id); }
+    tabs.forEach(function (t, i) { t.addEventListener('click', function () { sel(t); }); t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; sel(n); n.focus(); } }); });
+    if (api.note('tab')) { var tt = document.getElementById(api.note('tab')); if (tt) sel(tt); }
+
+    var pClk = root.querySelector('#n7-pn-clk'), pBrd = root.querySelector('#n7-pn-brd'), pMsg = root.querySelector('#n7-pn-msg');
+
+    /* ---------- Matrix (static document) ---------- */
+    function MATRIX() {
+      return '<div class="n7-disc"><b>Fictional training document.</b> NM-3 is Tidewater Commerce Group’s own legal-approved matrix, written for this lab. It is not legal advice and does not state the requirements of any actual law, contract, or insurance policy.</div>' +
+        '<p class="eyebrow">Tidewater Commerce Group &middot; NM-3, approved by the General Counsel and the audit committee, March 2026</p>' +
+        '<h4 class="n7-h4" style="margin-top:.2rem">Notification obligations matrix</h4>' +
+        '<div class="table-wrap"><table class="data n7-mx"><thead><tr><th>ID</th><th>Stakeholder</th><th>Trigger</th><th>Clock starts</th><th>Deadline</th><th>Owner</th><th>Required content</th></tr></thead><tbody>' +
+        O.map(function (o) { return '<tr><td>' + o.id + '</td><td><b>' + esc(o.name) + '</b></td><td>' + esc(o.trigger) + '</td><td>' + esc(o.starts) + '</td><td>' + esc(o.deadline) + '</td><td>' + esc(o.owner) + '<br><span class="n7-note">' + esc(o.ownerName) + '</span></td><td>' + esc(o.content) + '</td></tr>'; }).join('') +
+        '</tbody></table></div>' +
+        '<h4 class="n7-h4">Definitions</h4><ul class="n7-rules">' +
+        '<li><b>Moment of awareness.</b> The time Tidewater has a reasonable degree of certainty that a security incident has compromised personal data. The incident commander records it in the incident log. A suspicion under investigation does not start the clock. A completed investigation is not required.</li>' +
+        '<li><b>Measuring deadlines.</b> Every deadline is measured in elapsed hours from the row’s clock start, including nights and weekends. Unless a row says otherwise, the clock starts at the moment of awareness.</li>' +
+        '<li><b>Category and jurisdiction triggers.</b> A row tied to a data category or jurisdiction starts when Tidewater becomes aware that the category or jurisdiction is affected. If the scope work rules it out, the row is not triggered.</li>' +
+        '<li><b>Processor role.</b> For records processed for business clients, Tidewater notifies the client. The client decides on its own regulator and customer notices.</li></ul>' +
+        '<h4 class="n7-h4">Sequencing rules</h4><ul class="n7-rules">' +
+        '<li><b>S1, insurer first.</b> Notify the insurer (O3) before any other external party, so the breach coach and panel counsel can review statements.</li>' +
+        '<li><b>S2, individuals after authorities.</b> Notice to affected individuals (O8) follows notice to the supervisory authorities (O1, O2), notice to the insurer (O3), and consultation with law enforcement.</li>' +
+        '<li><b>S3, attorneys general.</b> State attorney general notice (O7) is sent at or before individual notice.</li>' +
+        '<li><b>S4, deadline order.</b> Otherwise, work the queue in deadline order. Never hold a notice to wait for a final report; send a phased notice and supplement it.</li></ul>' +
+        '<h4 class="n7-h4">Content rules for every notice</h4><ul class="n7-rules">' +
+        '<li><b>C1.</b> Use the approved template for the recipient.</li>' +
+        '<li><b>C2.</b> Never state that a data category was not affected until the investigation rules it out.</li>' +
+        '<li><b>C3.</b> Regulator notices name the DPO as the point of contact.</li>' +
+        '<li><b>C4.</b> No statements of cause or fault before the facts are established and the breach coach has reviewed them.</li></ul>' +
+        '<h4 class="n7-h4">Template R-1: supervisory authority notice, required elements</h4><ul class="n7-rules">' +
+        D.ELEMENTS.map(function (e) { return '<li><b>' + e[0] + '.</b> ' + esc(e[1]) + '</li>'; }).join('') + '</ul>';
+    }
+
+    /* ---------- Decision clock ---------- */
+    function renderClock() {
+      var s = st(), aw = awAt();
+      var facts = '<ol class="n7-facts" aria-label="Incident log">' + F.map(function (f) {
+        if (!revealed(f)) return '<li class="n7-fact hid"><span class="fid">' + f.id + '</span><span class="fbody" style="grid-column:2/-1">Later log entry. Advance the now marker to reveal it.</span></li>';
+        return '<li class="n7-fact' + (s.aw === f.id ? ' aw' : '') + '"><span class="fid">' + f.id + '</span><span class="ftime">' + esc(D.fmt(f.at)) + '<span class="fkind">' + esc(f.kind) + '</span></span><span class="fbody">' + esc(f.text) + '</span>' +
+          '<span class="fpick"><label><input type="radio" name="n7-aw" value="' + f.id + '"' + (s.aw === f.id ? ' checked' : '') + '> Moment of awareness</label></span></li>';
+      }).join('') + '</ol>';
+      var opts = function (o) {
+        var cur = trigOf(o), list = [['AW', 'Awareness' + (aw !== null ? ' (' + D.fmt(aw) + ')' : '')]];
+        F.forEach(function (f) { if (revealed(f) || cur === f.id) list.push([f.id, f.id + ', ' + D.fmt(f.at)]); });
+        list.push(['NONE', 'Not triggered']);
+        return list.map(function (p) { return '<option value="' + p[0] + '"' + (p[0] === cur ? ' selected' : '') + '>' + esc(p[1]) + '</option>'; }).join('');
+      };
+      var trig = '<div class="table-wrap"><table class="data n7-trig"><thead><tr><th>ID</th><th>Obligation</th><th>Matrix: clock starts</th><th>Your setting: clock starts at</th></tr></thead><tbody>' +
+        O.map(function (o) { return '<tr><td>' + o.id + '</td><td>' + esc(o.short) + '</td><td>' + esc(o.starts) + '</td><td><label class="sr-only" for="n7-tr-' + o.id + '">Clock start for ' + esc(o.name) + '</label><select id="n7-tr-' + o.id + '" data-tr="' + o.id + '">' + opts(o) + '</select></td></tr>'; }).join('') + '</tbody></table></div>';
+      pClk.innerHTML = '<p class="eyebrow">Incident log, IR-2026-031</p>' + facts +
+        '<p class="eyebrow">Clock starts</p><p class="n7-note">Every row starts at the moment of awareness until you change it. Category and jurisdiction rows may start later or not at all.</p>' + trig +
+        '<p class="eyebrow" style="margin-top:1.2rem">Deadline timeline</p>' +
+        '<div class="n7-clockbar"><span class="n7-nowlab" id="n7-nowlab" aria-live="polite">Now: ' + esc(D.fmt(s.now)) + '</span>' +
+          '<label class="sr-only" for="n7-now">Now marker</label><input type="range" id="n7-now" min="' + (18 * 60) + '" max="' + (32 * D.DAY) + '" step="30" value="' + s.now + '">' +
+          '<button type="button" class="btn ghost" data-step="-60">&minus;1 h</button><button type="button" class="btn ghost" data-step="60">+1 h</button><button type="button" class="btn ghost" data-step="360">+6 h</button><button type="button" class="btn ghost" data-step="1440">+24 h</button><button type="button" class="btn secondary" data-step="reset">Ticket time</button>' +
+          '<span class="n7-seg" role="group" aria-label="Timeline zoom"><button type="button" data-zoom="short" aria-pressed="' + (s.zoom === 'short') + '">First 5 days</button><button type="button" data-zoom="long" aria-pressed="' + (s.zoom === 'long') + '">Full 32 days</button></span></div>' +
+        '<div class="n7-svgwrap">' + svg() + '</div>' +
+        '<p class="n7-note">Diamonds mark due times; bars run from each clock start. Amber line: now. Teal line: moment of awareness. Status text in the table below repeats what the chart shows.</p>' +
+        countdown();
+      pClk.querySelectorAll('input[name=n7-aw]').forEach(function (r) { r.addEventListener('change', function () { api.note('aw', r.value); renderClock(); focusSel('input[name=n7-aw][value=' + r.value + ']'); }); });
+      pClk.querySelectorAll('[data-tr]').forEach(function (x) { x.addEventListener('change', function () { var tr = st().trig; tr[x.dataset.tr] = x.value; api.note('trig', tr); renderClock(); focusSel('#n7-tr-' + x.dataset.tr); }); });
+      var rng = pClk.querySelector('#n7-now');
+      rng.addEventListener('input', function () { setNow(+rng.value, '#n7-now'); });
+      pClk.querySelectorAll('[data-step]').forEach(function (b) { b.addEventListener('click', function () { var v = b.dataset.step; setNow(v === 'reset' ? D.TICKET_NOW : st().now + (+v), '[data-step="' + v + '"]'); }); });
+      pClk.querySelectorAll('[data-zoom]').forEach(function (b) { b.addEventListener('click', function () { api.note('zoom', b.dataset.zoom); renderClock(); focusSel('[data-zoom=' + b.dataset.zoom + ']'); }); });
+    }
+    function focusSel(q) { var el = root.querySelector(q); if (el) el.focus(); }
+    function setNow(v, q) { v = Math.max(18 * 60, Math.min(32 * D.DAY, v)); api.note('now', v); renderClock(); renderBoard(); focusSel(q); }
+    function statusOf(o) {
+      var s = st(), due = dueL(o), start = startL(o), sent = s.sent[o.id];
+      if (start === null) return trigOf(o) === 'AW' ? ['off', 'Set awareness'] : ['off', 'Not triggered'];
+      if (sent != null) return sent <= due ? ['ok', 'Sent on time'] : ['late', 'Sent late'];
+      if (start > s.now) return ['off', 'Clock not started'];
+      if (s.now > due) return ['late', 'Overdue'];
+      if (due - s.now <= 360) return ['soon', 'Due soon'];
+      return ['', 'Open'];
+    }
+    function remaining(o) { var d = dueL(o); if (d === null) return 'n/a'; if (st().sent[o.id] != null) return 'sent ' + D.fmt(st().sent[o.id]); var h = D.hrs(d - st().now); return h >= 0 ? h + ' h' : 'overdue by ' + (-h) + ' h'; }
+    function countdown() {
+      return '<div class="table-wrap" style="margin-top:.4rem"><table class="data n7-trig"><caption class="sr-only">Deadline status at the now marker</caption><thead><tr><th>ID</th><th>Obligation</th><th>Clock starts</th><th>Due</th><th>Remaining at now</th><th>Status</th></tr></thead><tbody>' +
+        O.map(function (o) { var s0 = startL(o), d = dueL(o), stt = statusOf(o); return '<tr><td>' + o.id + '</td><td>' + esc(o.short) + '</td><td>' + (s0 === null ? '&ndash;' : esc(D.fmt(s0))) + '</td><td>' + (d === null ? '&ndash;' : esc(D.fmt(d))) + '</td><td>' + esc(remaining(o)) + '</td><td><span class="n7-st ' + stt[0] + '">' + esc(stt[1]) + '</span></td></tr>'; }).join('') +
+        '</tbody></table></div>';
+    }
+    function svg() {
+      var s = st(), aw = awAt();
+      var w0 = s.zoom === 'short' ? 18 * 60 : 0, w1 = s.zoom === 'short' ? 18 * 60 + 5 * D.DAY : 32 * D.DAY;
+      var W = 1000, L = 150, R = 70, top = 54, lane = 28, H = top + O.length * lane + 34;
+      function x(m) { return L + (Math.max(w0, Math.min(w1, m)) - w0) / (w1 - w0) * (W - L - R); }
+      var g = '';
+      // day grid
+      var stepD = s.zoom === 'short' ? 1 : 2;
+      for (var d = Math.ceil(w0 / D.DAY); d * D.DAY <= w1; d += stepD) {
+        var xx = x(d * D.DAY);
+        g += '<line x1="' + xx + '" y1="' + (top - 6) + '" x2="' + xx + '" y2="' + (H - 26) + '" stroke="#d7e3e5" />';
+        g += '<text x="' + xx + '" y="' + (H - 10) + '" font-size="11" text-anchor="middle" fill="#5c7d83">' + ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][d % 7] + ' ' + D.md(d).replace('Oct ', '10/').replace('Nov ', '11/') + '</text>';
+      }
+      // 72-hour mark
+      if (aw !== null && aw + 4320 <= w1) { var x72 = x(aw + 4320); g += '<line x1="' + x72 + '" y1="' + (top - 6) + '" x2="' + x72 + '" y2="' + (H - 26) + '" stroke="#0f3b4c" stroke-dasharray="3 3" /><text x="' + (x72 + 3) + '" y="' + (top - 8) + '" font-size="10" fill="#0f3b4c">72 h after awareness</text>'; }
+      // facts band
+      F.forEach(function (f) {
+        if (!revealed(f) || f.at < w0 || f.at > w1) return; var fx = x(f.at);
+        g += '<line x1="' + fx + '" y1="14" x2="' + fx + '" y2="28" stroke="#1d5a6e" stroke-width="2" /><text x="' + fx + '" y="11" font-size="10" text-anchor="middle" fill="#1d5a6e" font-weight="700">' + f.id + '</text>';
+      });
+      g += '<text x="8" y="24" font-size="11" fill="#5c7d83" font-weight="700">Incident log</text>';
+      if (aw !== null && aw >= w0) g += '<line x1="' + x(aw) + '" y1="30" x2="' + x(aw) + '" y2="' + (H - 26) + '" stroke="#14b8a6" stroke-width="2.5" /><text x="' + (x(aw) + 4) + '" y="40" font-size="10" fill="#0d7d70" font-weight="700">Awareness</text>';
+      // lanes
+      O.forEach(function (o, i) {
+        var y = top + i * lane + lane / 2, s0 = startL(o), d = dueL(o), stt = statusOf(o);
+        if (i % 2 === 0) g += '<rect x="0" y="' + (y - lane / 2) + '" width="' + W + '" height="' + lane + '" fill="#f1f7f7" />';
+        g += '<text x="8" y="' + (y + 4) + '" font-size="12" fill="#0b2530" font-weight="700">' + o.id + '</text><text x="34" y="' + (y + 4) + '" font-size="12" fill="#234a55">' + esc(o.short) + '</text>';
+        if (s0 === null) { g += '<text x="' + (L + 6) + '" y="' + (y + 4) + '" font-size="11" fill="#5c7d83" font-style="italic">' + esc(stt[1]) + '</text>'; return; }
+        var col = stt[0] === 'late' ? '#c0182b' : stt[0] === 'ok' ? '#1a7a4c' : stt[0] === 'soon' ? '#b45309' : '#0f3b4c';
+        if (s0 <= w1 && d >= w0) g += '<rect x="' + x(s0) + '" y="' + (y - 4) + '" width="' + Math.max(1, x(d) - x(s0)) + '" height="8" rx="3" fill="#e6faf6" stroke="#5fbfb3" />';
+        if (d > w1) g += '<text x="' + (W - R + 4) + '" y="' + (y + 4) + '" font-size="10" fill="' + col + '">&#8594; ' + esc(D.md(Math.floor(d / D.DAY))) + '</text>';
+        else if (d >= w0) {
+          var dx = x(d);
+          g += '<path d="M' + dx + ' ' + (y - 8) + ' L' + (dx + 8) + ' ' + y + ' L' + dx + ' ' + (y + 8) + ' L' + (dx - 8) + ' ' + y + ' Z" fill="' + col + '" />';
+          var lbl = D.hm(d) + (stt[0] === 'late' || stt[0] === 'ok' || stt[0] === 'soon' ? ' ' + stt[1].toLowerCase() : '');
+          var rightRoom = dx + 12 + lbl.length * 6 < W;
+          g += '<text x="' + (rightRoom ? dx + 12 : dx - 12) + '" y="' + (y + 4) + '" font-size="10.5" fill="' + col + '" text-anchor="' + (rightRoom ? 'start' : 'end') + '" font-weight="700">' + esc(lbl) + '</text>';
+        }
+        var sent = s.sent[o.id];
+        if (sent != null && sent >= w0 && sent <= w1) g += '<circle cx="' + x(sent) + '" cy="' + y + '" r="6" fill="#fff" stroke="#1a7a4c" stroke-width="2" /><path d="M' + (x(sent) - 3) + ' ' + y + ' l2 2.5 l4 -5" stroke="#1a7a4c" stroke-width="1.8" fill="none" />';
+      });
+      // now marker
+      if (s.now >= w0 && s.now <= w1) { var nx = x(s.now); g += '<line x1="' + nx + '" y1="30" x2="' + nx + '" y2="' + (H - 26) + '" stroke="#f59e0b" stroke-width="3" /><rect x="' + (nx - 18) + '" y="' + (H - 40) + '" width="36" height="14" rx="3" fill="#f59e0b" /><text x="' + nx + '" y="' + (H - 30) + '" font-size="10" text-anchor="middle" fill="#0b2530" font-weight="700">NOW</text>'; }
+      var desc = 'Deadline timeline. ' + (aw === null ? 'Moment of awareness not set. ' : 'Awareness ' + D.fmt(aw) + '. ') + 'Now ' + D.fmt(s.now) + '. The status table below lists each deadline.';
+      return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(desc) + '">' + g + '</svg>';
+    }
+
+    /* ---------- Coordination board ---------- */
+    function renderBoard() {
+      var s = st(), ord = s.ord.filter(function (id) { return dueL(D.obl(id)) !== null; }), off = s.ord.filter(function (id) { return dueL(D.obl(id)) === null; });
+      var rows = ord.map(function (id, i) {
+        var o = D.obl(id), d = dueL(o), stt = statusOf(o), sent = s.sent[id] != null;
+        return '<tr><td class="pos">' + (i + 1) + '</td><td><b>' + id + '</b> ' + esc(o.short) + '</td><td>' + esc(D.fmt(d)) + '</td>' +
+          '<td><label class="sr-only" for="n7-own-' + id + '">Owner for ' + esc(o.name) + '</label><select id="n7-own-' + id + '" data-own="' + id + '"><option value="">Choose owner&hellip;</option>' + D.ROLES.map(function (r) { return '<option' + (s.own[id] === r ? ' selected' : '') + '>' + esc(r) + '</option>'; }).join('') + '</select></td>' +
+          '<td><span class="n7-mv"><button type="button" data-mv="' + id + '" data-dir="-1" aria-label="Move ' + esc(o.short) + ' up"' + (i === 0 ? ' disabled' : '') + '>&#9650;</button><button type="button" data-mv="' + id + '" data-dir="1" aria-label="Move ' + esc(o.short) + ' down"' + (i === ord.length - 1 ? ' disabled' : '') + '>&#9660;</button></span></td>' +
+          '<td><button type="button" class="n7-sent" data-sent="' + id + '" aria-pressed="' + sent + '">' + (sent ? 'Sent ' + esc(D.fmt(s.sent[id])) : 'Mark sent at now') + '</button></td>' +
+          '<td><span class="n7-st ' + stt[0] + '">' + esc(stt[1]) + '</span></td></tr>';
+      }).join('');
+      pBrd.innerHTML = '<p class="lead-p" style="margin-bottom:.6rem">Order the external notifications from first to last and assign who sends each one. Due times come from your settings on the Decision clock. Mark a notice sent to record it at the current now (' + esc(D.fmt(s.now)) + ').</p>' +
+        (awAt() === null ? '<div class="rationale show bad"><b>Set the moment of awareness on the Decision clock first.</b> Rows that start at awareness have no due time until you do.</div>' : '') +
+        '<div class="table-wrap"><table class="data n7-board"><thead><tr><th>#</th><th>Notify</th><th>Due</th><th>Owner</th><th>Order</th><th>Record</th><th>Status</th></tr></thead><tbody>' + (rows || '<tr><td colspan="7">No triggered obligations yet.</td></tr>') + '</tbody></table></div>' +
+        (off.length ? '<p class="n7-note">Not on the board (not triggered or no clock start): ' + off.map(function (id) { return id + ' ' + esc(D.obl(id).short); }).join(', ') + '.</p>' : '') +
+        '<div class="px-actions"><button type="button" class="btn" id="n7-chk">Check board against NM-3</button><button type="button" class="btn ghost" id="n7-clr">Clear sent records</button></div><div class="n7-result" id="n7-res" aria-live="polite"></div>';
+      pBrd.querySelectorAll('[data-own]').forEach(function (x) { x.addEventListener('change', function () { var ow = st().own; ow[x.dataset.own] = x.value; api.note('own', ow); }); });
+      pBrd.querySelectorAll('[data-mv]').forEach(function (b) { b.addEventListener('click', function () {
+        var id = b.dataset.mv, dir = +b.dataset.dir, full = st().ord.slice(), vis = full.filter(function (k) { return dueL(D.obl(k)) !== null; });
+        var vi = vis.indexOf(id), other = vis[vi + dir]; if (!other) return;
+        var a = full.indexOf(id), c = full.indexOf(other); full[a] = other; full[c] = id; api.note('ord', full); renderBoard();
+        var nb = pBrd.querySelector('[data-mv="' + id + '"][data-dir="' + dir + '"]'); if (nb && !nb.disabled) nb.focus(); else { nb = pBrd.querySelector('[data-mv="' + id + '"]:not([disabled])'); if (nb) nb.focus(); }
+      }); });
+      pBrd.querySelectorAll('[data-sent]').forEach(function (b) { b.addEventListener('click', function () { var sn = st().sent, id = b.dataset.sent; if (sn[id] != null) delete sn[id]; else sn[id] = st().now; api.note('sent', sn); renderBoard(); renderClock(); focusSel('[data-sent="' + id + '"]'); }); });
+      pBrd.querySelector('#n7-chk').addEventListener('click', function () { checkBoard(ord); });
+      pBrd.querySelector('#n7-clr').addEventListener('click', function () { api.note('sent', {}); renderBoard(); renderClock(); });
+    }
+    function checkBoard(ord) {
+      var s = st(), res = pBrd.querySelector('#n7-res');
+      if (!ord.length) { res.innerHTML = '<div class="rationale show bad"><b>Nothing to check yet.</b></div>'; return; }
+      var unassigned = ord.filter(function (id) { return !s.own[id]; }).length;
+      var wrongOwn = ord.filter(function (id) { return s.own[id] && s.own[id] !== D.obl(id).owner; }).length;
+      var seq = 0, pos = function (id) { return ord.indexOf(id); };
+      if (ord.indexOf('O3') > 0) seq++;
+      if (pos('O8') >= 0) ['O1', 'O2', 'O3'].forEach(function (k) { if (pos(k) > pos('O8')) seq++; });
+      if (pos('O8') >= 0 && pos('O7') > pos('O8')) seq++;
+      for (var i = 0; i < ord.length; i++) for (var j = i + 1; j < ord.length; j++) {
+        if (ord[i] === 'O3' || ord[j] === 'O8') continue;
+        if (dueL(D.obl(ord[i])) > dueL(D.obl(ord[j]))) seq++;
+      }
+      var late = ord.filter(function (id) { return s.sent[id] != null && s.sent[id] > dueL(D.obl(id)); }).length;
+      var ok = !unassigned && !wrongOwn && !seq && !late;
+      res.innerHTML = '<div class="rationale show ' + (ok ? 'ok' : 'bad') + '"><b>' + (ok ? 'The board is consistent with NM-3 and your clock settings.' : 'The board does not yet match NM-3.') + '</b><ul>' +
+        '<li>Owners: ' + (unassigned ? unassigned + ' unassigned. ' : '') + (wrongOwn ? wrongOwn + ' ' + (wrongOwn === 1 ? 'assignment does' : 'assignments do') + ' not match the matrix.' : (unassigned ? '' : 'all match the matrix.')) + '</li>' +
+        '<li>Sequence: ' + (seq ? seq + ' ' + (seq === 1 ? 'conflict' : 'conflicts') + ' with rules S1 to S4.' : 'no conflicts with rules S1 to S4.') + '</li>' +
+        '<li>Sent records: ' + (late ? late + ' sent after the deadline.' : 'none late.') + '</li></ul>' +
+        '<p style="margin:.4rem 0 0">The board checks against your clock settings. If a clock start is wrong, the board can be consistent and still wrong.</p></div>';
+    }
+
+    /* ---------- Message builder ---------- */
+    function renderMsg() {
+      var s = st();
+      var paras = D.DRAFT.map(function (p) {
+        var on = s.keep[p.id] !== false;
+        return '<div class="n7-para' + (on ? '' : ' off') + '"><span><span class="pid">' + p.id + '</span>' + esc(p.text) + '</span><button type="button" data-keep="' + p.id + '" aria-pressed="' + !on + '" aria-label="' + (on ? 'Remove ' : 'Restore ') + p.id + '">' + (on ? 'Remove' : 'Restore') + '</button></div>';
+      }).join('') + s.add.map(function (k) {
+        var b = libOf(k); return '<div class="n7-para added"><span><span class="pid">Added</span>' + esc(b.text) + '</span><button type="button" data-unadd="' + k + '" aria-label="Remove added block ' + esc(b.title) + '">Remove</button></div>';
+      }).join('');
+      var lib = '<ul class="n7-lib">' + D.LIB.map(function (b) {
+        var used = s.add.indexOf(b.id) >= 0;
+        return '<li><b>' + esc(b.title) + '</b>' + esc(b.text) + '<div class="n7-row"><button type="button" data-add="' + b.id + '"' + (used ? ' disabled' : '') + '>' + (used ? 'Added' : 'Add to notice') + '</button></div></li>';
+      }).join('') + '</ul>';
+      pMsg.innerHTML = '<p class="lead-p" style="margin-bottom:.6rem">Communications prepared this initial notice to the EU lead supervisory authority from template R-1 at 17:45. Remove paragraphs that break the content rules, add blocks from the library, then run the check. The check reports how many required elements the notice now covers, not which ones.</p>' +
+        '<div class="n7-mb"><div><p class="eyebrow">Draft notice (owner: DPO)</p>' + paras +
+        '<div class="px-actions"><button type="button" class="btn" id="n7-mchk">Check notice against R-1</button><button type="button" class="btn ghost" id="n7-mrst">Restore original draft</button></div><div id="n7-mres" aria-live="polite"></div></div>' +
+        '<div><p class="eyebrow">Block library</p>' + lib + '<p class="eyebrow" style="margin-top:.8rem">Template R-1 elements</p><ul class="n7-els">' + D.ELEMENTS.map(function (e) { return '<li><b>' + e[0] + '</b> ' + esc(e[1]) + '</li>'; }).join('') + '</ul></div></div>';
+      pMsg.querySelectorAll('[data-keep]').forEach(function (b) { b.addEventListener('click', function () { var kp = st().keep, id = b.dataset.keep; kp[id] = kp[id] === false; api.note('keep', kp); renderMsg(); focusSel('[data-keep="' + id + '"]'); }); });
+      pMsg.querySelectorAll('[data-add]').forEach(function (b) { b.addEventListener('click', function () { var ad = st().add; ad.push(b.dataset.add); api.note('add', ad); renderMsg(); focusSel('#n7-mchk'); }); });
+      pMsg.querySelectorAll('[data-unadd]').forEach(function (b) { b.addEventListener('click', function () { api.note('add', st().add.filter(function (k) { return k !== b.dataset.unadd; })); renderMsg(); focusSel('#n7-mchk'); }); });
+      pMsg.querySelector('#n7-mrst').addEventListener('click', function () { api.note('keep', {}); api.note('add', []); renderMsg(); focusSel('#n7-mchk'); });
+      pMsg.querySelector('#n7-mchk').addEventListener('click', checkMsg);
+    }
+    function libOf(id) { for (var i = 0; i < D.LIB.length; i++) if (D.LIB[i].id === id) return D.LIB[i]; return null; }
+    function checkMsg() {
+      var s = st(), blocks = D.DRAFT.filter(function (p) { return s.keep[p.id] !== false; }).concat(s.add.map(libOf));
+      var have = {}; blocks.forEach(function (b) { (b.tags || []).forEach(function (t) { have[t] = 1; }); });
+      var n = D.ELEMENTS.filter(function (e) { return have[e[0]]; }).length, issues = blocks.filter(function (b) { return b.issue; });
+      var ok = n === D.ELEMENTS.length && !issues.length;
+      pMsg.querySelector('#n7-mres').innerHTML = '<div class="n7-meter"><b>Required elements present: ' + n + ' of ' + D.ELEMENTS.length + '.</b> ' + (n < D.ELEMENTS.length ? 'Compare each paragraph with the R-1 list to find what is missing.' : 'Every R-1 element is covered.') +
+        '<br><b>Content rule problems: ' + issues.length + '.</b>' + (issues.length ? '<ul class="n7-els">' + issues.map(function (b) { return '<li>' + esc(b.id ? (b.id.charAt(0) === 'P' ? b.id : b.title) : '') + ': ' + esc(b.issue) + '</li>'; }).join('') + '</ul>' : '') +
+        (ok ? '<p style="margin:.4rem 0 0"><b>Ready for DPO review and sign-off.</b></p>' : '') + '</div>';
+    }
+
+    renderClock(); renderBoard(); renderMsg();
+  }
+};
+
+/* Independent re-derivation of the key from the fact flags and matrix text */
+window.LAB_SELFTEST = function () {
+  var log = [], P = [], F = D.FACTS, O = D.OBL, L = window.LAB;
+  function item(id) { return L.checklist.filter(function (i) { return i.id === id; })[0]; }
+  function ans(id) { var it = item(id); return typeof it.answer === 'function' ? it.answer() : it.answer; }
+  // awareness: earliest fact that confirms compromise of personal data
+  var conf = F.filter(function (f) { return f.pd === 'confirmed'; }).sort(function (a, b) { return a.at - b.at; })[0];
+  var aw = conf.at; log.push('awareness ' + conf.id + ' ' + D.fmt(aw));
+  if (AW_OPTS[ans('aware')] !== conf.id) P.push('awareness key mismatch');
+  if (F.some(function (f) { return f.at < aw && f.pd === 'confirmed'; })) P.push('earlier confirmed fact exists');
+  // triggers from matrix text and fact flags
+  var cardF = F.filter(function (f) { return f.card; })[0], caYes = F.some(function (f) { return f.ca === true; });
+  var start = {};
+  O.forEach(function (o) {
+    if (/cardholder/i.test(o.starts)) start[o.id] = cardF ? cardF.at : null;
+    else if (/Canadian/i.test(o.starts)) start[o.id] = caYes ? aw : null;
+    else start[o.id] = aw;
+    var k = D.startOf(o, aw); if (k !== start[o.id]) P.push('start mismatch ' + o.id);
+  });
+  var due = {}; O.forEach(function (o) { var h = +(/^(\d+) (hours|days)/.exec(o.deadline) || [])[1] * (/days/.test(o.deadline) ? 24 : 1); if (h !== o.hours) P.push('deadline text mismatch ' + o.id); due[o.id] = start[o.id] === null ? null : start[o.id] + h * 60; });
+  var trig = O.filter(function (o) { return due[o.id] !== null; });
+  var first = Math.min.apply(null, trig.map(function (o) { return due[o.id]; }).filter(function (d) { return d > D.TICKET_NOW; }));
+  var fh = Math.round((first - D.TICKET_NOW) / 6) / 10; log.push('first deadline in ' + fh + ' h');
+  if (Math.abs(fh - ans('first')) > 0.01) P.push('first-hours mismatch');
+  var d72 = trig.filter(function (o) { return due[o.id] <= aw + 4320; }).map(function (o) { return o.id; }).sort();
+  log.push('due72 ' + d72.join(','));
+  if (d72.join() !== ans('due72').slice().sort().join()) P.push('due72 mismatch');
+  // sequence: insurer, then by deadline, individuals last
+  var q = trig.slice().sort(function (a, b) { var r = function (o) { return /insurer/i.test(o.name) ? 0 : /individuals/i.test(o.name) ? 2 : 1; }; return r(a) - r(b) || due[a.id] - due[b.id]; }).map(function (o) { return o.id; });
+  log.push('order ' + q.join(','));
+  if (!sameArr(ORDER_OPTS[ans('order')], q.slice(0, 3))) P.push('order key mismatch');
+  if (due[q[1]] === due[q[2]] || due[q[2]] === due[q[3]]) P.push('tie in first three');
+  var cOpt = CARD_OPTS[ans('card')]; if (!cardF || cOpt[0] !== cardF.id) P.push('card key mismatch');
+  if (cardF && due.O4 <= aw + 4320) P.push('card obligation should fall outside 72 h');
+  // missing draft elements
+  var covered = {}; D.DRAFT.forEach(function (p) { p.tags.forEach(function (t) { covered[t] = 1; }); });
+  var miss = D.ELEMENTS.map(function (e) { return e[0]; }).filter(function (e) { return !covered[e]; });
+  log.push('missing ' + miss.join(','));
+  if (miss.join() !== ans('missing').slice().sort().join()) P.push('missing mismatch');
+  D.LIB.forEach(function (b) { (b.tags || []).forEach(function (t) { if (covered[t] === undefined && miss.indexOf(t) < 0) P.push('lib tag ' + t); }); });
+  var libCover = {}; D.LIB.forEach(function (b) { (b.tags || []).forEach(function (t) { libCover[t] = 1; }); });
+  miss.forEach(function (m) { if (!libCover[m]) P.push('library cannot fix ' + m); });
+  // option text consistency
+  var opts = item('order').options; if (!/insurer/i.test(opts[ans('order')].split(',')[0])) P.push('order option text');
+  return { log: log, problems: P };
+};
+})();
+</script>
+<script src="lab.js"></script>
+</body>
+</html>

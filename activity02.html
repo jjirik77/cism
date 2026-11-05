@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A2 Governance Roles, Strategy, and Frameworks | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A2',
+  title: 'Governance Roles, Strategy, and Frameworks',
+  accent: 'Strategy, and Frameworks',
+  domain: 'Domain 1 (17%)',
+  time: '40 min',
+  level: 'Foundational to Intermediate',
+  lessonHref: 'lesson01.html#s2',
+  lessonLabel: 'Lesson 1, Governance Hierarchy & Roles',
+  lede: 'Governance questions turn on who decides. The board sets direction and appetite, the steering committee prioritizes, the CISO runs the program, and risk owners accept risk. Practice assigning those roles, tying strategy to business goals, and choosing a framework that fits a stated need.',
+  concepts: [
+    { key: 'roles', name: 'Governance roles and RACI', review: 'Lesson 1, The Governance Hierarchy and Roles' },
+    { key: 'strategy', name: 'Business-aligned strategy', review: 'Lesson 1, Developing the Security Strategy' },
+    { key: 'frameworks', name: 'Framework selection', review: 'Lesson 1, Frameworks and How to Choose' }
+  ],
+  stations: [
+    {
+      type: 'scenario', short: 'RACI builder', title: 'RACI builder: who decides?', concept: 'roles',
+      instr: 'Kestrel Ridge Insurance is building a RACI chart for its security governance. <b>R</b>esponsible does the work, <b>A</b>ccountable owns the decision (one role only), <b>C</b>onsulted gives input before the decision, and <b>I</b>nformed is told the result. Use the role descriptions below to choose the role that holds the letter each question asks about.',
+      hint: 'Accountability sits with whoever has the authority: the board for appetite, the steering committee for priorities, the business owner for accepting risk or granting access to data. The CISO develops, advises, and reports. IT operations implements as custodian. Internal audit gives independent assurance.',
+      table: {
+        caption: 'Governance roles at Kestrel Ridge Insurance',
+        head: ['Role', 'What it does'],
+        rows: [
+          ['Board', 'The board of directors. Sets direction and risk appetite; ultimately accountable for security governance'],
+          ['Steering committee', 'Senior executives who prioritize and fund initiatives against business needs'],
+          ['CISO', 'Develops the strategy, runs the security program, advises on and reports risk'],
+          ['Risk owner', 'Business leader accountable for a specific risk; accepts or rejects residual risk'],
+          ['Data owner', 'Business manager who classifies a data set and approves access to it'],
+          ['IT operations', 'Custodian that implements and runs controls'],
+          ['Legal and privacy office', 'Advises on legal and regulatory obligations'],
+          ['Internal audit', 'Provides independent assurance to the audit committee']
+        ]
+      },
+      review: { href: 'lesson01.html#s2', label: 'Lesson 1, The Governance Hierarchy and Roles' },
+      items: [
+        {
+          title: 'Decision 1', text: 'Set the enterprise risk appetite for information and technology risk.',
+          parts: [
+            { q: 'Who is Accountable?', options: ['CISO', 'Board', 'Steering committee', 'Internal audit'], answer: 1, why: 'Risk appetite is a board decision. It bounds every strategic choice the program makes.' }
+          ]
+        },
+        {
+          title: 'Decision 2', text: 'Draft the three-year information security strategy and roadmap.',
+          parts: [
+            { q: 'Who is Responsible?', options: ['IT operations', 'Internal audit', 'Risk owner', 'CISO'], answer: 3, why: 'The CISO develops the strategy from business objectives. Senior leadership approves it.' }
+          ]
+        },
+        {
+          title: 'Decision 3', text: 'Rank the roadmap initiatives and decide which ones receive funding this year.',
+          parts: [
+            { q: 'Who is Accountable?', options: ['Steering committee', 'CISO', 'Legal and privacy office', 'Board'], answer: 0, why: 'The steering committee prioritizes and funds initiatives against business needs. The CISO proposes; the committee decides.' }
+          ]
+        },
+        {
+          title: 'Decision 4', text: 'Accept the residual risk of running an unsupported legacy claims server for six more months.',
+          parts: [
+            { q: 'Who is Accountable?', options: ['CISO', 'IT operations', 'Risk owner', 'Internal audit'], answer: 2, why: 'The business leader who owns the claims process accepts or rejects the risk. Security advises; it does not accept risk on the business’s behalf.' },
+            { q: 'Who should be Consulted before the decision?', options: ['CISO', 'Data owner', 'Internal audit', 'Board'], answer: 0, why: 'The CISO analyzes the risk and recommends treatment options. The owner then decides with that advice.' }
+          ]
+        },
+        {
+          title: 'Decision 5', text: 'Approve access to the policyholder claims data set for a new analytics team.',
+          parts: [
+            { q: 'Who is Accountable?', options: ['IT operations', 'Data owner', 'CISO', 'Legal and privacy office'], answer: 1, why: 'The business data owner approves access. IT, as custodian, provisions it after approval.' }
+          ]
+        },
+        {
+          title: 'Decision 6', text: 'Encrypt all production databases to meet the new encryption standard.',
+          parts: [
+            { q: 'Who is Responsible?', options: ['Data owner', 'Steering committee', 'Internal audit', 'IT operations'], answer: 3, why: 'IT operations, as custodian, implements the control. The standard itself comes from the security program.' }
+          ]
+        },
+        {
+          title: 'Decision 7', text: 'Write the breach notification procedure for the new EU operations.',
+          parts: [
+            { q: 'Who is Responsible for writing it?', options: ['Internal audit', 'Data owner', 'CISO', 'Board'], answer: 2, why: 'Breach notification is part of the incident management plan the CISO owns. The legal and privacy office is consulted on the GDPR 72-hour duty before it is final.' }
+          ]
+        },
+        {
+          title: 'Decision 8', text: 'Provide independent assurance that the security policy framework is operating effectively.',
+          parts: [
+            { q: 'Who is Responsible?', options: ['Internal audit', 'CISO', 'Steering committee', 'Data owner'], answer: 0, why: 'The third line gives independent assurance. Security manages risk; it cannot provide assurance on its own program.' },
+            { q: 'Who should be Informed of the results?', options: ['IT operations', 'Board', 'Risk owner', 'Data owner'], answer: 1, why: 'Assurance results go to the board through its audit committee. The board relies on them to oversee the program.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'sort', short: 'Strategy alignment', title: 'Strategy alignment: which objective does it serve?', concept: 'strategy',
+      instr: 'Kestrel Ridge’s new CISO, Adaeze Nwosu, inherits a security team seen as a gatekeeper: it blocks projects, has no board visibility, and its strategy is a list of tools. The steering committee asks her to show how each proposed initiative supports a business objective. Match each initiative to the <b>objective it serves</b>, or flag it as having <b>no business driver</b>.',
+      hint: 'Ask what the business would lose without the initiative. If the answer is a launch date, a market, a cycle-time target, or the board’s outage limit, it has a driver. If the reason is team preference or a vendor pitch, it does not.',
+      table: {
+        caption: 'Kestrel Ridge business objectives for 2027',
+        head: ['Objective', 'Business goal', 'Key goal indicator (KGI)'],
+        rows: [
+          ['Mobile app launch', 'Launch a direct-to-consumer mobile app by Q3 2027', '150,000 active policyholders on the app'],
+          ['EU expansion', 'Sell policies in Ireland and the Netherlands from 2027', 'Licensed and selling in both markets'],
+          ['AI claims triage', 'Use an AI model to cut average claims cycle time', 'Cycle time down from 12 days to 5'],
+          ['Resilient claims', 'Keep paying claims through disruption', 'No claims outage over 24 hours (board appetite)']
+        ]
+      },
+      buckets: ['Mobile app launch', 'EU expansion', 'AI claims triage', 'Resilient claims', 'No business driver'],
+      review: { href: 'lesson01.html#s3', label: 'Lesson 1, Developing the Security Strategy' },
+      items: [
+        { text: 'Threat modeling and API security testing built into the app release pipeline', answer: 0, why: 'Secure development keeps the app launch on schedule without shipping exploitable flaws. It enables the launch rather than blocking it.' },
+        { text: 'A records-of-processing register and data protection impact assessments for EU policyholder data', answer: 1, why: 'GDPR obligations come with the EU market. Without them Kestrel Ridge cannot lawfully sell there.' },
+        { text: 'Access approvals and logging on the claims data used to train the triage model', answer: 2, why: 'The model is only as trustworthy as its training data. Controlled, logged access protects both the model and the policyholders.' },
+        { text: 'Immutable, offline backups of the claims platform with quarterly restore tests', answer: 3, why: 'Tested, ransomware-resistant recovery is how the program meets the board’s 24-hour outage limit.' },
+        { text: 'Replace the current firewall brand because the team prefers the new vendor’s console', answer: 4, why: 'Preference is not a business driver. Without a risk reduced or an objective served, the steering committee should not fund it.' },
+        { text: 'Passkey login and fraud monitoring for policyholder accounts in the app', answer: 0, why: 'Account takeover would undermine adoption. Strong, low-friction login supports the 150,000-user goal.' },
+        { text: 'Standard contract clauses and transfer assessments for data moving between the US and EU offices', answer: 1, why: 'Cross-border transfers are a legal condition of operating in the EU. This initiative serves the expansion directly.' },
+        { text: 'Human review of model outputs that deny or delay a claim, with monitoring for drift and bias', answer: 2, why: 'Oversight of AI decisions keeps the triage model fair and reliable, which protects the goal and the brand.' },
+        { text: 'Build an in-house SIEM because the engineers want the experience', answer: 4, why: 'Staff development is not a reason to choose a build over an existing service. The initiative needs a business case or it should be dropped.' },
+        { text: 'An extortion decision playbook rehearsed with executives in a tabletop exercise', answer: 3, why: 'Executives who have rehearsed the decision restore claims faster. The playbook supports the outage limit and the incident management plan.' },
+        { text: 'Deploy a deception platform because a conference keynote featured it', answer: 4, why: 'A product that is in the news is not a strategy. The strategy starts from objectives and a gap analysis, not from vendor pitches.' }
+      ]
+    },
+    {
+      type: 'sort', short: 'Framework fit', title: 'Framework fit: match the need', concept: 'frameworks',
+      instr: 'Each statement describes a need at a different organization. Choose the framework that fits it <b>best</b>. There is no single best framework overall; the right one fits the context.',
+      hint: 'COBIT 2019 governs enterprise IT and separates governance (Evaluate, Direct, Monitor) from management. ISO/IEC 27001 is the certifiable ISMS. NIST CSF 2.0 has six functions, led by Govern, plus Profiles and Tiers for talking posture with leaders. NIST AI RMF covers AI risk through Govern, Map, Measure, and Manage.',
+      buckets: ['COBIT 2019', 'ISO/IEC 27001', 'NIST CSF 2.0', 'NIST AI RMF'],
+      review: { href: 'lesson01.html#s4', label: 'Lesson 1, Frameworks and How to Choose' },
+      items: [
+        { text: 'The board of a regional bank wants an enterprise IT governance framework that separates governance (Evaluate, Direct, Monitor) from management.', answer: 0, why: 'COBIT 2019 is ISACA’s framework for governance and management of enterprise IT. The EDM split is its signature.' },
+        { text: 'A large customer in Germany will sign only if the vendor holds a certificate issued by an accredited body.', answer: 1, why: 'ISO/IEC 27001 is the certifiable standard. The others are frameworks that cannot be certified against in the same way.' },
+        { text: 'A hospital CEO wants plain-language current and target Profiles to discuss cybersecurity posture with the board.', answer: 2, why: 'NIST CSF 2.0 Profiles describe current and target outcomes in a form leaders can follow.' },
+        { text: 'A lender deploying a large language model needs a voluntary framework to govern, map, measure, and manage risks such as bias and hallucination.', answer: 3, why: 'The NIST AI RMF is organized around Govern, Map, Measure, and Manage, and addresses AI-specific risks.' },
+        { text: 'An executive team wants enterprise goals cascaded to alignment goals and then to IT governance and management objectives.', answer: 0, why: 'The goals cascade is a COBIT 2019 tool for tying IT objectives to enterprise goals.' },
+        { text: 'A SaaS firm needs a management system with a Statement of Applicability, management review, internal audits, and continual improvement.', answer: 1, why: 'Those are ISO/IEC 27001 ISMS requirements built on Plan-Do-Check-Act.' },
+        { text: 'A utility wants its new framework to give cybersecurity supply chain risk management, roles, and policy their own function, alongside Identify through Recover.', answer: 2, why: 'NIST CSF 2.0 added Govern as an overarching sixth function. It covers strategy, roles, policy, oversight, and supply chain risk.' },
+        { text: 'A health insurer must judge whether a claims model is valid, reliable, explainable, and fair, with harmful bias managed.', answer: 3, why: 'Those trustworthiness characteristics are defined in the NIST AI RMF.' },
+        { text: 'A university wants to measure the capability of its IT governance processes and design the system around factors such as its size and threat landscape.', answer: 0, why: 'COBIT 2019 uses capability levels and design factors to tailor the governance system to the enterprise.' },
+        { text: 'An outsourcer wants its information security controls selected through a risk assessment and checked against Annex A, as auditors will expect.', answer: 1, why: 'Annex A and the risk-based selection of controls are part of ISO/IEC 27001.' },
+        { text: 'A small manufacturer wants Implementation Tiers to describe how rigorous its cybersecurity risk practices are today.', answer: 2, why: 'Tiers are a NIST CSF 2.0 concept for describing the rigor of an organization’s risk governance and management.' },
+        { text: 'A marketing agency wants a profile that applies an AI risk framework specifically to generative AI tools.', answer: 3, why: 'NIST published a Generative AI Profile (NIST AI 600-1) as a companion to the AI RMF.' }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'raci', label: 'Think of one security decision in your own organization. Who is actually accountable for it today, and who should be?' },
+        { key: 'value', label: 'Name two outcome metrics you would show a board to prove that security enables the business, rather than counting activity.' },
+        { key: 'next', label: 'Which concept from this activity will you review before the next lesson, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>

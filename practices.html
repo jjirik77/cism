@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CISM Practices | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+<style>
+  .hub-intro { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .hub-intro div { background: var(--card-bg); border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: 4px; padding: 1rem 1.1rem; }
+  .hub-intro b { display: block; font: 700 1rem Georgia, serif; color: var(--text-primary); margin-bottom: .3rem; }
+  .hub-intro p { font: .86rem/1.6 Arial, sans-serif; color: var(--text-secondary); margin: 0; }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.6rem; }
+  .filter-bar button { font: 900 .72rem 'Arial Narrow', Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--text-secondary); background: var(--card-bg); border: 1px solid var(--border); border-radius: 3px; padding: .45rem .85rem; cursor: pointer; }
+  .filter-bar button:hover { border-color: var(--gold); }
+  .filter-bar button[aria-pressed=true] { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.1rem; margin-bottom: 2.6rem; }
+  .hub-card { background: var(--card-bg); border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: 4px; padding: 1.1rem 1.2rem 1rem; display: flex; flex-direction: column; }
+  .hub-card[hidden] { display: none; }
+  .hub-top { display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; margin-bottom: .35rem; }
+  .hub-id { font: 900 .78rem 'Arial Narrow', Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+  .hub-prog { font: 700 .68rem Arial, sans-serif; letter-spacing: .04em; color: var(--text-muted); }
+  .hub-prog.on { color: var(--navy-light); } .hub-prog.done { color: var(--correct); }
+  .hub-card h3 { font: 700 1.05rem/1.3 Georgia, serif; color: var(--text-primary); margin: 0 0 .5rem; }
+  .hub-card p { font: .86rem/1.55 Arial, sans-serif; color: var(--text-secondary); margin: 0 0 .8rem; flex: 1; }
+  .hub-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .9rem; }
+  .tag { font: 700 .68rem 'Arial Narrow', Arial, sans-serif; letter-spacing: .04em; text-transform: uppercase; padding: .16rem .5rem; border-radius: 3px; }
+  .tag-dom { background: var(--navy); color: #fff; }
+  .tag-lvl { background: var(--blue-pale); color: var(--text-secondary); border: 1px solid var(--blue-pale-border); }
+  .tag-time { color: var(--text-muted); border: 1px solid var(--border); }
+  .hub-foot { display: flex; justify-content: space-between; align-items: center; gap: .6rem; border-top: 1px solid var(--border); padding-top: .75rem; }
+  .hub-foot a.lesson { font: .78rem Arial, sans-serif; color: var(--navy-light); }
+  .hub-foot .btn { padding: .5rem 1rem; font-size: .74rem; }
+  .hub-empty { font: .9rem Arial, sans-serif; color: var(--text-muted); }
+  .faculty { background: var(--blue-pale); border: 1px solid var(--blue-pale-border); border-left: 4px solid var(--navy); border-radius: 0 4px 4px 0; padding: 1.1rem 1.3rem; }
+  .faculty p, .faculty li { font: .88rem/1.65 Arial, sans-serif; color: var(--text-secondary); margin: 0 0 .5rem; }
+  .faculty b { color: var(--text-primary); }
+  .faculty ul { margin: 0; padding-left: 1.2rem; }
+  @media (max-width: 700px) { nav.topnav .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-brand"><div class="nav-seal">CISM<br>PREP</div><span class="nav-title">5-Day Boot Camp</span></a>
+  <div class="nav-right"><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="index.html#lessons">Lessons</a></li><li><a href="index.html#schedule">Schedule</a></li><li><a href="practices.html" aria-current="page">Practices</a></li><li><a href="labs.html">Leadership Lab</a></li><li><a href="index.html#exam-prep">Exam Prep</a></li></ul></div>
+</nav>
+
+<header class="lesson-hero">
+  <div class="lesson-hero-inner">
+    <p class="breadcrumb"><a href="index.html">Boot Camp</a> &nbsp;&rsaquo;&nbsp; <a href="index.html#practice">Practice</a> &nbsp;&rsaquo;&nbsp; <span>CISM Practices</span></p>
+    <span class="lesson-badge-lg">Concept Practice &middot; 9 Activities</span>
+    <h1>CISM <span>Practices</span></h1>
+    <p class="lesson-lede">Nine self-checking activities that turn each lesson into management judgment. Sort, rank, calculate, and work through exam-style cases as the security manager, watch your concept mastery build, and finish with a report you can print or save as a PDF.</p>
+    <div class="meta-chips"><span class="meta-chip">Activities: <strong>9</strong></span><span class="meta-chip">Each: <strong>30 to 50 min</strong></span><span class="meta-chip">Domains: <strong>All four</strong></span><span class="meta-chip">Format: <strong>Self-checking</strong></span><span class="meta-chip">Reports: <strong>Print or PDF</strong></span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <p class="eyebrow">How practice works</p>
+    <h2 class="h2">Concept practice for every lesson</h2>
+    <div class="rule"></div>
+    <div class="hub-intro">
+      <div><b>Stations</b><p>Each activity has three scored stations and a reflection: sorts, rankings, calculations, and exam-style cases.</p></div>
+      <div><b>Self-checking</b><p>Every answer is checked on demand with the manager&rsquo;s reasoning. Retry any station as often as needed.</p></div>
+      <div><b>Concept mastery</b><p>A mastery meter tracks each concept as you work, and the report recommends what to review next.</p></div>
+      <div><b>Summary report</b><p>Print or save the report as a PDF to submit it, with scores, missed items, reflections, and a signature line.</p></div>
+    </div>
+
+    <div class="filter-bar" role="group" aria-label="Filter by domain">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="1" aria-pressed="false">D1 &middot; Governance</button>
+      <button type="button" data-f="2" aria-pressed="false">D2 &middot; Risk</button>
+      <button type="button" data-f="3" aria-pressed="false">D3 &middot; Program</button>
+      <button type="button" data-f="4" aria-pressed="false">D4 &middot; Incident</button>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="h-act">
+    <p class="eyebrow">Concept practice</p>
+    <h2 class="h2" id="h-act">The nine activities</h2>
+    <div class="rule"></div>
+    <div class="hub-grid" id="grid-act"></div>
+  </section>
+
+  <section class="block">
+    <div class="faculty" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between"><div style="flex:1 1 420px"><p class="eyebrow" style="margin-bottom:.3rem">Next step</p><p style="font:700 1.15rem Georgia,serif;color:var(--text-primary);margin:0 0 .3rem">Ready to lead? Open the CISM Leadership Lab</p><p style="margin:0">Eight hands-on labs put you in the manager&rsquo;s seat: build a strategy, run a risk register, fund a control portfolio, onboard an AI vendor, and command a ransomware response.</p></div><a class="btn" href="labs.html">Open the Leadership Lab &#8594;</a></div>
+  </section>
+
+  <section class="block" aria-labelledby="h-fac">
+    <p class="eyebrow">For faculty</p>
+    <h2 class="h2" id="h-fac">Using the practices in class</h2>
+    <div class="rule"></div>
+    <div class="faculty">
+      <ul>
+        <li><b>As submissions:</b> ask learners to print the summary report to PDF and upload it. Reports show scores by station, attempts, missed items with the correct reasoning, reflections, and time spent.</li>
+        <li><b>Placement:</b> assign each activity after the lesson reading it reinforces. Each card links to that lesson section.</li>
+        <li><b>In class:</b> run a station as a think-pair-share, then let pairs check answers and compare the manager&rsquo;s reasoning.</li>
+        <li><b>Team mode:</b> a pair or team can work one activity together and list every member on the report.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">CISM 5-DAY BOOT CAMP</div>
+  <p class="footer-disclaimer">This boot camp is an independent educational resource and is not affiliated with, endorsed by, or sponsored by ISACA. CISM&#174; is a registered trademark of ISACA. Scenarios, companies, and people are fictional and illustrative.</p>
+</footer>
+
+<script>
+(function () {
+  var DOM = { 1: 'D1 Governance', 2: 'D2 Risk', 3: 'D3 Program', 4: 'D4 Incident' };
+  var ACT = [
+    ['A1', 'activity01.html', 1, 'The Management Mindset: Manager, Practitioner, or Auditor?', 'Answer like a security manager: tell the manager’s answer from the hands-on fix and the auditor’s test, and apply the ISACA code of ethics.', 'Foundational', '30 min', 'lesson00.html', 'Lesson 0', 4],
+    ['A2', 'activity02.html', 1, 'Governance Roles, Strategy, and Frameworks', 'Assign governance decisions with a RACI, tie initiatives to business goals, and match needs to COBIT, ISO/IEC 27001, NIST CSF 2.0, and the NIST AI RMF.', 'Foundational to Intermediate', '40 min', 'lesson01.html#s2', 'Lesson 1', 4],
+    ['A3', 'activity03.html', 2, 'Asset Ownership, Classification, and Valuation', 'Name owners and custodians, classify by the highest impact, and value assets to justify protection spending.', 'Intermediate', '35 min', 'lesson02.html#s3', 'Lesson 2', 4],
+    ['A4', 'activity04.html', 2, 'Risk Analysis and Treatment Decisions', 'Calculate SLE and ALE, choose a treatment against appetite, and check that acceptance is signed by the right owner.', 'Intermediate', '45 min', 'lesson03.html#s2', 'Lesson 3', 4],
+    ['A5', 'activity05.html', 3, 'Control Selection and Program Architecture', 'Classify controls, justify a tool before buying it, and pick compensating controls when the preferred one is not possible.', 'Intermediate', '40 min', 'lesson04.html#s4', 'Lesson 4', 4],
+    ['A6', 'activity06.html', 3, 'Awareness, Culture, and Third-Party Risk', 'Measure behavior instead of attendance, respond with a just culture, and tier vendors through their life cycle.', 'Intermediate', '40 min', 'lesson05.html#s1', 'Lesson 5', 4],
+    ['A7', 'activity07.html', 1, 'Metrics That Matter: KGIs, KPIs, and KRIs', 'Sort metrics by type and audience, and rewrite vanity metrics into ones a board can use to decide.', 'Intermediate', '35 min', 'lesson01.html#s6', 'Lesson 1', 4],
+    ['A8', 'activity08.html', 4, 'Incident Classification and Response Leadership', 'Triage alerts against a severity matrix, choose the escalation path, and lead the response sequence.', 'Intermediate', '40 min', 'lesson06.html#s2', 'Lesson 6', 4],
+    ['A9', 'activity09.html', 4, 'Business Continuity: BIA, Recovery Objectives, and Testing', 'Derive MTD, RTO, and RPO from impact data, spot under-built and over-built strategies, and choose the right test.', 'Intermediate', '40 min', 'lesson07.html#s1', 'Lesson 7', 4]
+  ];
+  var LABS = [
+    ['B1', 'lab01.html', 1, 'Security Strategy and Board Briefing', 'Build a funded three-year roadmap on a live board with a budget meter and maturity radar, then write the one-page board brief.', 'Intermediate', '60 min', 'lesson01.html#s3', 'Lesson 1'],
+    ['B2', 'lab02.html', 2, 'Enterprise Risk Register Workshop', 'Run a live risk register and heat map: score, assign owners, treat against appetite, and report to the steering committee.', 'Intermediate', '60 min', 'lesson03.html#s5', 'Lesson 3'],
+    ['B3', 'lab03.html', 3, 'Security Budget and Control Portfolio', 'Allocate a fixed budget across candidate controls and watch ALE, ROSI, and residual risk move, then defend the portfolio.', 'Intermediate to Advanced', '50 min', 'lesson04.html#s4', 'Lesson 4'],
+    ['B4', 'lab04.html', 3, 'Third-Party and AI Vendor Risk Onboarding', 'Review a generative AI vendor file, tier the risk, set contract conditions, and make the onboarding decision.', 'Intermediate', '60 min', 'lesson05.html#s2', 'Lesson 5'],
+    ['B5', 'lab05.html', 3, 'Phishing and Security Culture Analytics', 'Analyze four quarters of phishing data on a live dashboard, find what drives the trend, and redesign the program.', 'Intermediate', '45 min', 'lesson05.html#s1', 'Lesson 5'],
+    ['B6', 'lab06.html', 4, 'Ransomware Incident Command Tabletop', 'Lead a double-extortion ransomware response, solo or as a class on a shared clock. Every decision changes the outcome.', 'Advanced', '60–90 min', 'lesson06.html#s4', 'Lesson 6'],
+    ['B7', 'lab07.html', 4, 'Breach Notification Decision Clock', 'Set the moment of awareness, track every notification deadline on a live timeline, and coordinate the first notices.', 'Intermediate to Advanced', '45 min', 'lesson06.html#s5', 'Lesson 6'],
+    ['B8', 'lab08.html', 4, 'Continuity and Recovery Strategy Planner', 'Turn BIA results into a funded recovery strategy, then run a simulated test against MTD, RTO, and RPO.', 'Intermediate', '50 min', 'lesson07.html#s2', 'Lesson 7']
+  ];
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function read(k) { try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+  function progAct(r) {
+    var s = read('cism-practice-' + r[0]); if (!s) return ['', 'Not started'];
+    var n = Object.keys(s.checked || {}).filter(function (k) { return s.checked[k]; }).length;
+    return n >= r[9] ? ['done', '✓ Completed'] : (n ? ['on', n + ' of ' + r[9] + ' stations'] : ['on', 'Started']);
+  }
+  function progLab(r) {
+    var s = read('cism-lab-' + r[0]); if (!s) return ['', 'Not started'];
+    var n = Object.keys(s.st || {}).filter(function (k) { return s.st[k] === 'ok'; }).length;
+    return n ? ['on', n + ' items verified'] : ['on', 'Started'];
+  }
+  function card(r, kind) {
+    var p = kind === 'act' ? progAct(r) : progLab(r);
+    return '<article class="hub-card" data-d="' + r[2] + '"><div class="hub-top"><span class="hub-id">' + (kind === 'act' ? 'Activity ' : 'Lab ') + r[0] + '</span><span class="hub-prog ' + p[0] + '">' + p[1] + '</span></div>' +
+      '<h3>' + esc(r[3]) + '</h3><p>' + esc(r[4]) + '</p>' +
+      '<div class="hub-tags"><span class="tag tag-dom">' + DOM[r[2]] + '</span><span class="tag tag-lvl">' + esc(r[5]) + '</span><span class="tag tag-time">&#9201; ' + esc(r[6]) + '</span></div>' +
+      '<div class="hub-foot"><a class="lesson" href="' + r[7] + '">Review ' + esc(r[8]) + '</a><a class="btn" href="' + r[1] + '" aria-label="Open ' + (kind === 'act' ? 'activity ' : 'lab ') + r[0] + ': ' + esc(r[3]) + '">Open &#8594;</a></div></article>';
+  }
+  document.getElementById('grid-act').innerHTML = ACT.map(function (r) { return card(r, 'act'); }).join('');
+  var btns = [].slice.call(document.querySelectorAll('.filter-bar button'));
+  function apply(f) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.f === f); });
+    [].forEach.call(document.querySelectorAll('.hub-card'), function (c) { c.hidden = !(f === 'all' || c.dataset.d === f); });
+    try { localStorage.setItem('cism-hub-filter', f); } catch (e) { }
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { apply(b.dataset.f); }); });
+  var saved = null; try { saved = localStorage.getItem('cism-hub-filter'); } catch (e) { }
+  apply(saved || 'all');
+})();
+</script>
+</body>
+</html>

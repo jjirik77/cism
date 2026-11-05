@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>A5 Control Selection and Program Architecture | CISM 5-Day Boot Camp</title>
+<link rel="stylesheet" href="cism-lesson.css">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<div id="app"><noscript><p style="padding:2rem;font-family:Arial">This activity needs JavaScript enabled.</p></noscript></div>
+
+<script>
+window.ACTIVITY = {
+  id: 'A5',
+  title: 'Control Selection and Program Architecture',
+  accent: 'Program Architecture',
+  domain: 'Domain 3 (33%)',
+  time: '40 min',
+  level: 'Intermediate',
+  lessonHref: 'lesson04.html#s3',
+  lessonLabel: 'Lesson 4, Control Fundamentals',
+  lede: 'Program questions ask whether a control is justified by risk, fits the architecture, and can be resourced. Classify controls by what they do, decide what a manager does first when someone asks for a new tool, and choose a compensating control when the preferred one cannot be deployed. Risk, not novelty, drives selection.',
+  concepts: [
+    { key: 'classify', name: 'Control types and categories', review: 'Lesson 4, Control Fundamentals' },
+    { key: 'program', name: 'Charter, architecture, and resources', review: 'Lesson 4, Program Charter and Architecture' },
+    { key: 'select', name: 'Risk-based control selection', review: 'Lesson 4, Selecting Controls' },
+    { key: 'compensate', name: 'Compensating controls', review: 'Lesson 4, Control Fundamentals' }
+  ],
+  stations: [
+    {
+      type: 'sort', short: 'Classify controls', title: 'Classify the controls by type', concept: 'classify',
+      instr: 'Saltmarsh Mutual Insurance is mapping its control set. Place each control in the type that best describes <b>what it does</b> relative to an event. The rationale for each item also names its category: administrative, technical, or physical.',
+      hint: 'Deterrent and preventive controls act before the event: a deterrent discourages the attempt, and a preventive control blocks it. Detective controls tell you something happened. Corrective controls fix or restore. A compensating control stands in for a primary control that cannot be deployed.',
+      buckets: ['Preventive', 'Detective', 'Corrective', 'Deterrent', 'Compensating'],
+      review: { href: 'lesson04.html#s3', label: 'Lesson 4, Control Fundamentals' },
+      items: [
+        { text: 'Multifactor authentication on all remote access to the claims system', answer: 0, why: 'MFA blocks an attacker who has only a stolen password. It is a technical preventive control.' },
+        { text: 'A data loss prevention rule that alerts the SOC when policy files are uploaded to an unapproved AI chatbot', answer: 1, why: 'An alert-only rule identifies the event after it happens. It is a technical detective control.' },
+        { text: 'Restoring the policy administration server from immutable backups after a ransomware attack', answer: 2, why: 'Restoration reverses the damage and returns the service. It is a technical corrective control.' },
+        { text: 'Signs at the data center entrance stating that the area is under video surveillance', answer: 3, why: 'The signs aim to discourage an intruder from trying. They are a physical deterrent control.' },
+        { text: 'Quarterly access reviews in which managers confirm each employee’s claims-system rights', answer: 1, why: 'The review finds access that should not exist. It is an administrative detective control.' },
+        { text: 'Segregation of duties so the person who enters a claim payment cannot also approve it', answer: 0, why: 'Splitting the duties stops one person from completing a fraudulent payment alone. It is an administrative preventive control.' },
+        { text: 'Daily review of privileged activity logs by an outside party, because the three-person IT team cannot segregate administrator duties', answer: 4, why: 'Independent log review stands in for segregation of duties that is not feasible. It is an administrative compensating control.' },
+        { text: 'An acceptable use policy that states the disciplinary consequences of entering client data into public AI tools', answer: 3, why: 'Stating the consequences discourages misuse before it happens. It is an administrative deterrent control.' },
+        { text: 'Full-disk encryption on every adjuster laptop', answer: 0, why: 'Encryption prevents a thief from reading data on a lost device. It is a technical preventive control.' },
+        { text: 'Applying an emergency patch after the SOC confirms a vulnerability is being exploited', answer: 2, why: 'The patch removes the flaw that was used and limits further damage. It is a technical corrective control.' },
+        { text: 'Isolating a legacy underwriting server behind a monitored jump host, because the server cannot support MFA', answer: 4, why: 'The jump host and monitoring achieve comparable risk reduction where MFA cannot run. It is a technical compensating control.' },
+        { text: 'Badge-reader logs reviewed weekly for after-hours entry to the records room', answer: 1, why: 'The review reveals entries that already took place. It is a physical detective control supported by a log review.' }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Justify the purchase', title: 'Justify the purchase',
+      instr: 'Four tool requests and one program problem reach the CISO of Saltmarsh Mutual. For each, choose the manager’s <b>FIRST</b> or <b>BEST</b> step. Budget is tight this year.',
+      hint: 'Start from the control objective and the risk it reduces. Check whether an existing layer already meets that objective. A control should not cost more than the risk it reduces. Authority and alignment come before tools, so a program without a charter needs one first.',
+      review: { href: 'lesson04.html#s4', label: 'Lesson 4, Selecting Controls' },
+      items: [
+        {
+          title: 'Case 1: The AI tool everyone is buying (former Lab 5)', text: 'The CEO, Graham Whitlock, read that peer insurers are buying an AI-powered email security product. He asks the CISO to add it. Saltmarsh’s secure email gateway already meets its phishing objective, and the phishing KRI has stayed within threshold for a year.',
+          parts: [
+            { q: 'What should the CISO do FIRST?', concept: 'select', options: ['Run a proof of concept with the vendor to measure catch rates', 'Identify the objective and risk the tool would address', 'Ask peer insurers how well the product has worked for them', 'Add the tool to next year’s budget so it can be bought later'], answer: 1, why: 'Selection is risk-based. The first question is which objective and risk the tool serves, not how well it performs in a demo or for a competitor.' },
+            { q: 'The analysis shows the existing gateway already meets the objective. What is the BEST recommendation?', concept: 'select', options: ['Buy the tool anyway, since layered controls are always better', 'Replace the gateway with the AI product to reduce overlap', 'Decline for now and brief the CEO in risk and cost terms', 'Buy the tool but limit it to the executive mailboxes only'], answer: 2, why: 'When an existing layer meets the objective, new spend is hard to justify. The manager explains the decision in business terms and keeps the option open if the risk changes.' }
+          ]
+        },
+        {
+          title: 'Case 2: A demo at a conference', text: 'The SOC lead, Mei-Lin Zhou, returns from a conference and requests a security orchestration platform she saw in a demo. No requirement, gap, or metric points to a need for it.',
+          parts: [
+            { q: 'What is the BEST response?', concept: 'select', options: ['Approve a pilot, since the SOC lead knows her own needs', 'Ask her to define the gap and objective in a business case', 'Decline, since orchestration tools rarely pay for themselves', 'Ask the vendor to provide a free trial for the SOC team'], answer: 1, why: 'A tool request needs a stated gap, the objective it meets, and the cost against the risk reduced. A business case puts that reasoning in front of the people who fund the program.' }
+          ]
+        },
+        {
+          title: 'Case 3: AI tool with a real gap', text: 'The risk assessment ranks uncontrolled client data in sanctioned and unsanctioned SaaS apps as a top risk, with an ALE of $900,000. An AI-based SaaS data security tool would cut that ALE by an estimated $600,000 for $180,000 a year. No current control addresses the gap.',
+          parts: [
+            { q: 'What is the BEST next step?', concept: 'program', options: ['Buy the tool now from the security operations budget', 'Wait for the next audit to confirm the gap is real', 'Present a business case to the steering committee', 'Ask IT to build a similar tool in-house to save money'], answer: 2, why: 'The tool traces to a top risk and its value exceeds its cost. The manager brings the business case to governance for funding and a place on the roadmap.' },
+            { q: 'The vendor needs to send Saltmarsh’s SaaS metadata to its cloud and use it to train its models. What should the manager do before contracting?', concept: 'select', options: ['Accept, since metadata does not include client records', 'Assess the tool’s own data risk with the data owner', 'Decline, since AI vendors cannot be used for client data', 'Ask legal to remove the training clause after go-live'], answer: 1, why: 'A security tool is also a third party that handles data. Its own risk is assessed, with the data owner, before the contract is signed.' }
+          ]
+        },
+        {
+          title: 'Case 4: The inherited toolset', text: 'Saltmarsh’s new CISO, Aisha Bello, inherits 31 security tools bought one at a time over six years. There is no program charter, no roadmap, and no clear reporting line to senior management.',
+          parts: [
+            { q: 'What should she do FIRST?', concept: 'program', options: ['Retire the tools that have the lowest usage', 'Hire more analysts to manage the existing tools', 'Obtain a charter and mandate from senior management', 'Buy a platform that consolidates the existing tools'], answer: 2, why: 'Authority and alignment come before tools, controls, and hiring. Without a charter, the CISO has responsibility but no authority to rationalize the program.' },
+            { q: 'With a charter in place, how should she approach the toolset?', concept: 'program', options: ['Keep every tool, since removing controls always raises risk', 'Replace all of them with the products of a single vendor', 'Ask each tool owner to justify their own tool in writing', 'Map each tool to control objectives and gaps'], answer: 3, why: 'Architecture connects people, process, and technology to the strategy. Mapping tools to objectives shows which ones overlap, which gaps remain, and what belongs on the roadmap.' },
+            { q: 'Which role assignment BEST prevents gaps in ownership as the program grows?', concept: 'program', options: ['An org chart showing where security staff report', 'A rule that the CISO is accountable for every control', 'A shared mailbox for all security requests and issues', 'A RACI that names the accountable owner'], answer: 3, why: 'A RACI makes accountability unambiguous across security, IT, and the business. Making the CISO accountable for everything hides the business owners who must decide.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'scenario', short: 'Compensating controls', title: 'When the preferred control cannot be deployed',
+      instr: 'In each case, the control Saltmarsh would normally use is not feasible. Choose the <b>BEST</b> compensating control or answer, keeping the business running and the risk within appetite.',
+      hint: 'A good compensating control meets the same objective by another route and achieves comparable risk reduction. It is documented, approved by the risk owner, and reviewed. Accepting the risk with no control at all, or waiting for the ideal fix, is not compensation.',
+      review: { href: 'lesson04.html#s3', label: 'Lesson 4, Control Fundamentals' },
+      items: [
+        {
+          title: 'Case 1: Legacy system without MFA (former Lab 5)', text: 'The legacy policy administration system cannot support MFA, and the vendor replacement is 18 months away. Administrators reach it over the internal network with passwords.',
+          parts: [
+            { q: 'Which compensating control is BEST?', concept: 'compensate', options: ['Require administrators to change passwords every 30 days', 'Route access through an MFA jump host with logging', 'Accept the risk until the replacement system goes live', 'Add a login warning banner to the legacy system screen'], answer: 1, why: 'Putting MFA in front of the system at a jump host, with logging, meets the same objective as MFA on the system. A banner only deters, and frequent password changes add little protection.' },
+            { q: 'What makes the compensating control legitimate in Saltmarsh’s program?', concept: 'compensate', options: ['The vendor confirms that it is a supported configuration', 'The SOC agrees to watch the jump host when time allows', 'It is documented and approved by the risk owner', 'It is listed as a best practice in a vendor white paper'], answer: 2, why: 'A compensating control is a formal decision. It is documented, shown to reduce risk comparably, approved by the risk owner, and reviewed until the primary control is in place.' }
+          ]
+        },
+        {
+          title: 'Case 2: Small branch, no segregation', text: 'A three-person branch office in Tucson processes claim payments. One adjuster must sometimes enter and release payments when the others are out, so segregation of duties is not possible every day.',
+          parts: [
+            { q: 'Which compensating control is BEST?', concept: 'compensate', options: ['Stop all branch payments whenever a colleague is absent', 'Ask the adjuster to sign an annual conflict-of-interest form', 'Have head-office finance review every branch payment daily', 'Raise the branch payment limit to reduce the volume of items'], answer: 2, why: 'An independent daily review detects improper payments that segregation would have prevented. Stopping payments harms the business, and a signed form does not reduce the risk.' }
+          ]
+        },
+        {
+          title: 'Case 3: Unpatchable building controller', text: 'The building management controller for headquarters runs firmware the manufacturer no longer patches. Replacement requires a renovation scheduled in two years.',
+          parts: [
+            { q: 'Which compensating control is BEST?', concept: 'compensate', options: ['Place it on an isolated segment with allowlisted traffic', 'Ask the manufacturer for a one-time custom firmware patch', 'Move the controller into a locked closet in the server room', 'Record the device as an asset that is out of scope for audit'], answer: 0, why: 'Segmentation and allowlisting cut the paths an attacker could use against an unpatched device. Monitoring that segment adds detection.' }
+          ]
+        },
+        {
+          title: 'Case 4: Category balance', text: 'The steering committee reviews Saltmarsh’s control catalog. Almost every control in it is technical, and the claims department has no written procedures for handling client data.',
+          parts: [
+            { q: 'What is the BEST observation for the CISO to make?', concept: 'classify', options: ['The catalog is strong, since technical controls are the most reliable', 'The catalog needs administrative and physical controls as well', 'The catalog should drop technical controls that lack procedures', 'The catalog is an IT matter and does not need committee review'], answer: 1, why: 'A complete program uses administrative, technical, and physical controls. Technology alone is never sufficient, and procedures are what make people act consistently.' },
+            { q: 'Background checks for new claims adjusters belong to which category?', concept: 'classify', options: ['Technical or logical', 'Physical', 'Administrative', 'Detective'], answer: 2, why: 'Background checks are a personnel process set by policy, so they are administrative. Detective is a type, not a category.' }
+          ]
+        },
+        {
+          title: 'Case 5: Defense in depth', text: 'A board member, Rosa Delgado, asks why Saltmarsh pays for email filtering, endpoint protection, and awareness training when "any one of them should stop phishing."',
+          parts: [
+            { q: 'What is the BEST answer?', concept: 'select', options: ['Each layer is required by a different regulation', 'The board approved all three in last year’s budget', 'Each tool covers a different part of the network', 'One failed layer does not mean a breach'], answer: 3, why: 'Defense in depth layers independent controls so that an attacker must defeat each one. No single control is trusted alone.' }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'reflect', short: 'Reflect', title: 'Reflect on your readiness',
+      instr: 'Rate your confidence on each concept, then answer the prompts. Your responses appear in the summary report.',
+      prompts: [
+        { key: 'tool', label: 'Think of the last security tool your organization bought. What control objective and risk did it serve, and how would you show the board it was worth the cost?' },
+        { key: 'next', label: 'Which concept from this activity will you review before the next lesson, and how?' }
+      ]
+    }
+  ]
+};
+</script>
+<script src="practice.js"></script>
+</body>
+</html>
