@@ -10,11 +10,12 @@
     --navy: #0f3b4c;        /* deep teal-slate (badges, day headers, dark surfaces) */
     --navy-mid: #0a2c3a;
     --navy-light: #1d5a6e;
-    --gold: #14b8a6;        /* bright teal accent (buttons, links, rules) */
-    --gold-light: #2dd4bf;
+    --gold: #0f766e;        /* teal accent (buttons, links, rules); darkened for WCAG AA contrast */
+    --gold-light: #115e59;
     --gold-pale: #e6faf6;
-    --amber: #f59e0b;       /* warm amber highlight (key numbers) */
-    --amber-light: #fbbf24;
+    --amber: #d97706;       /* warm amber for bars and borders */
+    --amber-text: #a3500a;  /* amber for numbers and text (WCAG AA) */
+    --amber-light: #f59e0b;
     --cream: #eef6f6;
     --text-primary: #0b2530;
     --text-secondary: #234a55;
@@ -121,10 +122,10 @@
   }
   .stat-item {
     display: flex; align-items: center; gap: 0.5rem; padding: 0 2rem;
-    border-right: 2px solid rgba(20,184,166,0.3);
+    border-right: 2px solid rgba(15,118,110,0.3);
   }
   .stat-item:last-child { border-right: none; }
-  .stat-num { font-family: 'Arial Narrow', Arial, sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--amber); line-height: 1; }
+  .stat-num { font-family: 'Arial Narrow', Arial, sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--amber-text); line-height: 1; }
   .stat-label { font-family: Arial, sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.2; }
 
   /* SECTIONS */
@@ -152,7 +153,7 @@
     border-radius: 2px; white-space: nowrap; flex-shrink: 0;
   }
   .domain-weight { font-family: Arial, sans-serif; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.05em; text-align: right; line-height: 1.3; }
-  .domain-weight strong { display: block; font-size: 1rem; color: var(--amber); font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; }
+  .domain-weight strong { display: block; font-size: 1rem; color: var(--amber-text); font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; }
   .card-day-tag {
     font-family: Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--text-muted); border: 1px solid var(--border); border-radius: 20px;
@@ -226,7 +227,7 @@
   .about-text p { font-family: Arial, sans-serif; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 1rem; }
   .exam-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .fact-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; text-align: center; }
-  .fact-val { font-family: 'Arial Narrow', Arial, sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--amber); display: block; line-height: 1; margin-bottom: 0.25rem; }
+  .fact-val { font-family: 'Arial Narrow', Arial, sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--amber-text); display: block; line-height: 1; margin-bottom: 0.25rem; }
   .fact-key { font-family: Arial, sans-serif; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* DOMAIN WEIGHTS */
@@ -234,7 +235,7 @@
   .weight-row { display: flex; flex-direction: column; gap: 0.4rem; }
   .weight-label { display: flex; justify-content: space-between; align-items: baseline; }
   .weight-domain { font-family: Arial, sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--text-primary); }
-  .weight-pct { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.9rem; color: var(--amber); }
+  .weight-pct { font-family: 'Arial Narrow', Arial, sans-serif; font-weight: 900; font-size: 0.9rem; color: var(--amber-text); }
   .weight-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
   .weight-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 3px; transition: width 1s ease; }
 
@@ -292,7 +293,7 @@
     background: var(--gold); color: #ffffff; text-decoration: none;
     font-family: Arial, sans-serif; font-size: 0.92rem; font-weight: 700;
     letter-spacing: 0.04em; padding: 0.85rem 2rem; border-radius: 50px;
-    box-shadow: 0 4px 16px rgba(20,184,166,0.28);
+    box-shadow: 0 4px 16px rgba(15,118,110,0.28);
     transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
   }
   .feedback-btn:hover {
@@ -757,6 +758,5 @@
   }, { threshold: 0.2 });
   bars.forEach(b => observer.observe(b));
 </script>
-<script src="assistant.js" defer></script>
 </body>
 </html>

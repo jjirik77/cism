@@ -218,7 +218,7 @@
             .gov-field .r{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.25rem;}
             .gov-field label{font-size:0.78rem;font-weight:700;color:var(--text-primary);}
             .gov-field .v{font-family:'Arial Narrow',Arial,sans-serif;font-weight:900;font-size:0.88rem;color:var(--gold);font-variant-numeric:tabular-nums;}
-            .gov-field.tgt label{color:var(--amber);}.gov-field.tgt .v{color:var(--amber);}
+            .gov-field.tgt label{color:var(--amber-text);}.gov-field.tgt .v{color:var(--amber-text);}
             .gov input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:var(--section-alt);outline:none;margin:0;}
             .gov input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.35);}
             .gov input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid var(--card-bg);cursor:pointer;}
@@ -285,7 +285,7 @@
                   </div>
                   <div class="gov-chart">
                     <h6>The five governance outcomes</h6>
-                    <p class="cap">Your <span style="color:var(--gold)">current maturity</span> against the <span style="color:var(--amber)">target</span>. The distance from the teal shape out to the dashed ring is the roadmap.</p>
+                    <p class="cap">Your <span style="color:var(--gold)">current maturity</span> against the <span style="color:var(--amber-text)">target</span>. The distance from the teal shape out to the dashed ring is the roadmap.</p>
                     <canvas id="gov-canvas" width="620" height="360" role="img" aria-label="Radar of governance maturity across the five outcomes"></canvas>
                     <div class="gov-legend">
                       <span><i class="gov-sw" style="background:var(--gold)"></i> Current maturity</span>
@@ -659,6 +659,5 @@
 </footer>
 
 <script src="cism-lesson.js"></script>
-<script src="assistant.js" defer></script>
 </body>
 </html>

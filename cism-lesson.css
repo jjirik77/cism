@@ -3,11 +3,12 @@
     --navy: #0f3b4c;
     --navy-mid: #0a2c3a;
     --navy-light: #1d5a6e;
-    --gold: #14b8a6;
-    --gold-light: #2dd4bf;
+    --gold: #0f766e;
+    --gold-light: #115e59;
     --gold-pale: #e6faf6;
-    --amber: #f59e0b;
-    --amber-light: #fbbf24;
+    --amber: #d97706;
+    --amber-text: #a3500a;
+    --amber-light: #f59e0b;
     --cream: #eef6f6;
     --text-primary: #0b2530;
     --text-secondary: #234a55;
@@ -416,6 +417,3 @@
 @media print { .pl-card { break-inside: avoid; box-shadow: none; } .pl-open { display: none; } }
 
 #practice-this-lesson .lead a { color: var(--navy-light); font-weight: 700; }
-/* Darker teal so white button text meets contrast */
-.pl-open { background: #0f766e; }
-.pl-type { color: #0f766e; }

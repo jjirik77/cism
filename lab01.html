@@ -288,7 +288,7 @@
         X.FN.forEach(function (f, i) { var p = pt(i, 5), l = pt(i, 5.75); s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '" stroke="#c2d4d6"/><text x="' + l[0].toFixed(1) + '" y="' + (l[1] + 4).toFixed(1) + '" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#0b2530">' + f.name + '</text>'; });
         [1, 2, 3, 4, 5].forEach(function (r) { var p = pt(0, r); s += '<text x="' + (p[0] + 4) + '" y="' + (p[1] + 3) + '" font-family="Arial" font-size="8" fill="#5c7d83">' + r + '</text>'; });
         s += '<polygon points="' + poly(cur) + '" fill="rgba(15,59,76,.10)" stroke="#0f3b4c" stroke-width="2" stroke-dasharray="2 3"/>';
-        s += '<polygon points="' + poly(pro) + '" fill="rgba(20,184,166,.28)" stroke="#0d8c7e" stroke-width="2.5"/>';
+        s += '<polygon points="' + poly(pro) + '" fill="rgba(13,148,136,.28)" stroke="#0d8c7e" stroke-width="2.5"/>';
         s += '<polygon points="' + poly(tgt) + '" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="8 4"/>';
         pro.forEach(function (v, i) { var p = pt(i, v); s += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.5" fill="#0d8c7e"/>'; });
         tgt.forEach(function (v, i) { var p = pt(i, v); s += '<rect x="' + (p[0] - 3).toFixed(1) + '" y="' + (p[1] - 3).toFixed(1) + '" width="6" height="6" fill="#fff" stroke="#b45309" stroke-width="1.5"/>'; });
@@ -434,6 +434,5 @@
 })();
 </script>
 <script src="lab.js"></script>
-<script src="assistant.js" defer></script>
 </body>
 </html>

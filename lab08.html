@@ -326,7 +326,7 @@ table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
           var y = top + i * rowH, a = plan[p.id], ow = M.own(a[0], a[1]), o = obj[p.id];
           g += '<text x="0" y="' + (y + 17) + '" font-size="11" font-weight="700" fill="#0b2530">' + p.id + '</text>';
           g += '<rect x="' + L + '" y="' + (y + 7) + '" width="' + Math.max(2, lx(ow, L, W - 10) - L) + '" height="12" rx="3" fill="' + (o.rto != null && ow > o.rto ? '#c0182b' : '#0f3b4c') + '"><title>' + p.id + ' planned RTO ' + h(ow) + '</title></rect>';
-          if (o.rto != null) { var xr = lx(o.rto, L, W - 10); g += '<path d="M' + xr + ' ' + (y + 4) + 'l6 9l-6 9l-6 -9z" fill="#14b8a6" stroke="#0b2530" stroke-width="1"><title>' + p.id + ' RTO ' + h(o.rto) + '</title></path>'; }
+          if (o.rto != null) { var xr = lx(o.rto, L, W - 10); g += '<path d="M' + xr + ' ' + (y + 4) + 'l6 9l-6 9l-6 -9z" fill="#0d9488" stroke="#0b2530" stroke-width="1"><title>' + p.id + ' RTO ' + h(o.rto) + '</title></path>'; }
           if (o.mtd != null) { var xm = lx(o.mtd, L, W - 10); g += '<line x1="' + xm + '" x2="' + xm + '" y1="' + (y + 2) + '" y2="' + (y + 25) + '" stroke="#b45309" stroke-width="2.5"><title>' + p.id + ' MTD ' + h(o.mtd) + '</title></line>'; }
         });
         var e = PR.filter(function (p) { var o = obj[p.id]; return o.mtd == null || o.rto == null || o.rpo == null; }).length;
@@ -335,7 +335,7 @@ table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
           '<div class="table-wrap"><table class="data b8-plan"><caption class="sr-only">Recovery strategy by process</caption><thead><tr><th>ID</th><th>MTD (h)</th><th>RTO (h)</th><th>RPO (h)</th><th>Recovery site</th><th>Backup method</th><th class="num">Planned RTO / RPO</th><th class="num">Cost</th><th>Flags</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
           '<p class="b8-pinfo" style="margin-top:.5rem">Planned RTO is this process on its own: site activation plus data restore. It does not include waiting for dependencies; the recovery test does. “Over-built” means a cheaper combination still meets this process’s RPO and the tightest RTO among it and the processes that depend on it.</p>' +
           '<div class="b8-card"><h4>Planned recovery against objectives</h4><p class="sub">Bar: planned RTO (red when it misses the RTO). Diamond: RTO. Orange tick: MTD. Log time scale.</p><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Planned RTO, RTO, and MTD for each process; values are in the planner table">' + g + '</svg>' +
-          '<div class="b8-legend"><span><i style="background:#0f3b4c"></i>Planned RTO</span><span><i style="background:#c0182b"></i>Misses RTO</span><span><i style="background:#14b8a6"></i>RTO</span><span><i style="background:#b45309"></i>MTD</span></div></div>' +
+          '<div class="b8-legend"><span><i style="background:#0f3b4c"></i>Planned RTO</span><span><i style="background:#c0182b"></i>Misses RTO</span><span><i style="background:#0d9488"></i>RTO</span><span><i style="background:#b45309"></i>MTD</span></div></div>' +
           '<div class="b8-card"><h4>Option explorer</h4><p class="sub">Every site and backup combination for one process, cheapest first, checked against the objectives entered for that row.</p><div class="b8-bar" style="margin-bottom:.4rem"><label class="b8-lab" for="b8-xp">Process</label><select id="b8-xp">' + PR.map(function (p) { return '<option' + (p.id === xp ? ' selected' : '') + '>' + p.id + '</option>'; }).join('') + '</select></div><div class="table-wrap" style="max-height:15rem;overflow:auto">' + explorer() + '</div></div>';
         P.querySelector('#b8-asis').addEventListener('click', function () { plan = JSON.parse(JSON.stringify(M.ASIS)); save(); renderPlan(); renderTest(); P.querySelector('#b8-asis').focus(); });
         P.querySelector('#b8-xp').addEventListener('change', function (ev) { xp = ev.target.value; save(); renderPlan(); document.getElementById('b8-xp').focus(); });
@@ -374,7 +374,7 @@ table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
         order.forEach(function (p, i) {
           var y = top + i * rowH, r = t[p.id], o = obj[p.id], x0 = L, xa = lx(r.act, L, W - 10), xo = lx(r.own, L, W - 10), xd = lx(r.done, L, W - 10);
           g += '<text x="0" y="' + (y + 17) + '" font-size="11" font-weight="700" fill="#0b2530">' + p.id + '</text>';
-          g += '<rect x="' + x0 + '" y="' + (y + 7) + '" width="' + Math.max(2, xa - x0) + '" height="12" fill="#14b8a6"><title>' + p.id + ' site activation ' + h(r.act) + '</title></rect>';
+          g += '<rect x="' + x0 + '" y="' + (y + 7) + '" width="' + Math.max(2, xa - x0) + '" height="12" fill="#0d9488"><title>' + p.id + ' site activation ' + h(r.act) + '</title></rect>';
           if (xo > xa + 1) g += '<rect x="' + (xa + 1) + '" y="' + (y + 7) + '" width="' + (xo - xa - 1) + '" height="12" fill="#0f3b4c"><title>' + p.id + ' data restore ' + h(r.restore) + '</title></rect>';
           if (xd > xo + 1) g += '<rect x="' + (xo + 1) + '" y="' + (y + 7) + '" width="' + (xd - xo - 1) + '" height="12" fill="url(#b8hatch)" stroke="#5c7d83" stroke-width=".8"><title>' + p.id + ' waiting for ' + r.waitFor + ' until ' + h(r.done) + '</title></rect>';
           if (o.rto != null) { var xr = lx(o.rto, L, W - 10); g += '<path d="M' + xr + ' ' + (y + 4) + 'l6 9l-6 9l-6 -9z" fill="#fff" stroke="#c0182b" stroke-width="1.6"><title>' + p.id + ' RTO ' + h(o.rto) + '</title></path>'; }
@@ -382,7 +382,7 @@ table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
         var defs = '<defs><pattern id="b8hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#eef3f4"/><line x1="0" y1="0" x2="0" y2="6" stroke="#5c7d83" stroke-width="2"/></pattern></defs>';
         P.innerHTML = head + '<ul class="b8-warn"><li class="' + (pass === PR.length ? 'ok' : '') + '">' + (pass === PR.length ? '&#10003; ' : '&#9888; ') + pass + ' of ' + PR.length + ' processes passed. Strategy cost $' + K.planCost(plan) + 'k against a $' + M.BUDGET + 'k budget.</li></ul>' +
           '<div class="b8-card"><h4>Recovery timeline, in order of resumption</h4><p class="sub">Teal: site activation. Navy: data restore. Hatched: waiting for a dependency. Open diamond: RTO. Log time scale.</p><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Recovery timeline for each process; results are in the table">' + defs + g + '</svg>' +
-          '<div class="b8-legend"><span><i style="background:#14b8a6"></i>Activation</span><span><i style="background:#0f3b4c"></i>Restore</span><span><i style="background:repeating-linear-gradient(45deg,#5c7d83 0 2px,#eef3f4 2px 5px)"></i>Waiting for dependency</span><span><i style="background:#fff;border:1.5px solid #c0182b"></i>RTO</span></div></div>' +
+          '<div class="b8-legend"><span><i style="background:#0d9488"></i>Activation</span><span><i style="background:#0f3b4c"></i>Restore</span><span><i style="background:repeating-linear-gradient(45deg,#5c7d83 0 2px,#eef3f4 2px 5px)"></i>Waiting for dependency</span><span><i style="background:#fff;border:1.5px solid #c0182b"></i>RTO</span></div></div>' +
           '<div class="table-wrap"><table class="data"><caption class="sr-only">Recovery test results</caption><thead><tr><th>Process</th><th class="num">Own recovery</th><th>Waited for</th><th class="num">Resumed at</th><th class="num">RTO</th><th class="num">Data lost</th><th class="num">RPO</th><th>Result</th><th>Reason</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
           '<p class="b8-lab" style="margin-top:.8rem">Test log</p><pre class="b8-log">' + esc('T+0      Primary site declared lost. Failover begins for all six processes.\n' + log.join('\n')) + '</pre>';
         wireRun();
@@ -447,6 +447,5 @@ table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
 })();
 </script>
 <script src="lab.js"></script>
-<script src="assistant.js" defer></script>
 </body>
 </html>

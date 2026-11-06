@@ -304,7 +304,7 @@ table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
         CT.forEach(function (c, i) {
           var y = top + i * rowH, st = M.standalone(c, basis), v = st.rosi, x0 = sx(0), x1 = sx(v), on = sel.indexOf(c.id) >= 0;
           g += '<text x="0" y="' + (y + 13) + '" font-size="11" fill="#0b2530" font-weight="' + (on ? 700 : 400) + '">' + (on ? '✓ ' : ' ') + c.id + '</text>';
-          g += '<rect x="' + Math.min(x0, x1) + '" y="' + (y + 3) + '" width="' + Math.max(1, Math.abs(x1 - x0)) + '" height="13" rx="3" fill="' + (v < 0 ? '#c0182b' : (on ? '#0f3b4c' : '#14b8a6')) + '" data-tip="' + c.id + ' ' + esc(c.name) + ': reduction ' + k(st.red) + ', cost $' + c.cost + 'k, ROSI ' + r1(v) + '%"/>';
+          g += '<rect x="' + Math.min(x0, x1) + '" y="' + (y + 3) + '" width="' + Math.max(1, Math.abs(x1 - x0)) + '" height="13" rx="3" fill="' + (v < 0 ? '#c0182b' : (on ? '#0f3b4c' : '#0d9488')) + '" data-tip="' + c.id + ' ' + esc(c.name) + ': reduction ' + k(st.red) + ', cost $' + c.cost + 'k, ROSI ' + r1(v) + '%"/>';
           g += '<text x="' + (v < 0 ? x0 + 4 : Math.min(x1 + 4, W - right + 4)) + '" y="' + (y + 13) + '" font-size="10.5" fill="#0b2530">' + r1(v) + '%</text>';
         });
         return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Standalone ROSI for twelve controls">' + g + '</svg>';
@@ -411,6 +411,5 @@ table.data td.num, table.data th.num { text-align: right; white-space: nowrap; }
 })();
 </script>
 <script src="lab.js"></script>
-<script src="assistant.js" defer></script>
 </body>
 </html>
